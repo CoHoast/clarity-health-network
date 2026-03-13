@@ -256,41 +256,41 @@ export default function AdminDashboard() {
       </div>
 
       {/* Network Health */}
-      <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-2xl p-6 lg:p-8 text-white">
+      <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-2xl p-6 lg:p-8">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Activity className="w-5 h-5 text-purple-200" />
-              <h3 className="text-lg font-semibold">Network Health Score</h3>
+              <Activity className="w-5 h-5 text-white" />
+              <h3 className="text-lg font-semibold text-white">Network Health Score</h3>
             </div>
-            <p className="text-purple-200 text-sm mb-4">
+            <p className="text-white/80 text-sm mb-4">
               Your PPO network is performing well across all metrics.
             </p>
             <div className="flex items-center gap-6">
               <div>
-                <p className="text-4xl font-bold">94<span className="text-xl text-purple-200">/100</span></p>
-                <p className="text-sm text-purple-200">Overall Score</p>
+                <p className="text-4xl font-bold text-white">94<span className="text-xl text-white/70">/100</span></p>
+                <p className="text-sm text-white/80">Overall Score</p>
               </div>
-              <div className="h-16 w-px bg-purple-400/30" />
+              <div className="h-16 w-px bg-white/30" />
               <div className="grid grid-cols-3 gap-6">
                 <div>
-                  <p className="text-lg font-semibold">98%</p>
-                  <p className="text-xs text-purple-200">Claim Accuracy</p>
+                  <p className="text-lg font-semibold text-white">98%</p>
+                  <p className="text-xs text-white/80">Claim Accuracy</p>
                 </div>
                 <div>
-                  <p className="text-lg font-semibold">2.1 days</p>
-                  <p className="text-xs text-purple-200">Avg Process Time</p>
+                  <p className="text-lg font-semibold text-white">2.1 days</p>
+                  <p className="text-xs text-white/80">Avg Process Time</p>
                 </div>
                 <div>
-                  <p className="text-lg font-semibold">99.2%</p>
-                  <p className="text-xs text-purple-200">Uptime</p>
+                  <p className="text-lg font-semibold text-white">99.2%</p>
+                  <p className="text-xs text-white/80">Uptime</p>
                 </div>
               </div>
             </div>
           </div>
           <Link
             href="/admin/reports"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800/50 text-purple-400 font-semibold rounded-xl hover:bg-slate-700 transition-colors shrink-0"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-xl hover:bg-white/30 transition-colors shrink-0"
           >
             <BarChart3 className="w-5 h-5" />
             View Full Report
