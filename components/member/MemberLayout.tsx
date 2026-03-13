@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -73,9 +73,18 @@ const navigationGroups = [
 
 export default function MemberLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
+
+  const handleSignOut = () => {
+    // Clear auth token from localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    // Redirect to login page
+    router.push("/login");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -176,7 +185,10 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
             <HelpCircle className="w-5 h-5 text-gray-400" />
             Help Center
           </Link>
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
+          <button 
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100"
+          >
             <LogOut className="w-5 h-5 text-gray-400" />
             Sign Out
           </button>
@@ -251,7 +263,10 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
                       Help Center
                     </Link>
                     <hr className="my-2" />
-                    <button className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full">
+                    <button 
+                      onClick={handleSignOut}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full"
+                    >
                       <LogOut className="w-4 h-4" />
                       Sign Out
                     </button>
