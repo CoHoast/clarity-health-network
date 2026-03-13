@@ -7,8 +7,8 @@
 
 export * from './eligibility';
 export * from './repricing';
+export * from './fraud';
 
 // Future engines:
 // export * from './claims';
-// export * from './fraud';
 // export * from './credentialing';
