@@ -2,12 +2,62 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Mail, Lock, ArrowRight, Eye, EyeOff, Shield, Users, Building2 } from "lucide-react";
+import { Mail, Lock, ArrowRight, Eye, EyeOff, Shield, Users, Building2, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [userType, setUserType] = useState<"member" | "provider" | "employer">("member");
+  const [userType, setUserType] = useState<"member" | "provider" | "employer" | "admin">("member");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, portalType: userType }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Login failed");
+      }
+
+      // Store token
+      localStorage.setItem("auth_token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Redirect to appropriate portal
+      switch (userType) {
+        case "member":
+          router.push("/member");
+          break;
+        case "provider":
+          router.push("/provider");
+          break;
+        case "employer":
+          router.push("/employer");
+          break;
+        case "admin":
+          router.push("/admin");
+          break;
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white flex">
@@ -33,16 +83,18 @@ export default function LoginPage() {
           <p className="text-gray-600 mb-8">Sign in to access your portal</p>
 
           {/* User Type Tabs */}
-          <div className="flex gap-2 mb-8 p-1 bg-gray-100 rounded-xl">
+          <div className="flex gap-1 mb-8 p-1 bg-gray-100 rounded-xl">
             {[
               { id: "member" as const, label: "Member", icon: Users },
               { id: "provider" as const, label: "Provider", icon: Building2 },
               { id: "employer" as const, label: "Employer", icon: Shield },
+              { id: "admin" as const, label: "Admin", icon: Shield },
             ].map((type) => (
               <button
                 key={type.id}
+                type="button"
                 onClick={() => setUserType(type.id)}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-medium transition-all ${
+                className={`flex-1 flex items-center justify-center gap-1 py-2.5 px-2 rounded-lg font-medium transition-all text-sm ${
                   userType === type.id
                     ? "bg-white text-teal-700 shadow-sm"
                     : "text-gray-600 hover:text-gray-900"
@@ -54,7 +106,13 @@ export default function LoginPage() {
             ))}
           </div>
 
-          <form className="space-y-6">
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
@@ -63,7 +121,10 @@ export default function LoginPage() {
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
+                  required
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                 />
               </div>
@@ -82,7 +143,10 @@ export default function LoginPage() {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
+                  required
                   className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                 />
                 <button
@@ -108,12 +172,34 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-emerald-700 transition-all shadow-lg shadow-teal-500/25"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-emerald-700 transition-all shadow-lg shadow-teal-500/25 disabled:opacity-50"
             >
-              Sign In
-              <ArrowRight className="w-5 h-5" />
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign In
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
             </button>
           </form>
+
+          {/* Demo credentials hint */}
+          <div className="mt-6 p-4 bg-gray-50 rounded-xl text-sm text-gray-600">
+            <p className="font-medium text-gray-700 mb-2">Demo Credentials:</p>
+            <div className="space-y-1 text-xs">
+              <p><span className="font-medium">Member:</span> john.smith@email.com</p>
+              <p><span className="font-medium">Provider:</span> dr.johnson@mainstreetmed.com</p>
+              <p><span className="font-medium">Employer:</span> hr@acmecorp.com</p>
+              <p><span className="font-medium">Admin:</span> admin@clarityhealthnetwork.com</p>
+              <p className="text-gray-500 mt-2">Password for all: demo123</p>
+            </div>
+          </div>
 
           <p className="text-center text-gray-600 mt-8">
             Need an account?{" "}
