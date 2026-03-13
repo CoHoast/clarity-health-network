@@ -436,8 +436,12 @@ export default function MemberDashboard() {
             </p>
           </div>
           <button 
-            onClick={() => setShowPulseChat(true)}
-            className="px-6 py-3 bg-white text-gray-900 font-semibold rounded-xl hover:bg-gray-100 transition-colors flex items-center gap-2 shrink-0"
+            type="button"
+            onClick={() => {
+              console.log('Opening Pulse chat');
+              setShowPulseChat(true);
+            }}
+            className="px-6 py-3 bg-white text-gray-900 font-semibold rounded-xl hover:bg-gray-100 transition-colors flex items-center gap-2 shrink-0 cursor-pointer"
           >
             <MessageSquare className="w-5 h-5" />
             Chat with Pulse
