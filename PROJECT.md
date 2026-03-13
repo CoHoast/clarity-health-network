@@ -1,8 +1,20 @@
 # Clarity Health Network - Demo Platform
 
-**Status**: ✅ COMPLETE (Mar 12, 2026)
-**Live URL**: https://clarity-health-demo.surge.sh
+**Status**: ✅ COMPLETE & DEPLOYED (Mar 13, 2026)
+**Live URL**: https://clarity-health-network-production.up.railway.app
+**GitHub**: https://github.com/CoHoast/clarity-health-network
 **Purpose**: 100% functional PPO network demo for client presentations
+
+---
+
+## Test Credentials
+
+| Portal | Email | Password |
+|--------|-------|----------|
+| Member | john.smith@email.com | demo123 |
+| Provider | dr.johnson@mainstreetmed.com | demo123 |
+| Employer | hr@acmecorp.com | demo123 |
+| Admin | admin@clarityhealthnetwork.com | demo123 |
 
 ---
 
@@ -12,7 +24,7 @@
 cd ~/agent-hub/clarity-health-demo
 npm run dev     # Development at localhost:3000
 npm run build   # Production build
-npx surge out clarity-health-demo.surge.sh  # Deploy
+git push        # Auto-deploys to Railway
 ```
 
 ---
@@ -36,7 +48,10 @@ npx surge out clarity-health-demo.surge.sh  # Deploy
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **Icons**: Lucide React
-- **Deployment**: Surge (static export)
+- **Database**: PostgreSQL (Railway)
+- **ORM**: Prisma
+- **Auth**: JWT tokens
+- **Deployment**: Railway (auto-deploy from GitHub)
 
 ---
 
@@ -179,37 +194,47 @@ clarity-health-demo/
 
 ## Deployment
 
-Currently deployed to Surge (static hosting):
-```bash
-npm run build
-npx surge out clarity-health-demo.surge.sh
-```
+**Production on Railway** (auto-deploys on push to main):
+- 50 API routes wired to PostgreSQL
+- JWT authentication for all portals
+- Seed data for demo purposes
 
-For Railway with PostgreSQL (production):
-1. Connect to Railway
-2. Add PostgreSQL database
-3. Update environment variables
-4. Deploy via GitHub
+```bash
+# Deploy
+git push origin main  # Auto-deploys
+
+# Local development
+cp .env.example .env.local
+npm run dev
+```
 
 ---
 
+## Completed Features
+
+- [x] 50 API routes wired to PostgreSQL
+- [x] JWT authentication for all portals
+- [x] Seed data with realistic demo records
+- [x] API hooks in `lib/hooks/` for UI wiring
+
 ## Future Enhancements
 
-- [ ] Wire up to backend APIs (dokit-healthcare modules)
-- [ ] Add real authentication
-- [ ] Connect to PostgreSQL for real data
+- [ ] Wire remaining UI screens to use API hooks
 - [ ] Add real-time WebSocket updates
 - [ ] Implement actual Pulse AI with LLM
 - [ ] Add data export functionality
 - [ ] Email/SMS notifications
+- [ ] Provider portal polish (messages, documents, profile editing)
 
 ---
 
 ## Related Files
 
-- `~/agent-hub/dokit-healthcare/modules/` - Backend modules (23)
 - `PLATFORM-SPEC.md` - Full platform specification
-- `memory/2026-03-12.md` - Daily notes on completion
+- `docs/WIRING-PLAN.md` - API wiring documentation
+- `lib/hooks/` - React hooks for API calls
+- `prisma/schema.prisma` - Database schema
+- `scripts/seed-fast.ts` - Demo data seeding
 
 ---
 

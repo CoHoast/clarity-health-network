@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -66,9 +66,16 @@ const navigationGroups = [
 
 export default function EmployerLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    router.push("/login");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -162,7 +169,10 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
             </div>
             Ask Pulse AI
           </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-orange-100 hover:bg-orange-800 hover:text-white">
+          <button 
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-orange-100 hover:bg-orange-800 hover:text-white"
+          >
             <LogOut className="w-5 h-5 text-orange-200/70" />
             Sign Out
           </button>
@@ -230,7 +240,10 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
                       Settings
                     </Link>
                     <hr className="my-2 border-gray-100" />
-                    <button className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full">
+                    <button 
+                      onClick={handleSignOut}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full"
+                    >
                       <LogOut className="w-4 h-4" />
                       Sign Out
                     </button>

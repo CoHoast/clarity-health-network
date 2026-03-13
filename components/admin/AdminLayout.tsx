@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -92,10 +92,17 @@ const navigationGroups = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
   const [isDark, setIsDark] = useState(true);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    router.push("/admin/login");
+  };
 
   // Persist theme preference
   useEffect(() => {
@@ -221,7 +228,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             Ask Pulse AI
           </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white">
+          <button 
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+          >
             <LogOut className="w-5 h-5 text-slate-500" />
             Sign Out
           </button>
@@ -298,7 +308,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       Settings
                     </Link>
                     <hr className={`my-2 ${theme.dropdownBorder}`} />
-                    <button className={`flex items-center gap-2 px-4 py-2 text-sm w-full ${theme.dropdownText}`}>
+                    <button 
+                      onClick={handleSignOut}
+                      className={`flex items-center gap-2 px-4 py-2 text-sm w-full ${theme.dropdownText}`}
+                    >
                       <LogOut className="w-4 h-4" />
                       Sign Out
                     </button>
