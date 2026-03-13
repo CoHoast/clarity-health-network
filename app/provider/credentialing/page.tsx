@@ -22,6 +22,8 @@ export default function CredentialingPage() {
   const [showUpdateModal, setShowUpdateModal] = useState<typeof credentials[0] | null>(null);
   const [showAddProviderModal, setShowAddProviderModal] = useState(false);
   const [showProviderDetail, setShowProviderDetail] = useState<typeof providers[0] | null>(null);
+  const [isEditingProvider, setIsEditingProvider] = useState(false);
+  const [editProviderSuccess, setEditProviderSuccess] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
@@ -415,7 +417,7 @@ export default function CredentialingPage() {
         {showProviderDetail && (
           <div
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={() => setShowProviderDetail(null)}
+            onClick={() => { setShowProviderDetail(null); setIsEditingProvider(false); setEditProviderSuccess(false); }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -424,60 +426,165 @@ export default function CredentialingPage() {
               className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">Provider Details</h3>
-                <button onClick={() => setShowProviderDetail(null)} className="p-1 hover:bg-gray-100 rounded-lg">
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
-              </div>
-              <div className="p-6 space-y-6">
-                {/* Provider Info */}
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
-                    <span className="text-slate-600 font-bold text-xl">{showProviderDetail.initials}</span>
+              {editProviderSuccess ? (
+                <div className="p-8 text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-900 text-lg">{showProviderDetail.name}</p>
-                    <p className="text-gray-500">{showProviderDetail.specialty}</p>
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full mt-1 ${
-                      showProviderDetail.status === "Active" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
-                    }`}>
-                      {showProviderDetail.status}
-                    </span>
-                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Changes Saved!</h3>
+                  <p className="text-gray-600">Provider information has been updated successfully.</p>
                 </div>
+              ) : isEditingProvider ? (
+                <>
+                  <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h3 className="font-semibold text-gray-900">Edit Provider</h3>
+                    <button onClick={() => { setShowProviderDetail(null); setIsEditingProvider(false); }} className="p-1 hover:bg-gray-100 rounded-lg">
+                      <X className="w-5 h-5 text-gray-500" />
+                    </button>
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <input
+                          type="text"
+                          defaultValue={showProviderDetail.name.split(' ')[0].replace('Dr.', '').trim()}
+                          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <input
+                          type="text"
+                          defaultValue={showProviderDetail.name.split(' ').slice(-2, -1)[0] || showProviderDetail.name.split(' ').pop()?.replace(',', '')}
+                          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Credentials</label>
+                      <input
+                        type="text"
+                        defaultValue={showProviderDetail.name.split(',').pop()?.trim() || "MD"}
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">NPI</label>
+                      <input
+                        type="text"
+                        defaultValue={showProviderDetail.npi}
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Specialty</label>
+                      <select 
+                        defaultValue={showProviderDetail.specialty}
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                      >
+                        <option>Family Medicine</option>
+                        <option>Internal Medicine</option>
+                        <option>Pediatrics</option>
+                        <option>Family Nurse Practitioner</option>
+                        <option>Physician Assistant</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                      <select 
+                        defaultValue={showProviderDetail.status}
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                      >
+                        <option value="Active">Active</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="px-6 pb-6 flex gap-3">
+                    <button
+                      onClick={() => setIsEditingProvider(false)}
+                      className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setEditProviderSuccess(true);
+                        setTimeout(() => {
+                          setShowProviderDetail(null);
+                          setIsEditingProvider(false);
+                          setEditProviderSuccess(false);
+                        }, 2000);
+                      }}
+                      className="flex-1 px-4 py-2.5 bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h3 className="font-semibold text-gray-900">Provider Details</h3>
+                    <button onClick={() => setShowProviderDetail(null)} className="p-1 hover:bg-gray-100 rounded-lg">
+                      <X className="w-5 h-5 text-gray-500" />
+                    </button>
+                  </div>
+                  <div className="p-6 space-y-6">
+                    {/* Provider Info */}
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
+                        <span className="text-slate-600 font-bold text-xl">{showProviderDetail.initials}</span>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900 text-lg">{showProviderDetail.name}</p>
+                        <p className="text-gray-500">{showProviderDetail.specialty}</p>
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full mt-1 ${
+                          showProviderDetail.status === "Active" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
+                        }`}>
+                          {showProviderDetail.status}
+                        </span>
+                      </div>
+                    </div>
 
-                {/* Details */}
-                <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-500">NPI</span>
-                    <span className="font-mono text-gray-900">{showProviderDetail.npi}</span>
+                    {/* Details */}
+                    <div className="space-y-3">
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-500">NPI</span>
+                        <span className="font-mono text-gray-900">{showProviderDetail.npi}</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-500">Specialty</span>
+                        <span className="text-gray-900">{showProviderDetail.specialty}</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-500">Credentialing Status</span>
+                        <span className="text-green-600">Complete</span>
+                      </div>
+                      <div className="flex justify-between py-2">
+                        <span className="text-gray-500">Last Verified</span>
+                        <span className="text-gray-900">Mar 1, 2024</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-500">Specialty</span>
-                    <span className="text-gray-900">{showProviderDetail.specialty}</span>
+                  <div className="px-6 pb-6 flex gap-3">
+                    <button
+                      onClick={() => setShowProviderDetail(null)}
+                      className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      Close
+                    </button>
+                    <button 
+                      onClick={() => setIsEditingProvider(true)}
+                      className="flex-1 px-4 py-2.5 bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors"
+                    >
+                      Edit Provider
+                    </button>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-500">Credentialing Status</span>
-                    <span className="text-green-600">Complete</span>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <span className="text-gray-500">Last Verified</span>
-                    <span className="text-gray-900">Mar 1, 2024</span>
-                  </div>
-                </div>
-              </div>
-              <div className="px-6 pb-6 flex gap-3">
-                <button
-                  onClick={() => setShowProviderDetail(null)}
-                  className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
-                >
-                  Close
-                </button>
-                <button className="flex-1 px-4 py-2.5 bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors">
-                  Edit Provider
-                </button>
-              </div>
+                </>
+              )}
             </motion.div>
           </div>
         )}
