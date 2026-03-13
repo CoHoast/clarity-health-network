@@ -9,7 +9,7 @@ import { Mail, Lock, ArrowRight, Eye, EyeOff, Shield, Users, Building2, Loader2 
 export default function LoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [userType, setUserType] = useState<"member" | "provider" | "employer" | "admin">("member");
+  const [userType, setUserType] = useState<"member" | "provider" | "employer">("member");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -48,9 +48,6 @@ export default function LoginPage() {
         case "employer":
           router.push("/employer");
           break;
-        case "admin":
-          router.push("/admin");
-          break;
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
@@ -83,12 +80,11 @@ export default function LoginPage() {
           <p className="text-gray-600 mb-8">Sign in to access your portal</p>
 
           {/* User Type Tabs */}
-          <div className="flex gap-1 mb-8 p-1 bg-gray-100 rounded-xl">
+          <div className="flex gap-2 mb-8 p-1 bg-gray-100 rounded-xl">
             {[
               { id: "member" as const, label: "Member", icon: Users },
               { id: "provider" as const, label: "Provider", icon: Building2 },
               { id: "employer" as const, label: "Employer", icon: Shield },
-              { id: "admin" as const, label: "Admin", icon: Shield },
             ].map((type) => (
               <button
                 key={type.id}
@@ -196,7 +192,6 @@ export default function LoginPage() {
               <p><span className="font-medium">Member:</span> john.smith@email.com</p>
               <p><span className="font-medium">Provider:</span> dr.johnson@mainstreetmed.com</p>
               <p><span className="font-medium">Employer:</span> hr@acmecorp.com</p>
-              <p><span className="font-medium">Admin:</span> admin@clarityhealthnetwork.com</p>
               <p className="text-gray-500 mt-2">Password for all: demo123</p>
             </div>
           </div>
