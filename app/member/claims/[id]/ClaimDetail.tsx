@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowLeft, FileText, Building2, Calendar, DollarSign, Download, Printer, CheckCircle, Clock, HelpCircle } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, FileText, Building2, Calendar, DollarSign, Download, Printer, CheckCircle, Clock, HelpCircle, Check } from "lucide-react";
 import Link from "next/link";
 
 const mockClaim = {
@@ -31,6 +32,195 @@ const mockClaim = {
 };
 
 export default function ClaimDetail({ id }: { id: string }) {
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [downloadComplete, setDownloadComplete] = useState(false);
+
+  const generateAndDownloadPDF = () => {
+    setDownloadingPdf(true);
+    
+    // Generate EOB HTML content
+    const eobContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EOB - ${mockClaim.id}</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px; color: #333; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #0d9488; padding-bottom: 20px; margin-bottom: 30px; }
+    .logo { font-size: 24px; font-weight: bold; color: #0d9488; }
+    .logo span { color: #10b981; }
+    .document-title { text-align: right; }
+    .document-title h1 { margin: 0; font-size: 18px; color: #666; }
+    .document-title p { margin: 5px 0 0; color: #999; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+    .info-box { background: #f8f9fa; padding: 20px; border-radius: 8px; }
+    .info-box h3 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase; color: #666; letter-spacing: 0.5px; }
+    .info-box p { margin: 5px 0; }
+    .status-badge { display: inline-block; background: #dcfce7; color: #166534; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th { background: #f1f5f9; padding: 12px; text-align: left; font-size: 12px; text-transform: uppercase; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+    td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+    .text-right { text-align: right; }
+    .total-row { background: #f8fafc; font-weight: bold; }
+    .total-row td { border-top: 2px solid #e2e8f0; }
+    .summary-box { background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 8px; padding: 20px; margin-top: 30px; }
+    .summary-row { display: flex; justify-content: space-between; padding: 8px 0; }
+    .summary-row.total { border-top: 2px solid #14b8a6; margin-top: 10px; padding-top: 15px; font-size: 18px; }
+    .amount-due { color: #0d9488; font-weight: bold; }
+    .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #666; }
+    .help-text { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 15px; margin-top: 30px; }
+    .help-text h4 { margin: 0 0 8px; color: #92400e; }
+    .help-text p { margin: 0; color: #a16207; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">Clarity<span>Health</span></div>
+    <div class="document-title">
+      <h1>Explanation of Benefits</h1>
+      <p>This is not a bill</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <span class="status-badge">✓ Claim Paid</span>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-box">
+      <h3>Patient Information</h3>
+      <p><strong>${mockClaim.patient}</strong></p>
+      <p>Member ID: CHN-123456</p>
+      <p>Group: GRP-78901</p>
+    </div>
+    <div class="info-box">
+      <h3>Claim Information</h3>
+      <p><strong>Claim #:</strong> ${mockClaim.id}</p>
+      <p><strong>Date of Service:</strong> ${mockClaim.dateOfService}</p>
+      <p><strong>Processed:</strong> ${mockClaim.processedDate}</p>
+    </div>
+    <div class="info-box">
+      <h3>Provider Information</h3>
+      <p><strong>${mockClaim.provider.name}</strong></p>
+      <p>${mockClaim.provider.address}</p>
+      <p>${mockClaim.provider.phone}</p>
+    </div>
+    <div class="info-box">
+      <h3>Plan Information</h3>
+      <p><strong>Plan:</strong> Clarity Health PPO</p>
+      <p><strong>Network:</strong> In-Network</p>
+      <p><strong>Coinsurance:</strong> ${mockClaim.coinsurance}</p>
+    </div>
+  </div>
+
+  <h2 style="font-size: 16px; color: #333; margin-bottom: 15px;">Services Provided</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Service Description</th>
+        <th>CPT Code</th>
+        <th class="text-right">Billed</th>
+        <th class="text-right">Allowed</th>
+        <th class="text-right">Plan Paid</th>
+        <th class="text-right">You Pay</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${mockClaim.serviceLines.map(line => `
+        <tr>
+          <td>${line.description}</td>
+          <td>${line.cpt}</td>
+          <td class="text-right">$${line.billed.toFixed(2)}</td>
+          <td class="text-right">$${line.allowed.toFixed(2)}</td>
+          <td class="text-right">$${line.planPaid.toFixed(2)}</td>
+          <td class="text-right">$${line.youPay.toFixed(2)}</td>
+        </tr>
+      `).join('')}
+      <tr class="total-row">
+        <td colspan="2"><strong>TOTALS</strong></td>
+        <td class="text-right">$${mockClaim.totals.billed.toFixed(2)}</td>
+        <td class="text-right">$${mockClaim.totals.allowed.toFixed(2)}</td>
+        <td class="text-right">$${mockClaim.totals.planPaid.toFixed(2)}</td>
+        <td class="text-right"><strong>$${mockClaim.totals.youPay.toFixed(2)}</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="summary-box">
+    <h3 style="margin: 0 0 15px; font-size: 14px; color: #0f766e;">Payment Summary</h3>
+    <div class="summary-row">
+      <span>Total Billed by Provider</span>
+      <span>$${mockClaim.totals.billed.toFixed(2)}</span>
+    </div>
+    <div class="summary-row">
+      <span>Network Discount (You Save!)</span>
+      <span style="color: #16a34a;">-$${(mockClaim.totals.billed - mockClaim.totals.allowed).toFixed(2)}</span>
+    </div>
+    <div class="summary-row">
+      <span>Amount Covered by Plan</span>
+      <span style="color: #16a34a;">$${mockClaim.totals.planPaid.toFixed(2)}</span>
+    </div>
+    <div class="summary-row">
+      <span>Deductible Applied</span>
+      <span>$${mockClaim.deductibleApplied.toFixed(2)}</span>
+    </div>
+    <div class="summary-row">
+      <span>Coinsurance (${mockClaim.coinsurance})</span>
+      <span>$${mockClaim.totals.youPay.toFixed(2)}</span>
+    </div>
+    <div class="summary-row total">
+      <span><strong>Your Responsibility</strong></span>
+      <span class="amount-due">$${mockClaim.totals.youPay.toFixed(2)}</span>
+    </div>
+  </div>
+
+  <div class="help-text">
+    <h4>Questions About This EOB?</h4>
+    <p>Contact Member Services at 1-800-555-0123 or visit member.clarityhealth.com for help understanding your benefits.</p>
+  </div>
+
+  <div class="footer">
+    <p><strong>Clarity Health Network</strong> | Member Services: 1-800-555-0123 | www.clarityhealth.com</p>
+    <p>This Explanation of Benefits (EOB) is a summary of how your claim was processed. Please keep for your records.</p>
+    <p style="margin-top: 10px; color: #999;">Generated on ${new Date().toLocaleDateString()} | Document ID: EOB-${mockClaim.id}</p>
+  </div>
+</body>
+</html>`;
+
+    // Create blob and trigger download
+    const blob = new Blob([eobContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    
+    // Create a hidden iframe to print/save as PDF
+    const printWindow = window.open(url, '_blank');
+    if (printWindow) {
+      printWindow.onload = () => {
+        setTimeout(() => {
+          printWindow.print();
+        }, 250);
+      };
+    }
+
+    // Also create a direct download link for the HTML version
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `EOB-${mockClaim.id}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => {
+      setDownloadingPdf(false);
+      setDownloadComplete(true);
+      setTimeout(() => setDownloadComplete(false), 2000);
+      URL.revokeObjectURL(url);
+    }, 500);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -42,11 +232,19 @@ export default function ClaimDetail({ id }: { id: string }) {
           <p className="text-gray-500">Claim #{id}</p>
         </div>
         <div className="flex gap-2">
-          <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg" title="Print">
+          <button 
+            onClick={handlePrint}
+            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg" 
+            title="Print"
+          >
             <Printer className="w-5 h-5" />
           </button>
-          <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg" title="Download PDF">
-            <Download className="w-5 h-5" />
+          <button 
+            onClick={generateAndDownloadPDF}
+            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg" 
+            title="Download PDF"
+          >
+            {downloadComplete ? <Check className="w-5 h-5 text-green-500" /> : <Download className="w-5 h-5" />}
           </button>
         </div>
       </div>
@@ -212,10 +410,32 @@ export default function ClaimDetail({ id }: { id: string }) {
               <Link href="/docs/eob" className="w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
                 <FileText className="w-4 h-4" />View Full EOB
               </Link>
-              <button className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center justify-center gap-2">
-                <Download className="w-4 h-4" />Download PDF
+              <button 
+                onClick={generateAndDownloadPDF}
+                disabled={downloadingPdf}
+                className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {downloadComplete ? (
+                  <>
+                    <Check className="w-4 h-4 text-green-500" />
+                    Downloaded!
+                  </>
+                ) : downloadingPdf ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-4 h-4" />
+                    Download PDF
+                  </>
+                )}
               </button>
-              <button className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center justify-center gap-2">
+              <button 
+                onClick={handlePrint}
+                className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center justify-center gap-2"
+              >
                 <Printer className="w-4 h-4" />Print
               </button>
             </div>
