@@ -1,213 +1,197 @@
 "use client";
 
-import { Download, Printer, ArrowLeft } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { ArrowLeft, Download, Printer, Mail, FileText, Building2, DollarSign, Calendar, CheckCircle } from "lucide-react";
 import Link from "next/link";
 
-export default function ERAPage() {
+export default function ERAViewerPage() {
+  const searchParams = useSearchParams();
+  const paymentId = searchParams.get("id") || "PMT-2024-4521";
+
+  // Mock ERA data based on payment ID
+  const eraData = {
+    paymentId,
+    checkNumber: "ACH-" + paymentId.split("-").pop(),
+    paymentDate: "March 11, 2024",
+    paymentAmount: "$12,450.00",
+    provider: {
+      name: "Cleveland Family Medicine",
+      npi: "1234567890",
+      taxId: "XX-XXX4521",
+      address: "1234 Main Street, Cleveland, OH 44101",
+    },
+    payer: {
+      name: "Clarity Health Network",
+      payerId: "CHN001",
+      address: "100 Clarity Way, Cleveland, OH 44115",
+    },
+    claims: [
+      { claimId: "CLM-8821", patient: "John Smith", dos: "03/01/2024", billed: 450.00, allowed: 380.00, paid: 342.00, patientResp: 38.00, adjustments: "CO-45: $70.00" },
+      { claimId: "CLM-8834", patient: "Sarah Johnson", dos: "03/02/2024", billed: 225.00, allowed: 200.00, paid: 180.00, patientResp: 20.00, adjustments: "CO-45: $25.00" },
+      { claimId: "CLM-8847", patient: "Michael Chen", dos: "03/03/2024", billed: 380.00, allowed: 320.00, paid: 288.00, patientResp: 32.00, adjustments: "CO-45: $60.00" },
+      { claimId: "CLM-8852", patient: "Emily Rodriguez", dos: "03/04/2024", billed: 650.00, allowed: 550.00, paid: 495.00, patientResp: 55.00, adjustments: "CO-45: $100.00" },
+      { claimId: "CLM-8867", patient: "David Williams", dos: "03/05/2024", billed: 420.00, allowed: 380.00, paid: 342.00, patientResp: 38.00, adjustments: "CO-45: $40.00" },
+    ],
+    adjustmentCodes: [
+      { code: "CO-45", description: "Charge exceeds fee schedule/maximum allowable" },
+      { code: "PR-1", description: "Deductible amount" },
+      { code: "PR-2", description: "Coinsurance amount" },
+      { code: "PR-3", description: "Co-payment amount" },
+    ],
+  };
+
+  const totalBilled = eraData.claims.reduce((sum, c) => sum + c.billed, 0);
+  const totalAllowed = eraData.claims.reduce((sum, c) => sum + c.allowed, 0);
+  const totalPaid = eraData.claims.reduce((sum, c) => sum + c.paid, 0);
+  const totalPatientResp = eraData.claims.reduce((sum, c) => sum + c.patientResp, 0);
+
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-5xl mx-auto px-4">
-        {/* Action Bar */}
-        <div className="flex justify-between items-center mb-4 print:hidden">
-          <Link href="/admin/payments" className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700">
-            <ArrowLeft className="w-4 h-4" /> Back to Payments
+    <div className="min-h-screen bg-slate-900 p-6">
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <Link href="/admin/payments" className="inline-flex items-center gap-2 text-slate-400 hover:text-white">
+            <ArrowLeft className="w-5 h-5" />
+            Back to Payments
           </Link>
-          <div className="flex gap-3">
-            <button onClick={() => window.print()} className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
-              <Printer className="w-4 h-4" /> Print
+          <div className="flex gap-2">
+            <button className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
+              <Mail className="w-4 h-4" />
+              Email
+            </button>
+            <button className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
+              <Printer className="w-4 h-4" />
+              Print
             </button>
             <button className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-              <Download className="w-4 h-4" /> Download PDF
+              <Download className="w-4 h-4" />
+              Download PDF
             </button>
           </div>
         </div>
 
         {/* ERA Document */}
-        <div className="bg-white rounded-lg shadow-lg p-8 print:shadow-none">
-          {/* Header */}
-          <div className="flex justify-between items-start border-b border-gray-200 pb-6 mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-teal-600">Clarity Health Network</h1>
-              <p className="text-gray-500">Electronic Remittance Advice (ERA)</p>
-              <p className="text-sm text-gray-400 mt-1">835 Transaction</p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-gray-500">ERA Date</p>
-              <p className="font-semibold">March 11, 2026</p>
-              <p className="text-sm text-gray-500 mt-2">Check/EFT #</p>
-              <p className="font-mono font-semibold">PMT-2024-4521</p>
-            </div>
-          </div>
-
-          {/* Payer & Payee Info */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-700 mb-2">Payer Information</h3>
-              <p className="text-sm"><strong>Name:</strong> Clarity Health Network</p>
-              <p className="text-sm"><strong>Payer ID:</strong> CHN001</p>
-              <p className="text-sm"><strong>Address:</strong> 1000 Health Way, Cleveland, OH 44101</p>
-              <p className="text-sm"><strong>Phone:</strong> 1-800-555-0123</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-700 mb-2">Payee Information</h3>
-              <p className="text-sm"><strong>Name:</strong> Cleveland Family Medicine</p>
-              <p className="text-sm"><strong>NPI:</strong> 1234567890</p>
-              <p className="text-sm"><strong>Tax ID:</strong> XX-XXXXXXX</p>
-              <p className="text-sm"><strong>Address:</strong> 123 Medical Center Dr, Cleveland, OH 44101</p>
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+          {/* Document Header */}
+          <div className="bg-gradient-to-r from-purple-600 to-indigo-600 px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
+                  <FileText className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-white">Electronic Remittance Advice</h1>
+                  <p className="text-purple-200">835 Transaction</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-white font-semibold">{eraData.paymentId}</p>
+                <p className="text-purple-200">{eraData.checkNumber}</p>
+              </div>
             </div>
           </div>
 
           {/* Payment Summary */}
-          <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-8">
-            <h3 className="font-semibold text-teal-800 mb-3">Payment Summary</h3>
-            <div className="grid grid-cols-4 gap-4 text-center">
+          <div className="px-8 py-6 border-b border-gray-200 bg-gray-50">
+            <div className="grid grid-cols-2 gap-8">
               <div>
-                <p className="text-2xl font-bold text-gray-800">47</p>
-                <p className="text-sm text-gray-600">Claims Paid</p>
+                <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Payer</h3>
+                <p className="font-bold text-gray-900">{eraData.payer.name}</p>
+                <p className="text-gray-600 text-sm">Payer ID: {eraData.payer.payerId}</p>
+                <p className="text-gray-600 text-sm">{eraData.payer.address}</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-800">$15,230.00</p>
-                <p className="text-sm text-gray-600">Total Billed</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-800">$12,875.00</p>
-                <p className="text-sm text-gray-600">Total Allowed</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-green-600">$12,450.00</p>
-                <p className="text-sm text-gray-600">Total Paid</p>
+                <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Provider (Payee)</h3>
+                <p className="font-bold text-gray-900">{eraData.provider.name}</p>
+                <p className="text-gray-600 text-sm">NPI: {eraData.provider.npi}</p>
+                <p className="text-gray-600 text-sm">Tax ID: {eraData.provider.taxId}</p>
+                <p className="text-gray-600 text-sm">{eraData.provider.address}</p>
               </div>
             </div>
           </div>
 
-          {/* Claim Details Table */}
-          <div className="mb-8">
-            <h3 className="font-semibold text-gray-700 mb-3">Claim Details</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full border border-gray-200 rounded-lg overflow-hidden text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600">Claim #</th>
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600">Patient</th>
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600">DOS</th>
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600">CPT</th>
-                    <th className="px-3 py-2 text-right text-xs font-semibold text-gray-600">Billed</th>
-                    <th className="px-3 py-2 text-right text-xs font-semibold text-gray-600">Allowed</th>
-                    <th className="px-3 py-2 text-right text-xs font-semibold text-gray-600">Deduct</th>
-                    <th className="px-3 py-2 text-right text-xs font-semibold text-gray-600">Copay</th>
-                    <th className="px-3 py-2 text-right text-xs font-semibold text-gray-600">Paid</th>
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-3 py-2 font-mono">CLM-8821</td>
-                    <td className="px-3 py-2">Smith, John</td>
-                    <td className="px-3 py-2">03/01/26</td>
-                    <td className="px-3 py-2 font-mono">99214</td>
-                    <td className="px-3 py-2 text-right">$150.00</td>
-                    <td className="px-3 py-2 text-right">$125.00</td>
-                    <td className="px-3 py-2 text-right">$0.00</td>
-                    <td className="px-3 py-2 text-right">$25.00</td>
-                    <td className="px-3 py-2 text-right text-green-600 font-semibold">$100.00</td>
-                    <td className="px-3 py-2"><span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Paid</span></td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2 font-mono">CLM-8834</td>
-                    <td className="px-3 py-2">Johnson, Sarah</td>
-                    <td className="px-3 py-2">03/02/26</td>
-                    <td className="px-3 py-2 font-mono">99213</td>
-                    <td className="px-3 py-2 text-right">$120.00</td>
-                    <td className="px-3 py-2 text-right">$100.00</td>
-                    <td className="px-3 py-2 text-right">$0.00</td>
-                    <td className="px-3 py-2 text-right">$25.00</td>
-                    <td className="px-3 py-2 text-right text-green-600 font-semibold">$75.00</td>
-                    <td className="px-3 py-2"><span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Paid</span></td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2 font-mono">CLM-8847</td>
-                    <td className="px-3 py-2">Doe, John</td>
-                    <td className="px-3 py-2">03/03/26</td>
-                    <td className="px-3 py-2 font-mono">99214</td>
-                    <td className="px-3 py-2 text-right">$138.00</td>
-                    <td className="px-3 py-2 text-right">$125.00</td>
-                    <td className="px-3 py-2 text-right">$0.00</td>
-                    <td className="px-3 py-2 text-right">$25.00</td>
-                    <td className="px-3 py-2 text-right text-green-600 font-semibold">$100.00</td>
-                    <td className="px-3 py-2"><span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Paid</span></td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2 font-mono">CLM-8852</td>
-                    <td className="px-3 py-2">Williams, Robert</td>
-                    <td className="px-3 py-2">03/04/26</td>
-                    <td className="px-3 py-2 font-mono">99215</td>
-                    <td className="px-3 py-2 text-right">$200.00</td>
-                    <td className="px-3 py-2 text-right">$175.00</td>
-                    <td className="px-3 py-2 text-right">$25.00</td>
-                    <td className="px-3 py-2 text-right">$25.00</td>
-                    <td className="px-3 py-2 text-right text-green-600 font-semibold">$125.00</td>
-                    <td className="px-3 py-2"><span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Paid</span></td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2 font-mono">CLM-8865</td>
-                    <td className="px-3 py-2">Chen, Michael</td>
-                    <td className="px-3 py-2">03/05/26</td>
-                    <td className="px-3 py-2 font-mono">99213</td>
-                    <td className="px-3 py-2 text-right">$110.00</td>
-                    <td className="px-3 py-2 text-right">$95.00</td>
-                    <td className="px-3 py-2 text-right">$0.00</td>
-                    <td className="px-3 py-2 text-right">$25.00</td>
-                    <td className="px-3 py-2 text-right text-green-600 font-semibold">$70.00</td>
-                    <td className="px-3 py-2"><span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Paid</span></td>
-                  </tr>
-                </tbody>
-                <tfoot className="bg-gray-50 font-semibold">
-                  <tr>
-                    <td colSpan={4} className="px-3 py-2 text-right">Page Totals (5 of 47 claims shown):</td>
-                    <td className="px-3 py-2 text-right">$718.00</td>
-                    <td className="px-3 py-2 text-right">$620.00</td>
-                    <td className="px-3 py-2 text-right">$25.00</td>
-                    <td className="px-3 py-2 text-right">$125.00</td>
-                    <td className="px-3 py-2 text-right text-green-600">$470.00</td>
-                    <td className="px-3 py-2"></td>
-                  </tr>
-                </tfoot>
-              </table>
+          {/* Payment Info */}
+          <div className="px-8 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-gray-400" />
+                <span className="text-gray-600">Payment Date:</span>
+                <span className="font-semibold text-gray-900">{eraData.paymentDate}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <span className="text-gray-600">Method:</span>
+                <span className="font-semibold text-gray-900">ACH Direct Deposit</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <DollarSign className="w-6 h-6 text-green-500" />
+              <span className="text-2xl font-bold text-green-600">{eraData.paymentAmount}</span>
             </div>
           </div>
 
-          {/* Adjustment Reason Codes */}
-          <div className="mb-8">
-            <h3 className="font-semibold text-gray-700 mb-3">Adjustment Reason Codes</h3>
-            <div className="bg-gray-50 rounded-lg p-4 text-sm">
-              <div className="grid md:grid-cols-2 gap-2">
-                <p><strong>CO-45:</strong> Charges exceed fee schedule/maximum allowable</p>
-                <p><strong>PR-1:</strong> Deductible Amount</p>
-                <p><strong>PR-2:</strong> Coinsurance Amount</p>
-                <p><strong>PR-3:</strong> Co-payment Amount</p>
-              </div>
-            </div>
+          {/* Claims Detail */}
+          <div className="px-8 py-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Claim Payment Details</h3>
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600">Claim ID</th>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600">Patient</th>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600">DOS</th>
+                  <th className="text-right py-3 text-sm font-semibold text-gray-600">Billed</th>
+                  <th className="text-right py-3 text-sm font-semibold text-gray-600">Allowed</th>
+                  <th className="text-right py-3 text-sm font-semibold text-gray-600">Paid</th>
+                  <th className="text-right py-3 text-sm font-semibold text-gray-600">Pt Resp</th>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600">Adjustments</th>
+                </tr>
+              </thead>
+              <tbody>
+                {eraData.claims.map((claim) => (
+                  <tr key={claim.claimId} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-3 font-mono text-purple-600 text-sm">{claim.claimId}</td>
+                    <td className="py-3 text-gray-900">{claim.patient}</td>
+                    <td className="py-3 text-gray-600 text-sm">{claim.dos}</td>
+                    <td className="py-3 text-right text-gray-900">${claim.billed.toFixed(2)}</td>
+                    <td className="py-3 text-right text-gray-900">${claim.allowed.toFixed(2)}</td>
+                    <td className="py-3 text-right text-green-600 font-semibold">${claim.paid.toFixed(2)}</td>
+                    <td className="py-3 text-right text-amber-600">${claim.patientResp.toFixed(2)}</td>
+                    <td className="py-3 text-gray-500 text-sm">{claim.adjustments}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr className="bg-gray-50 font-semibold">
+                  <td colSpan={3} className="py-3 text-gray-700">Totals ({eraData.claims.length} claims)</td>
+                  <td className="py-3 text-right text-gray-900">${totalBilled.toFixed(2)}</td>
+                  <td className="py-3 text-right text-gray-900">${totalAllowed.toFixed(2)}</td>
+                  <td className="py-3 text-right text-green-600">${totalPaid.toFixed(2)}</td>
+                  <td className="py-3 text-right text-amber-600">${totalPatientResp.toFixed(2)}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
 
-          {/* Payment Method */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-            <h3 className="font-semibold text-blue-800 mb-2">Payment Method</h3>
-            <div className="grid md:grid-cols-2 gap-4 text-sm">
-              <div>
-                <p><strong>Payment Method:</strong> ACH Electronic Funds Transfer</p>
-                <p><strong>Trace Number:</strong> 202403114521</p>
-              </div>
-              <div>
-                <p><strong>Account:</strong> ****4521</p>
-                <p><strong>Payment Date:</strong> March 11, 2026</p>
-              </div>
+          {/* Adjustment Code Reference */}
+          <div className="px-8 py-6 bg-gray-50 border-t border-gray-200">
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">Adjustment Code Reference</h3>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              {eraData.adjustmentCodes.map((code) => (
+                <div key={code.code} className="flex items-start gap-2">
+                  <span className="font-mono text-purple-600 font-medium">{code.code}:</span>
+                  <span className="text-gray-600">{code.description}</span>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Footer */}
-          <div className="border-t border-gray-200 pt-6 text-sm text-gray-500">
-            <p className="mb-2"><strong>Questions?</strong> Contact Provider Services at 1-800-555-0124 or email providerservices@clarityhealthnetwork.com</p>
-            <p>This Electronic Remittance Advice is generated in accordance with HIPAA 835 transaction standards.</p>
+          <div className="px-8 py-4 bg-gray-100 border-t border-gray-200 text-center">
+            <p className="text-xs text-gray-500">
+              This Electronic Remittance Advice complies with HIPAA ASC X12 835 standards. 
+              For questions, contact provider services at 1-800-CLARITY.
+            </p>
           </div>
         </div>
       </div>

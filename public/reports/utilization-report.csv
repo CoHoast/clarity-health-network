@@ -1,0 +1,11 @@
+Service Category,Jan Claims,Jan Amount,Feb Claims,Feb Amount,Mar Claims,Mar Amount,Trend
+Primary Care,1245,"$312,500",1320,"$330,000",1456,"$364,000",Increasing
+Specialist Visits,890,"$445,000",912,"$456,000",978,"$489,000",Stable
+Emergency Room,156,"$468,000",142,"$426,000",138,"$414,000",Decreasing
+Inpatient,89,"$890,000",95,"$950,000",102,"$1,020,000",Increasing
+Outpatient Surgery,234,"$702,000",245,"$735,000",267,"$801,000",Increasing
+Lab Services,2340,"$117,000",2456,"$122,800",2589,"$129,450",Increasing
+Imaging,567,"$340,200",589,"$353,400",612,"$367,200",Stable
+Pharmacy,3456,"$518,400",3567,"$535,050",3789,"$568,350",Increasing
+Mental Health,234,"$93,600",267,"$106,800",298,"$119,200",Increasing
+Physical Therapy,456,"$91,200",478,"$95,600",512,"$102,400",Stable

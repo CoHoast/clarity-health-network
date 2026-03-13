@@ -1,0 +1,16 @@
+Claim ID,Member Name,Provider,Service Date,Billed Amount,Allowed Amount,Paid Amount,Status
+CLM-2024-8821,John Smith,Cleveland Family Medicine,2024-03-01,$450.00,$380.00,$342.00,Paid
+CLM-2024-8834,Sarah Johnson,Metro Hospital,2024-03-02,$1250.00,$980.00,$882.00,Paid
+CLM-2024-8847,Michael Chen,Westlake Urgent Care,2024-03-03,$225.00,$200.00,$180.00,Paid
+CLM-2024-8852,Emily Rodriguez,Cleveland Orthopedic,2024-03-04,$3500.00,$2800.00,$2520.00,Paid
+CLM-2024-8867,David Williams,Metro Imaging Center,2024-03-05,$890.00,$750.00,$675.00,Paid
+CLM-2024-8873,Lisa Anderson,Cleveland Family Medicine,2024-03-06,$380.00,$320.00,$288.00,Paid
+CLM-2024-8889,Robert Martinez,Quest Diagnostics,2024-03-07,$156.00,$140.00,$126.00,Paid
+CLM-2024-8894,Jennifer Brown,Cleveland Clinic,2024-03-08,$2100.00,$1800.00,$1620.00,Pending
+CLM-2024-8901,William Taylor,Metro Hospital,2024-03-09,$4500.00,$3600.00,$3240.00,Processing
+CLM-2024-8912,Amanda Davis,Westlake Urgent Care,2024-03-10,$175.00,$160.00,$144.00,Paid
+CLM-2024-8923,Christopher Wilson,Cleveland Physical Therapy,2024-03-11,$280.00,$250.00,$225.00,Paid
+CLM-2024-8934,Michelle Garcia,Metro Imaging Center,2024-03-12,$1450.00,$1200.00,$1080.00,Paid
+CLM-2024-8945,James Miller,Cleveland Family Medicine,2024-03-13,$420.00,$380.00,$342.00,Pending
+CLM-2024-8956,Patricia Jones,University Hospitals,2024-03-14,$5200.00,$4200.00,$3780.00,Processing
+CLM-2024-8967,Thomas White,Cleveland Orthopedic,2024-03-15,$2800.00,$2400.00,$2160.00,Paid

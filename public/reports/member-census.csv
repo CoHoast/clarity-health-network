@@ -1,0 +1,16 @@
+Member ID,First Name,Last Name,DOB,Gender,Plan Type,Employer,Status,Enrolled Date,Premium
+MBR-001234,John,Smith,1985-03-15,Male,PPO Gold,Acme Corporation,Active,2023-01-01,$485.00
+MBR-001235,Sarah,Johnson,1990-07-22,Female,PPO Silver,TechStart Inc,Active,2023-02-15,$385.00
+MBR-001236,Michael,Chen,1978-11-08,Male,PPO Platinum,Global Industries,Active,2022-09-01,$625.00
+MBR-001237,Emily,Rodriguez,1995-04-30,Female,PPO Gold,Acme Corporation,Active,2023-03-01,$485.00
+MBR-001238,David,Williams,1982-09-14,Male,PPO Silver,MedTech Solutions,Active,2023-01-15,$385.00
+MBR-001239,Lisa,Anderson,1988-12-03,Female,PPO Gold,Cleveland Manufacturing,Active,2022-11-01,$485.00
+MBR-001240,Robert,Martinez,1975-06-18,Male,PPO Platinum,Tech Innovators,Active,2023-04-01,$625.00
+MBR-001241,Jennifer,Brown,1992-02-25,Female,PPO Silver,StartUp Health,Active,2023-05-15,$385.00
+MBR-001242,William,Taylor,1980-08-07,Male,PPO Gold,Midwest Corp,Active,2022-08-01,$485.00
+MBR-001243,Amanda,Davis,1987-05-19,Female,PPO Silver,Acme Corporation,Active,2023-06-01,$385.00
+MBR-001244,Christopher,Wilson,1993-10-12,Male,PPO Gold,TechStart Inc,Active,2023-07-15,$485.00
+MBR-001245,Michelle,Garcia,1984-01-28,Female,PPO Platinum,Global Industries,Active,2022-06-01,$625.00
+MBR-001246,James,Miller,1991-03-09,Male,PPO Silver,Cleveland Manufacturing,Active,2023-08-01,$385.00
+MBR-001247,Patricia,Jones,1979-11-22,Female,PPO Gold,MedTech Solutions,Active,2022-12-01,$485.00
+MBR-001248,Thomas,White,1986-07-04,Male,PPO Silver,StartUp Health,Active,2023-09-15,$385.00

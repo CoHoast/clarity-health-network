@@ -1,0 +1,11 @@
+Alert ID,Date,Provider,Alert Type,Risk Score,Amount,Status,Resolution
+FRD-001,2024-03-12,Unknown Provider #7732,Unbundling,High,15230,Under Review,Pending
+FRD-002,2024-03-11,Metro Lab Services,Duplicate Billing,Medium,2450,Cleared,False Positive
+FRD-003,2024-03-10,Cleveland Therapy Center,Upcoding,High,8900,Confirmed,Recovered
+FRD-004,2024-03-09,Dr. J. Wilson,Phantom Billing,Critical,45000,Referred,Law Enforcement
+FRD-005,2024-03-08,Quest Diagnostics,Pattern Anomaly,Low,890,Cleared,Explained
+FRD-006,2024-03-07,Midwest Physical Therapy,Excessive Services,Medium,3200,Under Review,Pending
+FRD-007,2024-03-06,Cleveland Family Med,Documentation Gap,Low,1100,Cleared,Corrected
+FRD-008,2024-03-05,Metro Hospital,High Frequency,Medium,12400,Under Review,Pending
+FRD-009,2024-03-04,Unknown Provider #8821,Identity Mismatch,Critical,28000,Confirmed,Blocked
+FRD-010,2024-03-03,Westlake Urgent Care,After Hours,Low,450,Cleared,Valid

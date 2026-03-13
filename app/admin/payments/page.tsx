@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Download, Eye, DollarSign, CheckCircle, Clock, Building2, Calendar, FileText, X, CreditCard, Send, Printer } from "lucide-react";
+import Link from "next/link";
+import { Search, Download, Eye, DollarSign, CheckCircle, Clock, Building2, Calendar, FileText, X, CreditCard, Send, Printer, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const payments = [
@@ -11,6 +12,10 @@ const payments = [
   { id: "PMT-2024-4518", provider: "Cleveland Orthopedic", npi: "4567890123", amount: 28750.00, claims: 18, method: "Check", status: "completed", date: "2024-02-18", accountLast4: "N/A" },
   { id: "PMT-2024-4517", provider: "Westlake Urgent Care", npi: "6789012345", amount: 9875.00, claims: 89, method: "ACH", status: "pending", date: "2024-03-15", accountLast4: "9012" },
   { id: "PMT-2024-4516", provider: "Quest Diagnostics", npi: "7890123456", amount: 4520.00, claims: 156, method: "ACH", status: "processing", date: "2024-03-14", accountLast4: "3456" },
+  { id: "PMT-2024-4515", provider: "Cleveland Cardiology", npi: "9012345678", amount: 18900.00, claims: 34, method: "ACH", status: "completed", date: "2024-03-10", accountLast4: "7890" },
+  { id: "PMT-2024-4514", provider: "Women's Health Center", npi: "0123456789", amount: 7650.00, claims: 28, method: "ACH", status: "completed", date: "2024-03-08", accountLast4: "2345" },
+  { id: "PMT-2024-4513", provider: "Physical Therapy Plus", npi: "1122334455", amount: 5340.00, claims: 45, method: "ACH", status: "completed", date: "2024-03-06", accountLast4: "6789" },
+  { id: "PMT-2024-4512", provider: "Dr. Amy Foster, MD", npi: "7890123456", amount: 3120.00, claims: 22, method: "ACH", status: "completed", date: "2024-03-03", accountLast4: "1234" },
 ];
 
 const pendingClaims = [
@@ -119,7 +124,14 @@ export default function PaymentsPage() {
             <tbody className="divide-y divide-slate-700">
               {filteredPayments.map((payment) => (
                 <tr key={payment.id} className="hover:bg-slate-700/50 transition-colors">
-                  <td className="px-4 py-3"><span className="font-mono text-sm text-purple-400">{payment.id}</span></td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => setSelectedPayment(payment)}
+                      className="font-mono text-sm text-purple-400 hover:text-purple-300 hover:underline"
+                    >
+                      {payment.id}
+                    </button>
+                  </td>
                   <td className="px-4 py-3">
                     <div>
                       <p className="font-medium text-white">{payment.provider}</p>
@@ -156,7 +168,7 @@ export default function PaymentsPage() {
                 </div>
                 <button onClick={() => setSelectedPayment(null)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
               </div>
-              <div className="p-4 space-y-4">
+              <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(90vh-180px)]">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="bg-slate-700/50 rounded-lg p-4">
                     <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-blue-400" />Provider</h3>
@@ -199,7 +211,14 @@ export default function PaymentsPage() {
               </div>
               <div className="flex items-center justify-between p-4 border-t border-slate-700 bg-slate-800">
                 <div className="flex gap-2">
-                  <a href="/docs/era-sample" target="_blank" className="inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm"><FileText className="w-4 h-4" />View ERA</a>
+                  <Link 
+                    href="/docs/era" 
+                    target="_blank"
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm"
+                  >
+                    <FileText className="w-4 h-4" />View ERA
+                    <ExternalLink className="w-3 h-3" />
+                  </Link>
                   <button className="inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm"><Printer className="w-4 h-4" />Print</button>
                 </div>
                 <button onClick={() => setSelectedPayment(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Close</button>

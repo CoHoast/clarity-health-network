@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, Download, Eye, Edit, CheckCircle, Clock, AlertTriangle, X, FileText, Calendar, Building2, DollarSign, Printer } from "lucide-react";
+import Link from "next/link";
+import { Plus, Search, Download, Eye, Edit, CheckCircle, Clock, AlertTriangle, X, FileText, Calendar, Building2, DollarSign, Printer, ExternalLink } from "lucide-react";
 
 const contracts = [
   { id: "CTR-001", provider: "Cleveland Family Medicine", npi: "1234567890", type: "Primary Care", feeSchedule: "120% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true, totalClaims: 2847, ytdPaid: "$342,500" },
@@ -11,6 +12,8 @@ const contracts = [
   { id: "CTR-004", provider: "Dr. Sarah Chen, MD", npi: "2345678901", type: "Primary Care", feeSchedule: "115% Medicare", effective: "2023-03-01", expires: "2025-02-28", status: "expiring", autoRenew: true, totalClaims: 1567, ytdPaid: "$234,100" },
   { id: "CTR-005", provider: "Westlake Urgent Care", npi: "6789012345", type: "Urgent Care", feeSchedule: "110% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true, totalClaims: 3421, ytdPaid: "$412,300" },
   { id: "CTR-006", provider: "Pending Provider LLC", npi: "9876543210", type: "Specialty", feeSchedule: "TBD", effective: "Pending", expires: "Pending", status: "pending", autoRenew: false, totalClaims: 0, ytdPaid: "$0" },
+  { id: "CTR-007", provider: "Cleveland Cardiology", npi: "9012345678", type: "Specialty", feeSchedule: "130% Medicare", effective: "2023-01-01", expires: "2025-12-31", status: "active", autoRenew: true, totalClaims: 1892, ytdPaid: "$678,400" },
+  { id: "CTR-008", provider: "Quest Diagnostics Cleveland", npi: "8901234567", type: "Laboratory", feeSchedule: "65% Medicare", effective: "2022-01-01", expires: "2027-12-31", status: "active", autoRenew: true, totalClaims: 8934, ytdPaid: "$234,500" },
 ];
 
 export default function ContractsPage() {
@@ -137,7 +140,14 @@ export default function ContractsPage() {
           <tbody className="divide-y divide-slate-700">
             {filteredContracts.map((contract) => (
               <tr key={contract.id} className="hover:bg-slate-800/80 transition-colors">
-                <td className="px-4 py-3 font-mono text-purple-400">{contract.id}</td>
+                <td className="px-4 py-3">
+                  <button
+                    onClick={() => setSelectedContract(contract)}
+                    className="font-mono text-purple-400 hover:text-purple-300 hover:underline"
+                  >
+                    {contract.id}
+                  </button>
+                </td>
                 <td className="px-4 py-3">
                   <div>
                     <p className="text-white font-medium">{contract.provider}</p>
@@ -153,6 +163,7 @@ export default function ContractsPage() {
                     <button
                       onClick={() => setSelectedContract(contract)}
                       className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded"
+                      title="View Details"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
@@ -263,9 +274,14 @@ export default function ContractsPage() {
                   <Printer className="w-4 h-4" />Print
                 </button>
                 <div className="flex gap-2">
-                  <a href="/docs/contract" target="_blank" className="inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">
-                    <Download className="w-4 h-4" />Download PDF
-                  </a>
+                  <Link 
+                    href="/docs/contract" 
+                    target="_blank"
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm"
+                  >
+                    <FileText className="w-4 h-4" />View Document
+                    <ExternalLink className="w-3 h-3" />
+                  </Link>
                   <button onClick={() => setSelectedContract(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
                     Close
                   </button>

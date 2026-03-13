@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Download, Eye, UserPlus, MoreVertical, CheckCircle, Clock, XCircle, User, Mail, Phone, MapPin, Calendar, FileText, CreditCard, X, Shield } from "lucide-react";
+import Link from "next/link";
+import { Search, Download, Eye, UserPlus, CheckCircle, Clock, XCircle, User, Mail, Phone, MapPin, Calendar, FileText, CreditCard, X, Shield, Send, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const members = [
@@ -13,6 +14,18 @@ const members = [
   { id: "CHN-678901", name: "Lisa Martinez", email: "l.martinez@email.com", phone: "(555) 678-9012", dob: "1988-04-05", address: "987 Maple Dr, Mentor, OH 44060", plan: "Silver PPO", group: "Retail Group", status: "active", enrolled: "2023-09-15", deductible: { used: 1800, max: 2500 }, oopMax: { used: 3200, max: 8000 }, pcp: "Dr. Michael Brown", claims: 15 },
   { id: "CHN-789012", name: "David Kim", email: "d.kim@email.com", phone: "(555) 789-0123", dob: "1982-12-18", address: "147 Birch Ave, Solon, OH 44139", plan: "Gold PPO", group: "Acme Corp", status: "termed", enrolled: "2022-08-12", deductible: { used: 0, max: 1500 }, oopMax: { used: 0, max: 6000 }, pcp: "N/A", claims: 3 },
   { id: "CHN-890123", name: "Jennifer Lee", email: "j.lee@email.com", phone: "(555) 890-1234", dob: "1992-06-30", address: "258 Walnut St, Hudson, OH 44236", plan: "Silver PPO", group: "Tech Solutions", status: "pending", enrolled: "2024-03-10", deductible: { used: 0, max: 2500 }, oopMax: { used: 0, max: 8000 }, pcp: "Pending Assignment", claims: 0 },
+  { id: "CHN-901234", name: "James Thompson", email: "j.thompson@email.com", phone: "(555) 901-2345", dob: "1975-05-20", address: "369 Spruce Way, Parma, OH 44129", plan: "Gold PPO", group: "City of Cleveland", status: "active", enrolled: "2020-01-01", deductible: { used: 1500, max: 1500 }, oopMax: { used: 5200, max: 6000 }, pcp: "Dr. Sarah Chen", claims: 52 },
+  { id: "CHN-012345", name: "Patricia Brown", email: "p.brown@email.com", phone: "(555) 012-3456", dob: "1983-08-14", address: "741 Oak Lane, Euclid, OH 44123", plan: "Platinum PPO", group: "Healthcare Plus", status: "active", enrolled: "2023-04-01", deductible: { used: 350, max: 500 }, oopMax: { used: 950, max: 3000 }, pcp: "Dr. Amy Foster", claims: 7 },
+  { id: "CHN-112233", name: "Amanda Wilson", email: "a.wilson@email.com", phone: "(555) 112-2334", dob: "1991-02-28", address: "852 Pine Street, Brooklyn, OH 44144", plan: "Silver PPO", group: "Acme Corp", status: "active", enrolled: "2023-07-15", deductible: { used: 1200, max: 2500 }, oopMax: { used: 2400, max: 8000 }, pcp: "Dr. James Wilson", claims: 9 },
+  { id: "CHN-223344", name: "Christopher Davis", email: "c.davis@email.com", phone: "(555) 223-3445", dob: "1987-11-05", address: "963 Elm Court, Strongsville, OH 44136", plan: "Gold PPO", group: "Tech Solutions", status: "active", enrolled: "2022-11-01", deductible: { used: 800, max: 1500 }, oopMax: { used: 1800, max: 6000 }, pcp: "Dr. Robert Kim", claims: 14 },
+  { id: "CHN-334455", name: "Nancy Garcia", email: "n.garcia@email.com", phone: "(555) 334-4556", dob: "1979-04-18", address: "147 Maple Ave, Independence, OH 44131", plan: "Gold PPO", group: "Manufacturing Co", status: "active", enrolled: "2021-09-15", deductible: { used: 1500, max: 1500 }, oopMax: { used: 4100, max: 6000 }, pcp: "Dr. Lisa Martinez", claims: 31 },
+  { id: "CHN-445566", name: "Kevin Anderson", email: "k.anderson@email.com", phone: "(555) 445-5667", dob: "1994-07-22", address: "258 Cedar Blvd, Mayfield, OH 44143", plan: "Silver PPO", group: "Retail Group", status: "active", enrolled: "2024-01-01", deductible: { used: 400, max: 2500 }, oopMax: { used: 600, max: 8000 }, pcp: "Dr. Michael Brown", claims: 3 },
+  { id: "CHN-556677", name: "Rachel Taylor", email: "r.taylor@email.com", phone: "(555) 556-6778", dob: "1986-09-30", address: "369 Birch Road, Twinsburg, OH 44087", plan: "Platinum PPO", group: "Healthcare Plus", status: "active", enrolled: "2022-06-01", deductible: { used: 500, max: 500 }, oopMax: { used: 1500, max: 3000 }, pcp: "Dr. Sarah Chen", claims: 12 },
+  { id: "CHN-667788", name: "Thomas Moore", email: "t.moore@email.com", phone: "(555) 667-7889", dob: "1972-12-08", address: "741 Walnut Drive, Aurora, OH 44202", plan: "Gold PPO", group: "City of Cleveland", status: "cobra", enrolled: "2019-03-01", deductible: { used: 1100, max: 1500 }, oopMax: { used: 3500, max: 6000 }, pcp: "Dr. Amy Foster", claims: 38 },
+  { id: "CHN-778899", name: "Sandra White", email: "s.white@email.com", phone: "(555) 778-8990", dob: "1989-01-15", address: "852 Spruce Lane, Broadview Heights, OH 44147", plan: "Silver PPO", group: "Acme Corp", status: "active", enrolled: "2023-10-01", deductible: { used: 950, max: 2500 }, oopMax: { used: 1700, max: 8000 }, pcp: "Dr. James Wilson", claims: 6 },
+  { id: "CHN-889900", name: "Daniel Harris", email: "d.harris@email.com", phone: "(555) 889-9001", dob: "1981-06-25", address: "963 Oak Circle, North Royalton, OH 44133", plan: "Gold PPO", group: "Tech Solutions", status: "termed", enrolled: "2021-02-15", deductible: { used: 0, max: 1500 }, oopMax: { used: 0, max: 6000 }, pcp: "N/A", claims: 22 },
+  { id: "CHN-990011", name: "Michelle Clark", email: "m.clark@email.com", phone: "(555) 990-0112", dob: "1993-10-12", address: "147 Pine Way, Brecksville, OH 44141", plan: "Platinum PPO", group: "Healthcare Plus", status: "active", enrolled: "2024-02-01", deductible: { used: 150, max: 500 }, oopMax: { used: 300, max: 3000 }, pcp: "Dr. Robert Kim", claims: 2 },
+  { id: "CHN-001122", name: "Brian Lewis", email: "b.lewis@email.com", phone: "(555) 001-1223", dob: "1977-03-08", address: "258 Elm Street, Seven Hills, OH 44131", plan: "Gold PPO", group: "Manufacturing Co", status: "active", enrolled: "2020-08-01", deductible: { used: 1500, max: 1500 }, oopMax: { used: 5800, max: 6000 }, pcp: "Dr. Lisa Martinez", claims: 67 },
 ];
 
 const statusOptions = ["All", "Active", "COBRA", "Termed", "Pending"];
@@ -22,6 +35,11 @@ export default function MembersPage() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedMember, setSelectedMember] = useState<typeof members[0] | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showMessageModal, setShowMessageModal] = useState(false);
+  const [messageMember, setMessageMember] = useState<typeof members[0] | null>(null);
+  const [messageSubject, setMessageSubject] = useState("");
+  const [messageBody, setMessageBody] = useState("");
+  const [messageSent, setMessageSent] = useState(false);
 
   const filteredMembers = members.filter((member) => {
     const matchesSearch = member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -39,6 +57,22 @@ export default function MembersPage() {
       case "cobra": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full">COBRA</span>;
       default: return null;
     }
+  };
+
+  const openMessageModal = (member: typeof members[0]) => {
+    setMessageMember(member);
+    setMessageSubject("");
+    setMessageBody("");
+    setMessageSent(false);
+    setShowMessageModal(true);
+  };
+
+  const handleSendMessage = () => {
+    setMessageSent(true);
+    setTimeout(() => {
+      setShowMessageModal(false);
+      setMessageSent(false);
+    }, 2000);
   };
 
   return (
@@ -224,14 +258,38 @@ export default function MembersPage() {
                         <p className="text-3xl font-bold text-white">{selectedMember.claims}</p>
                         <p className="text-sm text-slate-400">Total Claims YTD</p>
                       </div>
-                      <button className="w-full text-center text-purple-400 hover:text-purple-300 text-sm font-medium py-2">View All Claims →</button>
+                      <Link 
+                        href={`/admin/claims?member=${selectedMember.id}`}
+                        className="w-full text-center text-purple-400 hover:text-purple-300 text-sm font-medium py-2 block"
+                      >
+                        View All Claims →
+                      </Link>
                     </div>
                     <div className="bg-slate-700/50 rounded-lg p-4">
                       <h3 className="font-medium text-white mb-3">Quick Actions</h3>
                       <div className="space-y-2">
-                        <a href="/docs/id-card-sample.pdf" download className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"><CreditCard className="w-4 h-4" />Download ID Card</a>
-                        <a href="/docs/eob-sample.pdf" download className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"><FileText className="w-4 h-4" />View EOBs</a>
-                        <button className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"><Mail className="w-4 h-4" />Send Message</button>
+                        <Link 
+                          href="/docs/id-card" 
+                          target="_blank"
+                          className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"
+                        >
+                          <CreditCard className="w-4 h-4" />View ID Card
+                          <ExternalLink className="w-3 h-3 ml-auto" />
+                        </Link>
+                        <Link 
+                          href="/docs/eob" 
+                          target="_blank"
+                          className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"
+                        >
+                          <FileText className="w-4 h-4" />View EOB
+                          <ExternalLink className="w-3 h-3 ml-auto" />
+                        </Link>
+                        <button 
+                          onClick={() => { setSelectedMember(null); openMessageModal(selectedMember); }}
+                          className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"
+                        >
+                          <Mail className="w-4 h-4" />Send Message
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -241,6 +299,78 @@ export default function MembersPage() {
                 <button className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">Edit Member</button>
                 <button onClick={() => setSelectedMember(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Close</button>
               </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Send Message Modal */}
+      <AnimatePresence>
+        {showMessageModal && messageMember && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => !messageSent && setShowMessageModal(false)} className="fixed inset-0 bg-black/60 z-50" />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
+              {messageSent ? (
+                <div className="p-8 text-center">
+                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-green-400" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
+                  <p className="text-slate-400">Your message has been sent to {messageMember.name}.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between p-4 border-b border-slate-700">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                        <Mail className="w-5 h-5 text-blue-400" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white">Send Message</h3>
+                        <p className="text-sm text-slate-400">to {messageMember.name}</p>
+                      </div>
+                    </div>
+                    <button onClick={() => setShowMessageModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
+                  </div>
+                  <div className="p-4 space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1">To</label>
+                      <input 
+                        type="text" 
+                        value={messageMember.email}
+                        readOnly
+                        className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-400 cursor-not-allowed" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1">Subject</label>
+                      <input 
+                        type="text" 
+                        value={messageSubject}
+                        onChange={(e) => setMessageSubject(e.target.value)}
+                        placeholder="Enter subject..."
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1">Message</label>
+                      <textarea 
+                        value={messageBody}
+                        onChange={(e) => setMessageBody(e.target.value)}
+                        placeholder="Type your message..."
+                        rows={6}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 resize-none" 
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-2 p-4 border-t border-slate-700">
+                    <button onClick={() => setShowMessageModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
+                    <button onClick={handleSendMessage} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 inline-flex items-center justify-center gap-2">
+                      <Send className="w-4 h-4" />Send Message
+                    </button>
+                  </div>
+                </>
+              )}
             </motion.div>
           </>
         )}

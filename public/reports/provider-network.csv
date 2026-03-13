@@ -1,0 +1,11 @@
+NPI,Provider Name,Specialty,Address,City,State,Zip,Phone,Network Status,Contract End
+1234567890,Cleveland Family Medicine,Family Medicine,1234 Main St,Cleveland,OH,44101,216-555-0100,Active,2025-12-31
+2345678901,Dr. Sarah Chen MD,Internal Medicine,456 Oak Ave,Lakewood,OH,44107,216-555-0200,Active,2025-06-30
+3456789012,Metro Imaging Center,Radiology,789 Pine Blvd,Beachwood,OH,44122,216-555-0300,Active,2025-09-30
+4567890123,Cleveland Orthopedic,Orthopedics,321 Maple Dr,Westlake,OH,44145,440-555-0400,Active,2025-03-31
+5678901234,Midwest Cardiology,Cardiology,654 Cedar Ln,Parma,OH,44134,216-555-0500,Active,2025-12-31
+6789012345,Westlake Urgent Care,Urgent Care,987 Birch St,Westlake,OH,44145,440-555-0600,Active,2026-01-31
+7890123456,Quest Diagnostics,Laboratory,111 Lab Way,Independence,OH,44131,216-555-0700,Active,2025-11-30
+8901234567,Cleveland Clinic,Multi-Specialty,9500 Euclid Ave,Cleveland,OH,44195,216-555-0800,Active,2026-06-30
+9012345678,University Hospitals,Multi-Specialty,11100 Euclid Ave,Cleveland,OH,44106,216-555-0900,Active,2026-03-31
+1234509876,Metro Hospital,Hospital,2500 Metro Dr,Cleveland,OH,44109,216-555-1000,Active,2025-08-31
