@@ -217,6 +217,28 @@ npm run dev
 - [x] Seed data with realistic demo records
 - [x] API hooks in `lib/hooks/` for UI wiring
 
+## Recent Updates (Mar 13, 2026)
+
+### Self-Service Repricing Configuration
+Full UI at `/admin/fee-schedules` with 5 tabs:
+- **Fee Schedules**: Add/edit/delete, rate types (% Medicare, % Billed, Fee Schedule, Per Diem, Case Rate)
+- **CPT Codes**: Full CRUD, 20+ codes, search, categories, Import CSV
+- **Provider Contracts**: 10 contracts, rate type/value per provider, NPI, dates
+- **Modifier Rules**: 12 standard modifiers + custom rules
+- **Test Repricing**: Interactive calculator with step-by-step breakdown
+
+### Engines Built
+Located in `lib/engines/`:
+- `repricing.ts` - 50+ CPT codes, 13 provider contracts, modifier logic
+- `fraud.ts` - 20+ rules, composite scoring
+- `validation.ts` - 5-level pipeline, auto-adjudication
+- `eligibility.ts` - Member eligibility checks
+
+### Network Map
+- Leaflet with 30 NE Ohio provider locations
+- Color-coded markers by type
+- Dynamic import for SSR safety
+
 ## Future Enhancements
 
 - [ ] Wire remaining UI screens to use API hooks
