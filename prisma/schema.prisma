@@ -1,0 +1,588 @@
+// Clarity Health Network — Consolidated Database Schema
+// Combines all DOKit healthcare modules for E2E demo
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =====================================================
+// ADMIN USERS
+// =====================================================
+
+model AdminUser {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  name          String
+  role          String    @default("admin") // super_admin, claims_admin, provider_admin
+  status        String    @default("active")
+  lastLogin     DateTime? @map("last_login")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  
+  auditLogs     AuditLog[]
+  
+  @@map("admin_users")
+}
+
+// =====================================================
+// EMPLOYER GROUPS
+// =====================================================
+
+model EmployerGroup {
+  id             String    @id @default(uuid())
+  name           String
+  groupNumber    String    @unique @map("group_number")
+  status         String    @default("active")
+  planType       String    @map("plan_type") // gold_ppo, silver_ppo, platinum_ppo
+  effectiveDate  DateTime  @map("effective_date")
+  terminationDate DateTime? @map("termination_date")
+  
+  address        String?
+  city           String?
+  state          String?
+  zip            String?
+  phone          String?
+  
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  
+  users          EmployerUser[]
+  members        Member[]
+  invoices       Invoice[]
+  
+  @@map("employer_groups")
+}
+
+model EmployerUser {
+  id            String    @id @default(uuid())
+  employerId    String    @map("employer_id")
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  name          String
+  role          String    @default("hr_admin") // hr_admin, benefits_manager, viewer
+  status        String    @default("active")
+  lastLogin     DateTime? @map("last_login")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  
+  employer      EmployerGroup @relation(fields: [employerId], references: [id])
+  
+  @@map("employer_users")
+}
+
+// =====================================================
+// MEMBERS
+// =====================================================
+
+model Member {
+  id              String    @id @default(uuid())
+  employerId      String?   @map("employer_id")
+  memberNumber    String    @unique @map("member_number")
+  
+  firstName       String    @map("first_name")
+  lastName        String    @map("last_name")
+  email           String    @unique
+  passwordHash    String    @map("password_hash")
+  
+  dateOfBirth     DateTime  @map("date_of_birth")
+  gender          String?
+  ssn             String?   // encrypted
+  
+  address         String?
+  city            String?
+  state           String?
+  zip             String?
+  phone           String?
+  
+  planType        String    @map("plan_type")
+  subscriberId    String?   @map("subscriber_id") // for dependents
+  relationship    String    @default("subscriber") // subscriber, spouse, child
+  
+  pcpId           String?   @map("pcp_id")
+  
+  status          String    @default("active")
+  effectiveDate   DateTime  @map("effective_date")
+  terminationDate DateTime? @map("termination_date")
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  employer        EmployerGroup? @relation(fields: [employerId], references: [id])
+  claims          Claim[]
+  eligibilityChecks EligibilityCheck[]
+  messages        Message[]
+  documents       Document[]
+  
+  @@map("members")
+}
+
+// =====================================================
+// PROVIDERS
+// =====================================================
+
+model Provider {
+  id              String    @id @default(uuid())
+  npi             String    @unique
+  taxId           String?   @map("tax_id")
+  
+  name            String
+  email           String    @unique
+  passwordHash    String    @map("password_hash")
+  
+  type            String    @default("individual") // individual, group
+  specialty       String?
+  
+  address         String?
+  city            String?
+  state           String?
+  zip             String?
+  phone           String?
+  fax             String?
+  
+  acceptingPatients Boolean @default(true) @map("accepting_patients")
+  
+  status          String    @default("active") // active, inactive, pending, terminated
+  contractStatus  String    @default("non_contracted") @map("contract_status") // contracted, non_contracted, pending
+  
+  credentialStatus String?  @map("credential_status")
+  credentialExpiry DateTime? @map("credential_expiry")
+  
+  lastLogin       DateTime? @map("last_login")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  locations       ProviderLocation[]
+  contracts       Contract[]
+  claims          Claim[]
+  payments        PaymentBatch[]
+  credentialingApp CredentialingApplication?
+  
+  @@map("providers")
+}
+
+model ProviderLocation {
+  id              String    @id @default(uuid())
+  providerId      String    @map("provider_id")
+  
+  name            String
+  address         String
+  city            String
+  state           String
+  zip             String
+  phone           String?
+  fax             String?
+  
+  isPrimary       Boolean   @default(false) @map("is_primary")
+  acceptingPatients Boolean @default(true) @map("accepting_patients")
+  
+  hours           Json?     // { monday: { open: "09:00", close: "17:00" }, ... }
+  services        String[]
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  provider        Provider  @relation(fields: [providerId], references: [id])
+  
+  @@map("provider_locations")
+}
+
+// =====================================================
+// CONTRACTS & FEE SCHEDULES
+// =====================================================
+
+model Contract {
+  id              String    @id @default(uuid())
+  providerId      String    @map("provider_id")
+  contractNumber  String    @unique @map("contract_number")
+  
+  type            String    // percent_of_medicare, fee_schedule, case_rate, per_diem
+  terms           Json      // { percent: 150 } or { schedule_id: "xxx" }
+  
+  effectiveDate   DateTime  @map("effective_date")
+  terminationDate DateTime? @map("termination_date")
+  
+  status          String    @default("active") // draft, pending, active, terminated, expired
+  
+  autoRenew       Boolean   @default(true) @map("auto_renew")
+  renewalTerms    Int       @default(12) @map("renewal_terms") // months
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  provider        Provider  @relation(fields: [providerId], references: [id])
+  
+  @@map("contracts")
+}
+
+model FeeSchedule {
+  id              String    @id @default(uuid())
+  name            String
+  type            String    // standard, specialty, geographic
+  effectiveDate   DateTime  @map("effective_date")
+  status          String    @default("active")
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  rates           FeeScheduleRate[]
+  
+  @@map("fee_schedules")
+}
+
+model FeeScheduleRate {
+  id              String    @id @default(uuid())
+  feeScheduleId   String    @map("fee_schedule_id")
+  
+  procedureCode   String    @map("procedure_code")
+  modifier        String?
+  
+  allowedAmount   Decimal   @map("allowed_amount") @db.Decimal(10, 2)
+  
+  effectiveDate   DateTime  @map("effective_date")
+  terminationDate DateTime? @map("termination_date")
+  
+  feeSchedule     FeeSchedule @relation(fields: [feeScheduleId], references: [id])
+  
+  @@unique([feeScheduleId, procedureCode, modifier, effectiveDate])
+  @@map("fee_schedule_rates")
+}
+
+// =====================================================
+// CLAIMS
+// =====================================================
+
+model Claim {
+  id              String    @id @default(uuid())
+  claimNumber     String    @unique @map("claim_number")
+  
+  memberId        String    @map("member_id")
+  providerId      String    @map("provider_id")
+  
+  serviceDate     DateTime  @map("service_date")
+  receivedDate    DateTime  @default(now()) @map("received_date")
+  
+  claimType       String    @default("professional") @map("claim_type") // professional, institutional
+  placeOfService  String?   @map("place_of_service")
+  
+  diagnosisCodes  String[]  @map("diagnosis_codes")
+  
+  billedAmount    Decimal   @map("billed_amount") @db.Decimal(10, 2)
+  allowedAmount   Decimal?  @map("allowed_amount") @db.Decimal(10, 2)
+  paidAmount      Decimal?  @map("paid_amount") @db.Decimal(10, 2)
+  memberResponsibility Decimal? @map("member_responsibility") @db.Decimal(10, 2)
+  
+  status          String    @default("received") // received, processing, pending_review, approved, denied, paid
+  denialReason    String?   @map("denial_reason")
+  
+  adjudicatedAt   DateTime? @map("adjudicated_at")
+  paidAt          DateTime? @map("paid_at")
+  
+  paymentBatchId  String?   @map("payment_batch_id")
+  
+  fraudScore      Int?      @map("fraud_score")
+  fraudFlags      String[]  @map("fraud_flags")
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  member          Member    @relation(fields: [memberId], references: [id])
+  provider        Provider  @relation(fields: [providerId], references: [id])
+  serviceLines    ClaimServiceLine[]
+  
+  @@map("claims")
+}
+
+model ClaimServiceLine {
+  id              String    @id @default(uuid())
+  claimId         String    @map("claim_id")
+  lineNumber      Int       @map("line_number")
+  
+  procedureCode   String    @map("procedure_code")
+  modifiers       String[]
+  
+  units           Int       @default(1)
+  
+  billedAmount    Decimal   @map("billed_amount") @db.Decimal(10, 2)
+  allowedAmount   Decimal?  @map("allowed_amount") @db.Decimal(10, 2)
+  paidAmount      Decimal?  @map("paid_amount") @db.Decimal(10, 2)
+  
+  status          String    @default("pending") // pending, approved, denied
+  denialReason    String?   @map("denial_reason")
+  
+  claim           Claim     @relation(fields: [claimId], references: [id])
+  
+  @@map("claim_service_lines")
+}
+
+// =====================================================
+// PAYMENTS
+// =====================================================
+
+model PaymentBatch {
+  id              String    @id @default(uuid())
+  batchNumber     String    @unique @map("batch_number")
+  
+  providerId      String    @map("provider_id")
+  
+  totalAmount     Decimal   @map("total_amount") @db.Decimal(10, 2)
+  claimCount      Int       @map("claim_count")
+  
+  paymentDate     DateTime  @map("payment_date")
+  paymentMethod   String    @default("ach") @map("payment_method") // ach, check, wire
+  
+  status          String    @default("pending") // pending, processing, deposited, returned
+  
+  checkNumber     String?   @map("check_number")
+  achTraceNumber  String?   @map("ach_trace_number")
+  
+  eraGenerated    Boolean   @default(false) @map("era_generated")
+  eraUrl          String?   @map("era_url")
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  provider        Provider  @relation(fields: [providerId], references: [id])
+  
+  @@map("payment_batches")
+}
+
+model Invoice {
+  id              String    @id @default(uuid())
+  invoiceNumber   String    @unique @map("invoice_number")
+  
+  employerId      String    @map("employer_id")
+  
+  periodStart     DateTime  @map("period_start")
+  periodEnd       DateTime  @map("period_end")
+  
+  premiumAmount   Decimal   @map("premium_amount") @db.Decimal(10, 2)
+  adminFees       Decimal?  @map("admin_fees") @db.Decimal(10, 2)
+  totalAmount     Decimal   @map("total_amount") @db.Decimal(10, 2)
+  
+  dueDate         DateTime  @map("due_date")
+  paidDate        DateTime? @map("paid_date")
+  
+  status          String    @default("pending") // pending, paid, overdue, cancelled
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  employer        EmployerGroup @relation(fields: [employerId], references: [id])
+  
+  @@map("invoices")
+}
+
+// =====================================================
+// ELIGIBILITY
+// =====================================================
+
+model EligibilityCheck {
+  id              String    @id @default(uuid())
+  
+  memberId        String?   @map("member_id")
+  memberNumber    String?   @map("member_number")
+  
+  requestedBy     String    @map("requested_by") // provider_id or user_id
+  requestType     String    @map("request_type") // real_time, batch
+  
+  serviceDate     DateTime  @map("service_date")
+  
+  status          String    // eligible, ineligible, error
+  response        Json      // full 271 response
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  
+  member          Member?   @relation(fields: [memberId], references: [id])
+  
+  @@map("eligibility_checks")
+}
+
+// =====================================================
+// CREDENTIALING
+// =====================================================
+
+model CredentialingApplication {
+  id              String    @id @default(uuid())
+  providerId      String    @unique @map("provider_id")
+  
+  status          String    @default("submitted") // submitted, in_review, pending_info, approved, denied
+  submittedAt     DateTime  @default(now()) @map("submitted_at")
+  reviewedAt      DateTime? @map("reviewed_at")
+  approvedAt      DateTime? @map("approved_at")
+  
+  licenseNumber   String?   @map("license_number")
+  licenseState    String?   @map("license_state")
+  licenseExpiry   DateTime? @map("license_expiry")
+  
+  deaNumber       String?   @map("dea_number")
+  deaExpiry       DateTime? @map("dea_expiry")
+  
+  malpracticeCarrier String? @map("malpractice_carrier")
+  malpracticeExpiry DateTime? @map("malpractice_expiry")
+  
+  boardCertifications Json? @map("board_certifications")
+  
+  notes           String?
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  provider        Provider  @relation(fields: [providerId], references: [id])
+  documents       CredentialingDocument[]
+  
+  @@map("credentialing_applications")
+}
+
+model CredentialingDocument {
+  id              String    @id @default(uuid())
+  applicationId   String    @map("application_id")
+  
+  type            String    // license, dea, malpractice, diploma, board_cert
+  fileName        String    @map("file_name")
+  fileUrl         String    @map("file_url")
+  
+  uploadedAt      DateTime  @default(now()) @map("uploaded_at")
+  verifiedAt      DateTime? @map("verified_at")
+  
+  application     CredentialingApplication @relation(fields: [applicationId], references: [id])
+  
+  @@map("credentialing_documents")
+}
+
+// =====================================================
+// COMMUNICATIONS
+// =====================================================
+
+model Message {
+  id              String    @id @default(uuid())
+  memberId        String    @map("member_id")
+  
+  subject         String
+  body            String
+  
+  direction       String    // inbound, outbound
+  channel         String    @default("portal") // portal, email, sms
+  
+  status          String    @default("unread") // unread, read, replied, archived
+  
+  sentAt          DateTime  @default(now()) @map("sent_at")
+  readAt          DateTime? @map("read_at")
+  
+  parentId        String?   @map("parent_id")
+  
+  member          Member    @relation(fields: [memberId], references: [id])
+  
+  @@map("messages")
+}
+
+model Document {
+  id              String    @id @default(uuid())
+  memberId        String    @map("member_id")
+  
+  type            String    // eob, id_card, welcome_letter, notice
+  title           String
+  
+  fileUrl         String    @map("file_url")
+  fileName        String    @map("file_name")
+  
+  generatedAt     DateTime  @default(now()) @map("generated_at")
+  viewedAt        DateTime? @map("viewed_at")
+  
+  member          Member    @relation(fields: [memberId], references: [id])
+  
+  @@map("documents")
+}
+
+// =====================================================
+// FRAUD DETECTION
+// =====================================================
+
+model FraudAlert {
+  id              String    @id @default(uuid())
+  
+  entityType      String    @map("entity_type") // claim, provider, member
+  entityId        String    @map("entity_id")
+  
+  alertType       String    @map("alert_type") // duplicate, upcoding, unbundling, suspicious_pattern
+  severity        String    @default("medium") // low, medium, high, critical
+  
+  score           Int
+  details         Json
+  
+  status          String    @default("open") // open, investigating, resolved, false_positive
+  
+  assignedTo      String?   @map("assigned_to")
+  resolvedAt      DateTime? @map("resolved_at")
+  resolution      String?
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  @@map("fraud_alerts")
+}
+
+// =====================================================
+// AUDIT LOGS
+// =====================================================
+
+model AuditLog {
+  id              String    @id @default(uuid())
+  
+  userId          String?   @map("user_id")
+  userType        String?   @map("user_type") // admin, member, provider, employer
+  
+  action          String    // login, logout, view, create, update, delete
+  resource        String    // member, claim, provider, etc.
+  resourceId      String?   @map("resource_id")
+  
+  ipAddress       String?   @map("ip_address")
+  userAgent       String?   @map("user_agent")
+  
+  details         Json?
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  
+  adminUser       AdminUser? @relation(fields: [userId], references: [id])
+  
+  @@map("audit_logs")
+}
+
+// =====================================================
+// PULSE AI
+// =====================================================
+
+model PulseConversation {
+  id              String    @id @default(uuid())
+  
+  userId          String    @map("user_id")
+  userType        String    @map("user_type") // member, provider, employer, admin
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  messages        PulseMessage[]
+  
+  @@map("pulse_conversations")
+}
+
+model PulseMessage {
+  id              String    @id @default(uuid())
+  conversationId  String    @map("conversation_id")
+  
+  role            String    // user, assistant
+  content         String
+  
+  metadata        Json?     // sources, actions taken, etc.
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  
+  conversation    PulseConversation @relation(fields: [conversationId], references: [id])
+  
+  @@map("pulse_messages")
+}

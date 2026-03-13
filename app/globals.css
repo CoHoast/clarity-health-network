@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+:root {
+  /* Clarity Health Brand Colors */
+  --primary: #0066cc;       /* Trust blue */
+  --primary-light: #3399ff;
+  --primary-dark: #004c99;
+  
+  --secondary: #00a67d;     /* Health green */
+  --secondary-light: #00c896;
+  --secondary-dark: #008766;
+  
+  --accent: #ff6b35;        /* Energy orange (CTAs) */
+  
+  /* Neutrals */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  /* Status */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  color: var(--gray-900);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { box-shadow: 0 4px 20px rgba(0, 102, 204, 0.15); }
+  50% { box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+/* Focus */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: #cce5ff;
+  color: var(--gray-900);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+/* Portal Layouts */
+.portal-sidebar {
+  @apply fixed top-16 left-0 bottom-0 w-64 bg-white border-r border-gray-200 overflow-y-auto;
+}
+
+.portal-main {
+  @apply pt-16 lg:pl-64 min-h-screen;
+}
+
+.portal-content {
+  @apply p-6 lg:p-8;
+}
+
+/* Admin Dark Theme */
+.admin-dark {
+  --admin-bg: #0f172a;
+  --admin-card: rgba(30, 41, 59, 0.5);
+  --admin-border: #334155;
+  --admin-text: #f1f5f9;
+  --admin-text-muted: #94a3b8;
+  --admin-text-subtle: #64748b;
+}
+
+.admin-dark .admin-card {
+  @apply bg-slate-800/50 border-slate-700;
+}
+
+.admin-dark .admin-text {
+  @apply text-white;
+}
+
+.admin-dark .admin-text-muted {
+  @apply text-slate-400;
+}
+
+/* Admin Light Theme */
+.admin-light {
+  --admin-bg: #f9fafb;
+  --admin-card: #ffffff;
+  --admin-border: #e5e7eb;
+  --admin-text: #111827;
+  --admin-text-muted: #6b7280;
+  --admin-text-subtle: #9ca3af;
+}
+
+/* Light mode overrides for admin pages */
+.admin-light [class*="bg-slate-800"] {
+  background-color: white !important;
+  border-color: #e5e7eb !important;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+}
+
+.admin-light [class*="bg-slate-700"] {
+  background-color: #f9fafb !important;
+}
+
+.admin-light [class*="border-slate-700"],
+.admin-light [class*="border-slate-600"] {
+  border-color: #e5e7eb !important;
+}
+
+.admin-light [class*="text-white"] {
+  color: #111827 !important;
+}
+
+.admin-light [class*="text-slate-400"] {
+  color: #6b7280 !important;
+}
+
+.admin-light [class*="text-slate-300"] {
+  color: #374151 !important;
+}
+
+.admin-light [class*="text-slate-500"] {
+  color: #9ca3af !important;
+}
+
+.admin-light [class*="divide-slate-700"] > * + * {
+  border-color: #e5e7eb !important;
+}
+
+.admin-light input[class*="bg-slate-700"] {
+  background-color: white !important;
+  border-color: #d1d5db !important;
+  color: #111827 !important;
+}
+
+.admin-light input::placeholder {
+  color: #9ca3af !important;
+}
+
+.admin-light th {
+  background-color: #f9fafb !important;
+  color: #4b5563 !important;
+}
+
+.admin-light tr:hover {
+  background-color: #f9fafb !important;
+}
+
+/* Common admin styles that respond to theme */
+.admin-dark h1, .admin-dark h2, .admin-dark h3, .admin-dark h4 {
+  @apply text-white;
+}
+
+.admin-light h1, .admin-light h2, .admin-light h3, .admin-light h4 {
+  @apply text-gray-900;
+}
+
+.admin-dark p {
+  @apply text-slate-400;
+}
+
+.admin-light p {
+  @apply text-gray-500;
+}
