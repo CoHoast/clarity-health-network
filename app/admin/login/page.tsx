@@ -54,11 +54,17 @@ export default function AdminLoginPage() {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
+          <img 
+            src="/clarity-logo-dark.png" 
+            alt="Clarity Health Network" 
+            className="h-14 w-auto mx-auto mb-4"
+          />
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center">
+              <Shield className="w-5 h-5 text-white" />
+            </div>
+            <h1 className="text-xl font-bold text-white">Admin Portal</h1>
           </div>
-          <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
-          <p className="text-slate-400 mt-1">Clarity Health Network</p>
         </div>
 
         {/* Login Card */}
