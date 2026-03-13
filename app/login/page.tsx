@@ -66,14 +66,12 @@ export default function LoginPage() {
           className="w-full max-w-md"
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-xl flex items-center justify-center">
-              <span className="text-white text-xl font-bold">C</span>
-            </div>
-            <div>
-              <span className="text-xl font-bold text-gray-900">Clarity</span>
-              <span className="text-xs text-gray-500 block -mt-1">HEALTH NETWORK</span>
-            </div>
+          <Link href="/" className="block mb-8">
+            <img 
+              src="/clarity-logo.png" 
+              alt="Clarity Health Network" 
+              className="h-14 w-auto"
+            />
           </Link>
 
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h1>
@@ -213,10 +211,12 @@ export default function LoginPage() {
         </div>
         
         <div className="relative text-white text-center max-w-md">
-          <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-8">
-            <span className="text-4xl font-bold">C</span>
-          </div>
-          <h2 className="text-3xl font-bold mb-4">Clarity Health Network</h2>
+          <img 
+            src="/clarity-logo-dark.png" 
+            alt="Clarity Health Network" 
+            className="h-16 w-auto mx-auto mb-8"
+          />
+          <h2 className="text-3xl font-bold mb-4">Your Health, Simplified</h2>
           <p className="text-teal-100 text-lg mb-8">
             Access your healthcare benefits, find providers, and manage your care—all in one place.
           </p>
