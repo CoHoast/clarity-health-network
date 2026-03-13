@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Search, Download, Eye, CheckCircle, XCircle, Clock, AlertTriangle, MoreVertical, FileText, DollarSign, User, Building2, Calendar, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { Search, Download, Eye, CheckCircle, XCircle, Clock, AlertTriangle, FileText, DollarSign, User, Building2, Calendar, X, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const claims = [
@@ -13,24 +15,48 @@ const claims = [
   { id: "CLM-2024-8842", member: "Lisa Martinez", memberId: "CHN-678901", provider: "Quest Diagnostics", providerNpi: "6789012345", service: "Lab Work - CBC (85025)", serviceDate: "2024-03-07", amount: 85.00, allowed: 45.00, memberResp: 0, status: "approved", submitted: "2024-03-10", diagnosis: "Z01.812 - Encounter for preprocedural laboratory examination", flags: [] },
   { id: "CLM-2024-8841", member: "David Kim", memberId: "CHN-789012", provider: "Unknown Provider", providerNpi: "N/A", service: "Chiropractic Session (98941)", serviceDate: "2024-03-06", amount: 95.00, allowed: 0, memberResp: 95.00, status: "denied", submitted: "2024-03-10", diagnosis: "M54.2 - Cervicalgia", denialReason: "Provider not in network", flags: ["out-of-network"] },
   { id: "CLM-2024-8840", member: "Jennifer Lee", memberId: "CHN-890123", provider: "PharmaCare Specialty", providerNpi: "8901234567", service: "Specialty Rx - Humira", serviceDate: "2024-03-08", amount: 2340.00, allowed: 2100.00, memberResp: 420.00, status: "pending", submitted: "2024-03-10", diagnosis: "M06.9 - Rheumatoid arthritis", flags: ["specialty-drug"] },
+  { id: "CLM-2024-8839", member: "James Thompson", memberId: "CHN-901234", provider: "Cleveland Cardiology", providerNpi: "9012345678", service: "Echocardiogram (93306)", serviceDate: "2024-03-04", amount: 450.00, allowed: 380.00, memberResp: 76.00, status: "approved", submitted: "2024-03-09", diagnosis: "I10 - Essential hypertension", flags: [] },
+  { id: "CLM-2024-8838", member: "Patricia Brown", memberId: "CHN-012345", provider: "Women's Health Center", providerNpi: "0123456789", service: "Annual GYN Exam (99395)", serviceDate: "2024-03-03", amount: 275.00, allowed: 275.00, memberResp: 0, status: "approved", submitted: "2024-03-08", diagnosis: "Z01.419 - Gynecological examination", flags: [] },
+  { id: "CLM-2024-8837", member: "John Doe", memberId: "CHN-123456", provider: "Quest Diagnostics", providerNpi: "6789012345", service: "Lipid Panel (80061)", serviceDate: "2024-03-02", amount: 65.00, allowed: 45.00, memberResp: 0, status: "approved", submitted: "2024-03-07", diagnosis: "Z13.220 - Screening for lipoid disorders", flags: [] },
+  { id: "CLM-2024-8836", member: "Amanda Wilson", memberId: "CHN-112233", provider: "Metro Imaging Center", providerNpi: "3456789012", service: "X-Ray Chest (71046)", serviceDate: "2024-03-01", amount: 185.00, allowed: 125.00, memberResp: 25.00, status: "approved", submitted: "2024-03-06", diagnosis: "R05.9 - Cough, unspecified", flags: [] },
+  { id: "CLM-2024-8835", member: "Christopher Davis", memberId: "CHN-223344", provider: "Cleveland Family Medicine", providerNpi: "1234567890", service: "Office Visit (99213)", serviceDate: "2024-02-28", amount: 112.00, allowed: 95.00, memberResp: 25.00, status: "approved", submitted: "2024-03-05", diagnosis: "J30.9 - Allergic rhinitis", flags: [] },
+  { id: "CLM-2024-8834", member: "Sarah Johnson", memberId: "CHN-234567", provider: "Physical Therapy Plus", providerNpi: "1122334455", service: "PT Evaluation (97161)", serviceDate: "2024-02-27", amount: 175.00, allowed: 150.00, memberResp: 30.00, status: "pending", submitted: "2024-03-04", diagnosis: "M54.5 - Low back pain", flags: [] },
+  { id: "CLM-2024-8833", member: "Michael Chen", memberId: "CHN-345678", provider: "Cleveland Orthopedic", providerNpi: "4567890123", service: "Follow-up Visit (99214)", serviceDate: "2024-02-26", amount: 145.00, allowed: 125.00, memberResp: 25.00, status: "approved", submitted: "2024-03-03", diagnosis: "M54.5 - Low back pain", flags: [] },
+  { id: "CLM-2024-8832", member: "Nancy Garcia", memberId: "CHN-334455", provider: "Westlake Dermatology", providerNpi: "2233445566", service: "Skin Biopsy (11102)", serviceDate: "2024-02-25", amount: 320.00, allowed: 280.00, memberResp: 56.00, status: "review", submitted: "2024-03-02", diagnosis: "L82.1 - Seborrheic keratosis", flags: [] },
+  { id: "CLM-2024-8831", member: "Kevin Anderson", memberId: "CHN-445566", provider: "Quick Care Urgent", providerNpi: "5678901234", service: "Urgent Care Visit (99203)", serviceDate: "2024-02-24", amount: 175.00, allowed: 150.00, memberResp: 45.00, status: "approved", submitted: "2024-03-01", diagnosis: "S93.401A - Sprain of ankle", flags: [] },
+  { id: "CLM-2024-8830", member: "Rachel Taylor", memberId: "CHN-556677", provider: "Cleveland ENT Associates", providerNpi: "3344556677", service: "Audiometry (92557)", serviceDate: "2024-02-23", amount: 95.00, allowed: 75.00, memberResp: 15.00, status: "approved", submitted: "2024-02-28", diagnosis: "H91.90 - Hearing loss", flags: [] },
+  { id: "CLM-2024-8829", member: "Emily Rodriguez", memberId: "CHN-456789", provider: "PharmaCare Specialty", providerNpi: "8901234567", service: "Specialty Rx - Enbrel", serviceDate: "2024-02-22", amount: 1890.00, allowed: 1700.00, memberResp: 340.00, status: "approved", submitted: "2024-02-27", diagnosis: "M06.9 - Rheumatoid arthritis", flags: ["specialty-drug"] },
+  { id: "CLM-2024-8828", member: "Thomas Moore", memberId: "CHN-667788", provider: "Sleep Center of Ohio", providerNpi: "4455667788", service: "Sleep Study (95810)", serviceDate: "2024-02-21", amount: 1250.00, allowed: 950.00, memberResp: 190.00, status: "pending", submitted: "2024-02-26", diagnosis: "G47.33 - Obstructive sleep apnea", flags: ["high-value"] },
 ];
 
 const statusOptions = ["All", "Pending", "Review", "Approved", "Denied"];
 
 export default function ClaimsPage() {
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [memberFilter, setMemberFilter] = useState<string | null>(null);
   const [selectedClaim, setSelectedClaim] = useState<typeof claims[0] | null>(null);
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [showDenyModal, setShowDenyModal] = useState(false);
+
+  useEffect(() => {
+    const member = searchParams.get('member');
+    if (member) {
+      setMemberFilter(member);
+    }
+  }, [searchParams]);
 
   const filteredClaims = claims.filter((claim) => {
     const matchesSearch = claim.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.member.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.provider.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === "All" || claim.status.toLowerCase() === statusFilter.toLowerCase();
-    return matchesSearch && matchesStatus;
+    const matchesMember = !memberFilter || claim.memberId === memberFilter;
+    return matchesSearch && matchesStatus && matchesMember;
   });
+
+  const memberName = memberFilter ? claims.find(c => c.memberId === memberFilter)?.member : null;
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -45,13 +71,11 @@ export default function ClaimsPage() {
   const handleApprove = () => {
     setShowApproveModal(false);
     setSelectedClaim(null);
-    // In real app, would update claim status
   };
 
   const handleDeny = () => {
     setShowDenyModal(false);
     setSelectedClaim(null);
-    // In real app, would update claim status
   };
 
   return (
@@ -69,6 +93,22 @@ export default function ClaimsPage() {
           </a>
         </div>
       </div>
+
+      {/* Member Filter Banner */}
+      {memberFilter && (
+        <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <User className="w-5 h-5 text-purple-400" />
+            <span className="text-white">Showing claims for: <strong>{memberName}</strong> ({memberFilter})</span>
+          </div>
+          <button 
+            onClick={() => setMemberFilter(null)}
+            className="px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm"
+          >
+            Show All Claims
+          </button>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -139,7 +179,14 @@ export default function ClaimsPage() {
               {filteredClaims.map((claim) => (
                 <tr key={claim.id} className="hover:bg-slate-700/50 transition-colors">
                   <td className="px-4 py-3"><input type="checkbox" className="rounded border-slate-600 bg-slate-700" /></td>
-                  <td className="px-4 py-3"><span className="font-mono text-sm text-purple-400">{claim.id}</span></td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => setSelectedClaim(claim)}
+                      className="font-mono text-sm text-purple-400 hover:text-purple-300 hover:underline"
+                    >
+                      {claim.id}
+                    </button>
+                  </td>
                   <td className="px-4 py-3">
                     <div>
                       <p className="font-medium text-white">{claim.member}</p>
@@ -275,10 +322,14 @@ export default function ClaimsPage() {
                 </div>
               </div>
               <div className="flex items-center justify-between p-4 border-t border-slate-700 bg-slate-800">
-                <a href="/docs/eob-sample.pdf" download className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">
-                  <Download className="w-4 h-4" />
-                  Download EOB
-                </a>
+                <Link 
+                  href="/docs/eob" 
+                  target="_blank"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  View EOB
+                </Link>
                 <div className="flex gap-2">
                   {(selectedClaim.status === "pending" || selectedClaim.status === "review") && (
                     <>

@@ -14,16 +14,20 @@ const recentChecks = [
 ];
 
 const issues = [
-  { member: "David Kim", memberId: "CHN-567890", issue: "Coverage Terminated", severity: "high" },
-  { member: "Robert Wilson", memberId: "CHN-789012", issue: "Premium Past Due", severity: "medium" },
-  { member: "Jennifer Lee", memberId: "CHN-890123", issue: "Missing Dependent Info", severity: "low" },
+  { member: "David Kim", memberId: "CHN-567890", issue: "Coverage Terminated", severity: "high", details: "Coverage was terminated on 02/28/2024 due to employment change. Member may be eligible for COBRA." },
+  { member: "Robert Wilson", memberId: "CHN-789012", issue: "Premium Past Due", severity: "medium", details: "March premium payment is 15 days overdue. Grace period ends in 15 days." },
+  { member: "Jennifer Lee", memberId: "CHN-890123", issue: "Missing Dependent Info", severity: "low", details: "Dependent SSN and DOB required to complete enrollment. Requested via email on 03/10." },
+  { member: "Amanda Torres", memberId: "CHN-901234", issue: "ID Card Not Issued", severity: "low", details: "Member enrolled 5 days ago. ID card generation is pending." },
+  { member: "Brian Murphy", memberId: "CHN-012345", issue: "PCP Assignment Needed", severity: "medium", details: "Member has not selected a primary care physician. Auto-assignment in 7 days." },
 ];
 
 export default function EligibilityPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCheck, setSelectedCheck] = useState<typeof recentChecks[0] | null>(null);
+  const [selectedIssue, setSelectedIssue] = useState<typeof issues[0] | null>(null);
   const [showManualCheck, setShowManualCheck] = useState(false);
   const [checkResult, setCheckResult] = useState<"eligible" | "not-eligible" | null>(null);
+  const [showAllIssues, setShowAllIssues] = useState(false);
 
   const getResultBadge = (result: string) => {
     switch (result) {
@@ -133,25 +137,32 @@ export default function EligibilityPage() {
             <p className="text-sm text-slate-400">Members needing attention</p>
           </div>
           <div className="divide-y divide-slate-700">
-            {issues.map((issue, i) => (
-              <div key={i} className="px-6 py-4">
+            {issues.slice(0, 3).map((issue, i) => (
+              <button 
+                key={i} 
+                onClick={() => setSelectedIssue(issue)}
+                className="w-full px-6 py-4 text-left hover:bg-slate-800/80 transition-colors"
+              >
                 <div className="flex items-start gap-3">
                   <div className={`w-2 h-2 rounded-full mt-2 ${
                     issue.severity === "high" ? "bg-red-400" :
                     issue.severity === "medium" ? "bg-amber-400" : "bg-blue-400"
                   }`}></div>
                   <div>
-                    <p className="text-white font-medium">{issue.member}</p>
+                    <p className="text-white font-medium hover:text-purple-400">{issue.member}</p>
                     <p className="text-xs text-slate-500">{issue.memberId}</p>
                     <p className="text-sm text-slate-400 mt-1">{issue.issue}</p>
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
           <div className="px-6 py-4 border-t border-slate-700">
-            <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">
-              View All Issues
+            <button 
+              onClick={() => setShowAllIssues(true)}
+              className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm"
+            >
+              View All Issues ({issues.length})
             </button>
           </div>
         </div>
@@ -350,6 +361,134 @@ export default function EligibilityPage() {
                     <Search className="w-4 h-4 inline mr-2" />Check Eligibility
                   </button>
                 )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Issue Detail Modal */}
+      <AnimatePresence>
+        {selectedIssue && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedIssue(null)} className="fixed inset-0 bg-black/60 z-50" />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
+              <div className="flex items-center justify-between p-4 border-b border-slate-700">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                    selectedIssue.severity === "high" ? "bg-red-500/20" :
+                    selectedIssue.severity === "medium" ? "bg-amber-500/20" : "bg-blue-500/20"
+                  }`}>
+                    <AlertTriangle className={`w-5 h-5 ${
+                      selectedIssue.severity === "high" ? "text-red-400" :
+                      selectedIssue.severity === "medium" ? "text-amber-400" : "text-blue-400"
+                    }`} />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">Eligibility Issue</h2>
+                    <p className="text-sm text-slate-400">{selectedIssue.issue}</p>
+                  </div>
+                </div>
+                <button onClick={() => setSelectedIssue(null)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-4 space-y-4">
+                {/* Severity Badge */}
+                <div className={`rounded-xl p-4 ${
+                  selectedIssue.severity === "high" ? "bg-red-500/10 border border-red-500/30" :
+                  selectedIssue.severity === "medium" ? "bg-amber-500/10 border border-amber-500/30" :
+                  "bg-blue-500/10 border border-blue-500/30"
+                }`}>
+                  <p className={`text-sm font-medium uppercase ${
+                    selectedIssue.severity === "high" ? "text-red-400" :
+                    selectedIssue.severity === "medium" ? "text-amber-400" : "text-blue-400"
+                  }`}>{selectedIssue.severity} Priority</p>
+                </div>
+
+                {/* Member Info */}
+                <div className="bg-slate-700/50 rounded-lg p-4">
+                  <h3 className="font-medium text-white mb-3 flex items-center gap-2">
+                    <User className="w-4 h-4 text-blue-400" />Member
+                  </h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Name</span>
+                      <span className="text-white">{selectedIssue.member}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Member ID</span>
+                      <span className="font-mono text-white">{selectedIssue.memberId}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Issue Details */}
+                <div className="bg-slate-700/50 rounded-lg p-4">
+                  <h3 className="font-medium text-white mb-2">Details</h3>
+                  <p className="text-sm text-slate-300">{selectedIssue.details}</p>
+                </div>
+              </div>
+              <div className="flex gap-2 p-4 border-t border-slate-700">
+                <button className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
+                  View Member Profile
+                </button>
+                <button onClick={() => setSelectedIssue(null)} className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                  Resolve Issue
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* All Issues Modal */}
+      <AnimatePresence>
+        {showAllIssues && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowAllIssues(false)} className="fixed inset-0 bg-black/60 z-50" />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
+              <div className="flex items-center justify-between p-4 border-b border-slate-700">
+                <div>
+                  <h2 className="text-lg font-semibold text-white">All Eligibility Issues</h2>
+                  <p className="text-sm text-slate-400">{issues.length} members need attention</p>
+                </div>
+                <button onClick={() => setShowAllIssues(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="overflow-y-auto max-h-[calc(80vh-140px)] divide-y divide-slate-700">
+                {issues.map((issue, i) => (
+                  <button 
+                    key={i}
+                    onClick={() => { setShowAllIssues(false); setSelectedIssue(issue); }}
+                    className="w-full px-6 py-4 text-left hover:bg-slate-700/50 transition-colors"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`w-3 h-3 rounded-full mt-1.5 ${
+                        issue.severity === "high" ? "bg-red-400" :
+                        issue.severity === "medium" ? "bg-amber-400" : "bg-blue-400"
+                      }`}></div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <p className="text-white font-medium">{issue.member}</p>
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${
+                            issue.severity === "high" ? "bg-red-500/20 text-red-400" :
+                            issue.severity === "medium" ? "bg-amber-500/20 text-amber-400" : "bg-blue-500/20 text-blue-400"
+                          }`}>{issue.severity}</span>
+                        </div>
+                        <p className="text-xs text-slate-500">{issue.memberId}</p>
+                        <p className="text-sm text-amber-400 mt-1">{issue.issue}</p>
+                        <p className="text-sm text-slate-400 mt-1">{issue.details}</p>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <div className="p-4 border-t border-slate-700">
+                <button onClick={() => setShowAllIssues(false)} className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
+                  Close
+                </button>
               </div>
             </motion.div>
           </>
