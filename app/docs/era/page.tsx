@@ -1,10 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ArrowLeft, Download, Printer, Mail, FileText, Building2, DollarSign, Calendar, CheckCircle } from "lucide-react";
 import Link from "next/link";
 
-export default function ERAViewerPage() {
+function ERAContent() {
   const searchParams = useSearchParams();
   const paymentId = searchParams.get("id") || "PMT-2024-4521";
 
@@ -196,5 +197,17 @@ export default function ERAViewerPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ERAViewerPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <ERAContent />
+    </Suspense>
   );
 }

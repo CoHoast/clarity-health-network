@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Search, Download, Eye, CheckCircle, XCircle, Clock, AlertTriangle, FileText, DollarSign, User, Building2, Calendar, X, ExternalLink } from "lucide-react";
@@ -31,7 +31,7 @@ const claims = [
 
 const statusOptions = ["All", "Pending", "Review", "Approved", "Denied"];
 
-export default function ClaimsPage() {
+function ClaimsContent() {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -410,5 +410,17 @@ export default function ClaimsPage() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export default function ClaimsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <ClaimsContent />
+    </Suspense>
   );
 }

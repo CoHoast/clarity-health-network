@@ -4,7 +4,23 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Activity, CheckCircle, DollarSign, Clock, AlertTriangle, Eye, X, FileText, TrendingDown, Search, Filter, RefreshCw } from "lucide-react";
 
-const billsInReview = [
+type BillFlag = "high-value" | "specialty-drug" | "out-of-network";
+
+interface BillInReview {
+  id: string;
+  provider: string;
+  service: string;
+  original: number;
+  repriced: number;
+  savings: number;
+  status: string;
+  date: string;
+  member: string;
+  flags: BillFlag[];
+  confidence: number | null;
+}
+
+const billsInReview: BillInReview[] = [
   { id: "BRV-2024-4521", provider: "Cleveland Orthopedic", service: "Knee Surgery (27447)", original: 12500, repriced: 9800, savings: 2700, status: "complete", date: "2024-03-12", member: "Emily Rodriguez", flags: ["high-value"], confidence: 98 },
   { id: "BRV-2024-4520", provider: "Metro Imaging Center", service: "MRI - Lumbar Spine (72148)", original: 1850, repriced: 1200, savings: 650, status: "complete", date: "2024-03-12", member: "Michael Chen", flags: [], confidence: 95 },
   { id: "BRV-2024-4519", provider: "Cleveland Family Medicine", service: "Office Visit (99214)", original: 175, repriced: 125, savings: 50, status: "complete", date: "2024-03-12", member: "John Doe", flags: [], confidence: 99 },
@@ -20,7 +36,7 @@ const statusOptions = ["All", "Processing", "Review", "Complete", "Flagged"];
 export default function BillReviewPage() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedBill, setSelectedBill] = useState<typeof billsInReview[0] | null>(null);
+  const [selectedBill, setSelectedBill] = useState<BillInReview | null>(null);
 
   const filteredBills = billsInReview.filter(bill => {
     const matchesStatus = statusFilter === "All" || bill.status.toLowerCase() === statusFilter.toLowerCase();

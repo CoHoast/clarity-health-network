@@ -7,7 +7,22 @@ import { motion, AnimatePresence } from "framer-motion";
 type DateRange = "This Month" | "Last Month" | "This Quarter" | "This Year";
 type TabId = "overview" | "claims" | "members" | "providers" | "financial";
 
-const dataByRange: Record<DateRange, { kpis: typeof kpisDefault; monthlyData: typeof monthlyDataDefault }> = {
+interface KPI {
+  label: string;
+  value: string;
+  change: string;
+  trend: "up" | "down";
+  color: string;
+  drilldown: string;
+}
+
+interface MonthlyData {
+  month: string;
+  claims: number;
+  members: number;
+}
+
+const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }> = {
   "This Month": {
     kpis: [
       { label: "Total Claims MTD", value: "$2.4M", change: "+12%", trend: "up", color: "text-green-400", drilldown: "claims" },
