@@ -33,7 +33,7 @@ export default function MarketingHeader() {
           <div className="flex items-center gap-4">
             <Link href="/login" className="hover:text-teal-400 transition-colors">Member Login</Link>
             <span className="text-slate-400">|</span>
-            <Link href="/provider" className="hover:text-teal-400 transition-colors">Provider Portal</Link>
+            <Link href="/login?type=provider" className="hover:text-teal-400 transition-colors">Provider Portal</Link>
           </div>
         </div>
       </div>
