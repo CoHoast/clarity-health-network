@@ -9,6 +9,4 @@ export * from './eligibility';
 export * from './repricing';
 export * from './fraud';
 export * from './validation';
-
-// Future engines:
-// export * from './credentialing';
+export * from './credentialing';

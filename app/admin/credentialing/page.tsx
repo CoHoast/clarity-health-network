@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Download, Eye, CheckCircle, Clock, AlertTriangle, XCircle, MoreVertical, BadgeCheck, FileText, Calendar, X, Plus, User, Building2, Mail, Phone, MapPin, Shield } from "lucide-react";
+import { Search, Download, Eye, CheckCircle, Clock, AlertTriangle, XCircle, MoreVertical, BadgeCheck, FileText, Calendar, X, Plus, User, Building2, Mail, Phone, MapPin, Shield, Zap, RefreshCw, ShieldCheck, ShieldAlert, ShieldX, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const applications = [
@@ -24,13 +24,52 @@ const expiringCredentials = [
 
 const statusOptions = ["All", "Pending", "Committee", "Approved", "Denied"];
 
+interface CredentialCheck {
+  type: string;
+  status: string;
+  verifiedAt?: string;
+  expiresAt?: string;
+  source: string;
+  details: Record<string, unknown>;
+  flags?: string[];
+}
+
+interface VerificationResult {
+  npi: string;
+  transactionId: string;
+  processingTimeMs: number;
+  provider: {
+    name: string;
+    type: string;
+    credentials: string[];
+    specialty: string;
+    taxonomyCode: string;
+    address: { line1: string; city: string; state: string; zip: string };
+    phone?: string;
+  };
+  overallStatus: string;
+  riskLevel: string;
+  credentialingScore: number;
+  checks: CredentialCheck[];
+  sanctions: { found: boolean; database: string; entries: Array<{ source: string; date: string; reason?: string; status: string }> };
+  recommendations: string[];
+  summary: string;
+}
+
 export default function CredentialingPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedApplication, setSelectedApplication] = useState<typeof applications[0] | null>(null);
   const [showNewAppModal, setShowNewAppModal] = useState(false);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [showActionsMenu, setShowActionsMenu] = useState<string | null>(null);
   const [actionSuccess, setActionSuccess] = useState(false);
+  
+  // Verification state
+  const [verifyNpi, setVerifyNpi] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
+  const [verificationError, setVerificationError] = useState<string | null>(null);
 
   const filteredApplications = applications.filter((app) => {
     const matchesSearch = app.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -64,6 +103,54 @@ export default function CredentialingPage() {
     }, 2000);
   };
 
+  const handleVerifyNpi = async (npi: string) => {
+    setIsVerifying(true);
+    setVerificationError(null);
+    setVerificationResult(null);
+    
+    try {
+      const response = await fetch('/api/admin/credentialing/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ npi, providerType: 'INDIVIDUAL' }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to verify credentials');
+      }
+      
+      const result = await response.json();
+      setVerificationResult(result);
+    } catch (error) {
+      setVerificationError(error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const getCheckStatusIcon = (status: string) => {
+    switch (status) {
+      case 'VERIFIED': return <CheckCircle className="w-5 h-5 text-green-400" />;
+      case 'PENDING': return <Clock className="w-5 h-5 text-amber-400" />;
+      case 'EXPIRED': return <AlertTriangle className="w-5 h-5 text-amber-400" />;
+      case 'FAILED': return <XCircle className="w-5 h-5 text-red-400" />;
+      case 'FLAGGED': return <ShieldAlert className="w-5 h-5 text-red-400" />;
+      case 'NOT_FOUND': return <ShieldX className="w-5 h-5 text-slate-400" />;
+      default: return <Clock className="w-5 h-5 text-slate-400" />;
+    }
+  };
+
+  const getCheckStatusColor = (status: string) => {
+    switch (status) {
+      case 'VERIFIED': return 'bg-green-500/20 border-green-500/30';
+      case 'PENDING': return 'bg-amber-500/20 border-amber-500/30';
+      case 'EXPIRED': return 'bg-amber-500/20 border-amber-500/30';
+      case 'FAILED': return 'bg-red-500/20 border-red-500/30';
+      case 'FLAGGED': return 'bg-red-500/20 border-red-500/30';
+      default: return 'bg-slate-700/50 border-slate-600';
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -72,13 +159,22 @@ export default function CredentialingPage() {
           <h1 className="text-2xl font-bold text-white">Provider Credentialing</h1>
           <p className="text-slate-400">Manage provider applications and credentials</p>
         </div>
-        <button 
-          onClick={() => setShowNewAppModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-        >
-          <Plus className="w-4 h-4" />
-          New Application
-        </button>
+        <div className="flex gap-2">
+          <button 
+            onClick={() => setShowVerifyModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
+          >
+            <Zap className="w-4 h-4" />
+            Verify NPI
+          </button>
+          <button 
+            onClick={() => setShowNewAppModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+          >
+            <Plus className="w-4 h-4" />
+            New Application
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -500,6 +596,266 @@ export default function CredentialingPage() {
       {showActionsMenu && (
         <div className="fixed inset-0 z-[5]" onClick={() => setShowActionsMenu(null)} />
       )}
+
+      {/* Verify NPI Modal */}
+      <AnimatePresence>
+        {showVerifyModal && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setShowVerifyModal(false); setVerificationResult(null); setVerifyNpi(""); }} className="fixed inset-0 bg-black/60 z-50" />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl max-h-[90vh] overflow-auto bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
+              <div className="p-4 border-b border-slate-700 flex items-center justify-between sticky top-0 bg-slate-800 z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">Credential Verification Engine</h3>
+                    <p className="text-sm text-slate-400">Verify provider credentials against authoritative sources</p>
+                  </div>
+                </div>
+                <button onClick={() => { setShowVerifyModal(false); setVerificationResult(null); setVerifyNpi(""); }} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
+              </div>
+              
+              <div className="p-4 space-y-4">
+                {!verificationResult && !isVerifying && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Enter NPI to Verify</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={verifyNpi}
+                          onChange={(e) => setVerifyNpi(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                          className="flex-1 px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white text-lg font-mono placeholder:text-slate-500"
+                          placeholder="1234567890"
+                          maxLength={10}
+                        />
+                        <button
+                          onClick={() => handleVerifyNpi(verifyNpi)}
+                          disabled={verifyNpi.length !== 10}
+                          className="px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        >
+                          <Zap className="w-5 h-5" />
+                          Verify
+                        </button>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-1">{verifyNpi.length}/10 digits</p>
+                    </div>
+                    
+                    <div className="bg-slate-700/50 rounded-lg p-4">
+                      <h4 className="font-medium text-white mb-3">Quick Test NPIs</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { npi: '2345678901', name: 'James Wilson, MD', status: '✅ Clean' },
+                          { npi: '9012345678', name: 'Sarah Chen, MD, FACC', status: '✅ Clean' },
+                          { npi: '1234567890', name: 'Cleveland Family Medicine', status: '✅ Organization' },
+                          { npi: '1111111111', name: 'ABC Medical Group', status: '⚠️ Suspended License' },
+                        ].map((test) => (
+                          <button
+                            key={test.npi}
+                            onClick={() => { setVerifyNpi(test.npi); handleVerifyNpi(test.npi); }}
+                            className="p-3 bg-slate-600/50 hover:bg-slate-600 rounded-lg text-left transition-colors"
+                          >
+                            <p className="font-mono text-emerald-400 text-sm">{test.npi}</p>
+                            <p className="text-white text-sm">{test.name}</p>
+                            <p className="text-xs text-slate-400">{test.status}</p>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="bg-slate-700/50 rounded-lg p-4">
+                      <h4 className="font-medium text-white mb-2">Verification Sources</h4>
+                      <div className="grid grid-cols-2 gap-2 text-sm">
+                        <div className="flex items-center gap-2 text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          NPPES Registry
+                        </div>
+                        <div className="flex items-center gap-2 text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          State Medical Boards
+                        </div>
+                        <div className="flex items-center gap-2 text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          DEA NTIS
+                        </div>
+                        <div className="flex items-center gap-2 text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          ABMS Certification
+                        </div>
+                        <div className="flex items-center gap-2 text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          OIG LEIE
+                        </div>
+                        <div className="flex items-center gap-2 text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          SAM.gov
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {isVerifying && (
+                  <div className="flex flex-col items-center justify-center py-16">
+                    <RefreshCw className="w-10 h-10 text-emerald-400 animate-spin mb-4" />
+                    <p className="text-white font-medium text-lg">Verifying credentials...</p>
+                    <p className="text-slate-400 text-sm mt-2">Checking NPI, licenses, DEA, sanctions, board certifications</p>
+                  </div>
+                )}
+
+                {verificationError && (
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                    <p className="text-red-400 font-medium">Verification Failed</p>
+                    <p className="text-red-300 text-sm">{verificationError}</p>
+                  </div>
+                )}
+
+                {verificationResult && (
+                  <>
+                    {/* Overall Status */}
+                    <div className={`rounded-xl p-5 border ${
+                      verificationResult.overallStatus === 'VERIFIED' ? 'bg-green-500/10 border-green-500/30' :
+                      verificationResult.overallStatus === 'FLAGGED' || verificationResult.overallStatus === 'FAILED' ? 'bg-red-500/10 border-red-500/30' :
+                      verificationResult.overallStatus === 'EXPIRED' ? 'bg-amber-500/10 border-amber-500/30' :
+                      'bg-slate-700/50 border-slate-600'
+                    }`}>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-4">
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                            verificationResult.overallStatus === 'VERIFIED' ? 'bg-green-500/20' :
+                            verificationResult.overallStatus === 'FLAGGED' || verificationResult.overallStatus === 'FAILED' ? 'bg-red-500/20' :
+                            'bg-amber-500/20'
+                          }`}>
+                            <span className={`text-3xl font-bold ${
+                              verificationResult.overallStatus === 'VERIFIED' ? 'text-green-400' :
+                              verificationResult.overallStatus === 'FLAGGED' || verificationResult.overallStatus === 'FAILED' ? 'text-red-400' :
+                              'text-amber-400'
+                            }`}>{verificationResult.credentialingScore}</span>
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-bold text-white">{verificationResult.provider.name}</h3>
+                            <p className="text-slate-400">{verificationResult.provider.specialty} • {verificationResult.provider.type}</p>
+                            <p className="font-mono text-sm text-emerald-400">NPI: {verificationResult.npi}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            verificationResult.overallStatus === 'VERIFIED' ? 'bg-green-500/20 text-green-400' :
+                            verificationResult.overallStatus === 'FLAGGED' ? 'bg-red-500/20 text-red-400' :
+                            verificationResult.overallStatus === 'FAILED' ? 'bg-red-500/20 text-red-400' :
+                            'bg-amber-500/20 text-amber-400'
+                          }`}>
+                            {verificationResult.overallStatus}
+                          </span>
+                          <p className="text-xs text-slate-500 mt-2">Risk: {verificationResult.riskLevel}</p>
+                          <p className="text-xs text-slate-500">{verificationResult.processingTimeMs}ms</p>
+                        </div>
+                      </div>
+                      <p className="text-white">{verificationResult.summary}</p>
+                    </div>
+
+                    {/* Provider Info */}
+                    <div className="bg-slate-700/50 rounded-lg p-4">
+                      <h4 className="font-medium text-white mb-3">Provider Information</h4>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <p className="text-slate-400">Address</p>
+                          <p className="text-white">{verificationResult.provider.address.line1}</p>
+                          <p className="text-white">{verificationResult.provider.address.city}, {verificationResult.provider.address.state} {verificationResult.provider.address.zip}</p>
+                        </div>
+                        <div>
+                          <p className="text-slate-400">Taxonomy</p>
+                          <p className="text-white font-mono">{verificationResult.provider.taxonomyCode}</p>
+                          {verificationResult.provider.credentials.length > 0 && (
+                            <p className="text-emerald-400">{verificationResult.provider.credentials.join(', ')}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sanctions Alert */}
+                    {verificationResult.sanctions.found && (
+                      <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <ShieldAlert className="w-5 h-5 text-red-400" />
+                          <h4 className="font-medium text-red-400">SANCTIONS FOUND</h4>
+                        </div>
+                        {verificationResult.sanctions.entries.map((entry, i) => (
+                          <div key={i} className="bg-red-500/10 rounded p-3 mb-2">
+                            <p className="text-red-300 font-medium">{entry.source}</p>
+                            <p className="text-red-200 text-sm">Date: {entry.date}</p>
+                            {entry.reason && <p className="text-red-200 text-sm">Reason: {entry.reason}</p>}
+                            <p className="text-red-400 text-xs uppercase">{entry.status}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Verification Checks */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-white">Verification Results</h4>
+                      {verificationResult.checks.map((check, i) => (
+                        <div key={i} className={`rounded-lg p-4 border ${getCheckStatusColor(check.status)}`}>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              {getCheckStatusIcon(check.status)}
+                              <div>
+                                <p className="text-white font-medium">{check.type.replace(/_/g, ' ')}</p>
+                                <p className="text-xs text-slate-400">{check.source}</p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <span className={`px-2 py-0.5 rounded text-xs ${
+                                check.status === 'VERIFIED' ? 'bg-green-500/20 text-green-400' :
+                                check.status === 'FAILED' || check.status === 'FLAGGED' ? 'bg-red-500/20 text-red-400' :
+                                check.status === 'EXPIRED' ? 'bg-amber-500/20 text-amber-400' :
+                                'bg-slate-600 text-slate-300'
+                              }`}>{check.status}</span>
+                              {check.expiresAt && (
+                                <p className="text-xs text-slate-500 mt-1">Exp: {check.expiresAt}</p>
+                              )}
+                            </div>
+                          </div>
+                          {check.flags && check.flags.length > 0 && (
+                            <div className="mt-2 flex gap-1">
+                              {check.flags.map((flag, j) => (
+                                <span key={j} className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs">{flag}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Recommendations */}
+                    {verificationResult.recommendations.length > 0 && (
+                      <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                        <h4 className="font-medium text-amber-400 mb-2">Recommendations</h4>
+                        <ul className="space-y-1">
+                          {verificationResult.recommendations.map((rec, i) => (
+                            <li key={i} className="text-amber-300 text-sm flex items-start gap-2">
+                              <span className="text-amber-400">•</span>
+                              {rec}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+              
+              {verificationResult && (
+                <div className="flex gap-2 p-4 border-t border-slate-700 sticky bottom-0 bg-slate-800">
+                  <button onClick={() => { setVerificationResult(null); setVerifyNpi(""); }} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Verify Another</button>
+                  <button onClick={() => { setShowVerifyModal(false); setVerificationResult(null); setVerifyNpi(""); }} className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">Close</button>
+                </div>
+              )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
