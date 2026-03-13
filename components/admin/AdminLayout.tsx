@@ -4,17 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Early return for login page - don't render AdminLayout
-function AdminLayoutWrapper({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  
-  if (pathname === "/admin/login") {
-    return <>{children}</>;
-  }
-  
-  return <AdminLayoutInner>{children}</AdminLayoutInner>;
-}
 import {
   LayoutDashboard,
   FileText,
@@ -101,7 +90,7 @@ const navigationGroups = [
   },
 ];
 
-function AdminLayoutInner({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -112,7 +101,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    router.push("/admin/login");
+    router.push("/admin-login");
   };
 
   // Persist theme preference
@@ -354,5 +343,3 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-export default AdminLayoutWrapper;

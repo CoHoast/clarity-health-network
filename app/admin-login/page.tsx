@@ -149,6 +149,9 @@ export default function AdminLoginPage() {
             ← Back to member login
           </Link>
         </p>
+        <p className="text-center text-slate-600 text-xs mt-2">
+          <span className="text-slate-500">Admin URL: /admin-login</span>
+        </p>
       </motion.div>
     </div>
   );
