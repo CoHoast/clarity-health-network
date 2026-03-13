@@ -4,6 +4,17 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Early return for login page - don't render AdminLayout
+function AdminLayoutWrapper({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
+  
+  return <AdminLayoutInner>{children}</AdminLayoutInner>;
+}
 import {
   LayoutDashboard,
   FileText,
@@ -90,7 +101,7 @@ const navigationGroups = [
   },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -343,3 +354,5 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
+
+export default AdminLayoutWrapper;
