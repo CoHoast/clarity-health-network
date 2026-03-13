@@ -77,175 +77,172 @@ export default function IDCardPage() {
           animate={{ opacity: 1, y: 0 }}
           className="perspective-1000"
         >
-          {/* Card container */}
+          {/* Card container - credit card aspect ratio (roughly 1.586:1) */}
           <div
-            className={`relative w-full max-w-lg mx-auto transition-transform duration-500 transform-style-preserve-3d cursor-pointer ${
-              showBack ? "rotate-y-180" : ""
-            }`}
+            className={`relative w-full max-w-2xl mx-auto cursor-pointer`}
             onClick={() => setShowBack(!showBack)}
-            style={{ transformStyle: "preserve-3d" }}
+            style={{ aspectRatio: "1.586/1" }}
           >
             {/* Front of card */}
             <div
-              className={`w-full bg-gradient-to-br from-teal-500 via-teal-600 to-emerald-600 rounded-2xl p-6 sm:p-8 text-white shadow-2xl ${
-                showBack ? "opacity-0" : "opacity-100"
-              } transition-opacity duration-300`}
+              className={`absolute inset-0 w-full h-full bg-gradient-to-br from-teal-500 via-teal-600 to-emerald-600 rounded-2xl p-5 sm:p-6 text-white shadow-2xl transition-all duration-500 ${
+                showBack ? "opacity-0 pointer-events-none scale-95" : "opacity-100 scale-100"
+              }`}
             >
               {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
-                    <Shield className="w-7 h-7" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+                    <Shield className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
-                    <h2 className="font-bold text-xl">Clarity Health Network</h2>
-                    <p className="text-teal-100 text-sm">PPO Health Plan</p>
+                    <h2 className="font-bold text-lg sm:text-xl">Clarity Health Network</h2>
+                    <p className="text-teal-100 text-xs sm:text-sm">PPO Health Plan</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className="bg-white/20 backdrop-blur px-3 py-1 rounded-full text-sm font-medium">
-                    Active
-                  </span>
+                <span className="bg-white/20 backdrop-blur px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
+                  Active
+                </span>
+              </div>
+
+              {/* Member Info - compact layout */}
+              <div className="space-y-3">
+                <div>
+                  <p className="text-teal-100 text-[10px] sm:text-xs uppercase tracking-wider">Member Name</p>
+                  <p className="text-xl sm:text-2xl font-bold">John Michael Doe</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <div>
+                    <p className="text-teal-100 text-[10px] sm:text-xs uppercase tracking-wider">Member ID</p>
+                    <p className="font-mono text-base sm:text-lg">CHN-123456</p>
+                  </div>
+                  <div>
+                    <p className="text-teal-100 text-[10px] sm:text-xs uppercase tracking-wider">Group Number</p>
+                    <p className="font-mono text-base sm:text-lg">GRP-78901</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div>
+                    <p className="text-teal-100 text-[10px] sm:text-xs uppercase tracking-wider">DOB</p>
+                    <p className="font-medium text-sm sm:text-base">01/15/1985</p>
+                  </div>
+                  <div>
+                    <p className="text-teal-100 text-[10px] sm:text-xs uppercase tracking-wider">Plan Type</p>
+                    <p className="font-medium text-sm sm:text-base">Family</p>
+                  </div>
+                  <div>
+                    <p className="text-teal-100 text-[10px] sm:text-xs uppercase tracking-wider">Effective</p>
+                    <p className="font-medium text-sm sm:text-base">01/01/2024</p>
+                  </div>
                 </div>
               </div>
 
-              {/* Member Info */}
-              <div className="space-y-4 mb-6">
-                <div>
-                  <p className="text-teal-100 text-xs uppercase tracking-wider mb-1">Member Name</p>
-                  <p className="text-2xl font-bold">John Michael Doe</p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
+              {/* Copays - at bottom */}
+              <div className="absolute bottom-5 sm:bottom-6 left-5 sm:left-6 right-5 sm:right-6">
+                <div className="bg-white/10 backdrop-blur rounded-xl p-3 sm:p-4 grid grid-cols-3 gap-2 sm:gap-4 text-center">
                   <div>
-                    <p className="text-teal-100 text-xs uppercase tracking-wider mb-1">Member ID</p>
-                    <p className="font-mono text-lg">CHN-123456</p>
+                    <p className="text-teal-100 text-[10px] sm:text-xs">PCP Copay</p>
+                    <p className="text-lg sm:text-xl font-bold">$25</p>
                   </div>
                   <div>
-                    <p className="text-teal-100 text-xs uppercase tracking-wider mb-1">Group Number</p>
-                    <p className="font-mono text-lg">GRP-78901</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-teal-100 text-xs uppercase tracking-wider mb-1">DOB</p>
-                    <p className="font-medium">01/15/1985</p>
+                    <p className="text-teal-100 text-[10px] sm:text-xs">Specialist</p>
+                    <p className="text-lg sm:text-xl font-bold">$50</p>
                   </div>
                   <div>
-                    <p className="text-teal-100 text-xs uppercase tracking-wider mb-1">Plan Type</p>
-                    <p className="font-medium">Family</p>
-                  </div>
-                  <div>
-                    <p className="text-teal-100 text-xs uppercase tracking-wider mb-1">Effective</p>
-                    <p className="font-medium">01/01/2024</p>
+                    <p className="text-teal-100 text-[10px] sm:text-xs">ER Copay</p>
+                    <p className="text-lg sm:text-xl font-bold">$250</p>
                   </div>
                 </div>
-              </div>
-
-              {/* Copays */}
-              <div className="bg-white/10 backdrop-blur rounded-xl p-4 grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <p className="text-teal-100 text-xs mb-1">PCP Copay</p>
-                  <p className="text-xl font-bold">$25</p>
-                </div>
-                <div>
-                  <p className="text-teal-100 text-xs mb-1">Specialist</p>
-                  <p className="text-xl font-bold">$50</p>
-                </div>
-                <div>
-                  <p className="text-teal-100 text-xs mb-1">ER Copay</p>
-                  <p className="text-xl font-bold">$250</p>
-                </div>
-              </div>
-
-              {/* Flip indicator */}
-              <div className="flex items-center justify-center mt-6 text-teal-100 text-sm">
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Tap to flip card
               </div>
             </div>
 
             {/* Back of card */}
             <div
-              className={`absolute inset-0 w-full bg-white rounded-2xl p-6 sm:p-8 shadow-2xl border border-gray-200 ${
-                showBack ? "opacity-100" : "opacity-0 pointer-events-none"
-              } transition-opacity duration-300`}
-              style={{ transform: "rotateY(180deg)" }}
+              className={`absolute inset-0 w-full h-full bg-white rounded-2xl p-5 sm:p-6 shadow-2xl border border-gray-200 transition-all duration-500 overflow-hidden ${
+                showBack ? "opacity-100 scale-100" : "opacity-0 pointer-events-none scale-95"
+              }`}
             >
               {/* Header */}
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+              <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-6 h-6 text-teal-600" />
-                  <span className="font-bold text-gray-900">Clarity Health Network</span>
+                  <Shield className="w-5 h-5 text-teal-600" />
+                  <span className="font-bold text-gray-900 text-sm sm:text-base">Clarity Health Network</span>
                 </div>
-                <QrCode className="w-16 h-16 text-gray-800" />
+                <QrCode className="w-12 h-12 sm:w-14 sm:h-14 text-gray-800" />
               </div>
 
-              {/* Important Numbers */}
-              <div className="space-y-4 mb-6">
-                <h3 className="font-semibold text-gray-900 text-sm uppercase tracking-wider">Important Numbers</h3>
-                <div className="grid gap-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Phone className="w-4 h-4" />
-                      <span className="text-sm">Member Services</span>
+              {/* Two column layout for back */}
+              <div className="grid grid-cols-2 gap-4 h-[calc(100%-60px)]">
+                {/* Left column - Numbers */}
+                <div className="space-y-3">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 text-[10px] sm:text-xs uppercase tracking-wider mb-2">Important Numbers</h3>
+                    <div className="space-y-1.5 text-xs sm:text-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600">Member Services</span>
+                        <span className="font-mono text-gray-900">1-800-555-0123</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600">24/7 Nurse Line</span>
+                        <span className="font-mono text-gray-900">1-800-555-0124</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600">Behavioral Health</span>
+                        <span className="font-mono text-gray-900">1-800-555-0125</span>
+                      </div>
                     </div>
-                    <span className="font-mono text-gray-900">1-800-555-0123</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Phone className="w-4 h-4" />
-                      <span className="text-sm">24/7 Nurse Line</span>
+
+                  {/* Claims Address */}
+                  <div className="bg-gray-50 rounded-lg p-2.5 sm:p-3">
+                    <h3 className="font-semibold text-gray-900 text-[10px] sm:text-xs mb-1">Claims Submission</h3>
+                    <p className="text-[10px] sm:text-xs text-gray-600 leading-relaxed">
+                      Clarity Health Network<br />
+                      P.O. Box 12345<br />
+                      Cleveland, OH 44101
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right column - EDI Info */}
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-gray-900 text-[10px] sm:text-xs uppercase tracking-wider">Pharmacy Info</h3>
+                  <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+                    <div>
+                      <p className="text-gray-500 text-[10px] sm:text-xs">Payer ID</p>
+                      <p className="font-mono text-gray-900">CHN01</p>
                     </div>
-                    <span className="font-mono text-gray-900">1-800-555-0124</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Phone className="w-4 h-4" />
-                      <span className="text-sm">Behavioral Health</span>
+                    <div>
+                      <p className="text-gray-500 text-[10px] sm:text-xs">BIN</p>
+                      <p className="font-mono text-gray-900">610014</p>
                     </div>
-                    <span className="font-mono text-gray-900">1-800-555-0125</span>
+                    <div>
+                      <p className="text-gray-500 text-[10px] sm:text-xs">PCN</p>
+                      <p className="font-mono text-gray-900">CLRTY</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-[10px] sm:text-xs">RxGrp</p>
+                      <p className="font-mono text-gray-900">CHNRX</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-teal-50 rounded-lg p-2.5 sm:p-3 mt-2">
+                    <p className="text-[10px] sm:text-xs text-teal-700">
+                      <span className="font-semibold">Network:</span> National PPO<br />
+                      <span className="font-semibold">Rx Coverage:</span> Included
+                    </p>
                   </div>
                 </div>
-              </div>
-
-              {/* Claims Address */}
-              <div className="bg-gray-50 rounded-xl p-4 mb-6">
-                <h3 className="font-semibold text-gray-900 text-sm mb-2">Claims Submission</h3>
-                <p className="text-sm text-gray-600">
-                  Clarity Health Network<br />
-                  P.O. Box 12345<br />
-                  Cleveland, OH 44101
-                </p>
-              </div>
-
-              {/* EDI Info */}
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-gray-500">Payer ID</p>
-                  <p className="font-mono text-gray-900">CHN01</p>
-                </div>
-                <div>
-                  <p className="text-gray-500">BIN</p>
-                  <p className="font-mono text-gray-900">610014</p>
-                </div>
-                <div>
-                  <p className="text-gray-500">PCN</p>
-                  <p className="font-mono text-gray-900">CLRTY</p>
-                </div>
-                <div>
-                  <p className="text-gray-500">RxGrp</p>
-                  <p className="font-mono text-gray-900">CHNRX</p>
-                </div>
-              </div>
-
-              {/* Flip indicator */}
-              <div className="flex items-center justify-center mt-6 text-gray-400 text-sm">
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Tap to flip card
               </div>
             </div>
+          </div>
+          
+          {/* Flip indicator - outside the card */}
+          <div className="flex items-center justify-center mt-4 text-gray-400 text-sm">
+            <RotateCcw className="w-4 h-4 mr-2" />
+            Tap card to flip
           </div>
         </motion.div>
       </div>
