@@ -79,6 +79,16 @@ const pastAppointments = [
 export default function AppointmentsPage() {
   const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
   const [showCancelModal, setShowCancelModal] = useState<number | null>(null);
+  const [showRescheduleModal, setShowRescheduleModal] = useState<number | null>(null);
+  const [rescheduleSuccess, setRescheduleSuccess] = useState(false);
+
+  const handleReschedule = () => {
+    setRescheduleSuccess(true);
+    setTimeout(() => {
+      setShowRescheduleModal(null);
+      setRescheduleSuccess(false);
+    }, 2000);
+  };
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
@@ -179,17 +189,26 @@ export default function AppointmentsPage() {
                 {/* Actions */}
                 <div className="flex flex-wrap md:flex-col gap-2 shrink-0">
                   {appt.isTelehealth ? (
-                    <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                    <button 
+                      onClick={() => window.open('https://meet.google.com/demo-call', '_blank')}
+                      className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                    >
                       <Video className="w-4 h-4" />
                       Join Call
                     </button>
                   ) : (
-                    <button className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2">
+                    <button 
+                      onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(appt.address)}`, '_blank')}
+                      className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2"
+                    >
                       <MapPin className="w-4 h-4" />
                       Get Directions
                     </button>
                   )}
-                  <button className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors">
+                  <button 
+                    onClick={() => setShowRescheduleModal(appt.id)}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                  >
                     Reschedule
                   </button>
                   <button
@@ -308,6 +327,78 @@ export default function AppointmentsPage() {
                 </button>
               </div>
             </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Reschedule Modal */}
+      {showRescheduleModal && (
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowRescheduleModal(null)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {rescheduleSuccess ? (
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle2 className="w-8 h-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Request Sent!</h3>
+                <p className="text-gray-600">The provider will contact you to confirm your new appointment time.</p>
+              </div>
+            ) : (
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Reschedule Appointment</h3>
+                <p className="text-gray-600 mb-6">Select your preferred new date and time.</p>
+                
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Date</label>
+                    <input 
+                      type="date" 
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      min={new Date().toISOString().split('T')[0]}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Time</label>
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                      <option>Morning (8am - 12pm)</option>
+                      <option>Afternoon (12pm - 4pm)</option>
+                      <option>Late Afternoon (4pm - 6pm)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Reason (optional)</label>
+                    <textarea 
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      rows={2}
+                      placeholder="Let us know why you need to reschedule..."
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowRescheduleModal(null)}
+                    className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleReschedule}
+                    className="flex-1 px-4 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                  >
+                    Submit Request
+                  </button>
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
       )}

@@ -539,12 +539,18 @@ export default function MemberDashboard() {
 
               <div className="px-6 py-4 border-t border-gray-200 flex gap-3">
                 {selectedAppointment.isTelehealth ? (
-                  <button className="flex-1 px-4 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
+                  <button 
+                    onClick={() => window.open('https://meet.google.com/demo-call', '_blank')}
+                    className="flex-1 px-4 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center gap-2"
+                  >
                     <Video className="w-4 h-4" />
                     Join Video Call
                   </button>
                 ) : (
-                  <button className="flex-1 px-4 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
+                  <button 
+                    onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedAppointment.address)}`, '_blank')}
+                    className="flex-1 px-4 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center gap-2"
+                  >
                     <MapPin className="w-4 h-4" />
                     Get Directions
                   </button>
