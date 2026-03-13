@@ -94,32 +94,32 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-orange-700 transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-slate-800 transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Logo */}
-        <div className="h-20 flex items-center justify-between px-4 border-b border-orange-600 bg-orange-700">
+        <div className="h-20 flex items-center justify-between px-4 border-b border-slate-700 bg-slate-800">
           <Link href="/" className="flex items-center">
             <img src="/clarity-logo-dark.png" alt="Clarity Health Network" className="h-12 w-auto" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 text-orange-100 hover:text-white"
+            className="lg:hidden p-2 text-slate-300 hover:text-white"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Company info */}
-        <div className="p-4 border-b border-orange-600">
+        <div className="p-4 border-b border-slate-700">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-lg flex items-center justify-center">
               <Building2 className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="font-semibold text-white text-sm">Acme Corporation</p>
-              <p className="text-xs text-orange-200">Group #12345</p>
+              <p className="text-xs text-slate-400">Group #12345</p>
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
           {navigationGroups.map((group, groupIndex) => (
             <div key={groupIndex}>
               {group.label && (
-                <p className="px-3 mb-2 text-xs font-semibold text-orange-200 uppercase tracking-wider">
+                <p className="px-3 mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   {group.label}
                 </p>
               )}
@@ -144,11 +144,11 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
                       onClick={() => setSidebarOpen(false)}
                       className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                         isActive
-                          ? "bg-white/20 text-white"
-                          : "text-orange-100 hover:bg-orange-800 hover:text-white"
+                          ? "bg-teal-600/20 text-teal-400"
+                          : "text-slate-300 hover:bg-slate-700 hover:text-white"
                       }`}
                     >
-                      <item.icon className={`w-5 h-5 ${isActive ? "text-orange-200" : "text-orange-200/70"}`} />
+                      <item.icon className={`w-5 h-5 ${isActive ? "text-teal-400" : "text-slate-400"}`} />
                       {item.name}
                     </Link>
                   );
@@ -159,21 +159,21 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
         </nav>
 
         {/* Bottom section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-orange-600 bg-orange-700">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700 bg-slate-800">
           <button
             onClick={() => setShowPulse(true)}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-orange-100 hover:bg-orange-800 hover:text-white mb-2"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white mb-2"
           >
-            <div className="w-5 h-5 bg-gradient-to-br from-amber-500 to-orange-600 rounded flex items-center justify-center">
+            <div className="w-5 h-5 bg-gradient-to-br from-teal-500 to-teal-600 rounded flex items-center justify-center">
               <Zap className="w-3 h-3 text-white" />
             </div>
             Ask Pulse AI
           </button>
           <button 
             onClick={handleSignOut}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-orange-100 hover:bg-orange-800 hover:text-white"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white"
           >
-            <LogOut className="w-5 h-5 text-orange-200/70" />
+            <LogOut className="w-5 h-5 text-slate-400" />
             Sign Out
           </button>
         </div>
@@ -196,13 +196,13 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
             {/* Notifications */}
             <button className="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg">
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-amber-500 rounded-full" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-teal-500 rounded-full" />
             </button>
 
             {/* Pulse AI quick access */}
             <button
               onClick={() => setShowPulse(true)}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-medium rounded-lg hover:from-amber-600 hover:to-orange-700 transition-colors"
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-teal-500 to-teal-600 text-white text-sm font-medium rounded-lg hover:from-teal-600 hover:to-teal-700 transition-colors"
             >
               <Zap className="w-4 h-4" />
               Ask Pulse
@@ -214,7 +214,7 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className="flex items-center gap-2 p-1.5 hover:bg-gray-100 rounded-lg"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-semibold">HR</span>
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-400 hidden sm:block" />
@@ -266,7 +266,7 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
       {/* Floating Pulse button (mobile) */}
       <button
         onClick={() => setShowPulse(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center lg:hidden z-40"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center lg:hidden z-40"
       >
         <Zap className="w-6 h-6" />
       </button>
