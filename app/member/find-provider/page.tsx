@@ -172,6 +172,16 @@ export default function FindProviderPage() {
   const [selectedProvider, setSelectedProvider] = useState<typeof providers[0] | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState("distance");
+  const [activeTab, setActiveTab] = useState<"all" | "favorites">("all");
+  const [favorites, setFavorites] = useState<number[]>([1, 5]); // Pre-populate with a couple favorites for demo
+  
+  const toggleFavorite = (providerId: number) => {
+    setFavorites(prev => 
+      prev.includes(providerId) 
+        ? prev.filter(id => id !== providerId)
+        : [...prev, providerId]
+    );
+  };
   
   // Booking modal state
   const [bookingProvider, setBookingProvider] = useState<typeof providers[0] | null>(null);
@@ -225,7 +235,8 @@ export default function FindProviderPage() {
         specialty === "All Specialties" || provider.specialty === specialty;
       const matchesAccepting = !acceptingNew || provider.acceptingNew;
       const matchesTelehealth = !telehealthOnly || provider.telehealth;
-      return matchesSearch && matchesSpecialty && matchesAccepting && matchesTelehealth;
+      const matchesFavorites = activeTab === "all" || favorites.includes(provider.id);
+      return matchesSearch && matchesSpecialty && matchesAccepting && matchesTelehealth && matchesFavorites;
     });
 
     // Sort
@@ -241,7 +252,7 @@ export default function FindProviderPage() {
     });
 
     return results;
-  }, [searchQuery, specialty, acceptingNew, telehealthOnly, sortBy]);
+  }, [searchQuery, specialty, acceptingNew, telehealthOnly, sortBy, activeTab, favorites]);
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -357,8 +368,31 @@ export default function FindProviderPage() {
         </div>
       </div>
 
-      {/* Results Count */}
+      {/* Tabs */}
       <div className="flex items-center justify-between">
+        <div className="flex gap-2 bg-gray-100 p-1 rounded-lg">
+          <button
+            onClick={() => setActiveTab("all")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              activeTab === "all"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            All Providers
+          </button>
+          <button
+            onClick={() => setActiveTab("favorites")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+              activeTab === "favorites"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            <Heart className={`w-4 h-4 ${activeTab === "favorites" ? "fill-red-500 text-red-500" : ""}`} />
+            Favorites ({favorites.length})
+          </button>
+        </div>
         <p className="text-sm text-gray-500">
           Showing <span className="font-medium text-gray-900">{filteredProviders.length}</span> providers
         </p>
@@ -441,8 +475,15 @@ export default function FindProviderPage() {
                   >
                     View Profile
                   </button>
-                  <button className="p-2 bg-white border border-gray-200 text-gray-400 rounded-lg hover:text-red-500 hover:border-red-200 transition-colors">
-                    <Heart className="w-5 h-5" />
+                  <button 
+                    onClick={() => toggleFavorite(provider.id)}
+                    className={`p-2 bg-white border rounded-lg transition-colors ${
+                      favorites.includes(provider.id)
+                        ? "border-red-200 text-red-500"
+                        : "border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-200"
+                    }`}
+                  >
+                    <Heart className={`w-5 h-5 ${favorites.includes(provider.id) ? "fill-red-500" : ""}`} />
                   </button>
                 </div>
               </div>
@@ -451,7 +492,21 @@ export default function FindProviderPage() {
         ))}
       </div>
 
-      {filteredProviders.length === 0 && (
+      {filteredProviders.length === 0 && activeTab === "favorites" && (
+        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+          <Heart className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+          <p className="text-gray-900 font-medium mb-1">No favorite providers yet</p>
+          <p className="text-gray-500 mb-4">Click the heart icon on any provider to add them to your favorites</p>
+          <button
+            onClick={() => setActiveTab("all")}
+            className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+          >
+            Browse All Providers
+          </button>
+        </div>
+      )}
+
+      {filteredProviders.length === 0 && activeTab === "all" && (
         <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
           <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
           <p className="text-gray-500">No providers found matching your criteria</p>
@@ -472,12 +527,24 @@ export default function FindProviderPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative">
-              <button
-                onClick={() => setSelectedProvider(null)}
-                className="absolute top-4 right-4 p-2 bg-white/80 rounded-full hover:bg-white z-10"
-              >
-                <X className="w-5 h-5 text-gray-600" />
-              </button>
+              <div className="absolute top-4 right-4 flex gap-2 z-10">
+                <button
+                  onClick={() => toggleFavorite(selectedProvider.id)}
+                  className={`p-2 rounded-full transition-colors ${
+                    favorites.includes(selectedProvider.id)
+                      ? "bg-red-500 text-white"
+                      : "bg-white/80 hover:bg-white text-gray-600"
+                  }`}
+                >
+                  <Heart className={`w-5 h-5 ${favorites.includes(selectedProvider.id) ? "fill-white" : ""}`} />
+                </button>
+                <button
+                  onClick={() => setSelectedProvider(null)}
+                  className="p-2 bg-white/80 rounded-full hover:bg-white"
+                >
+                  <X className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
               <div className="bg-gradient-to-br from-teal-500 to-emerald-600 p-6 text-center">
                 <img
                   src={selectedProvider.image}
