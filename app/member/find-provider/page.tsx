@@ -151,6 +151,18 @@ const providers = [
   },
 ];
 
+const timeSlots = [
+  "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+  "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM"
+];
+
+const visitTypes = [
+  { id: "office", label: "Office Visit", description: "In-person appointment" },
+  { id: "telehealth", label: "Telehealth", description: "Video call from home" },
+  { id: "wellness", label: "Annual Wellness", description: "Preventive care checkup" },
+  { id: "followup", label: "Follow-up", description: "Continue previous treatment" },
+];
+
 export default function FindProviderPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [specialty, setSpecialty] = useState("All Specialties");
@@ -160,6 +172,48 @@ export default function FindProviderPage() {
   const [selectedProvider, setSelectedProvider] = useState<typeof providers[0] | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState("distance");
+  
+  // Booking modal state
+  const [bookingProvider, setBookingProvider] = useState<typeof providers[0] | null>(null);
+  const [bookingStep, setBookingStep] = useState(1);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+  const [selectedVisitType, setSelectedVisitType] = useState("");
+  const [bookingReason, setBookingReason] = useState("");
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+
+  const handleBookAppointment = (provider: typeof providers[0]) => {
+    setBookingProvider(provider);
+    setBookingStep(1);
+    setSelectedDate("");
+    setSelectedTime("");
+    setSelectedVisitType("");
+    setBookingReason("");
+    setBookingSuccess(false);
+  };
+
+  const handleConfirmBooking = () => {
+    setBookingSuccess(true);
+    setTimeout(() => {
+      setBookingProvider(null);
+      setBookingSuccess(false);
+    }, 3000);
+  };
+
+  // Generate next 14 days for date selection
+  const getAvailableDates = () => {
+    const dates = [];
+    const today = new Date();
+    for (let i = 1; i <= 14; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      // Skip Sundays
+      if (date.getDay() !== 0) {
+        dates.push(date);
+      }
+    }
+    return dates;
+  };
 
   const filteredProviders = useMemo(() => {
     let results = providers.filter((provider) => {
@@ -367,11 +421,17 @@ export default function FindProviderPage() {
 
                 {/* Actions */}
                 <div className="flex flex-wrap gap-3">
-                  <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                  <button 
+                    onClick={() => handleBookAppointment(provider)}
+                    className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                  >
                     <Calendar className="w-4 h-4" />
                     Book Appointment
                   </button>
-                  <button className="px-4 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+                  <button 
+                    onClick={() => window.open(`tel:+12165550${100 + provider.id}`, '_self')}
+                    className="px-4 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+                  >
                     <Phone className="w-4 h-4" />
                     Call
                   </button>
@@ -482,17 +542,307 @@ export default function FindProviderPage() {
             </div>
 
             <div className="px-6 py-4 border-t border-gray-200 flex gap-3">
-              <button className="flex-1 px-4 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
+              <button 
+                onClick={() => {
+                  setSelectedProvider(null);
+                  handleBookAppointment(selectedProvider);
+                }}
+                className="flex-1 px-4 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center gap-2"
+              >
                 <Calendar className="w-5 h-5" />
                 Book Appointment
               </button>
-              <button className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors">
+              <button 
+                onClick={() => window.open(`tel:+12165550${100 + selectedProvider.id}`, '_self')}
+                className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+              >
                 <Phone className="w-5 h-5" />
               </button>
-              <button className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors">
+              <button 
+                onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProvider.address + ' ' + selectedProvider.city)}`, '_blank')}
+                className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+              >
                 <Navigation className="w-5 h-5" />
               </button>
             </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Booking Modal */}
+      {bookingProvider && (
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setBookingProvider(null)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {bookingSuccess ? (
+              <div className="p-8 text-center">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle2 className="w-10 h-10 text-green-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Appointment Booked!</h3>
+                <p className="text-gray-600 mb-4">
+                  Your appointment with {bookingProvider.name} has been confirmed.
+                </p>
+                <div className="bg-gray-50 rounded-xl p-4 text-left mb-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Calendar className="w-5 h-5 text-teal-600" />
+                    <span className="font-medium text-gray-900">
+                      {selectedDate && new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <Clock className="w-5 h-5 text-teal-600" />
+                    <span className="font-medium text-gray-900">{selectedTime}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <MapPin className="w-5 h-5 text-teal-600" />
+                    <span className="text-gray-600">{bookingProvider.practice}</span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-500">A confirmation email has been sent to your inbox.</p>
+              </div>
+            ) : (
+              <>
+                {/* Header */}
+                <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Book Appointment</h3>
+                    <p className="text-sm text-gray-500">Step {bookingStep} of 3</p>
+                  </div>
+                  <button
+                    onClick={() => setBookingProvider(null)}
+                    className="p-2 hover:bg-gray-100 rounded-lg"
+                  >
+                    <X className="w-5 h-5 text-gray-500" />
+                  </button>
+                </div>
+
+                {/* Provider Summary */}
+                <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={bookingProvider.image}
+                      alt={bookingProvider.name}
+                      className="w-14 h-14 rounded-xl object-cover"
+                    />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{bookingProvider.name}</h4>
+                      <p className="text-sm text-teal-600">{bookingProvider.specialty}</p>
+                      <p className="text-sm text-gray-500">{bookingProvider.practice}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step Content */}
+                <div className="p-6">
+                  {/* Step 1: Select Date */}
+                  {bookingStep === 1 && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-4">Select a Date</h4>
+                      <div className="grid grid-cols-3 gap-2">
+                        {getAvailableDates().map((date) => {
+                          const dateStr = date.toISOString().split('T')[0];
+                          const isSelected = selectedDate === dateStr;
+                          return (
+                            <button
+                              key={dateStr}
+                              onClick={() => setSelectedDate(dateStr)}
+                              className={`p-3 rounded-xl text-center transition-colors ${
+                                isSelected
+                                  ? "bg-teal-600 text-white"
+                                  : "bg-gray-50 hover:bg-gray-100 text-gray-900"
+                              }`}
+                            >
+                              <div className="text-xs uppercase tracking-wide opacity-70">
+                                {date.toLocaleDateString('en-US', { weekday: 'short' })}
+                              </div>
+                              <div className="text-lg font-semibold">
+                                {date.getDate()}
+                              </div>
+                              <div className="text-xs opacity-70">
+                                {date.toLocaleDateString('en-US', { month: 'short' })}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 2: Select Time & Visit Type */}
+                  {bookingStep === 2 && (
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="font-medium text-gray-900 mb-3">Select a Time</h4>
+                        <div className="grid grid-cols-4 gap-2">
+                          {timeSlots.map((time) => {
+                            const isSelected = selectedTime === time;
+                            // Randomly disable some times for realism
+                            const isDisabled = time === "11:00 AM" || time === "2:30 PM";
+                            return (
+                              <button
+                                key={time}
+                                onClick={() => !isDisabled && setSelectedTime(time)}
+                                disabled={isDisabled}
+                                className={`p-2 rounded-lg text-sm font-medium transition-colors ${
+                                  isDisabled
+                                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                    : isSelected
+                                    ? "bg-teal-600 text-white"
+                                    : "bg-gray-50 hover:bg-gray-100 text-gray-900"
+                                }`}
+                              >
+                                {time}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="font-medium text-gray-900 mb-3">Visit Type</h4>
+                        <div className="space-y-2">
+                          {visitTypes.map((type) => {
+                            const isSelected = selectedVisitType === type.id;
+                            const isDisabled = type.id === "telehealth" && !bookingProvider.telehealth;
+                            return (
+                              <button
+                                key={type.id}
+                                onClick={() => !isDisabled && setSelectedVisitType(type.id)}
+                                disabled={isDisabled}
+                                className={`w-full p-4 rounded-xl text-left transition-colors flex items-center gap-4 ${
+                                  isDisabled
+                                    ? "bg-gray-50 text-gray-400 cursor-not-allowed"
+                                    : isSelected
+                                    ? "bg-teal-50 border-2 border-teal-500"
+                                    : "bg-gray-50 hover:bg-gray-100 border-2 border-transparent"
+                                }`}
+                              >
+                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                                  isSelected ? "bg-teal-100" : "bg-white"
+                                }`}>
+                                  {type.id === "telehealth" ? (
+                                    <Video className={`w-5 h-5 ${isSelected ? "text-teal-600" : "text-gray-500"}`} />
+                                  ) : type.id === "wellness" ? (
+                                    <Heart className={`w-5 h-5 ${isSelected ? "text-teal-600" : "text-gray-500"}`} />
+                                  ) : (
+                                    <User className={`w-5 h-5 ${isSelected ? "text-teal-600" : "text-gray-500"}`} />
+                                  )}
+                                </div>
+                                <div>
+                                  <p className={`font-medium ${isDisabled ? "text-gray-400" : "text-gray-900"}`}>
+                                    {type.label}
+                                  </p>
+                                  <p className={`text-sm ${isDisabled ? "text-gray-300" : "text-gray-500"}`}>
+                                    {isDisabled ? "Not available for this provider" : type.description}
+                                  </p>
+                                </div>
+                                {isSelected && (
+                                  <CheckCircle2 className="w-5 h-5 text-teal-600 ml-auto" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 3: Reason & Confirm */}
+                  {bookingStep === 3 && (
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="font-medium text-gray-900 mb-3">Reason for Visit</h4>
+                        <textarea
+                          value={bookingReason}
+                          onChange={(e) => setBookingReason(e.target.value)}
+                          placeholder="Briefly describe your symptoms or reason for the appointment..."
+                          className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+                          rows={3}
+                        />
+                      </div>
+
+                      {/* Appointment Summary */}
+                      <div className="bg-teal-50 rounded-xl p-4">
+                        <h4 className="font-medium text-teal-900 mb-3">Appointment Summary</h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-teal-700">Date:</span>
+                            <span className="font-medium text-teal-900">
+                              {selectedDate && new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-teal-700">Time:</span>
+                            <span className="font-medium text-teal-900">{selectedTime}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-teal-700">Visit Type:</span>
+                            <span className="font-medium text-teal-900">
+                              {visitTypes.find(t => t.id === selectedVisitType)?.label}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-teal-700">Estimated Copay:</span>
+                            <span className="font-medium text-teal-900">$25</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
+                        <Clock className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                        <div className="text-sm">
+                          <p className="font-medium text-amber-900">Cancellation Policy</p>
+                          <p className="text-amber-700">Please cancel at least 24 hours in advance to avoid a $25 cancellation fee.</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Footer */}
+                <div className="px-6 py-4 border-t border-gray-200 flex gap-3">
+                  {bookingStep > 1 && (
+                    <button
+                      onClick={() => setBookingStep(bookingStep - 1)}
+                      className="px-4 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      Back
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setBookingProvider(null)}
+                    className="px-4 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <div className="flex-1" />
+                  {bookingStep < 3 ? (
+                    <button
+                      onClick={() => setBookingStep(bookingStep + 1)}
+                      disabled={(bookingStep === 1 && !selectedDate) || (bookingStep === 2 && (!selectedTime || !selectedVisitType))}
+                      className="px-6 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Continue
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleConfirmBooking}
+                      className="px-6 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                    >
+                      Confirm Booking
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
           </motion.div>
         </div>
       )}
