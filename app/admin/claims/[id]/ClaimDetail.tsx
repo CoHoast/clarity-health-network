@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, FileText, User, Building2, Calendar, DollarSign, Clock, CheckCircle, AlertTriangle, X, Send, Calculator, RefreshCw, TrendingDown, Info } from "lucide-react";
+import { ArrowLeft, FileText, User, Building2, Calendar, DollarSign, Clock, CheckCircle, AlertTriangle, X, Send, Calculator, RefreshCw, TrendingDown, Info, ClipboardCheck, ShieldCheck, XCircle, Pause } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -52,6 +52,41 @@ interface RepricingResult {
   warnings: string[];
 }
 
+interface ValidationError {
+  ruleId: string;
+  level: number;
+  category: string;
+  severity: string;
+  errorCode: string;
+  errorMessage: string;
+  field?: string;
+}
+
+interface ValidationWarning {
+  ruleId: string;
+  level: number;
+  category: string;
+  warningMessage: string;
+}
+
+interface ValidationResult {
+  claimId: string;
+  transactionId: string;
+  processingTimeMs: number;
+  passed: boolean;
+  status: string;
+  validationLevel: number;
+  levelsCompleted: number[];
+  errors: ValidationError[];
+  warnings: ValidationWarning[];
+  denialReasons?: string[];
+  pendQueue?: string;
+  pendReason?: string;
+  autoAdjudicated: boolean;
+  autoAdjudicationReason?: string;
+  summary: string;
+}
+
 const mockClaim = {
   id: "CLM-2024-0156",
   status: "pending_review",
@@ -79,10 +114,14 @@ export default function ClaimDetail({ id }: { id: string }) {
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [showDenyModal, setShowDenyModal] = useState(false);
   const [showRepriceModal, setShowRepriceModal] = useState(false);
+  const [showValidateModal, setShowValidateModal] = useState(false);
   const [actionSuccess, setActionSuccess] = useState<string | null>(null);
   const [isRepricing, setIsRepricing] = useState(false);
   const [repricingResult, setRepricingResult] = useState<RepricingResult | null>(null);
   const [repricingError, setRepricingError] = useState<string | null>(null);
+  const [isValidating, setIsValidating] = useState(false);
+  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const [serviceLines, setServiceLines] = useState<ServiceLine[]>(mockClaim.serviceLines);
   const [billing, setBilling] = useState(mockClaim.billing);
 
@@ -132,6 +171,47 @@ export default function ClaimDetail({ id }: { id: string }) {
       setRepricingError(error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setIsRepricing(false);
+    }
+  };
+
+  const handleValidate = async () => {
+    setIsValidating(true);
+    setValidationError(null);
+    
+    try {
+      const response = await fetch('/api/admin/claims/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          claimId: mockClaim.id,
+          memberId: mockClaim.member.memberId,
+          memberDob: mockClaim.member.dob,
+          billingNpi: mockClaim.provider.npi,
+          providerName: mockClaim.provider.name,
+          claimType: 'PROFESSIONAL',
+          serviceFromDate: mockClaim.dateOfService,
+          submittedDate: mockClaim.submittedDate,
+          totalCharges: mockClaim.billing.billedAmount,
+          diagnosisCodes: mockClaim.diagnosis.map(d => d.split(' - ')[0]),
+          serviceLines: mockClaim.serviceLines.map((line, i) => ({
+            lineNumber: i + 1,
+            procedureCode: line.cpt,
+            chargeAmount: line.billed,
+            quantity: line.qty,
+          })),
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to validate claim');
+      }
+      
+      const result = await response.json();
+      setValidationResult(result);
+    } catch (error) {
+      setValidationError(error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setIsValidating(false);
     }
   };
 
@@ -212,13 +292,22 @@ export default function ClaimDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
               <h3 className="font-semibold text-white">Service Lines</h3>
-              <button
-                onClick={() => { setShowRepriceModal(true); handleReprice(); }}
-                className="flex items-center gap-2 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-colors"
-              >
-                <Calculator className="w-4 h-4" />
-                Reprice
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => { setShowValidateModal(true); handleValidate(); }}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm rounded-lg transition-colors"
+                >
+                  <ClipboardCheck className="w-4 h-4" />
+                  Validate
+                </button>
+                <button
+                  onClick={() => { setShowRepriceModal(true); handleReprice(); }}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-colors"
+                >
+                  <Calculator className="w-4 h-4" />
+                  Reprice
+                </button>
+              </div>
             </div>
             <table className="w-full">
               <thead className="bg-slate-800 border-b border-slate-700">
@@ -268,6 +357,7 @@ export default function ClaimDetail({ id }: { id: string }) {
             <div className="space-y-2">
               <button onClick={() => setShowApproveModal(true)} className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-2"><CheckCircle className="w-4 h-4" />Approve Claim</button>
               <button onClick={() => setShowDenyModal(true)} className="w-full px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 flex items-center justify-center gap-2"><X className="w-4 h-4" />Deny Claim</button>
+              <button onClick={() => { setShowValidateModal(true); handleValidate(); }} className="w-full px-4 py-2 bg-emerald-600/20 text-emerald-400 rounded-lg hover:bg-emerald-600/30 flex items-center justify-center gap-2"><ClipboardCheck className="w-4 h-4" />Validate Claim</button>
               <button onClick={() => { setShowRepriceModal(true); handleReprice(); }} className="w-full px-4 py-2 bg-purple-600/20 text-purple-400 rounded-lg hover:bg-purple-600/30 flex items-center justify-center gap-2"><Calculator className="w-4 h-4" />Reprice Claim</button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Request More Info</button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">View EOB Preview</button>
@@ -452,6 +542,196 @@ export default function ClaimDetail({ id }: { id: string }) {
                     <CheckCircle className="w-4 h-4" />
                     Apply Repriced Amounts
                   </button>
+                </div>
+              )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Validation Modal */}
+      <AnimatePresence>
+        {showValidateModal && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowValidateModal(false)} className="fixed inset-0 bg-black/60 z-50" />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl max-h-[90vh] overflow-auto bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
+              <div className="p-4 border-b border-slate-700 flex items-center justify-between sticky top-0 bg-slate-800 z-10">
+                <h3 className="font-semibold text-white flex items-center gap-2">
+                  <ClipboardCheck className="w-5 h-5 text-emerald-400" />
+                  Claims Validation Engine
+                </h3>
+                <button onClick={() => setShowValidateModal(false)} className="p-1 text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
+              </div>
+              
+              <div className="p-4 space-y-4">
+                {isValidating ? (
+                  <div className="flex flex-col items-center justify-center py-12">
+                    <RefreshCw className="w-8 h-8 text-emerald-400 animate-spin mb-4" />
+                    <p className="text-white font-medium">Running 5-level validation pipeline...</p>
+                    <p className="text-slate-400 text-sm">Syntax → Business → Eligibility → Provider → Clinical</p>
+                  </div>
+                ) : validationError ? (
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                    <p className="text-red-400 font-medium">Validation Failed</p>
+                    <p className="text-red-300 text-sm">{validationError}</p>
+                  </div>
+                ) : validationResult ? (
+                  <>
+                    {/* Status Summary */}
+                    <div className={`rounded-xl p-5 border ${
+                      validationResult.status === 'approved' ? 'bg-green-500/10 border-green-500/30' :
+                      validationResult.status === 'accepted' ? 'bg-emerald-500/10 border-emerald-500/30' :
+                      validationResult.status === 'pended' ? 'bg-amber-500/10 border-amber-500/30' :
+                      validationResult.status === 'denied' ? 'bg-red-500/10 border-red-500/30' :
+                      'bg-slate-700/50 border-slate-600'
+                    }`}>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          {validationResult.status === 'approved' && <ShieldCheck className="w-10 h-10 text-green-400" />}
+                          {validationResult.status === 'accepted' && <CheckCircle className="w-10 h-10 text-emerald-400" />}
+                          {validationResult.status === 'pended' && <Pause className="w-10 h-10 text-amber-400" />}
+                          {validationResult.status === 'denied' && <XCircle className="w-10 h-10 text-red-400" />}
+                          {validationResult.status === 'rejected' && <XCircle className="w-10 h-10 text-red-400" />}
+                          <div>
+                            <p className={`text-2xl font-bold ${
+                              validationResult.status === 'approved' ? 'text-green-400' :
+                              validationResult.status === 'accepted' ? 'text-emerald-400' :
+                              validationResult.status === 'pended' ? 'text-amber-400' :
+                              'text-red-400'
+                            }`}>
+                              {validationResult.status.toUpperCase()}
+                            </p>
+                            <p className="text-slate-400 text-sm">
+                              {validationResult.autoAdjudicated ? 'Auto-Adjudicated' : 'Manual Review Required'}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-slate-400 text-sm">Processing Time</p>
+                          <p className="text-white font-mono">{validationResult.processingTimeMs}ms</p>
+                        </div>
+                      </div>
+                      
+                      <p className="text-white">{validationResult.summary}</p>
+                      
+                      {validationResult.autoAdjudicationReason && !validationResult.autoAdjudicated && (
+                        <p className="text-amber-400 text-sm mt-2">⚠️ {validationResult.autoAdjudicationReason}</p>
+                      )}
+                    </div>
+
+                    {/* Validation Levels Progress */}
+                    <div className="bg-slate-700/50 rounded-lg p-4">
+                      <h4 className="text-white font-medium mb-3">Validation Pipeline</h4>
+                      <div className="flex items-center gap-2">
+                        {[1, 2, 3, 4, 5].map((level) => {
+                          const completed = validationResult.levelsCompleted.includes(level);
+                          const failed = validationResult.validationLevel === level && !validationResult.passed;
+                          const levelNames = ['Syntax', 'Business', 'Eligibility', 'Provider', 'Clinical'];
+                          
+                          return (
+                            <div key={level} className="flex-1">
+                              <div className={`h-2 rounded-full ${
+                                completed && !failed ? 'bg-emerald-500' :
+                                failed ? 'bg-red-500' :
+                                'bg-slate-600'
+                              }`} />
+                              <p className={`text-xs mt-1 text-center ${
+                                completed && !failed ? 'text-emerald-400' :
+                                failed ? 'text-red-400' :
+                                'text-slate-500'
+                              }`}>
+                                L{level}: {levelNames[level - 1]}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Errors */}
+                    {validationResult.errors.length > 0 && (
+                      <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                        <h4 className="font-medium text-red-400 mb-3 flex items-center gap-2">
+                          <XCircle className="w-4 h-4" />
+                          Errors ({validationResult.errors.length})
+                        </h4>
+                        <div className="space-y-2">
+                          {validationResult.errors.map((error, i) => (
+                            <div key={i} className="bg-slate-800/50 rounded-lg p-3 border-l-4 border-red-500">
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="font-mono text-xs text-red-400">{error.ruleId}</span>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-slate-400">Level {error.level}</span>
+                                  <span className={`px-2 py-0.5 text-xs rounded ${
+                                    error.severity === 'REJECT' || error.severity === 'DENY' ? 'bg-red-500/20 text-red-400' :
+                                    error.severity === 'PEND' ? 'bg-amber-500/20 text-amber-400' :
+                                    'bg-slate-600 text-slate-300'
+                                  }`}>{error.severity}</span>
+                                </div>
+                              </div>
+                              <p className="text-white text-sm">{error.errorMessage}</p>
+                              {error.field && (
+                                <p className="text-slate-500 text-xs mt-1">Field: {error.field}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Warnings */}
+                    {validationResult.warnings.length > 0 && (
+                      <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                        <h4 className="font-medium text-amber-400 mb-3 flex items-center gap-2">
+                          <AlertTriangle className="w-4 h-4" />
+                          Warnings ({validationResult.warnings.length})
+                        </h4>
+                        <div className="space-y-2">
+                          {validationResult.warnings.map((warning, i) => (
+                            <div key={i} className="flex items-start gap-2 text-sm">
+                              <span className="font-mono text-xs text-amber-400 mt-0.5">{warning.ruleId}</span>
+                              <p className="text-amber-300">{warning.warningMessage}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Pend Info */}
+                    {validationResult.pendQueue && (
+                      <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                        <h4 className="font-medium text-amber-400 mb-2">Pend Queue Assignment</h4>
+                        <p className="text-white">Queue: <span className="font-mono">{validationResult.pendQueue}</span></p>
+                        {validationResult.pendReason && (
+                          <p className="text-amber-300 text-sm mt-1">Reason: {validationResult.pendReason}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Denial Reasons */}
+                    {validationResult.denialReasons && validationResult.denialReasons.length > 0 && (
+                      <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                        <h4 className="font-medium text-red-400 mb-2">Denial Reason Codes</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {validationResult.denialReasons.map((code, i) => (
+                            <span key={i} className="px-2 py-1 bg-red-500/20 text-red-400 rounded font-mono text-sm">{code}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : null}
+              </div>
+              
+              {!isValidating && validationResult && (
+                <div className="flex gap-2 p-4 border-t border-slate-700 sticky bottom-0 bg-slate-800">
+                  <button onClick={() => setShowValidateModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
+                  {validationResult.status === 'approved' || validationResult.status === 'accepted' ? (
+                    <button onClick={() => { setShowValidateModal(false); setShowRepriceModal(true); handleReprice(); }} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2">
+                      <Calculator className="w-4 h-4" />
+                      Continue to Reprice
+                    </button>
+                  ) : null}
                 </div>
               )}
             </motion.div>
