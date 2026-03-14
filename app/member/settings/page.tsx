@@ -171,7 +171,7 @@ export default function SettingsPage() {
                   </div>
                   <div>
                     <label className="block text-sm text-gray-500 mb-1">Plan Name</label>
-                    <p className="font-medium text-gray-900">Clarity Health PPO</p>
+                    <p className="font-medium text-gray-900">MedCare Health PPO</p>
                   </div>
                   <div>
                     <label className="block text-sm text-gray-500 mb-1">Coverage Type</label>

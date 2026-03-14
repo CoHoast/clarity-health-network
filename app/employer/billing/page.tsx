@@ -388,7 +388,7 @@ export default function BillingPage() {
                       {/* Invoice Header */}
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="font-semibold text-gray-900">Clarity Health Network</p>
+                          <p className="font-semibold text-gray-900">MedCare Health Network</p>
                           <p className="text-sm text-gray-500">123 Healthcare Ave</p>
                           <p className="text-sm text-gray-500">San Francisco, CA 94102</p>
                         </div>

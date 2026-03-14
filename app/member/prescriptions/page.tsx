@@ -90,7 +90,7 @@ const pharmacies = [
   { id: 1, name: "CVS Pharmacy - Main St", address: "1234 Main Street, Cleveland, OH 44101", phone: "(216) 555-0150", hours: "8:00 AM - 9:00 PM", distance: "0.5 mi" },
   { id: 2, name: "Walgreens - Oak Ave", address: "567 Oak Avenue, Cleveland, OH 44102", phone: "(216) 555-0160", hours: "7:00 AM - 10:00 PM", distance: "1.2 mi" },
   { id: 3, name: "Rite Aid - Downtown", address: "890 Downtown Blvd, Cleveland, OH 44103", phone: "(216) 555-0170", hours: "8:00 AM - 8:00 PM", distance: "2.0 mi" },
-  { id: 4, name: "Clarity Mail Order Pharmacy", address: "P.O. Box 12345, Cleveland, OH 44199", phone: "(800) 555-0180", hours: "24/7 Online", distance: "Mail Order" },
+  { id: 4, name: "MedCare Mail Order Pharmacy", address: "P.O. Box 12345, Cleveland, OH 44199", phone: "(800) 555-0180", hours: "24/7 Online", distance: "Mail Order" },
 ];
 
 const recentOrders = [
@@ -549,7 +549,7 @@ export default function PrescriptionsPage() {
                 </button>
               </div>
               <div className="p-6 space-y-4">
-                <p className="text-gray-600">Transfer a prescription from another pharmacy to your preferred Clarity Health pharmacy.</p>
+                <p className="text-gray-600">Transfer a prescription from another pharmacy to your preferred MedCare Health pharmacy.</p>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Current Pharmacy Name</label>
                   <input type="text" placeholder="e.g., Walgreens" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" />

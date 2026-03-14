@@ -77,8 +77,8 @@ export default function LoginPage() {
           {/* Logo */}
           <Link href="/" className="block mb-8">
             <img 
-              src="/clarity-logo.png" 
-              alt="Clarity Health Network" 
+              src="/medcare-logo.png" 
+              alt="MedCare Health Network" 
               className="h-14 w-auto"
             />
           </Link>
@@ -221,8 +221,8 @@ export default function LoginPage() {
         
         <div className="relative text-white text-center max-w-md">
           <img 
-            src="/clarity-logo-dark.png" 
-            alt="Clarity Health Network" 
+            src="/medcare-logo.png" 
+            alt="MedCare Health Network" 
             className="h-16 w-auto mx-auto mb-8"
           />
           <h2 className="text-3xl font-bold mb-4">Your Health, Simplified</h2>

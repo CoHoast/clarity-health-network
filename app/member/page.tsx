@@ -376,7 +376,7 @@ export default function MemberDashboard() {
                   <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                     <Shield className="w-5 h-5" />
                   </div>
-                  <span className="font-bold">Clarity Health</span>
+                  <span className="font-bold">MedCare Health</span>
                 </div>
                 <span className="text-xs bg-white/20 px-2 py-1 rounded">PPO</span>
               </div>

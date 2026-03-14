@@ -13,7 +13,7 @@ const contracts = [
     effectiveDate: "2024-01-01",
     expirationDate: "2026-12-31",
     status: "Active",
-    description: "Standard participating provider agreement for primary care services within the Clarity Health Network.",
+    description: "Standard participating provider agreement for primary care services within the MedCare Health Network.",
     terms: ["In-network fee schedule rates", "Timely filing requirements (90 days)", "Credentialing maintenance", "Quality reporting requirements"]
   },
   {
@@ -70,7 +70,7 @@ export default function ContractsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Contracts</h1>
-        <p className="text-gray-600">View your provider agreements with Clarity Health Network</p>
+        <p className="text-gray-600">View your provider agreements with MedCare Health Network</p>
       </div>
 
       {/* Summary Cards */}
@@ -401,7 +401,7 @@ export default function ContractsPage() {
                     <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-600">
                       <p>You can also reach us at:</p>
                       <p className="font-medium">1-800-555-0150</p>
-                      <p>provider.relations@clarityhealth.com</p>
+                      <p>provider.relations@medcarehealth.com</p>
                     </div>
                   </div>
                   <div className="px-6 pb-6 flex gap-3">

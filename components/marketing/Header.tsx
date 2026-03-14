@@ -25,7 +25,7 @@ export default function MarketingHeader() {
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              1-800-CLARITY
+              1-800-MEDCARE
             </span>
             <span className="hidden sm:inline text-slate-400">|</span>
             <span className="hidden sm:inline">24/7 Member Support</span>
@@ -43,7 +43,7 @@ export default function MarketingHeader() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/clarity-logo.png" alt="Clarity Health Network" className="h-14 w-auto" />
+            <img src="/medcare-logo.png" alt="MedCare Health Network" className="h-14 w-auto" />
           </Link>
 
           {/* Desktop nav */}

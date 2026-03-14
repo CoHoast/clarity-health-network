@@ -1,7 +1,7 @@
 import MemberLayout from "@/components/member/MemberLayout";
 
 export const metadata = {
-  title: "Member Portal | Clarity Health Network",
+  title: "Member Portal | MedCare Health Network",
   description: "Access your benefits, find providers, view claims, and manage your healthcare.",
 };
 

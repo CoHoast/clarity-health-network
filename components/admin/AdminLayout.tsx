@@ -160,7 +160,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Logo */}
         <div className="h-20 flex items-center justify-between px-4 border-b border-slate-800 bg-slate-950">
           <Link href="/" className="flex items-center">
-            <img src="/clarity-logo-dark.png" alt="Clarity Health Network" className="h-12 w-auto" />
+            <img src="/medcare-logo.png" alt="MedCare Health Network" className="h-12 w-auto" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -298,7 +298,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   >
                     <div className={`px-4 py-2 border-b ${theme.dropdownBorder}`}>
                       <p className={`font-semibold ${theme.text}`}>Super Admin</p>
-                      <p className={`text-sm ${theme.textMuted}`}>admin@clarityhealth.com</p>
+                      <p className={`text-sm ${theme.textMuted}`}>admin@medcarehealth.com</p>
                     </div>
                     <Link
                       href="/admin/settings"

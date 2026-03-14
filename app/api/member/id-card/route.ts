@@ -50,8 +50,8 @@ export async function GET(req: NextRequest) {
       rxBin: '610014',
       rxPcn: 'CLRTY',
       rxGroup: member.employer?.groupNumber || 'IND001',
-      network: 'Clarity Health Network',
-      customerService: '1-800-CLARITY',
+      network: 'MedCare Health Network',
+      customerService: '1-800-MEDCARE',
       providerServices: '1-800-555-0100',
     };
 

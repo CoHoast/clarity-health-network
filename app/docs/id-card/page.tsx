@@ -20,7 +20,7 @@ export default function IDCardPage() {
         <div className="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl shadow-xl p-6 mb-4 text-white">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h1 className="text-xl font-bold">Clarity Health Network</h1>
+              <h1 className="text-xl font-bold">MedCare Health Network</h1>
               <p className="text-teal-100 text-sm">Gold PPO Plan</p>
             </div>
             <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
@@ -88,7 +88,7 @@ export default function IDCardPage() {
               <Globe className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-gray-800">Online Portal</p>
-                <p className="text-gray-600">member.clarityhealthnetwork.com</p>
+                <p className="text-gray-600">member.medcarehealthnetwork.com</p>
               </div>
             </div>
 

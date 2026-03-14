@@ -552,7 +552,7 @@ export default function WorkflowsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Escalation Email</label>
-                  <input type="email" placeholder="admin@clarity.com" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
+                  <input type="email" placeholder="admin@medcare.com" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Auto-assign To</label>

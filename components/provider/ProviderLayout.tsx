@@ -112,7 +112,7 @@ export default function ProviderLayout({ children }: { children: React.ReactNode
         {/* Logo */}
         <div className="h-20 flex items-center justify-between px-4 border-b border-slate-700 bg-slate-800">
           <Link href="/" className="flex items-center">
-            <img src="/clarity-logo-dark.png" alt="Clarity Health Network" className="h-12 w-auto" />
+            <img src="/medcare-logo.png" alt="MedCare Health Network" className="h-12 w-auto" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}

@@ -165,7 +165,7 @@ export default function BenefitsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Your Benefits</h1>
-          <p className="text-gray-500 mt-1">Clarity Health PPO Plan • Effective Jan 1, 2024</p>
+          <p className="text-gray-500 mt-1">MedCare Health PPO Plan • Effective Jan 1, 2024</p>
         </div>
         <button className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
           <Download className="w-4 h-4" />
@@ -343,7 +343,7 @@ export default function BenefitsPage() {
           <div className="space-y-4">
             <div>
               <p className="text-sm text-gray-500">Plan Name</p>
-              <p className="font-medium text-gray-900">Clarity Health PPO</p>
+              <p className="font-medium text-gray-900">MedCare Health PPO</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Plan Type</p>

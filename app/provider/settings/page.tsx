@@ -8,7 +8,7 @@ const initialNotifications = [
   { id: "payments", label: "Payment notifications", description: "Receive alerts for new payments", enabled: true },
   { id: "messages", label: "New messages", description: "Be notified of new messages", enabled: true },
   { id: "credentials", label: "Credential reminders", description: "Alerts for expiring credentials", enabled: true },
-  { id: "newsletter", label: "Newsletter & updates", description: "Monthly updates from Clarity Health", enabled: false },
+  { id: "newsletter", label: "Newsletter & updates", description: "Monthly updates from MedCare Health", enabled: false },
 ];
 
 export default function SettingsPage() {

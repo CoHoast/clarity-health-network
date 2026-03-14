@@ -104,7 +104,7 @@ const categoryArticles: Record<string, { title: string; summary: string; readTim
     { title: "Submitting claims for out-of-network care", summary: "How to file claims when you see a provider outside the network.", readTime: "4 min" },
   ],
   benefits: [
-    { title: "Understanding your PPO plan benefits", summary: "Overview of what your Clarity Health PPO plan covers and how it works.", readTime: "5 min" },
+    { title: "Understanding your PPO plan benefits", summary: "Overview of what your MedCare Health PPO plan covers and how it works.", readTime: "5 min" },
     { title: "What's covered under preventive care?", summary: "Complete list of preventive services covered at 100% with no cost to you.", readTime: "4 min" },
     { title: "Mental health and behavioral health coverage", summary: "Your coverage for therapy, counseling, psychiatry, and substance abuse treatment.", readTime: "4 min" },
     { title: "Prescription drug coverage and formulary", summary: "How your prescription benefits work and how to find covered medications.", readTime: "5 min" },
@@ -161,7 +161,7 @@ const faqs = [
   },
   {
     q: "Do I need a referral to see a specialist?",
-    a: "No! With your Clarity Health PPO plan, you have direct access to any in-network specialist without needing a referral from your primary care physician. This gives you the flexibility to manage your own care."
+    a: "No! With your MedCare Health PPO plan, you have direct access to any in-network specialist without needing a referral from your primary care physician. This gives you the flexibility to manage your own care."
   },
   {
     q: "How long does it take to process a claim?",
@@ -245,7 +245,7 @@ export default function HelpPage() {
           </div>
         </button>
         <button 
-          onClick={() => window.location.href = 'mailto:support@clarityhealth.com?subject=Support Request'}
+          onClick={() => window.location.href = 'mailto:support@medcarehealth.com?subject=Support Request'}
           className="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-xl hover:border-teal-300 hover:shadow-md transition-all"
         >
           <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
@@ -253,7 +253,7 @@ export default function HelpPage() {
           </div>
           <div className="text-left">
             <p className="font-semibold text-gray-900">Email Us</p>
-            <p className="text-gray-500 text-sm">support@clarityhealth.com</p>
+            <p className="text-gray-500 text-sm">support@medcarehealth.com</p>
           </div>
         </button>
       </div>
@@ -598,12 +598,12 @@ export default function HelpPage() {
                   <h2 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Overview</h2>
                   <p className="text-gray-600 mb-4">
                     This article provides detailed information to help you understand this topic and take the appropriate actions. 
-                    As a Clarity Health member, you have access to comprehensive resources and support.
+                    As a MedCare Health member, you have access to comprehensive resources and support.
                   </p>
 
                   <h2 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Step-by-Step Guide</h2>
                   <ol className="list-decimal list-inside space-y-2 text-gray-600 mb-4">
-                    <li>Log in to your member portal at member.clarityhealth.com</li>
+                    <li>Log in to your member portal at member.medcarehealth.com</li>
                     <li>Navigate to the relevant section from your dashboard</li>
                     <li>Follow the on-screen instructions to complete your request</li>
                     <li>Review and confirm your information</li>
@@ -613,7 +613,7 @@ export default function HelpPage() {
                   <h2 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Important Information</h2>
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                     <p className="text-blue-800 text-sm">
-                      💡 <strong>Tip:</strong> You can also complete this action through the Clarity Health mobile app, 
+                      💡 <strong>Tip:</strong> You can also complete this action through the MedCare Health mobile app, 
                       available for iOS and Android devices.
                     </p>
                   </div>

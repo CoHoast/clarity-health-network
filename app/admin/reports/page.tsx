@@ -14,9 +14,9 @@ const reportTemplates = [
 ];
 
 const scheduledReports = [
-  { id: 1, name: "Monthly Claims Summary", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["admin@clarity.health", "finance@clarity.health"], status: "active", template: "claims-summary" },
-  { id: 2, name: "Weekly Member Census", frequency: "Weekly", nextRun: "Mar 18, 2026", recipients: ["hr@clarity.health"], status: "active", template: "member-census" },
-  { id: 3, name: "Daily Fraud Alerts", frequency: "Daily", nextRun: "Mar 13, 2026", recipients: ["compliance@clarity.health", "security@clarity.health"], status: "active", template: "fraud-detection" },
+  { id: 1, name: "Monthly Claims Summary", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["admin@medcare.health", "finance@medcare.health"], status: "active", template: "claims-summary" },
+  { id: 2, name: "Weekly Member Census", frequency: "Weekly", nextRun: "Mar 18, 2026", recipients: ["hr@medcare.health"], status: "active", template: "member-census" },
+  { id: 3, name: "Daily Fraud Alerts", frequency: "Daily", nextRun: "Mar 13, 2026", recipients: ["compliance@medcare.health", "security@medcare.health"], status: "active", template: "fraud-detection" },
 ];
 
 const recentReports = [

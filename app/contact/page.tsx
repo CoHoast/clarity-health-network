@@ -53,8 +53,8 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: Phone, title: "Call Us", info: "1-800-CLARITY", sub: "24/7 Member Support" },
-              { icon: Mail, title: "Email Us", info: "support@clarityhealth.com", sub: "Response within 24 hours" },
+              { icon: Phone, title: "Call Us", info: "1-800-MEDCARE", sub: "24/7 Member Support" },
+              { icon: Mail, title: "Email Us", info: "support@medcarehealth.com", sub: "Response within 24 hours" },
               { icon: MapPin, title: "Visit Us", info: "Cleveland, OH", sub: "Serving all 50 states" },
             ].map((item, i) => (
               <motion.div
@@ -158,9 +158,9 @@ export default function ContactPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Help</h2>
               <div className="space-y-4">
                 {[
-                  { icon: Heart, title: "Member Support", desc: "Benefits, claims, ID cards", phone: "1-800-CLARITY x1" },
-                  { icon: Building2, title: "Provider Support", desc: "Eligibility, claims, payments", phone: "1-800-CLARITY x2" },
-                  { icon: Users, title: "Employer Support", desc: "Plans, enrollment, billing", phone: "1-800-CLARITY x3" },
+                  { icon: Heart, title: "Member Support", desc: "Benefits, claims, ID cards", phone: "1-800-MEDCARE x1" },
+                  { icon: Building2, title: "Provider Support", desc: "Eligibility, claims, payments", phone: "1-800-MEDCARE x2" },
+                  { icon: Users, title: "Employer Support", desc: "Plans, enrollment, billing", phone: "1-800-MEDCARE x3" },
                 ].map((item, i) => (
                   <div key={i} className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-lg transition-shadow">
                     <div className="flex items-start gap-4">

@@ -21,7 +21,7 @@ export default function EOBPage() {
           {/* Header */}
           <div className="flex justify-between items-start border-b border-gray-200 pb-6 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-teal-600">Clarity Health Network</h1>
+              <h1 className="text-2xl font-bold text-teal-600">MedCare Health Network</h1>
               <p className="text-gray-500">Explanation of Benefits</p>
             </div>
             <div className="text-right">
@@ -124,7 +124,7 @@ export default function EOBPage() {
           {/* Footer */}
           <div className="border-t border-gray-200 pt-6 text-sm text-gray-500">
             <p className="mb-2"><strong>This is not a bill.</strong> You may receive a separate bill from your provider for the amount you owe.</p>
-            <p>If you have questions about this EOB, please contact Member Services at 1-800-555-0123 or visit clarityhealthnetwork.com</p>
+            <p>If you have questions about this EOB, please contact Member Services at 1-800-555-0123 or visit medcarehealthnetwork.com</p>
           </div>
         </div>
       </div>

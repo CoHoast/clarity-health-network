@@ -2,7 +2,7 @@
  * Eligibility Engine
  * 
  * Real-time member eligibility verification.
- * Adapted from DOKit Eligibility Engine for Clarity Health Network.
+ * Adapted from DOKit Eligibility Engine for MedCare Health Network.
  */
 
 import prisma from '../db';
@@ -290,7 +290,7 @@ export class EligibilityEngine {
           relationship: member.relationship,
         },
         coverage: {
-          planName: `Clarity Health ${member.planType}`,
+          planName: `MedCare Health ${member.planType}`,
           planType: member.planType,
           effectiveDate: member.effectiveDate.toISOString().split('T')[0],
           terminationDate: member.terminationDate?.toISOString().split('T')[0],
@@ -340,7 +340,7 @@ export class EligibilityEngine {
       },
       
       coverage: {
-        planName: `Clarity Health ${member.planType}`,
+        planName: `MedCare Health ${member.planType}`,
         planType: member.planType,
         effectiveDate: member.effectiveDate.toISOString().split('T')[0],
         terminationDate: member.terminationDate?.toISOString().split('T')[0],
@@ -438,7 +438,7 @@ export class EligibilityEngine {
           'Verify member ID is correct (check insurance card)',
           'Confirm date of birth matches exactly',
           'Member may be enrolled under different ID',
-          'Contact Clarity Health member services: 1-800-CLARITY',
+          'Contact MedCare Health member services: 1-800-MEDCARE',
         ],
       },
     };

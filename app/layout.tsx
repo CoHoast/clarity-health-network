@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Clarity Health Network | PPO Healthcare Network",
+  title: "MedCare Health Network | PPO Healthcare Network",
   description: "Quality healthcare. Nationwide network. Real savings. Access 50,000+ providers and save up to 40% on healthcare costs.",
 };
 

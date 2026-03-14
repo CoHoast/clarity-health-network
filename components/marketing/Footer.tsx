@@ -15,7 +15,7 @@ export default function MarketingFooter() {
                 <span className="text-white text-xl font-bold">C</span>
               </div>
               <div>
-                <span className="text-xl font-bold text-white">Clarity</span>
+                <span className="text-xl font-bold text-white">MedCare</span>
                 <span className="text-xs text-slate-400 block -mt-1">HEALTH NETWORK</span>
               </div>
             </div>
@@ -79,14 +79,14 @@ export default function MarketingFooter() {
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-white font-medium">1-800-CLARITY</p>
+                  <p className="text-white font-medium">1-800-MEDCARE</p>
                   <p className="text-sm text-slate-400">24/7 Support</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-white">support@clarityhealth.com</p>
+                  <p className="text-white">support@medcarehealth.com</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
@@ -106,7 +106,7 @@ export default function MarketingFooter() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-slate-400 text-sm">
-              © 2026 Clarity Health Network. All rights reserved.
+              © 2026 MedCare Health Network. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-sm">
               <Link href="/privacy" className="text-slate-400 hover:text-teal-400 transition-colors">Privacy Policy</Link>

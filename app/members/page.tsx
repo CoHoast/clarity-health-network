@@ -192,7 +192,7 @@ export default function MembersPage() {
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <p className="text-teal-200 text-sm">Member ID Card</p>
-                    <h3 className="text-xl font-bold">Clarity Health Network</h3>
+                    <h3 className="text-xl font-bold">MedCare Health Network</h3>
                   </div>
                   <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                     <span className="text-2xl font-bold">C</span>
@@ -308,7 +308,7 @@ export default function MembersPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { icon: MessageCircle, title: "Pulse AI Chat", desc: "Instant answers 24/7", link: "#" },
-              { icon: Phone, title: "Call Us", desc: "1-800-CLARITY", link: "tel:1-800-CLARITY" },
+              { icon: Phone, title: "Call Us", desc: "1-800-MEDCARE", link: "tel:1-800-MEDCARE" },
               { icon: FileText, title: "Help Center", desc: "Browse FAQs & guides", link: "/contact" },
             ].map((item, i) => (
               <a key={i} href={item.link} className="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-lg transition-shadow group">

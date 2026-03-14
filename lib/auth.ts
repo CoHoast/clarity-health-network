@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'clarity-health-demo-jwt-secret';
+const JWT_SECRET = process.env.JWT_SECRET || 'medcare-health-demo-jwt-secret';
 
 export interface JWTPayload {
   id: string;

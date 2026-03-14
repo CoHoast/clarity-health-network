@@ -22,9 +22,9 @@ function ERAContent() {
       address: "1234 Main Street, Cleveland, OH 44101",
     },
     payer: {
-      name: "Clarity Health Network",
+      name: "MedCare Health Network",
       payerId: "CHN001",
-      address: "100 Clarity Way, Cleveland, OH 44115",
+      address: "100 MedCare Way, Cleveland, OH 44115",
     },
     claims: [
       { claimId: "CLM-8821", patient: "John Smith", dos: "03/01/2024", billed: 450.00, allowed: 380.00, paid: 342.00, patientResp: 38.00, adjustments: "CO-45: $70.00" },
@@ -191,7 +191,7 @@ function ERAContent() {
           <div className="px-8 py-4 bg-gray-100 border-t border-gray-200 text-center">
             <p className="text-xs text-gray-500">
               This Electronic Remittance Advice complies with HIPAA ASC X12 835 standards. 
-              For questions, contact provider services at 1-800-CLARITY.
+              For questions, contact provider services at 1-800-MEDCARE.
             </p>
           </div>
         </div>

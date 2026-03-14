@@ -96,7 +96,7 @@ export default function IDCardPage() {
                     <Shield className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
-                    <h2 className="font-bold text-lg sm:text-xl">Clarity Health Network</h2>
+                    <h2 className="font-bold text-lg sm:text-xl">MedCare Health Network</h2>
                     <p className="text-teal-100 text-xs sm:text-sm">PPO Health Plan</p>
                   </div>
                 </div>
@@ -168,7 +168,7 @@ export default function IDCardPage() {
               <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200">
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-teal-600" />
-                  <span className="font-bold text-gray-900 text-sm sm:text-base">Clarity Health Network</span>
+                  <span className="font-bold text-gray-900 text-sm sm:text-base">MedCare Health Network</span>
                 </div>
                 <QrCode className="w-12 h-12 sm:w-14 sm:h-14 text-gray-800" />
               </div>
@@ -199,7 +199,7 @@ export default function IDCardPage() {
                   <div className="bg-gray-50 rounded-lg p-2.5 sm:p-3">
                     <h3 className="font-semibold text-gray-900 text-[10px] sm:text-xs mb-1">Claims Submission</h3>
                     <p className="text-[10px] sm:text-xs text-gray-600 leading-relaxed">
-                      Clarity Health Network<br />
+                      MedCare Health Network<br />
                       P.O. Box 12345<br />
                       Cleveland, OH 44101
                     </p>
@@ -350,7 +350,7 @@ export default function IDCardPage() {
         <div>
           <p className="font-medium text-blue-900">Present your ID card at every appointment</p>
           <p className="text-sm text-blue-700 mt-1">
-            Showing your Clarity Health Network ID card ensures you receive in-network rates. 
+            Showing your MedCare Health Network ID card ensures you receive in-network rates. 
             You can show this digital card or a printed copy.
           </p>
         </div>
@@ -572,7 +572,7 @@ export default function IDCardPage() {
                             <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                               <Shield className="w-5 h-5" />
                             </div>
-                            <span className="font-bold">Clarity Health Network</span>
+                            <span className="font-bold">MedCare Health Network</span>
                           </div>
                           <span className="text-xs bg-white/20 px-2 py-1 rounded">PPO</span>
                         </div>

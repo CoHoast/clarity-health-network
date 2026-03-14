@@ -1,7 +1,7 @@
 import ProviderLayout from "@/components/provider/ProviderLayout";
 
 export const metadata = {
-  title: "Provider Portal | Clarity Health Network",
+  title: "Provider Portal | MedCare Health Network",
   description: "Submit claims, verify eligibility, view payments, and manage your practice.",
 };
 
