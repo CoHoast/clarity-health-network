@@ -27,18 +27,18 @@ export default function HowItWorksPage() {
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 lg:py-28 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-teal-50 to-emerald-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-cyan-50 to-teal-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               HOW IT WORKS
             </span>
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 max-w-3xl mx-auto">
               Simple Steps to
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-600">
                 Better Healthcare Savings
               </span>
             </h1>
@@ -90,7 +90,7 @@ export default function HowItWorksPage() {
                 <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
                   <div className="flex items-center gap-4 mb-6">
                     <span className="text-6xl font-bold text-teal-100">{item.step}</span>
-                    <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-2xl flex items-center justify-center">
+                    <div className="w-14 h-14 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl flex items-center justify-center">
                       <item.icon className="w-7 h-7 text-white" />
                     </div>
                   </div>
@@ -99,7 +99,7 @@ export default function HowItWorksPage() {
                   <ul className="space-y-3">
                     {item.features.map((feature, fi) => (
                       <li key={fi} className="flex items-center gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-teal-600" />
+                        <CheckCircle2 className="w-5 h-5 text-cyan-600" />
                         <span className="text-gray-700">{feature}</span>
                       </li>
                     ))}
@@ -122,7 +122,7 @@ export default function HowItWorksPage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               MEMBER BENEFITS
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -146,7 +146,7 @@ export default function HowItWorksPage() {
                 className="bg-white rounded-2xl p-6 border border-gray-100 text-center hover:shadow-lg transition-shadow"
               >
                 <div className="w-14 h-14 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <benefit.icon className="w-7 h-7 text-teal-600" />
+                  <benefit.icon className="w-7 h-7 text-cyan-600" />
                 </div>
                 <h3 className="font-bold text-gray-900 mb-2">{benefit.title}</h3>
                 <p className="text-gray-600 text-sm">{benefit.desc}</p>
@@ -160,7 +160,7 @@ export default function HowItWorksPage() {
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               COMMON QUESTIONS
             </span>
             <h2 className="text-3xl font-bold text-gray-900">Quick Answers</h2>
@@ -189,7 +189,7 @@ export default function HowItWorksPage() {
           </div>
 
           <div className="text-center mt-8">
-            <Link href="/contact" className="text-teal-600 font-medium hover:text-teal-700">
+            <Link href="/contact" className="text-cyan-600 font-medium hover:text-cyan-700">
               Have more questions? Contact us →
             </Link>
           </div>
@@ -197,7 +197,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-teal-600 to-emerald-600">
+      <section className="py-20 bg-gradient-to-br from-cyan-500 to-teal-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             Ready to Start Saving?
@@ -208,7 +208,7 @@ export default function HowItWorksPage() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/find-provider"
-              className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-white text-teal-700 hover:bg-teal-50 rounded-xl shadow-lg transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-white text-cyan-700 hover:bg-teal-50 rounded-xl shadow-lg transition-colors"
             >
               <Search className="w-5 h-5" />
               Find a Provider

@@ -26,18 +26,18 @@ export default function ContactPage() {
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-teal-50 to-emerald-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-cyan-50 to-teal-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               CONTACT US
             </span>
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
               We're Here to
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-600">
                 Help You
               </span>
             </h1>
@@ -66,10 +66,10 @@ export default function ContactPage() {
                 className="bg-gray-50 rounded-2xl p-8 text-center"
               >
                 <div className="w-14 h-14 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <item.icon className="w-7 h-7 text-teal-600" />
+                  <item.icon className="w-7 h-7 text-cyan-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                <p className="text-teal-600 font-semibold mb-1">{item.info}</p>
+                <p className="text-cyan-600 font-semibold mb-1">{item.info}</p>
                 <p className="text-gray-500 text-sm">{item.sub}</p>
               </motion.div>
             ))}
@@ -101,7 +101,7 @@ export default function ContactPage() {
                       <input
                         type="text"
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                         placeholder="John"
                       />
                     </div>
@@ -110,7 +110,7 @@ export default function ContactPage() {
                       <input
                         type="text"
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                         placeholder="Smith"
                       />
                     </div>
@@ -120,13 +120,13 @@ export default function ContactPage() {
                     <input
                       type="email"
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                       placeholder="john@example.com"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">I am a...</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                    <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                       <option>Member</option>
                       <option>Provider</option>
                       <option>Employer</option>
@@ -138,13 +138,13 @@ export default function ContactPage() {
                     <textarea
                       rows={4}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
                       placeholder="How can we help you?"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-emerald-700 transition-all"
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-semibold rounded-xl hover:from-cyan-600 hover:to-teal-700 transition-all"
                   >
                     <Send className="w-5 h-5" />
                     Send Message
@@ -165,19 +165,19 @@ export default function ContactPage() {
                   <div key={i} className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-lg transition-shadow">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
-                        <item.icon className="w-6 h-6 text-teal-600" />
+                        <item.icon className="w-6 h-6 text-cyan-600" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-bold text-gray-900">{item.title}</h3>
                         <p className="text-sm text-gray-600 mb-2">{item.desc}</p>
-                        <p className="text-teal-600 font-medium">{item.phone}</p>
+                        <p className="text-cyan-600 font-medium">{item.phone}</p>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-8 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl p-6 text-white">
+              <div className="mt-8 bg-gradient-to-br from-cyan-400 to-teal-600 rounded-2xl p-6 text-white">
                 <div className="flex items-center gap-3 mb-3">
                   <Clock className="w-6 h-6" />
                   <h3 className="font-bold text-lg">Hours of Operation</h3>

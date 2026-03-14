@@ -102,7 +102,7 @@ export default function PulseChat({ isOpen, onClose }: { isOpen: boolean; onClos
             className="fixed right-0 top-0 h-full w-full sm:w-[420px] bg-white shadow-2xl z-50 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white">
+            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-cyan-400 to-teal-600 text-white">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   <Zap className="w-5 h-5" />
@@ -131,7 +131,7 @@ export default function PulseChat({ isOpen, onClose }: { isOpen: boolean; onClos
                     className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                       message.role === "user"
                         ? "bg-gray-200"
-                        : "bg-gradient-to-br from-teal-500 to-emerald-600"
+                        : "bg-gradient-to-br from-cyan-400 to-teal-600"
                     }`}
                   >
                     {message.role === "user" ? (
@@ -154,7 +154,7 @@ export default function PulseChat({ isOpen, onClose }: { isOpen: boolean; onClos
 
               {isTyping && (
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-teal-600 flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
                   <div className="bg-gray-100 rounded-2xl px-4 py-3">
@@ -179,7 +179,7 @@ export default function PulseChat({ isOpen, onClose }: { isOpen: boolean; onClos
                     <button
                       key={q}
                       onClick={() => handleSend(q)}
-                      className="px-3 py-1.5 bg-teal-50 text-teal-700 text-xs rounded-full hover:bg-teal-100 transition-colors"
+                      className="px-3 py-1.5 bg-teal-50 text-cyan-700 text-xs rounded-full hover:bg-teal-100 transition-colors"
                     >
                       {q}
                     </button>
@@ -197,12 +197,12 @@ export default function PulseChat({ isOpen, onClose }: { isOpen: boolean; onClos
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   placeholder="Ask about benefits, claims, doctors..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-teal-500"
                 />
                 <button
                   onClick={() => handleSend()}
                   disabled={!input.trim()}
-                  className="p-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-full hover:from-teal-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="p-2 bg-gradient-to-r from-cyan-400 to-teal-600 text-white rounded-full hover:from-teal-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <Send className="w-5 h-5" />
                 </button>

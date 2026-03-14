@@ -174,7 +174,7 @@ export default function PrescriptionsPage() {
         <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
-              <Pill className="w-5 h-5 text-teal-600" />
+              <Pill className="w-5 h-5 text-cyan-600" />
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900">{activePrescriptions.length}</p>
@@ -233,7 +233,7 @@ export default function PrescriptionsPage() {
             placeholder="Search medications..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 w-64"
+            className="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 w-64"
           />
         </div>
       </div>
@@ -250,7 +250,7 @@ export default function PrescriptionsPage() {
             >
               <div className="flex flex-col lg:flex-row lg:items-start gap-6">
                 <div className="w-16 h-16 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
-                  <Pill className="w-8 h-8 text-teal-600" />
+                  <Pill className="w-8 h-8 text-cyan-600" />
                 </div>
                 <div className="flex-1">
                   <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
@@ -368,7 +368,7 @@ export default function PrescriptionsPage() {
           </div>
           <button 
             onClick={() => setShowPharmacyModal(true)}
-            className="px-4 py-2 text-teal-600 font-medium hover:bg-teal-50 rounded-lg transition-colors"
+            className="px-4 py-2 text-cyan-600 font-medium hover:bg-teal-50 rounded-lg transition-colors"
           >
             Change Pharmacy
           </button>
@@ -376,7 +376,7 @@ export default function PrescriptionsPage() {
       </div>
 
       {/* Mail Order Promo */}
-      <div className="bg-gradient-to-r from-teal-500 to-emerald-500 rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-r from-cyan-400 to-teal-500 rounded-2xl p-6 text-white">
         <div className="flex flex-col md:flex-row md:items-center gap-6">
           <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
             <Truck className="w-8 h-8" />
@@ -389,7 +389,7 @@ export default function PrescriptionsPage() {
           </div>
           <button 
             onClick={() => setShowMailOrderModal(true)}
-            className="px-6 py-3 bg-white text-teal-700 font-semibold rounded-xl hover:bg-teal-50 transition-colors shrink-0"
+            className="px-6 py-3 bg-white text-cyan-700 font-semibold rounded-xl hover:bg-teal-50 transition-colors shrink-0"
           >
             Learn More
           </button>
@@ -416,7 +416,7 @@ export default function PrescriptionsPage() {
               <div className="p-6 space-y-6">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-teal-100 rounded-xl flex items-center justify-center">
-                    <Pill className="w-8 h-8 text-teal-600" />
+                    <Pill className="w-8 h-8 text-cyan-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">{selectedRx.name} {selectedRx.strength}</h3>
@@ -479,7 +479,7 @@ export default function PrescriptionsPage() {
                   </div>
                   <div className="p-6 space-y-4">
                     <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
-                      <Pill className="w-10 h-10 text-teal-600 p-2 bg-teal-100 rounded-lg" />
+                      <Pill className="w-10 h-10 text-cyan-600 p-2 bg-teal-100 rounded-lg" />
                       <div>
                         <p className="font-semibold text-gray-900">{selectedRx.name} {selectedRx.strength}</p>
                         <p className="text-sm text-gray-500">{selectedRx.quantity} {selectedRx.form}s • {selectedRx.daysSupply} day supply</p>
@@ -552,19 +552,19 @@ export default function PrescriptionsPage() {
                 <p className="text-gray-600">Transfer a prescription from another pharmacy to your preferred MedCare Health pharmacy.</p>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Current Pharmacy Name</label>
-                  <input type="text" placeholder="e.g., Walgreens" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+                  <input type="text" placeholder="e.g., Walgreens" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Pharmacy Phone Number</label>
-                  <input type="tel" placeholder="(555) 555-5555" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+                  <input type="tel" placeholder="(555) 555-5555" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Prescription Number (if known)</label>
-                  <input type="text" placeholder="RX-123456" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+                  <input type="text" placeholder="RX-123456" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Medication Name</label>
-                  <input type="text" placeholder="e.g., Lisinopril 10mg" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+                  <input type="text" placeholder="e.g., Lisinopril 10mg" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-600">
                   <Info className="w-4 h-4 inline mr-2 text-gray-400" />
@@ -604,7 +604,7 @@ export default function PrescriptionsPage() {
               <div className="p-4">
                 <div className="relative mb-4">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input type="text" placeholder="Search by name or zip code..." className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+                  <input type="text" placeholder="Search by name or zip code..." className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
                 </div>
                 <div className="space-y-2 max-h-80 overflow-y-auto">
                   {pharmacies.map((pharmacy) => (
@@ -645,7 +645,7 @@ export default function PrescriptionsPage() {
               className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="bg-gradient-to-r from-teal-500 to-emerald-500 px-6 py-8 text-white text-center">
+              <div className="bg-gradient-to-r from-cyan-400 to-teal-500 px-6 py-8 text-white text-center">
                 <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Truck className="w-8 h-8" />
                 </div>
@@ -655,15 +655,15 @@ export default function PrescriptionsPage() {
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div className="p-4 bg-gray-50 rounded-xl">
-                    <p className="text-2xl font-bold text-teal-600">90</p>
+                    <p className="text-2xl font-bold text-cyan-600">90</p>
                     <p className="text-sm text-gray-600">Day Supply</p>
                   </div>
                   <div className="p-4 bg-gray-50 rounded-xl">
-                    <p className="text-2xl font-bold text-teal-600">$0</p>
+                    <p className="text-2xl font-bold text-cyan-600">$0</p>
                     <p className="text-sm text-gray-600">Shipping</p>
                   </div>
                   <div className="p-4 bg-gray-50 rounded-xl">
-                    <p className="text-2xl font-bold text-teal-600">17%</p>
+                    <p className="text-2xl font-bold text-cyan-600">17%</p>
                     <p className="text-sm text-gray-600">Savings</p>
                   </div>
                 </div>

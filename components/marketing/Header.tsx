@@ -52,7 +52,7 @@ export default function MarketingHeader() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-600 hover:text-teal-600 font-medium transition-colors"
+                className="text-gray-600 hover:text-cyan-600 font-medium transition-colors"
               >
                 {item.name}
               </Link>
@@ -63,7 +63,7 @@ export default function MarketingHeader() {
           <div className="hidden lg:flex items-center gap-4">
             <Link
               href="/find-provider"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all shadow-md shadow-teal-500/20"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-teal-700 transition-all shadow-md shadow-cyan-500/20"
             >
               <Search className="w-4 h-4" />
               Find a Provider
@@ -87,7 +87,7 @@ export default function MarketingHeader() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-4 py-2 text-gray-600 hover:text-teal-600 hover:bg-teal-50 rounded-lg font-medium"
+                  className="block px-4 py-2 text-gray-600 hover:text-cyan-600 hover:bg-teal-50 rounded-lg font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
@@ -95,7 +95,7 @@ export default function MarketingHeader() {
               ))}
               <Link
                 href="/find-provider"
-                className="block px-4 py-3 mt-4 text-center bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-lg"
+                className="block px-4 py-3 mt-4 text-center bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-semibold rounded-lg"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Find a Provider

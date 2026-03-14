@@ -17,7 +17,7 @@ export default function IDCardPage() {
         </div>
 
         {/* ID Card - Front */}
-        <div className="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl shadow-xl p-6 mb-4 text-white">
+        <div className="bg-gradient-to-br from-cyan-400 to-teal-600 rounded-2xl shadow-xl p-6 mb-4 text-white">
           <div className="flex justify-between items-start mb-6">
             <div>
               <h1 className="text-xl font-bold">MedCare Health Network</h1>
@@ -77,7 +77,7 @@ export default function IDCardPage() {
           
           <div className="space-y-4 text-sm">
             <div className="flex items-start gap-3">
-              <Phone className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
+              <Phone className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-gray-800">Member Services</p>
                 <p className="text-gray-600">1-800-555-0123 (24/7)</p>
@@ -85,7 +85,7 @@ export default function IDCardPage() {
             </div>
 
             <div className="flex items-start gap-3">
-              <Globe className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
+              <Globe className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-gray-800">Online Portal</p>
                 <p className="text-gray-600">member.medcarehealthnetwork.com</p>

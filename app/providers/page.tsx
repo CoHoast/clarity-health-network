@@ -30,19 +30,19 @@ export default function ProvidersPage() {
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 lg:py-28 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-teal-50 to-emerald-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-cyan-50 to-teal-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
                 FOR PROVIDERS
               </span>
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
                 Partner with
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-600">
                   MedCare Health Network
                 </span>
               </h1>
@@ -53,7 +53,7 @@ export default function ProvidersPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/provider"
-                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-gradient-to-r from-teal-600 to-emerald-600 text-white hover:from-teal-700 hover:to-emerald-700 rounded-xl shadow-lg shadow-teal-500/25 transition-all"
+                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-gradient-to-r from-cyan-500 to-teal-600 text-white hover:from-cyan-600 hover:to-teal-700 rounded-xl shadow-lg shadow-cyan-500/25 transition-all"
                 >
                   Provider Portal
                   <ArrowRight className="w-5 h-5" />
@@ -85,7 +85,7 @@ export default function ProvidersPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               PROVIDER BENEFITS
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -132,9 +132,9 @@ export default function ProvidersPage() {
                 className="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-lg transition-shadow"
               >
                 <div className="w-14 h-14 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <benefit.icon className="w-7 h-7 text-teal-600" />
+                  <benefit.icon className="w-7 h-7 text-cyan-600" />
                 </div>
-                <p className="text-2xl font-bold text-teal-600 mb-2">{benefit.stat}</p>
+                <p className="text-2xl font-bold text-cyan-600 mb-2">{benefit.stat}</p>
                 <h3 className="font-bold text-gray-900 mb-2">{benefit.title}</h3>
                 <p className="text-gray-600 text-sm">{benefit.description}</p>
               </motion.div>
@@ -148,7 +148,7 @@ export default function ProvidersPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
                 PROVIDER PORTAL
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
@@ -166,7 +166,7 @@ export default function ProvidersPage() {
                 ].map((feature, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
-                      <feature.icon className="w-6 h-6 text-teal-600" />
+                      <feature.icon className="w-6 h-6 text-cyan-600" />
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">{feature.title}</h4>
@@ -177,7 +177,7 @@ export default function ProvidersPage() {
               </div>
               <Link
                 href="/provider"
-                className="inline-flex items-center gap-2 px-6 py-3 mt-8 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-emerald-700 transition-all shadow-lg shadow-teal-500/25"
+                className="inline-flex items-center gap-2 px-6 py-3 mt-8 bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-semibold rounded-xl hover:from-cyan-600 hover:to-teal-700 transition-all shadow-lg shadow-cyan-500/25"
               >
                 Access Provider Portal
                 <ArrowRight className="w-5 h-5" />
@@ -206,7 +206,7 @@ export default function ProvidersPage() {
       </section>
 
       {/* Join Network */}
-      <section className="py-20 bg-gradient-to-br from-teal-600 to-emerald-600">
+      <section className="py-20 bg-gradient-to-br from-cyan-500 to-teal-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white">
@@ -231,7 +231,7 @@ export default function ProvidersPage() {
               </ul>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-teal-700 font-semibold rounded-xl hover:bg-teal-50 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-cyan-700 font-semibold rounded-xl hover:bg-teal-50 transition-colors"
               >
                 Start Application
                 <ArrowRight className="w-5 h-5" />
@@ -248,12 +248,12 @@ export default function ProvidersPage() {
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center shrink-0">
-                      <span className="font-bold text-teal-600">{item.step}</span>
+                      <span className="font-bold text-cyan-600">{item.step}</span>
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start">
                         <h4 className="font-semibold text-gray-900">{item.title}</h4>
-                        <span className="text-sm text-teal-600 font-medium">{item.time}</span>
+                        <span className="text-sm text-cyan-600 font-medium">{item.time}</span>
                       </div>
                       <p className="text-sm text-gray-600">{item.desc}</p>
                     </div>
@@ -269,7 +269,7 @@ export default function ProvidersPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               PROVIDER SUPPORT
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Need Help?</h2>
@@ -283,11 +283,11 @@ export default function ProvidersPage() {
             ].map((item, i) => (
               <div key={i} className="bg-gray-50 rounded-2xl p-6 text-center">
                 <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <item.icon className="w-6 h-6 text-teal-600" />
+                  <item.icon className="w-6 h-6 text-cyan-600" />
                 </div>
                 <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
                 <p className="text-gray-600 text-sm mb-4">{item.desc}</p>
-                <button className="text-teal-600 font-medium hover:text-teal-700">{item.action} →</button>
+                <button className="text-cyan-600 font-medium hover:text-cyan-700">{item.action} →</button>
               </div>
             ))}
           </div>

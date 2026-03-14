@@ -154,7 +154,7 @@ export default function AppointmentsPage() {
                   <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">{appt.provider}</h3>
-                      <p className="text-teal-600">{appt.specialty}</p>
+                      <p className="text-cyan-600">{appt.specialty}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       {appt.isTelehealth && (
@@ -279,7 +279,7 @@ export default function AppointmentsPage() {
                   <p className="text-sm text-gray-400">{appt.date} at {appt.time}</p>
                 </div>
                 <div className="flex gap-2">
-                  <button className="px-3 py-1.5 text-sm text-teal-600 font-medium hover:bg-teal-50 rounded-lg transition-colors">
+                  <button className="px-3 py-1.5 text-sm text-cyan-600 font-medium hover:bg-teal-50 rounded-lg transition-colors">
                     View Summary
                   </button>
                   <button className="px-3 py-1.5 text-sm bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors">
@@ -361,13 +361,13 @@ export default function AppointmentsPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Date</label>
                     <input 
                       type="date" 
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                       min={new Date().toISOString().split('T')[0]}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Time</label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                       <option>Morning (8am - 12pm)</option>
                       <option>Afternoon (12pm - 4pm)</option>
                       <option>Late Afternoon (4pm - 6pm)</option>
@@ -376,7 +376,7 @@ export default function AppointmentsPage() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Reason (optional)</label>
                     <textarea 
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                       rows={2}
                       placeholder="Let us know why you need to reschedule..."
                     />

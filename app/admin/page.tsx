@@ -103,7 +103,7 @@ export default function AdminDashboard() {
                   <Icon className={`w-5 h-5 ${
                     stat.color === "purple" ? "text-purple-400" :
                     stat.color === "blue" ? "text-blue-400" :
-                    stat.color === "teal" ? "text-teal-600" : "text-green-400"
+                    stat.color === "teal" ? "text-cyan-600" : "text-green-400"
                   }`} />
                 </div>
                 <span className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${

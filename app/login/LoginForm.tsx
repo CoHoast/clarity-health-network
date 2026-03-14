@@ -99,7 +99,7 @@ export default function LoginForm() {
                 onClick={() => setUserType(type.id)}
                 className={`flex-1 flex items-center justify-center gap-1 py-2.5 px-2 rounded-lg font-medium transition-all text-sm ${
                   userType === type.id
-                    ? "bg-white text-teal-700 shadow-sm"
+                    ? "bg-white text-cyan-700 shadow-sm"
                     : "text-gray-600 hover:text-gray-900"
                 }`}
               >
@@ -128,7 +128,7 @@ export default function LoginForm() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function LoginForm() {
                 <label className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <Link href="/forgot-password" className="text-sm text-teal-600 hover:text-teal-700">
+                <Link href="/forgot-password" className="text-sm text-cyan-600 hover:text-cyan-700">
                   Forgot password?
                 </Link>
               </div>
@@ -150,7 +150,7 @@ export default function LoginForm() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
-                  className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                 />
                 <button
                   type="button"
@@ -166,7 +166,7 @@ export default function LoginForm() {
               <input
                 type="checkbox"
                 id="remember"
-                className="w-4 h-4 border-gray-300 rounded text-teal-600 focus:ring-teal-500"
+                className="w-4 h-4 border-gray-300 rounded text-cyan-600 focus:ring-cyan-500"
               />
               <label htmlFor="remember" className="text-sm text-gray-600">
                 Remember me for 30 days
@@ -176,7 +176,7 @@ export default function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-emerald-700 transition-all shadow-lg shadow-teal-500/25 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-semibold rounded-xl hover:from-cyan-600 hover:to-teal-700 transition-all shadow-lg shadow-cyan-500/25 disabled:opacity-50"
             >
               {loading ? (
                 <>
@@ -205,7 +205,7 @@ export default function LoginForm() {
 
           <p className="text-center text-gray-600 mt-8">
             Need an account?{" "}
-            <Link href="/contact" className="text-teal-600 font-medium hover:text-teal-700">
+            <Link href="/contact" className="text-cyan-600 font-medium hover:text-cyan-700">
               Contact us
             </Link>
           </p>
@@ -213,7 +213,7 @@ export default function LoginForm() {
       </div>
 
       {/* Right Side - Branding */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-teal-500 to-emerald-600 items-center justify-center p-12 relative overflow-hidden">
+      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-cyan-400 to-teal-600 items-center justify-center p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 right-20 w-80 h-80 bg-white rounded-full" />
           <div className="absolute bottom-20 left-20 w-60 h-60 bg-white rounded-full" />

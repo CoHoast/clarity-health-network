@@ -273,7 +273,7 @@ export default function FindProviderPage() {
               placeholder="Search by name, specialty, or practice..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
             />
           </div>
 
@@ -283,7 +283,7 @@ export default function FindProviderPage() {
             <input
               type="text"
               placeholder="Cleveland, OH"
-              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
             />
           </div>
 
@@ -300,7 +300,7 @@ export default function FindProviderPage() {
             <select
               value={specialty}
               onChange={(e) => setSpecialty(e.target.value)}
-              className="appearance-none pl-4 pr-10 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="appearance-none pl-4 pr-10 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               {specialties.map((s) => (
                 <option key={s} value={s}>{s}</option>
@@ -314,7 +314,7 @@ export default function FindProviderPage() {
             onClick={() => setAcceptingNew(!acceptingNew)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               acceptingNew
-                ? "bg-teal-100 text-teal-700 border border-teal-200"
+                ? "bg-teal-100 text-cyan-700 border border-teal-200"
                 : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             }`}
           >
@@ -326,7 +326,7 @@ export default function FindProviderPage() {
             onClick={() => setTelehealthOnly(!telehealthOnly)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               telehealthOnly
-                ? "bg-teal-100 text-teal-700 border border-teal-200"
+                ? "bg-teal-100 text-cyan-700 border border-teal-200"
                 : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             }`}
           >
@@ -342,7 +342,7 @@ export default function FindProviderPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="appearance-none pl-3 pr-8 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="appearance-none pl-3 pr-8 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="distance">Distance</option>
               <option value="rating">Rating</option>
@@ -420,7 +420,7 @@ export default function FindProviderPage() {
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">{provider.name}</h3>
-                    <p className="text-teal-600 font-medium">{provider.specialty}</p>
+                    <p className="text-cyan-600 font-medium">{provider.specialty}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     {provider.acceptingNew && (
@@ -545,7 +545,7 @@ export default function FindProviderPage() {
                   <X className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
-              <div className="bg-gradient-to-br from-teal-500 to-emerald-600 p-6 text-center">
+              <div className="bg-gradient-to-br from-cyan-400 to-teal-600 p-6 text-center">
                 <img
                   src={selectedProvider.image}
                   alt={selectedProvider.name}
@@ -578,7 +578,7 @@ export default function FindProviderPage() {
                 </div>
                 <div>
                   <h4 className="text-sm font-medium text-gray-500 mb-1">Next Available</h4>
-                  <p className="text-teal-600 font-medium">{selectedProvider.nextAvailable}</p>
+                  <p className="text-cyan-600 font-medium">{selectedProvider.nextAvailable}</p>
                 </div>
                 <div>
                   <h4 className="text-sm font-medium text-gray-500 mb-1">Languages</h4>
@@ -602,7 +602,7 @@ export default function FindProviderPage() {
                     <Video className="w-4 h-4" /> Telehealth Available
                   </span>
                 )}
-                <span className="px-3 py-1.5 bg-teal-50 text-teal-700 text-sm font-medium rounded-lg flex items-center gap-1">
+                <span className="px-3 py-1.5 bg-teal-50 text-cyan-700 text-sm font-medium rounded-lg flex items-center gap-1">
                   <CheckCircle2 className="w-4 h-4" /> In-Network
                 </span>
               </div>
@@ -659,17 +659,17 @@ export default function FindProviderPage() {
                 </p>
                 <div className="bg-gray-50 rounded-xl p-4 text-left mb-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <Calendar className="w-5 h-5 text-teal-600" />
+                    <Calendar className="w-5 h-5 text-cyan-600" />
                     <span className="font-medium text-gray-900">
                       {selectedDate && new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                     </span>
                   </div>
                   <div className="flex items-center gap-3 mb-3">
-                    <Clock className="w-5 h-5 text-teal-600" />
+                    <Clock className="w-5 h-5 text-cyan-600" />
                     <span className="font-medium text-gray-900">{selectedTime}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <MapPin className="w-5 h-5 text-teal-600" />
+                    <MapPin className="w-5 h-5 text-cyan-600" />
                     <span className="text-gray-600">{bookingProvider.practice}</span>
                   </div>
                 </div>
@@ -701,7 +701,7 @@ export default function FindProviderPage() {
                     />
                     <div>
                       <h4 className="font-semibold text-gray-900">{bookingProvider.name}</h4>
-                      <p className="text-sm text-teal-600">{bookingProvider.specialty}</p>
+                      <p className="text-sm text-cyan-600">{bookingProvider.specialty}</p>
                       <p className="text-sm text-gray-500">{bookingProvider.practice}</p>
                     </div>
                   </div>
@@ -796,11 +796,11 @@ export default function FindProviderPage() {
                                   isSelected ? "bg-teal-100" : "bg-white"
                                 }`}>
                                   {type.id === "telehealth" ? (
-                                    <Video className={`w-5 h-5 ${isSelected ? "text-teal-600" : "text-gray-500"}`} />
+                                    <Video className={`w-5 h-5 ${isSelected ? "text-cyan-600" : "text-gray-500"}`} />
                                   ) : type.id === "wellness" ? (
-                                    <Heart className={`w-5 h-5 ${isSelected ? "text-teal-600" : "text-gray-500"}`} />
+                                    <Heart className={`w-5 h-5 ${isSelected ? "text-cyan-600" : "text-gray-500"}`} />
                                   ) : (
-                                    <User className={`w-5 h-5 ${isSelected ? "text-teal-600" : "text-gray-500"}`} />
+                                    <User className={`w-5 h-5 ${isSelected ? "text-cyan-600" : "text-gray-500"}`} />
                                   )}
                                 </div>
                                 <div>
@@ -812,7 +812,7 @@ export default function FindProviderPage() {
                                   </p>
                                 </div>
                                 {isSelected && (
-                                  <CheckCircle2 className="w-5 h-5 text-teal-600 ml-auto" />
+                                  <CheckCircle2 className="w-5 h-5 text-cyan-600 ml-auto" />
                                 )}
                               </button>
                             );
@@ -831,7 +831,7 @@ export default function FindProviderPage() {
                           value={bookingReason}
                           onChange={(e) => setBookingReason(e.target.value)}
                           placeholder="Briefly describe your symptoms or reason for the appointment..."
-                          className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+                          className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
                           rows={3}
                         />
                       </div>
@@ -841,23 +841,23 @@ export default function FindProviderPage() {
                         <h4 className="font-medium text-teal-900 mb-3">Appointment Summary</h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-teal-700">Date:</span>
+                            <span className="text-cyan-700">Date:</span>
                             <span className="font-medium text-teal-900">
                               {selectedDate && new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-teal-700">Time:</span>
+                            <span className="text-cyan-700">Time:</span>
                             <span className="font-medium text-teal-900">{selectedTime}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-teal-700">Visit Type:</span>
+                            <span className="text-cyan-700">Visit Type:</span>
                             <span className="font-medium text-teal-900">
                               {visitTypes.find(t => t.id === selectedVisitType)?.label}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-teal-700">Estimated Copay:</span>
+                            <span className="text-cyan-700">Estimated Copay:</span>
                             <span className="font-medium text-teal-900">$25</span>
                           </div>
                         </div>

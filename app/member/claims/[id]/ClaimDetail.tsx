@@ -224,7 +224,7 @@ export default function ClaimDetail({ id }: { id: string }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <Link href="/member/claims" className="p-2 text-gray-500 hover:text-teal-600 hover:bg-teal-50 rounded-lg">
+        <Link href="/member/claims" className="p-2 text-gray-500 hover:text-cyan-600 hover:bg-teal-50 rounded-lg">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div className="flex-1">
@@ -264,7 +264,7 @@ export default function ClaimDetail({ id }: { id: string }) {
           {/* Provider Info */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-teal-600" />Provider Information
+              <Building2 className="w-5 h-5 text-cyan-600" />Provider Information
             </h2>
             <div className="space-y-2">
               <p className="text-gray-900 font-medium">{mockClaim.provider.name}</p>
@@ -320,7 +320,7 @@ export default function ClaimDetail({ id }: { id: string }) {
           {/* EOB Explanation */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-teal-600" />Understanding Your EOB
+              <HelpCircle className="w-5 h-5 text-cyan-600" />Understanding Your EOB
             </h2>
             <div className="space-y-4 text-sm">
               <div className="grid sm:grid-cols-2 gap-4">
@@ -374,7 +374,7 @@ export default function ClaimDetail({ id }: { id: string }) {
               <div className="border-t border-gray-200 pt-3">
                 <div className="flex justify-between">
                   <span className="font-semibold text-gray-900">Your Responsibility</span>
-                  <span className="text-xl font-bold text-teal-600">${mockClaim.totals.youPay.toFixed(2)}</span>
+                  <span className="text-xl font-bold text-cyan-600">${mockClaim.totals.youPay.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -443,9 +443,9 @@ export default function ClaimDetail({ id }: { id: string }) {
 
           {/* Need Help */}
           <div className="bg-teal-50 border border-teal-200 rounded-xl p-5">
-            <h3 className="font-semibold text-teal-700 mb-2">Questions about this claim?</h3>
-            <p className="text-sm text-teal-600 mb-3">Our team is here to help you understand your benefits.</p>
-            <Link href="/member/help" className="text-teal-700 text-sm font-medium hover:text-teal-800">
+            <h3 className="font-semibold text-cyan-700 mb-2">Questions about this claim?</h3>
+            <p className="text-sm text-cyan-600 mb-3">Our team is here to help you understand your benefits.</p>
+            <Link href="/member/help" className="text-cyan-700 text-sm font-medium hover:text-teal-800">
               Contact Member Services →
             </Link>
           </div>

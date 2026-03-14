@@ -214,7 +214,7 @@ export default function HelpPage() {
           placeholder="Search for help articles..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-xl shadow-sm text-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+          className="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-xl shadow-sm text-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
         />
       </div>
 
@@ -222,7 +222,7 @@ export default function HelpPage() {
       <div className="grid sm:grid-cols-3 gap-4">
         <button 
           onClick={() => setShowPulseChat(true)}
-          className="flex items-center gap-4 p-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-colors"
+          className="flex items-center gap-4 p-4 bg-gradient-to-r from-cyan-400 to-teal-500 text-white rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-colors"
         >
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
             <Zap className="w-6 h-6" />
@@ -277,13 +277,13 @@ export default function HelpPage() {
                   <Icon className={`w-6 h-6 text-${category.color}-600`} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-900 group-hover:text-teal-600 transition-colors">
+                  <p className="font-semibold text-gray-900 group-hover:text-cyan-600 transition-colors">
                     {category.title}
                   </p>
                   <p className="text-sm text-gray-500 mb-1">{category.description}</p>
-                  <p className="text-xs text-teal-600">{category.articles} articles</p>
+                  <p className="text-xs text-cyan-600">{category.articles} articles</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-teal-600 transition-colors shrink-0 mt-1" />
+                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-cyan-600 transition-colors shrink-0 mt-1" />
               </motion.button>
             );
           })}
@@ -381,7 +381,7 @@ export default function HelpPage() {
       </div>
 
       {/* Contact Card */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-8 text-white">
+      <div className="bg-gradient-to-r from-sky-900 to-sky-950 rounded-2xl p-8 text-white">
         <div className="flex flex-col md:flex-row md:items-center gap-6">
           <div className="flex-1">
             <h3 className="text-xl font-bold mb-2">Still need help?</h3>
@@ -427,7 +427,7 @@ export default function HelpPage() {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col"
             >
-              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-teal-500 to-emerald-500">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-cyan-400 to-teal-500">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                     <Zap className="w-5 h-5 text-white" />
@@ -475,7 +475,7 @@ export default function HelpPage() {
                   <input
                     type="text"
                     placeholder="Ask Pulse anything..."
-                    className="flex-1 px-4 py-2.5 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="flex-1 px-4 py-2.5 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
                   <button className="p-2.5 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition-colors">
                     <ArrowRight className="w-5 h-5" />
@@ -537,7 +537,7 @@ export default function HelpPage() {
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-900 mb-1">{article.title}</p>
                         <p className="text-sm text-gray-500 line-clamp-2">{article.summary}</p>
-                        <p className="text-xs text-teal-600 mt-2">{article.readTime} read</p>
+                        <p className="text-xs text-cyan-600 mt-2">{article.readTime} read</p>
                       </div>
                       <ChevronRight className="w-5 h-5 text-gray-400 shrink-0 mt-2" />
                     </button>
@@ -582,7 +582,7 @@ export default function HelpPage() {
 
               {/* Article Content */}
               <div className="overflow-y-auto max-h-[calc(85vh-80px)] p-6">
-                <div className="flex items-center gap-2 text-sm text-teal-600 mb-4">
+                <div className="flex items-center gap-2 text-sm text-cyan-600 mb-4">
                   <Clock className="w-4 h-4" />
                   <span>{selectedArticle.readTime} read</span>
                   <span className="text-gray-300">•</span>

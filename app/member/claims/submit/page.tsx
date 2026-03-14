@@ -119,10 +119,10 @@ export default function SubmitClaimPage() {
       <div className="flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
         {["Service Details", "Upload Documents", "Review & Submit"].map((stepName, i) => (
           <div key={i} className="flex items-center">
-            <div className={`flex items-center gap-2 ${i + 1 <= step ? "text-teal-600" : "text-gray-400"}`}>
+            <div className={`flex items-center gap-2 ${i + 1 <= step ? "text-cyan-600" : "text-gray-400"}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                 i + 1 < step ? "bg-teal-600 text-white" :
-                i + 1 === step ? "bg-teal-100 text-teal-600 border-2 border-teal-600" :
+                i + 1 === step ? "bg-teal-100 text-cyan-600 border-2 border-teal-600" :
                 "bg-gray-100 text-gray-400"
               }`}>
                 {i + 1 < step ? <CheckCircle2 className="w-5 h-5" /> : i + 1}
@@ -155,7 +155,7 @@ export default function SubmitClaimPage() {
                   onClick={() => setFormData({ ...formData, claimType: type })}
                   className={`p-3 rounded-lg border text-sm font-medium transition-colors ${
                     formData.claimType === type
-                      ? "border-teal-600 bg-teal-50 text-teal-700"
+                      ? "border-teal-600 bg-teal-50 text-cyan-700"
                       : "border-gray-200 hover:border-gray-300 text-gray-700"
                   }`}
                 >
@@ -171,7 +171,7 @@ export default function SubmitClaimPage() {
             <select
               value={formData.relationship}
               onChange={(e) => setFormData({ ...formData, relationship: e.target.value })}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="self">John Doe (Self)</option>
               <option value="spouse">Jane Doe (Spouse)</option>
@@ -189,7 +189,7 @@ export default function SubmitClaimPage() {
                 value={formData.providerName}
                 onChange={(e) => setFormData({ ...formData, providerName: e.target.value })}
                 placeholder="Dr. Jane Smith"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
             <div>
@@ -199,7 +199,7 @@ export default function SubmitClaimPage() {
                 value={formData.providerNpi}
                 onChange={(e) => setFormData({ ...formData, providerNpi: e.target.value })}
                 placeholder="1234567890"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function SubmitClaimPage() {
                 type="date"
                 value={formData.serviceDate}
                 onChange={(e) => setFormData({ ...formData, serviceDate: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
             <div>
@@ -224,7 +224,7 @@ export default function SubmitClaimPage() {
                   value={formData.billedAmount}
                   onChange={(e) => setFormData({ ...formData, billedAmount: e.target.value })}
                   placeholder="0.00"
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
             </div>
@@ -239,7 +239,7 @@ export default function SubmitClaimPage() {
                 value={formData.diagnosisCode}
                 onChange={(e) => setFormData({ ...formData, diagnosisCode: e.target.value })}
                 placeholder="ICD-10 Code"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
             <div>
@@ -249,7 +249,7 @@ export default function SubmitClaimPage() {
                 value={formData.procedureCode}
                 onChange={(e) => setFormData({ ...formData, procedureCode: e.target.value })}
                 placeholder="CPT Code"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
           </div>
@@ -262,7 +262,7 @@ export default function SubmitClaimPage() {
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               rows={3}
               placeholder="Any additional information about this claim..."
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
             />
           </div>
 
@@ -291,7 +291,7 @@ export default function SubmitClaimPage() {
           {/* Upload Area */}
           <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-teal-400 transition-colors">
             <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Upload className="w-8 h-8 text-teal-600" />
+              <Upload className="w-8 h-8 text-cyan-600" />
             </div>
             <p className="font-medium text-gray-900 mb-1">Drag and drop files here</p>
             <p className="text-sm text-gray-500 mb-4">or click to browse</p>
@@ -318,7 +318,7 @@ export default function SubmitClaimPage() {
               {files.map((file, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <FileText className="w-5 h-5 text-teal-600" />
+                    <FileText className="w-5 h-5 text-cyan-600" />
                     <div>
                       <p className="font-medium text-gray-900">{file.name}</p>
                       <p className="text-sm text-gray-500">{file.size}</p>

@@ -57,7 +57,7 @@ export default function CostEstimatorPage() {
       </div>
 
       {/* Deductible Status Card */}
-      <div className="bg-gradient-to-r from-teal-500 to-emerald-500 rounded-xl p-6 text-white">
+      <div className="bg-gradient-to-r from-cyan-400 to-teal-500 rounded-xl p-6 text-white">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h3 className="font-semibold text-lg mb-1">Your Deductible Status</h3>
@@ -86,7 +86,7 @@ export default function CostEstimatorPage() {
             placeholder="Search by procedure name or CPT code (e.g., MRI, 70553)"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
           />
         </div>
       </div>
@@ -109,7 +109,7 @@ export default function CostEstimatorPage() {
             >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center">
-                  <Calculator className="w-6 h-6 text-teal-600" />
+                  <Calculator className="w-6 h-6 text-cyan-600" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -126,7 +126,7 @@ export default function CostEstimatorPage() {
               <div className="flex items-center gap-6">
                 <div className="text-right">
                   <p className="text-sm text-gray-500 line-through">${procedure.avgCost}</p>
-                  <p className="text-xl font-bold text-teal-600">${procedure.yourCost}</p>
+                  <p className="text-xl font-bold text-cyan-600">${procedure.yourCost}</p>
                   <p className="text-xs text-green-600">Save ${procedure.savings}</p>
                 </div>
                 <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -181,7 +181,7 @@ export default function CostEstimatorPage() {
                   <hr className="border-gray-200" />
                   <div className="flex justify-between text-lg">
                     <span className="font-medium text-gray-900">Your Estimated Cost</span>
-                    <span className="font-bold text-teal-600">${selectedProcedure.yourCost}</span>
+                    <span className="font-bold text-cyan-600">${selectedProcedure.yourCost}</span>
                   </div>
                 </div>
               </div>
@@ -270,7 +270,7 @@ export default function CostEstimatorPage() {
       <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
-            <HelpCircle className="w-6 h-6 text-teal-600" />
+            <HelpCircle className="w-6 h-6 text-cyan-600" />
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-gray-900">Need a Custom Estimate?</h3>

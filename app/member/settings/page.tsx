@@ -79,12 +79,12 @@ export default function SettingsPage() {
                     onClick={() => setActiveSection(section.id)}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                       activeSection === section.id
-                        ? "bg-teal-50 text-teal-700"
+                        ? "bg-teal-50 text-cyan-700"
                         : "text-gray-700 hover:bg-gray-50"
                     }`}
                   >
                     <Icon className={`w-5 h-5 ${
-                      activeSection === section.id ? "text-teal-600" : "text-gray-400"
+                      activeSection === section.id ? "text-cyan-600" : "text-gray-400"
                     }`} />
                     <span className="font-medium">{section.name}</span>
                   </button>
@@ -108,7 +108,7 @@ export default function SettingsPage() {
                 <h2 className="font-semibold text-gray-900 mb-4">Profile Photo</h2>
                 <div className="flex items-center gap-6">
                   <div className="relative">
-                    <div className="w-24 h-24 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-full flex items-center justify-center">
+                    <div className="w-24 h-24 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full flex items-center justify-center">
                       <span className="text-3xl font-bold text-white">JD</span>
                     </div>
                     <button className="absolute bottom-0 right-0 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50">
@@ -118,7 +118,7 @@ export default function SettingsPage() {
                   <div>
                     <p className="font-medium text-gray-900">John Doe</p>
                     <p className="text-sm text-gray-500">Member since January 2024</p>
-                    <button className="mt-2 text-sm text-teal-600 font-medium hover:text-teal-700">
+                    <button className="mt-2 text-sm text-cyan-600 font-medium hover:text-cyan-700">
                       Upload new photo
                     </button>
                   </div>
@@ -129,7 +129,7 @@ export default function SettingsPage() {
               <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="font-semibold text-gray-900">Personal Information</h2>
-                  <button className="text-sm text-teal-600 font-medium hover:text-teal-700 flex items-center gap-1">
+                  <button className="text-sm text-cyan-600 font-medium hover:text-cyan-700 flex items-center gap-1">
                     <Pencil className="w-4 h-4" /> Edit
                   </button>
                 </div>
@@ -202,7 +202,7 @@ export default function SettingsPage() {
                     <div key={i} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                          <span className="text-teal-600 font-semibold">{dependent.name.charAt(0)}</span>
+                          <span className="text-cyan-600 font-semibold">{dependent.name.charAt(0)}</span>
                         </div>
                         <div>
                           <p className="font-medium text-gray-900">{dependent.name}</p>
@@ -405,7 +405,7 @@ export default function SettingsPage() {
                     <select
                       value={commPrefs.language}
                       onChange={(e) => setCommPrefs({ ...commPrefs, language: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     >
                       <option value="en">English</option>
                       <option value="es">Español</option>
@@ -468,7 +468,7 @@ export default function SettingsPage() {
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                           app.connected ? "bg-teal-100" : "bg-gray-100"
                         }`}>
-                          <Smartphone className={`w-5 h-5 ${app.connected ? "text-teal-600" : "text-gray-400"}`} />
+                          <Smartphone className={`w-5 h-5 ${app.connected ? "text-cyan-600" : "text-gray-400"}`} />
                         </div>
                         <div>
                           <p className="font-medium text-gray-900">{app.name}</p>

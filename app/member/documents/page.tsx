@@ -189,14 +189,14 @@ export default function DocumentsPage() {
                   onClick={() => setSelectedCategory(category.id)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors ${
                     selectedCategory === category.id
-                      ? "bg-teal-50 text-teal-700"
+                      ? "bg-teal-50 text-cyan-700"
                       : "text-gray-700 hover:bg-gray-50"
                   }`}
                 >
                   <span className="font-medium">{category.name}</span>
                   <span className={`px-2 py-0.5 rounded-full text-xs ${
                     selectedCategory === category.id
-                      ? "bg-teal-100 text-teal-700"
+                      ? "bg-teal-100 text-cyan-700"
                       : "bg-gray-100 text-gray-600"
                   }`}>
                     {category.count}
@@ -230,7 +230,7 @@ export default function DocumentsPage() {
                 placeholder="Search documents..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
           </div>
@@ -267,13 +267,13 @@ export default function DocumentsPage() {
                   <div className="flex items-center gap-2">
                     <Link 
                       href={doc.viewerPath}
-                      className="p-2 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
+                      className="p-2 text-gray-400 hover:text-cyan-600 hover:bg-teal-50 rounded-lg transition-colors"
                     >
                       <Eye className="w-5 h-5" />
                     </Link>
                     <Link 
                       href={doc.viewerPath}
-                      className="p-2 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
+                      className="p-2 text-gray-400 hover:text-cyan-600 hover:bg-teal-50 rounded-lg transition-colors"
                     >
                       <Download className="w-5 h-5" />
                     </Link>
@@ -351,7 +351,7 @@ export default function DocumentsPage() {
                   {selectedDoc.claimId && (
                     <div className="flex justify-between">
                       <span className="text-gray-500">Claim ID</span>
-                      <Link href={`/member/claims/${selectedDoc.claimId}`} className="text-teal-600 hover:text-teal-700 font-mono">
+                      <Link href={`/member/claims/${selectedDoc.claimId}`} className="text-cyan-600 hover:text-cyan-700 font-mono">
                         {selectedDoc.claimId}
                       </Link>
                     </div>
@@ -419,7 +419,7 @@ export default function DocumentsPage() {
                     {/* Upload Area */}
                     <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-teal-400 transition-colors cursor-pointer">
                       <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <Upload className="w-6 h-6 text-teal-600" />
+                        <Upload className="w-6 h-6 text-cyan-600" />
                       </div>
                       <p className="font-medium text-gray-900 mb-1">Drag and drop files here</p>
                       <p className="text-sm text-gray-500">or click to browse</p>
@@ -428,7 +428,7 @@ export default function DocumentsPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Document Type</label>
-                      <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                      <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                         <option>Select type...</option>
                         <option>Medical Bill</option>
                         <option>Receipt</option>
@@ -499,12 +499,12 @@ export default function DocumentsPage() {
                       <input
                         type="email"
                         placeholder="doctor@example.com"
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Link expires in</label>
-                      <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                      <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                         <option>24 hours</option>
                         <option>7 days</option>
                         <option>30 days</option>

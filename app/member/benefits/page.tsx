@@ -182,11 +182,11 @@ export default function BenefitsPage() {
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium text-gray-500">Individual Deductible</span>
-            <span className="text-xs bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full">65%</span>
+            <span className="text-xs bg-teal-50 text-cyan-700 px-2 py-0.5 rounded-full">65%</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">$325 <span className="text-base font-normal text-gray-400">/ $500</span></p>
           <div className="mt-3 h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full" style={{ width: "65%" }} />
+            <div className="h-full bg-gradient-to-r from-cyan-400 to-teal-500 rounded-full" style={{ width: "65%" }} />
           </div>
           <p className="text-xs text-gray-500 mt-2">$175 remaining</p>
         </motion.div>
@@ -251,7 +251,7 @@ export default function BenefitsPage() {
           placeholder="Search benefits (e.g., 'MRI', 'therapy', 'prescription')"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
         />
       </div>
 
@@ -385,11 +385,11 @@ export default function BenefitsPage() {
       <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
-            <Phone className="w-6 h-6 text-teal-600" />
+            <Phone className="w-6 h-6 text-cyan-600" />
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-teal-900">Questions about your benefits?</h3>
-            <p className="text-sm text-teal-700 mt-1">
+            <p className="text-sm text-cyan-700 mt-1">
               Our Member Services team is here to help you understand your coverage. 
               Call us at <span className="font-semibold">1-800-555-0123</span> or chat with Pulse AI.
             </p>

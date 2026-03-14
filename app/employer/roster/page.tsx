@@ -172,7 +172,7 @@ export default function RosterPage() {
               placeholder="Search employees..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -212,8 +212,8 @@ export default function RosterPage() {
                 <tr key={emp.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3"><input type="checkbox" className="rounded border-gray-300" /></td>
                   <td className="px-4 py-3">
-                    <button onClick={() => handleViewEmployee(emp)} className="text-left hover:text-teal-600">
-                      <p className="font-medium text-gray-900 hover:text-teal-600">{emp.name}</p>
+                    <button onClick={() => handleViewEmployee(emp)} className="text-left hover:text-cyan-600">
+                      <p className="font-medium text-gray-900 hover:text-cyan-600">{emp.name}</p>
                       <p className="text-xs text-gray-500">{emp.email}</p>
                     </button>
                   </td>
@@ -226,7 +226,7 @@ export default function RosterPage() {
                     <div className="flex items-center justify-end gap-2 relative">
                       <button 
                         onClick={() => handleViewEmployee(emp)}
-                        className="p-1.5 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded"
+                        className="p-1.5 text-gray-400 hover:text-cyan-600 hover:bg-teal-50 rounded"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
@@ -475,7 +475,7 @@ export default function RosterPage() {
                   <div className="p-6 space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Filter</label>
-                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500">
                         <option>All Employees</option>
                         <option>Active Only</option>
                         <option>Pending Only</option>
@@ -487,15 +487,15 @@ export default function RosterPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Include</label>
                       <div className="space-y-2">
                         <label className="flex items-center gap-2">
-                          <input type="checkbox" defaultChecked className="rounded text-teal-600 focus:ring-teal-500" />
+                          <input type="checkbox" defaultChecked className="rounded text-cyan-600 focus:ring-cyan-500" />
                           <span className="text-sm text-gray-700">Employee Information</span>
                         </label>
                         <label className="flex items-center gap-2">
-                          <input type="checkbox" defaultChecked className="rounded text-teal-600 focus:ring-teal-500" />
+                          <input type="checkbox" defaultChecked className="rounded text-cyan-600 focus:ring-cyan-500" />
                           <span className="text-sm text-gray-700">Dependent Information</span>
                         </label>
                         <label className="flex items-center gap-2">
-                          <input type="checkbox" className="rounded text-teal-600 focus:ring-teal-500" />
+                          <input type="checkbox" className="rounded text-cyan-600 focus:ring-cyan-500" />
                           <span className="text-sm text-gray-700">SSN (Full)</span>
                         </label>
                       </div>
@@ -504,15 +504,15 @@ export default function RosterPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Format</label>
                       <div className="flex gap-4">
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="excel" defaultChecked className="text-teal-600 focus:ring-teal-500" />
+                          <input type="radio" name="format" value="excel" defaultChecked className="text-cyan-600 focus:ring-cyan-500" />
                           <span className="text-sm text-gray-700">Excel</span>
                         </label>
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="csv" className="text-teal-600 focus:ring-teal-500" />
+                          <input type="radio" name="format" value="csv" className="text-cyan-600 focus:ring-cyan-500" />
                           <span className="text-sm text-gray-700">CSV</span>
                         </label>
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="pdf" className="text-teal-600 focus:ring-teal-500" />
+                          <input type="radio" name="format" value="pdf" className="text-cyan-600 focus:ring-cyan-500" />
                           <span className="text-sm text-gray-700">PDF</span>
                         </label>
                       </div>
@@ -576,7 +576,7 @@ export default function RosterPage() {
                   <div className="p-6 space-y-4">
                     <div className="bg-gray-50 rounded-lg p-3 flex items-center gap-3">
                       <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                        <span className="text-teal-600 font-medium">{selectedEmployee.name.split(' ').map(n => n[0]).join('')}</span>
+                        <span className="text-cyan-600 font-medium">{selectedEmployee.name.split(' ').map(n => n[0]).join('')}</span>
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">{selectedEmployee.name}</p>
@@ -585,7 +585,7 @@ export default function RosterPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Template</label>
-                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500">
                         <option>Custom Message</option>
                         <option>Welcome to Benefits</option>
                         <option>Enrollment Reminder</option>
@@ -598,7 +598,7 @@ export default function RosterPage() {
                       <input 
                         type="text" 
                         placeholder="Enter subject..."
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                       />
                     </div>
                     <div>
@@ -606,7 +606,7 @@ export default function RosterPage() {
                       <textarea 
                         rows={4}
                         placeholder="Enter your message..."
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500"
                       />
                     </div>
                   </div>
@@ -673,11 +673,11 @@ export default function RosterPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Termination Date</label>
-                      <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
+                      <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Reason</label>
-                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500">
                         <option>Voluntary Resignation</option>
                         <option>Involuntary Termination</option>
                         <option>Retirement</option>
@@ -686,7 +686,7 @@ export default function RosterPage() {
                       </select>
                     </div>
                     <label className="flex items-center gap-2">
-                      <input type="checkbox" defaultChecked className="rounded text-teal-600 focus:ring-teal-500" />
+                      <input type="checkbox" defaultChecked className="rounded text-cyan-600 focus:ring-cyan-500" />
                       <span className="text-sm text-gray-700">Send COBRA notice automatically</span>
                     </label>
                   </div>
@@ -751,7 +751,7 @@ export default function RosterPage() {
                         <input 
                           type="text" 
                           defaultValue={selectedEmployee.name.split(' ')[0]}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                         />
                       </div>
                       <div>
@@ -759,7 +759,7 @@ export default function RosterPage() {
                         <input 
                           type="text" 
                           defaultValue={selectedEmployee.name.split(' ')[1]}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                         />
                       </div>
                     </div>
@@ -768,7 +768,7 @@ export default function RosterPage() {
                       <input 
                         type="email" 
                         defaultValue={selectedEmployee.email}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                       />
                     </div>
                     <div>
@@ -776,14 +776,14 @@ export default function RosterPage() {
                       <input 
                         type="tel" 
                         defaultValue={selectedEmployee.phone}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
                       <select 
                         defaultValue={selectedEmployee.department}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500"
                       >
                         <option>Engineering</option>
                         <option>Marketing</option>
@@ -797,7 +797,7 @@ export default function RosterPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Plan</label>
                       <select 
                         defaultValue={selectedEmployee.plan}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500"
                       >
                         <option>Platinum PPO</option>
                         <option>Gold PPO</option>
@@ -810,7 +810,7 @@ export default function RosterPage() {
                       <input 
                         type="text" 
                         defaultValue={selectedEmployee.address}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                       />
                     </div>
                   </div>
@@ -880,7 +880,7 @@ export default function RosterPage() {
                           <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                                <User className="w-5 h-5 text-teal-600" />
+                                <User className="w-5 h-5 text-cyan-600" />
                               </div>
                               <div>
                                 <p className="font-medium text-gray-900">
@@ -890,7 +890,7 @@ export default function RosterPage() {
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              <button className="p-1.5 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded">
+                              <button className="p-1.5 text-gray-400 hover:text-cyan-600 hover:bg-teal-50 rounded">
                                 <Edit className="w-4 h-4" />
                               </button>
                               <button className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded">
@@ -914,7 +914,7 @@ export default function RosterPage() {
                             <input 
                               type="text" 
                               placeholder="First name"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                             />
                           </div>
                           <div>
@@ -922,14 +922,14 @@ export default function RosterPage() {
                             <input 
                               type="text" 
                               placeholder="Last name"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                             />
                           </div>
                         </div>
                         <div className="grid sm:grid-cols-2 gap-3">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Relationship</label>
-                            <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500">
                               <option>Spouse</option>
                               <option>Domestic Partner</option>
                               <option>Child</option>
@@ -940,7 +940,7 @@ export default function RosterPage() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
                             <input 
                               type="date" 
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                             />
                           </div>
                         </div>
@@ -949,10 +949,10 @@ export default function RosterPage() {
                           <input 
                             type="text" 
                             placeholder="XXX-XX-XXXX"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                           />
                         </div>
-                        <button className="w-full px-4 py-2 border-2 border-dashed border-gray-300 text-gray-600 rounded-lg hover:border-teal-500 hover:text-teal-600 font-medium flex items-center justify-center gap-2">
+                        <button className="w-full px-4 py-2 border-2 border-dashed border-gray-300 text-gray-600 rounded-lg hover:border-teal-500 hover:text-cyan-600 font-medium flex items-center justify-center gap-2">
                           <Plus className="w-4 h-4" />
                           Add Dependent
                         </button>

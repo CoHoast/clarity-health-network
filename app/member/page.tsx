@@ -108,7 +108,7 @@ export default function MemberDashboard() {
         <div className="flex gap-3">
           <Link
             href="/member/find-provider"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-medium rounded-lg hover:from-teal-600 hover:to-emerald-600 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400 to-teal-500 text-white font-medium rounded-lg hover:from-teal-600 hover:to-emerald-600 transition-colors"
           >
             <Search className="w-4 h-4" />
             Find a Doctor
@@ -125,7 +125,7 @@ export default function MemberDashboard() {
         >
           <div className="flex items-center justify-between mb-3">
             <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
-              <DollarSign className="w-5 h-5 text-teal-600" />
+              <DollarSign className="w-5 h-5 text-cyan-600" />
             </div>
             <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
               65% used
@@ -134,7 +134,7 @@ export default function MemberDashboard() {
           <p className="text-2xl font-bold text-gray-900">$325</p>
           <p className="text-sm text-gray-500">of $500 deductible</p>
           <div className="mt-3 h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full" style={{ width: "65%" }} />
+            <div className="h-full bg-gradient-to-r from-cyan-400 to-teal-500 rounded-full" style={{ width: "65%" }} />
           </div>
         </motion.div>
 
@@ -229,7 +229,7 @@ export default function MemberDashboard() {
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Recent Claims</h2>
-            <Link href="/member/claims" className="text-sm text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1">
+            <Link href="/member/claims" className="text-sm text-cyan-600 hover:text-cyan-700 font-medium flex items-center gap-1">
               View all <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
@@ -317,7 +317,7 @@ export default function MemberDashboard() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Upcoming Appointments</h2>
-            <Link href="/member/appointments" className="text-sm text-teal-600 hover:text-teal-700 font-medium">
+            <Link href="/member/appointments" className="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
               View All
             </Link>
           </div>
@@ -326,7 +326,7 @@ export default function MemberDashboard() {
               <div key={appt.id} className="px-6 py-4">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center">
-                    <Calendar className="w-6 h-6 text-teal-600" />
+                    <Calendar className="w-6 h-6 text-cyan-600" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
@@ -338,7 +338,7 @@ export default function MemberDashboard() {
                       )}
                     </div>
                     <p className="text-sm text-gray-500">{appt.specialty} • {appt.type}</p>
-                    <p className="text-sm text-teal-600 mt-1">{appt.date} at {appt.time}</p>
+                    <p className="text-sm text-cyan-600 mt-1">{appt.date} at {appt.time}</p>
                   </div>
                   <button 
                     onClick={() => setSelectedAppointment(appt)}
@@ -353,7 +353,7 @@ export default function MemberDashboard() {
               <div className="px-6 py-8 text-center">
                 <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                 <p className="text-gray-500">No upcoming appointments</p>
-                <Link href="/member/find-provider" className="text-sm text-teal-600 hover:text-teal-700 font-medium mt-2 inline-block">
+                <Link href="/member/find-provider" className="text-sm text-cyan-600 hover:text-cyan-700 font-medium mt-2 inline-block">
                   Schedule one now
                 </Link>
               </div>
@@ -365,12 +365,12 @@ export default function MemberDashboard() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Your ID Card</h2>
-            <Link href="/member/id-card" className="text-sm text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1">
+            <Link href="/member/id-card" className="text-sm text-cyan-600 hover:text-cyan-700 font-medium flex items-center gap-1">
               View Full Card <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="p-6">
-            <div className="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-xl p-5 text-white shadow-lg">
+            <div className="bg-gradient-to-br from-cyan-400 to-teal-600 rounded-xl p-5 text-white shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
@@ -421,11 +421,11 @@ export default function MemberDashboard() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-6 lg:p-8 text-white overflow-hidden relative"
+        className="bg-gradient-to-r from-sky-900 to-sky-950 rounded-2xl p-6 lg:p-8 text-white overflow-hidden relative"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-teal-500/20 to-emerald-500/20 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="relative flex flex-col lg:flex-row lg:items-center gap-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-emerald-400 rounded-2xl flex items-center justify-center shrink-0">
+          <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-teal-400 rounded-2xl flex items-center justify-center shrink-0">
             <Zap className="w-8 h-8 text-white" />
           </div>
           <div className="flex-1">
@@ -483,7 +483,7 @@ export default function MemberDashboard() {
                   />
                   <div>
                     <h4 className="font-semibold text-gray-900">{selectedAppointment.provider}</h4>
-                    <p className="text-teal-600">{selectedAppointment.specialty}</p>
+                    <p className="text-cyan-600">{selectedAppointment.specialty}</p>
                     {selectedAppointment.isTelehealth && (
                       <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full inline-flex items-center gap-1 mt-1">
                         <Video className="w-3 h-3" /> Telehealth Visit
@@ -645,7 +645,7 @@ export default function MemberDashboard() {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col"
             >
-              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-teal-500 to-emerald-500">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-cyan-400 to-teal-500">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                     <Zap className="w-5 h-5 text-white" />
@@ -686,7 +686,7 @@ export default function MemberDashboard() {
                   <input
                     type="text"
                     placeholder="Ask Pulse anything..."
-                    className="flex-1 px-4 py-2.5 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="flex-1 px-4 py-2.5 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
                   <button className="p-2.5 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition-colors">
                     <ArrowRight className="w-5 h-5" />

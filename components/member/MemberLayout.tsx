@@ -123,7 +123,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
         {/* Member info */}
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full flex items-center justify-center">
               <span className="text-white font-semibold">JD</span>
             </div>
             <div>
@@ -153,11 +153,11 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
                       onClick={() => setSidebarOpen(false)}
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                         isActive
-                          ? "bg-teal-50 text-teal-700"
+                          ? "bg-teal-50 text-cyan-700"
                           : "text-gray-700 hover:bg-gray-100"
                       }`}
                     >
-                      <item.icon className={`w-5 h-5 ${isActive ? "text-teal-600" : "text-gray-400"}`} />
+                      <item.icon className={`w-5 h-5 ${isActive ? "text-cyan-600" : "text-gray-400"}`} />
                       {item.name}
                     </Link>
                   );
@@ -173,7 +173,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
             onClick={() => setShowPulse(true)}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 mb-2"
           >
-            <div className="w-5 h-5 bg-gradient-to-br from-teal-500 to-emerald-500 rounded flex items-center justify-center">
+            <div className="w-5 h-5 bg-gradient-to-br from-cyan-400 to-teal-500 rounded flex items-center justify-center">
               <Zap className="w-3 h-3 text-white" />
             </div>
             Ask Pulse AI
@@ -218,7 +218,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
             {/* Pulse AI quick access */}
             <button
               onClick={() => setShowPulse(true)}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-teal-500 to-emerald-500 text-white text-sm font-medium rounded-lg hover:from-teal-600 hover:to-emerald-600 transition-colors"
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-cyan-400 to-teal-500 text-white text-sm font-medium rounded-lg hover:from-teal-600 hover:to-emerald-600 transition-colors"
             >
               <Zap className="w-4 h-4" />
               Ask Pulse
@@ -230,7 +230,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className="flex items-center gap-2 p-1.5 hover:bg-gray-100 rounded-lg"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-semibold">JD</span>
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-500 hidden sm:block" />
@@ -289,7 +289,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
       {/* Floating Pulse button (mobile) */}
       <button
         onClick={() => setShowPulse(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center lg:hidden z-40"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-cyan-400 to-teal-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center lg:hidden z-40"
       >
         <Zap className="w-6 h-6" />
       </button>

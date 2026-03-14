@@ -1282,7 +1282,7 @@ export default function FindProviderPage() {
                         </span>
                       )}
                       {provider.telehealth && (
-                        <span className="flex items-center gap-1 text-xs px-2 py-1 bg-teal-50 text-teal-700 rounded-full">
+                        <span className="flex items-center gap-1 text-xs px-2 py-1 bg-teal-50 text-cyan-700 rounded-full">
                           <Video className="w-3 h-3" />
                           Telehealth
                         </span>

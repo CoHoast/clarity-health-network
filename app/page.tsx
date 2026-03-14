@@ -62,7 +62,7 @@ export default function HomePage() {
       {/* Hero - Clean White with Photo */}
       <section className="relative bg-gradient-to-br from-slate-50 to-white overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-teal-50 to-emerald-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-cyan-50 to-teal-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-teal-50 to-cyan-50 rounded-full translate-y-1/2 -translate-x-1/3 opacity-40" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
@@ -72,14 +72,14 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-700 rounded-full mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 text-cyan-700 rounded-full mb-6">
                 <BadgeCheck className="w-4 h-4" />
                 <span className="text-sm font-medium">Trusted by 500,000+ Members Nationwide</span>
               </div>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
                 Quality Healthcare.
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-600">
                   Affordable Access.
                 </span>
               </h1>
@@ -92,7 +92,7 @@ export default function HomePage() {
               <div className="flex flex-wrap gap-4 mb-10">
                 <Link
                   href="/find-provider"
-                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-gradient-to-r from-teal-600 to-emerald-600 text-white hover:from-teal-700 hover:to-emerald-700 rounded-xl shadow-lg shadow-teal-500/25 transition-all"
+                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-gradient-to-r from-cyan-500 to-teal-600 text-white hover:from-cyan-600 hover:to-teal-700 rounded-xl shadow-lg shadow-cyan-500/25 transition-all"
                 >
                   <Search className="w-5 h-5" />
                   Find a Provider
@@ -110,7 +110,7 @@ export default function HomePage() {
               <div className="flex items-center gap-8 pt-8 border-t border-gray-100">
                 <div className="flex -space-x-3">
                   {[1,2,3,4,5].map((i) => (
-                    <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-emerald-500 border-2 border-white flex items-center justify-center">
+                    <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 border-2 border-white flex items-center justify-center">
                       <span className="text-white text-xs font-bold">{String.fromCharCode(64 + i)}</span>
                     </div>
                   ))}
@@ -146,7 +146,7 @@ export default function HomePage() {
               {/* Floating stats cards */}
               <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-5 border border-gray-100">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                  <div className="w-14 h-14 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-xl flex items-center justify-center">
                     <DollarSign className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -158,7 +158,7 @@ export default function HomePage() {
 
               <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl p-5 border border-gray-100">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center">
+                  <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center">
                     <Users className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -192,7 +192,7 @@ export default function HomePage() {
               { icon: Globe, label: "Nationwide Coverage" },
             ].map((badge, i) => (
               <div key={i} className="flex items-center gap-2 text-gray-600">
-                <badge.icon className="w-5 h-5 text-teal-600" />
+                <badge.icon className="w-5 h-5 text-cyan-600" />
                 <span className="font-medium">{badge.label}</span>
               </div>
             ))}
@@ -201,7 +201,7 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-br from-teal-600 to-emerald-600">
+      <section className="py-16 bg-gradient-to-br from-cyan-500 to-teal-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -233,7 +233,7 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               HOW IT WORKS
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -277,7 +277,7 @@ export default function HomePage() {
                   {item.step}
                 </span>
                 <div className="relative">
-                  <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl flex items-center justify-center mb-6">
                     <item.icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
@@ -294,7 +294,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
                 WHY CHOOSE US
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
@@ -314,7 +314,7 @@ export default function HomePage() {
                 ].map((feature, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
-                      <feature.icon className="w-6 h-6 text-teal-600" />
+                      <feature.icon className="w-6 h-6 text-cyan-600" />
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">{feature.title}</h4>
@@ -349,7 +349,7 @@ export default function HomePage() {
       </section>
 
       {/* Nationwide Coverage */}
-      <section className="py-20 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
+      <section className="py-20 bg-gradient-to-br from-sky-900 to-sky-950 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1 bg-white/10 text-teal-300 rounded-full text-sm font-medium mb-4">
@@ -386,7 +386,7 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               OUR SERVICES
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -436,7 +436,7 @@ export default function HomePage() {
                   <p className="text-gray-600 mb-4">{service.description}</p>
                   <Link 
                     href={service.link}
-                    className="inline-flex items-center gap-2 text-teal-600 font-medium hover:text-teal-700"
+                    className="inline-flex items-center gap-2 text-cyan-600 font-medium hover:text-cyan-700"
                   >
                     Learn More <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -452,7 +452,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
                 SAVINGS CALCULATOR
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
@@ -468,7 +468,7 @@ export default function HomePage() {
                   "No hidden fees or surprises",
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-teal-600" />
+                    <CheckCircle2 className="w-5 h-5 text-cyan-600" />
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
@@ -503,12 +503,12 @@ export default function HomePage() {
                   <p className="text-2xl font-bold text-gray-900">${estimatorValue.toLocaleString()}</p>
                 </div>
                 <div className="bg-teal-50 rounded-xl p-4">
-                  <p className="text-sm text-teal-700 mb-1">Your Savings</p>
-                  <p className="text-2xl font-bold text-teal-700">${estimatedSavings.toLocaleString()}</p>
+                  <p className="text-sm text-cyan-700 mb-1">Your Savings</p>
+                  <p className="text-2xl font-bold text-cyan-700">${estimatedSavings.toLocaleString()}</p>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-teal-600 to-emerald-600 rounded-xl p-4 text-white text-center mb-6">
+              <div className="bg-gradient-to-r from-cyan-500 to-teal-600 rounded-xl p-4 text-white text-center mb-6">
                 <p className="text-sm opacity-80">With MedCare Health Network</p>
                 <p className="text-3xl font-bold">${(estimatorValue - estimatedSavings).toLocaleString()}</p>
                 <p className="text-sm opacity-80">per year</p>
@@ -530,7 +530,7 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               GET STARTED
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -539,7 +539,7 @@ export default function HomePage() {
           </div>
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Members */}
-            <div className="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl p-8 text-white">
+            <div className="bg-gradient-to-br from-cyan-400 to-teal-600 rounded-2xl p-8 text-white">
               <Heart className="w-10 h-10 mb-6 text-teal-200" />
               <h3 className="text-2xl font-bold mb-4">For Members</h3>
               <p className="text-teal-100 mb-6">
@@ -553,7 +553,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/member" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-teal-700 font-semibold rounded-xl hover:bg-teal-50 transition-colors">
+              <Link href="/member" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-cyan-700 font-semibold rounded-xl hover:bg-teal-50 transition-colors">
                 Member Portal <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -605,7 +605,7 @@ export default function HomePage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               TESTIMONIALS
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -665,7 +665,7 @@ export default function HomePage() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-gray-500">Saved</p>
-                    <p className="font-bold text-teal-600">{testimonial.savings}</p>
+                    <p className="font-bold text-cyan-600">{testimonial.savings}</p>
                   </div>
                 </div>
               </motion.div>
@@ -678,7 +678,7 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               FAQ
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
@@ -727,7 +727,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-teal-600 to-emerald-600">
+      <section className="py-20 bg-gradient-to-br from-cyan-500 to-teal-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             Ready to Start Saving on Healthcare?
@@ -738,7 +738,7 @@ export default function HomePage() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/find-provider"
-              className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-white text-teal-700 hover:bg-teal-50 rounded-xl shadow-lg transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-white text-cyan-700 hover:bg-teal-50 rounded-xl shadow-lg transition-colors"
             >
               <Search className="w-5 h-5" />
               Find a Provider
@@ -759,7 +759,7 @@ export default function HomePage() {
       {/* Floating Chat Button */}
       <button
         onClick={() => setShowChat(!showChat)}
-        className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center z-40"
+        className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-cyan-400 to-teal-500 text-white rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center z-40"
       >
         {showChat ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </button>
@@ -772,7 +772,7 @@ export default function HomePage() {
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           className="fixed bottom-24 right-6 w-80 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-gray-200"
         >
-          <div className="bg-gradient-to-r from-teal-500 to-emerald-500 px-4 py-3 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-cyan-400 to-teal-500 px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                 <Zap className="w-4 h-4 text-yellow-300" />
@@ -788,7 +788,7 @@ export default function HomePage() {
           </div>
           <div className="p-4 h-64 overflow-y-auto bg-gray-50">
             <div className="flex gap-2 mb-4">
-              <div className="w-6 h-6 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-full flex items-center justify-center shrink-0">
+              <div className="w-6 h-6 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full flex items-center justify-center shrink-0">
                 <Zap className="w-3 h-3 text-white" />
               </div>
               <div className="bg-white rounded-lg rounded-tl-sm p-3 shadow-sm border border-gray-100">
@@ -808,7 +808,7 @@ export default function HomePage() {
               <input
                 type="text"
                 placeholder="Type a message..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
               />
               <button className="p-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
                 <ArrowRight className="w-4 h-4" />

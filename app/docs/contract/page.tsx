@@ -54,7 +54,7 @@ export default function ContractPage() {
             </p>
             <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4">
               <p className="font-semibold text-teal-800">120% of Medicare Allowable</p>
-              <p className="text-sm text-teal-700">Based on current Medicare Physician Fee Schedule for Ohio Region</p>
+              <p className="text-sm text-cyan-700">Based on current Medicare Physician Fee Schedule for Ohio Region</p>
             </div>
 
             <h2 className="text-lg font-semibold text-gray-800 mt-6 mb-3">3. Provider Obligations</h2>

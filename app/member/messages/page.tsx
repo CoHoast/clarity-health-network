@@ -194,7 +194,7 @@ export default function MessagesPage() {
                   placeholder="Search messages..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
             </div>
@@ -222,7 +222,7 @@ export default function MessagesPage() {
                       conversation.type === "provider" ? "bg-blue-100" : "bg-purple-100"
                     }`}>
                       {conversation.type === "support" ? (
-                        <MessageSquare className="w-5 h-5 text-teal-600" />
+                        <MessageSquare className="w-5 h-5 text-cyan-600" />
                       ) : conversation.type === "facility" ? (
                         <Building2 className="w-5 h-5 text-purple-600" />
                       ) : (
@@ -274,7 +274,7 @@ export default function MessagesPage() {
                     selectedConversation.type === "facility" ? "bg-purple-100" : "bg-blue-100"
                   }`}>
                     {selectedConversation.type === "support" ? (
-                      <MessageSquare className="w-5 h-5 text-teal-600" />
+                      <MessageSquare className="w-5 h-5 text-cyan-600" />
                     ) : selectedConversation.type === "facility" ? (
                       <Building2 className="w-5 h-5 text-purple-600" />
                     ) : (
@@ -354,7 +354,7 @@ export default function MessagesPage() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a message..."
-                  className="flex-1 px-4 py-2.5 bg-gray-100 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="flex-1 px-4 py-2.5 bg-gray-100 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <button className="p-2.5 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition-colors">
                   <Send className="w-5 h-5" />
@@ -372,7 +372,7 @@ export default function MessagesPage() {
           className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-teal-300 hover:shadow-md transition-all"
         >
           <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
-            <Zap className="w-5 h-5 text-teal-600" />
+            <Zap className="w-5 h-5 text-cyan-600" />
           </div>
           <div className="text-left">
             <p className="font-medium text-gray-900">Ask Pulse AI</p>
@@ -423,7 +423,7 @@ export default function MessagesPage() {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col"
             >
-              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-teal-500 to-emerald-500">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-cyan-400 to-teal-500">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                     <Zap className="w-5 h-5 text-white" />
@@ -464,7 +464,7 @@ export default function MessagesPage() {
                   <input
                     type="text"
                     placeholder="Ask Pulse anything..."
-                    className="flex-1 px-4 py-2.5 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="flex-1 px-4 py-2.5 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
                   <button className="p-2.5 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition-colors">
                     <ArrowRight className="w-5 h-5" />
@@ -527,7 +527,7 @@ export default function MessagesPage() {
                           className="p-4 bg-gray-50 rounded-xl hover:bg-teal-50 hover:border-teal-200 border-2 border-transparent transition-colors text-left"
                         >
                           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center mb-3 shadow-sm">
-                            <type.icon className="w-5 h-5 text-teal-600" />
+                            <type.icon className="w-5 h-5 text-cyan-600" />
                           </div>
                           <p className="font-medium text-gray-900">{type.label}</p>
                           <p className="text-sm text-gray-500 mt-1">{type.description}</p>
@@ -562,11 +562,11 @@ export default function MessagesPage() {
                       <>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Claim Number</label>
-                          <input type="text" placeholder="CLM-XXXX-XXX" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="text" placeholder="CLM-XXXX-XXX" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Appeal</label>
-                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                             <option>Select a reason...</option>
                             <option>Claim was incorrectly denied</option>
                             <option>Service should be covered</option>
@@ -576,7 +576,7 @@ export default function MessagesPage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Detailed Explanation</label>
-                          <textarea rows={4} placeholder="Please explain why you believe this claim should be reconsidered..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <textarea rows={4} placeholder="Please explain why you believe this claim should be reconsidered..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Supporting Documents (Optional)</label>
@@ -592,23 +592,23 @@ export default function MessagesPage() {
                       <>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Procedure/Service</label>
-                          <input type="text" placeholder="e.g., MRI, CT Scan, Surgery" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="text" placeholder="e.g., MRI, CT Scan, Surgery" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Referring Provider</label>
-                          <input type="text" placeholder="Doctor's name" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="text" placeholder="Doctor's name" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Facility/Location</label>
-                          <input type="text" placeholder="Where will the procedure be performed?" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="text" placeholder="Where will the procedure be performed?" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Requested Date</label>
-                          <input type="date" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="date" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Medical Reason</label>
-                          <textarea rows={3} placeholder="Brief description of why this procedure is needed..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <textarea rows={3} placeholder="Brief description of why this procedure is needed..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                       </>
                     )}
@@ -616,7 +616,7 @@ export default function MessagesPage() {
                       <>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Request</label>
-                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                             <option>Lost card</option>
                             <option>Damaged card</option>
                             <option>Name change</option>
@@ -627,14 +627,14 @@ export default function MessagesPage() {
                           <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Method</label>
                           <div className="space-y-2">
                             <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-teal-50">
-                              <input type="radio" name="delivery" defaultChecked className="text-teal-600" />
+                              <input type="radio" name="delivery" defaultChecked className="text-cyan-600" />
                               <div>
                                 <p className="font-medium text-gray-900">Mail (3-5 business days)</p>
                                 <p className="text-sm text-gray-500">Free</p>
                               </div>
                             </label>
                             <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-teal-50">
-                              <input type="radio" name="delivery" className="text-teal-600" />
+                              <input type="radio" name="delivery" className="text-cyan-600" />
                               <div>
                                 <p className="font-medium text-gray-900">Express (1-2 business days)</p>
                                 <p className="text-sm text-gray-500">$5.00</p>
@@ -653,15 +653,15 @@ export default function MessagesPage() {
                       <>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Medication Name</label>
-                          <input type="text" placeholder="Enter medication name" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="text" placeholder="Enter medication name" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Prescribing Doctor</label>
-                          <input type="text" placeholder="Doctor's name" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="text" placeholder="Doctor's name" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Exception Type</label>
-                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                             <option>Non-formulary drug coverage</option>
                             <option>Prior authorization</option>
                             <option>Quantity limit exception</option>
@@ -670,7 +670,7 @@ export default function MessagesPage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Medical Justification</label>
-                          <textarea rows={3} placeholder="Explain why this medication is medically necessary..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <textarea rows={3} placeholder="Explain why this medication is medically necessary..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                       </>
                     )}
@@ -682,15 +682,15 @@ export default function MessagesPage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">New PCP</label>
-                          <input type="text" placeholder="Search for a provider..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="text" placeholder="Search for a provider..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Effective Date</label>
-                          <input type="date" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="date" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Change (Optional)</label>
-                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                             <option>Select a reason...</option>
                             <option>Relocating</option>
                             <option>Provider availability</option>
@@ -704,7 +704,7 @@ export default function MessagesPage() {
                       <>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Grievance Category</label>
-                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                          <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                             <option>Select a category...</option>
                             <option>Quality of care</option>
                             <option>Access to care</option>
@@ -715,19 +715,19 @@ export default function MessagesPage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Date of Incident</label>
-                          <input type="date" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="date" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Provider/Facility Involved (if applicable)</label>
-                          <input type="text" placeholder="Name of provider or facility" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <input type="text" placeholder="Name of provider or facility" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Description of Issue</label>
-                          <textarea rows={4} placeholder="Please describe your concern in detail..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <textarea rows={4} placeholder="Please describe your concern in detail..." className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Desired Resolution</label>
-                          <textarea rows={2} placeholder="What outcome are you hoping for?" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          <textarea rows={2} placeholder="What outcome are you hoping for?" className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                         </div>
                       </>
                     )}

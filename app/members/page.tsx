@@ -31,19 +31,19 @@ export default function MembersPage() {
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 lg:py-28 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-teal-50 to-emerald-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-cyan-50 to-teal-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
                 FOR MEMBERS
               </span>
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
                 Your Benefits.
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-600">
                   At Your Fingertips.
                 </span>
               </h1>
@@ -54,7 +54,7 @@ export default function MembersPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/member"
-                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-gradient-to-r from-teal-600 to-emerald-600 text-white hover:from-teal-700 hover:to-emerald-700 rounded-xl shadow-lg shadow-teal-500/25 transition-all"
+                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-gradient-to-r from-cyan-500 to-teal-600 text-white hover:from-cyan-600 hover:to-teal-700 rounded-xl shadow-lg shadow-cyan-500/25 transition-all"
                 >
                   Member Portal
                   <ArrowRight className="w-5 h-5" />
@@ -87,7 +87,7 @@ export default function MembersPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               MEMBER TOOLS
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -140,7 +140,7 @@ export default function MembersPage() {
                 className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow"
               >
                 <div className="w-14 h-14 bg-teal-100 rounded-2xl flex items-center justify-center mb-6">
-                  <feature.icon className="w-7 h-7 text-teal-600" />
+                  <feature.icon className="w-7 h-7 text-cyan-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
@@ -155,7 +155,7 @@ export default function MembersPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
                 DIGITAL ID CARD
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
@@ -173,14 +173,14 @@ export default function MembersPage() {
                   "Auto-updates when info changes",
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-teal-600" />
+                    <CheckCircle2 className="w-5 h-5 text-cyan-600" />
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
               </ul>
               <Link
                 href="/member"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-emerald-700 transition-all shadow-lg shadow-teal-500/25"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-semibold rounded-xl hover:from-cyan-600 hover:to-teal-700 transition-all shadow-lg shadow-cyan-500/25"
               >
                 Access Your Card
                 <ArrowRight className="w-5 h-5" />
@@ -188,7 +188,7 @@ export default function MembersPage() {
             </div>
             <div className="flex justify-center">
               {/* ID Card Mock */}
-              <div className="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl p-6 text-white shadow-2xl max-w-md w-full">
+              <div className="bg-gradient-to-br from-cyan-400 to-teal-600 rounded-2xl p-6 text-white shadow-2xl max-w-md w-full">
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <p className="text-teal-200 text-sm">Member ID Card</p>
@@ -298,7 +298,7 @@ export default function MembersPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 bg-teal-50 text-cyan-700 rounded-full text-sm font-medium mb-4">
               MEMBER SUPPORT
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">We're Here to Help</h2>
@@ -313,7 +313,7 @@ export default function MembersPage() {
             ].map((item, i) => (
               <a key={i} href={item.link} className="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-lg transition-shadow group">
                 <div className="w-14 h-14 bg-teal-100 group-hover:bg-teal-200 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-colors">
-                  <item.icon className="w-7 h-7 text-teal-600" />
+                  <item.icon className="w-7 h-7 text-cyan-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
                 <p className="text-gray-600">{item.desc}</p>
@@ -324,7 +324,7 @@ export default function MembersPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-teal-600 to-emerald-600">
+      <section className="py-20 bg-gradient-to-br from-cyan-500 to-teal-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             Ready to Access Your Benefits?
@@ -334,7 +334,7 @@ export default function MembersPage() {
           </p>
           <Link
             href="/member"
-            className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-white text-teal-700 hover:bg-teal-50 rounded-xl shadow-lg transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold bg-white text-cyan-700 hover:bg-teal-50 rounded-xl shadow-lg transition-colors"
           >
             Go to Member Portal
             <ArrowRight className="w-5 h-5" />

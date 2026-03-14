@@ -21,7 +21,7 @@ export default function EOBPage() {
           {/* Header */}
           <div className="flex justify-between items-start border-b border-gray-200 pb-6 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-teal-600">MedCare Health Network</h1>
+              <h1 className="text-2xl font-bold text-cyan-600">MedCare Health Network</h1>
               <p className="text-gray-500">Explanation of Benefits</p>
             </div>
             <div className="text-right">

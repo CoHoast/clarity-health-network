@@ -167,7 +167,7 @@ export default function IDCardPage() {
               {/* Header */}
               <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-teal-600" />
+                  <Shield className="w-5 h-5 text-cyan-600" />
                   <span className="font-bold text-gray-900 text-sm sm:text-base">MedCare Health Network</span>
                 </div>
                 <QrCode className="w-12 h-12 sm:w-14 sm:h-14 text-gray-800" />
@@ -229,7 +229,7 @@ export default function IDCardPage() {
                   </div>
 
                   <div className="bg-teal-50 rounded-lg p-2.5 sm:p-3 mt-2">
-                    <p className="text-[10px] sm:text-xs text-teal-700">
+                    <p className="text-[10px] sm:text-xs text-cyan-700">
                       <span className="font-semibold">Network:</span> National PPO<br />
                       <span className="font-semibold">Rx Coverage:</span> Included
                     </p>
@@ -274,7 +274,7 @@ export default function IDCardPage() {
               {copied === item.label ? (
                 <CheckCircle2 className="w-5 h-5 text-green-500" />
               ) : (
-                <Copy className="w-5 h-5 text-gray-400 group-hover:text-teal-600" />
+                <Copy className="w-5 h-5 text-gray-400 group-hover:text-cyan-600" />
               )}
             </button>
           ))}
@@ -323,7 +323,7 @@ export default function IDCardPage() {
             <div key={dependent.memberId} className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                  <span className="text-teal-600 font-semibold">{dependent.name.charAt(0)}</span>
+                  <span className="text-cyan-600 font-semibold">{dependent.name.charAt(0)}</span>
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">{dependent.name}</p>
@@ -334,7 +334,7 @@ export default function IDCardPage() {
                 <p className="font-mono text-sm text-gray-900">{dependent.memberId}</p>
                 <button 
                   onClick={() => setShowDependentCard(dependent.memberId)}
-                  className="text-sm text-teal-600 hover:text-teal-700"
+                  className="text-sm text-cyan-600 hover:text-cyan-700"
                 >
                   View Card
                 </button>
@@ -459,7 +459,7 @@ export default function IDCardPage() {
                         type="email"
                         value={emailAddress}
                         onChange={(e) => setEmailAddress(e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                       />
                     </div>
                     <p className="text-sm text-gray-500">

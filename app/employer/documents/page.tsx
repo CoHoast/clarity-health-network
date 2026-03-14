@@ -126,7 +126,7 @@ export default function DocumentsPage() {
             placeholder="Search documents..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500"
           />
         </div>
       </div>
@@ -180,7 +180,7 @@ export default function DocumentsPage() {
                           </button>
                           <button 
                             onClick={() => handleDownload(doc)}
-                            className="p-1.5 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded" 
+                            className="p-1.5 text-gray-400 hover:text-cyan-600 hover:bg-teal-50 rounded" 
                             title="Download"
                           >
                             <Download className="w-4 h-4" />
@@ -354,12 +354,12 @@ export default function DocumentsPage() {
                       <input 
                         type="text" 
                         placeholder="Enter document name..."
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500" 
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-teal-500">
                         <option>Plan Documents</option>
                         <option>Compliance</option>
                         <option>Forms</option>
