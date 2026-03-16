@@ -33,6 +33,7 @@ import {
   Send,
 } from "lucide-react";
 import AdminPulseChat from "@/components/pulse/AdminPulseChat";
+import { ThemeProvider } from "@/components/admin/ThemeContext";
 
 interface NavItem {
   name: string;
@@ -501,9 +502,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Page content - pass theme context */}
         <main className="p-4 lg:p-8" data-theme={isDark ? "dark" : "light"}>
-          <div className={isDark ? "admin-dark" : "admin-light"}>
-            {children}
-          </div>
+          <ThemeProvider value={{ isDark, setIsDark }}>
+            <div className={isDark ? "admin-dark" : "admin-light"}>
+              {children}
+            </div>
+          </ThemeProvider>
         </main>
       </div>
 

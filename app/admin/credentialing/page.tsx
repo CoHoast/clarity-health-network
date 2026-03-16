@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Search, Download, Eye, CheckCircle, Clock, AlertTriangle, XCircle, MoreVertical, BadgeCheck, FileText, Calendar, X, Plus, User, Building2, Mail, Phone, MapPin, Shield, Zap, RefreshCw, ShieldCheck, ShieldAlert, ShieldX, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/components/admin/ThemeContext";
 
 const applications = [
   { id: "CRED-2024-1247", provider: "Dr. Sarah Mitchell", npi: "1234567890", specialty: "Cardiology", status: "pending", submitted: "2024-03-10", stage: "PSV In Progress", email: "dr.mitchell@cardio.com", phone: "(555) 123-4567", address: "100 Heart Center Dr, Cleveland, OH 44101", license: "OH-MD-123456", licenseExp: "2026-12-31", dea: "BM1234567", deaExp: "2025-06-30", malpractice: "Current", boardCert: "ABIM Cardiovascular Disease" },
@@ -57,6 +58,7 @@ interface VerificationResult {
 }
 
 export default function CredentialingPage() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedApplication, setSelectedApplication] = useState<typeof applications[0] | null>(null);
@@ -177,24 +179,30 @@ export default function CredentialingPage() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats - Theme Aware */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>47</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Pending Applications</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>12</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Committee Review</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>18</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Expiring (30 days)</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#22d3ee' }}>94%</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Approval Rate</p>
-        </div>
+        {[
+          { value: "47", label: "Pending Applications", highlight: false },
+          { value: "12", label: "Committee Review", highlight: false },
+          { value: "18", label: "Expiring (30 days)", highlight: false },
+          { value: "94%", label: "Approval Rate", highlight: true },
+        ].map((stat, i) => (
+          <div 
+            key={i}
+            className={`rounded-xl p-4 shadow-lg ${
+              isDark 
+                ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20'
+                : 'bg-gradient-to-br from-blue-900 to-slate-800 border border-blue-700/50'
+            }`}
+          >
+            <p className={`text-2xl font-bold ${
+              stat.highlight 
+                ? (isDark ? 'text-cyan-400' : 'text-cyan-300') 
+                : (isDark ? 'text-cyan-400' : 'text-white')
+            }`}>{stat.value}</p>
+            <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-blue-100'}`}>{stat.label}</p>
+          </div>
+        ))}
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">

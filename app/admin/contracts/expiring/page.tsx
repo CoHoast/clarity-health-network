@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, Calendar, Search, Mail, FileText, CheckCircle, Clock, Send, X, Building2, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/components/admin/ThemeContext";
 
 const expiringContracts = [
   { id: "CTR-001", provider: "Midwest Regional Medical", npi: "1234567890", specialty: "Hospital", expires: "2026-03-28", daysLeft: 12, discount: "35%", status: "renewal_sent", contactEmail: "contracts@midwestregional.com", lastContact: "2026-03-10" },
@@ -22,6 +23,7 @@ const filterOptions = ["All", "30 Days", "60 Days", "90 Days"];
 const statusOptions = ["All Statuses", "Not Started", "Renewal Sent", "Pending Review", "Negotiating"];
 
 export default function ExpiringContractsPage() {
+  const { isDark } = useTheme();
   const [filter, setFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,7 +83,7 @@ export default function ExpiringContractsPage() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats - Theme Aware */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Next 14 Days", count: expiringContracts.filter(c => c.daysLeft <= 14).length, urgent: true },
@@ -89,9 +91,20 @@ export default function ExpiringContractsPage() {
           { label: "31-60 Days", count: expiringContracts.filter(c => c.daysLeft > 30 && c.daysLeft <= 60).length, urgent: false },
           { label: "61-90 Days", count: expiringContracts.filter(c => c.daysLeft > 60 && c.daysLeft <= 90).length, urgent: false },
         ].map((stat) => (
-          <div key={stat.label} className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
-            <p className="text-3xl font-bold" style={{ color: stat.urgent ? '#22d3ee' : '#ffffff' }}>{stat.count}</p>
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>{stat.label}</p>
+          <div 
+            key={stat.label} 
+            className={`rounded-xl p-5 shadow-lg ${
+              isDark 
+                ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20'
+                : 'bg-gradient-to-br from-blue-900 to-slate-800 border border-blue-700/50'
+            }`}
+          >
+            <p className={`text-3xl font-bold ${
+              stat.urgent 
+                ? (isDark ? 'text-cyan-400' : 'text-cyan-300') 
+                : (isDark ? 'text-cyan-400' : 'text-white')
+            }`}>{stat.count}</p>
+            <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-blue-100'}`}>{stat.label}</p>
           </div>
         ))}
       </div>

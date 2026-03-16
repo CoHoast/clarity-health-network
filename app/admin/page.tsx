@@ -16,6 +16,7 @@ import {
   Calendar,
   Plus,
 } from "lucide-react";
+import { useTheme } from "@/components/admin/ThemeContext";
 
 const stats = [
   { label: "Total Providers", value: "2,847", change: "+24 this month", trend: "up", icon: Building2 },
@@ -57,18 +58,24 @@ const quickActions = [
 ];
 
 export default function AdminDashboard() {
+  const { isDark } = useTheme();
+  
   return (
     <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">PPO Network Dashboard</h1>
-          <p className="text-slate-400 mt-1">Manage your provider network, contracts, and rates.</p>
+          <h1 className={`text-2xl sm:text-3xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>PPO Network Dashboard</h1>
+          <p className={`mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Manage your provider network, contracts, and rates.</p>
         </div>
         <div className="flex gap-3">
           <Link
             href="/admin/reports"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/50 text-slate-300 font-medium rounded-lg hover:bg-slate-800 transition-colors border border-slate-600"
+            className={`inline-flex items-center gap-2 px-4 py-2 font-medium rounded-lg transition-colors border ${
+              isDark 
+                ? 'bg-slate-800/50 text-slate-300 hover:bg-slate-800 border-slate-600'
+                : 'bg-white text-slate-700 hover:bg-slate-50 border-slate-300'
+            }`}
           >
             <BarChart3 className="w-4 h-4" />
             Reports
@@ -84,7 +91,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Stats Cards - Theme Aware */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, i) => {
           const Icon = stat.icon;
@@ -94,17 +101,25 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg"
+              className={`rounded-xl p-5 shadow-lg ${
+                isDark 
+                  ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20'
+                  : 'bg-gradient-to-br from-blue-900 to-slate-800 border border-blue-700/50'
+              }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-cyan-500/20 border border-cyan-500/30">
-                  <Icon className="w-5 h-5 text-cyan-400" />
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                  isDark
+                    ? 'bg-cyan-500/20 border border-cyan-500/30'
+                    : 'bg-blue-700/50 border border-blue-600/50'
+                }`}>
+                  <Icon className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-200'}`} />
                 </div>
                 <span 
                   className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
                     stat.trend === "warning" 
-                      ? "bg-amber-500/20 text-amber-400" 
-                      : "bg-cyan-500/20 text-cyan-400"
+                      ? (isDark ? "bg-amber-500/20 text-amber-400" : "bg-amber-500/30 text-amber-300")
+                      : (isDark ? "bg-cyan-500/20 text-cyan-400" : "bg-blue-600/50 text-blue-200")
                   }`}
                 >
                   {stat.trend === "up" && <TrendingUp className="w-3 h-3" />}
@@ -112,8 +127,8 @@ export default function AdminDashboard() {
                   {stat.change}
                 </span>
               </div>
-              <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stat.value}</p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>{stat.label}</p>
+              <p className={`text-2xl font-bold ${isDark ? 'text-cyan-400' : 'text-white'}`}>{stat.value}</p>
+              <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-blue-100'}`}>{stat.label}</p>
             </motion.div>
           );
         })}
@@ -127,15 +142,23 @@ export default function AdminDashboard() {
             <Link
               key={action.label}
               href={action.href}
-              className="bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all flex items-center gap-3 shadow-sm"
+              className={`rounded-xl p-4 transition-all flex items-center gap-3 shadow-sm ${
+                isDark 
+                  ? 'bg-slate-800/50 hover:bg-slate-800 border border-slate-700'
+                  : 'bg-white hover:bg-slate-50 border border-slate-200'
+              }`}
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-teal-500/10 border border-teal-500/20">
-                <Icon className="w-5 h-5 text-teal-600" />
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                isDark 
+                  ? 'bg-teal-500/20 border border-teal-500/30'
+                  : 'bg-teal-500/10 border border-teal-500/20'
+              }`}>
+                <Icon className={`w-5 h-5 ${isDark ? 'text-teal-400' : 'text-teal-600'}`} />
               </div>
               <div>
-                <p className="font-medium text-slate-900">{action.label}</p>
+                <p className={`font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>{action.label}</p>
                 {action.count && (
-                  <p className="text-sm text-slate-500">{action.count} pending</p>
+                  <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{action.count} pending</p>
                 )}
               </div>
             </Link>
@@ -146,20 +169,24 @@ export default function AdminDashboard() {
       {/* Main Content Grid */}
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Expiring Contracts */}
-        <div className="lg:col-span-2 bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+        <div className={`lg:col-span-2 rounded-xl p-6 ${
+          isDark 
+            ? 'bg-slate-800/50 border border-slate-700'
+            : 'bg-white border border-slate-200 shadow-sm'
+        }`}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <h2 className={`text-lg font-semibold flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               <AlertTriangle className="w-5 h-5 text-amber-500" />
               Contracts Expiring Soon
             </h2>
-            <Link href="/admin/contracts/expiring" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+            <Link href="/admin/contracts/expiring" className="text-sm text-cyan-500 hover:text-cyan-400 flex items-center gap-1">
               View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="text-left text-sm text-slate-400 border-b border-slate-700">
+                <tr className={`text-left text-sm border-b ${isDark ? 'text-slate-400 border-slate-700' : 'text-slate-500 border-slate-200'}`}>
                   <th className="pb-3 font-medium">Provider</th>
                   <th className="pb-3 font-medium">NPI</th>
                   <th className="pb-3 font-medium">Expires</th>
@@ -169,16 +196,16 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {expiringContracts.map((contract, i) => (
-                  <tr key={i} className="border-b border-slate-700/50 text-sm">
-                    <td className="py-3 text-white font-medium">{contract.provider}</td>
-                    <td className="py-3 text-slate-400 font-mono text-xs">{contract.npi}</td>
-                    <td className="py-3 text-amber-400">{contract.expires}</td>
-                    <td className="py-3 text-green-400">{contract.discount}</td>
+                  <tr key={i} className={`border-b text-sm ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}>
+                    <td className={`py-3 font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>{contract.provider}</td>
+                    <td className={`py-3 font-mono text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{contract.npi}</td>
+                    <td className="py-3 text-amber-500">{contract.expires}</td>
+                    <td className="py-3 text-green-500">{contract.discount}</td>
                     <td className="py-3">
                       <span className={`text-xs px-2 py-1 rounded-full ${
-                        contract.status === "Renewal Sent" ? "bg-cyan-500/20 text-cyan-400" :
-                        contract.status === "Pending Review" ? "bg-amber-500/20 text-amber-400" :
-                        "bg-slate-500/20 text-slate-400"
+                        contract.status === "Renewal Sent" ? "bg-cyan-500/20 text-cyan-500" :
+                        contract.status === "Pending Review" ? "bg-amber-500/20 text-amber-500" :
+                        "bg-slate-500/20 text-slate-500"
                       }`}>
                         {contract.status}
                       </span>
@@ -191,8 +218,12 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-          <h2 className="text-lg font-semibold text-white mb-6">Recent Activity</h2>
+        <div className={`rounded-xl p-6 ${
+          isDark 
+            ? 'bg-slate-800/50 border border-slate-700'
+            : 'bg-white border border-slate-200 shadow-sm'
+        }`}>
+          <h2 className={`text-lg font-semibold mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>Recent Activity</h2>
           <div className="space-y-4">
             {recentActivity.map((activity, i) => (
               <div key={i} className="flex items-start gap-3">
@@ -202,16 +233,16 @@ export default function AdminDashboard() {
                   activity.type === "discount" ? "bg-amber-500/20" :
                   "bg-teal-500/20"
                 }`}>
-                  {activity.type === "provider" && <Building2 className="w-4 h-4 text-cyan-400" />}
-                  {activity.type === "contract" && <FileSignature className="w-4 h-4 text-green-400" />}
-                  {activity.type === "discount" && <DollarSign className="w-4 h-4 text-amber-400" />}
-                  {activity.type === "credentialing" && <CheckCircle className="w-4 h-4 text-teal-400" />}
+                  {activity.type === "provider" && <Building2 className="w-4 h-4 text-cyan-500" />}
+                  {activity.type === "contract" && <FileSignature className="w-4 h-4 text-green-500" />}
+                  {activity.type === "discount" && <DollarSign className="w-4 h-4 text-amber-500" />}
+                  {activity.type === "credentialing" && <CheckCircle className="w-4 h-4 text-teal-500" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white">{activity.title}</p>
-                  <p className="text-xs text-slate-400 truncate">{activity.message}</p>
+                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>{activity.title}</p>
+                  <p className={`text-xs truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{activity.message}</p>
                 </div>
-                <span className="text-xs text-slate-500 whitespace-nowrap">{activity.time}</span>
+                <span className={`text-xs whitespace-nowrap ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{activity.time}</span>
               </div>
             ))}
           </div>
@@ -219,25 +250,31 @@ export default function AdminDashboard() {
       </div>
 
       {/* Providers by Specialty */}
-      <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+      <div className={`rounded-xl p-6 ${
+        isDark 
+          ? 'bg-slate-800/50 border border-slate-700'
+          : 'bg-white border border-slate-200 shadow-sm'
+      }`}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-white">Network by Specialty</h2>
-          <Link href="/admin/analytics" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+          <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Network by Specialty</h2>
+          <Link href="/admin/analytics" className="text-sm text-cyan-500 hover:text-cyan-400 flex items-center gap-1">
             Full Analytics <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {providersBySpecialty.map((item) => (
-            <div key={item.specialty} className="bg-slate-700/50 rounded-lg p-4 text-center">
-              <p className="text-2xl font-bold text-white">{item.count}</p>
-              <p className="text-sm text-slate-400 mt-1">{item.specialty}</p>
-              <div className="mt-2 h-1.5 bg-slate-600 rounded-full overflow-hidden">
+            <div key={item.specialty} className={`rounded-lg p-4 text-center ${
+              isDark ? 'bg-slate-700/50' : 'bg-slate-50 border border-slate-100'
+            }`}>
+              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{item.count}</p>
+              <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{item.specialty}</p>
+              <div className={`mt-2 h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-slate-600' : 'bg-slate-200'}`}>
                 <div 
                   className="h-full bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full"
                   style={{ width: `${item.percentage}%` }}
                 />
               </div>
-              <p className="text-xs text-slate-500 mt-1">{item.percentage}%</p>
+              <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{item.percentage}%</p>
             </div>
           ))}
         </div>
@@ -246,35 +283,38 @@ export default function AdminDashboard() {
       {/* Bottom Row */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Credentialing Queue */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+        <div className={`rounded-xl p-6 ${
+          isDark 
+            ? 'bg-slate-800/50 border border-slate-700'
+            : 'bg-white border border-slate-200 shadow-sm'
+        }`}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <Users className="w-5 h-5 text-teal-400" />
+            <h2 className={`text-lg font-semibold flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <Users className="w-5 h-5 text-teal-500" />
               Credentialing Queue
             </h2>
-            <Link href="/admin/credentialing" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+            <Link href="/admin/credentialing" className="text-sm text-cyan-500 hover:text-cyan-400 flex items-center gap-1">
               View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           
           {/* Queue Stats */}
           <div className="grid grid-cols-4 gap-3 mb-5">
-            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-white">12</p>
-              <p className="text-xs text-slate-400">New Apps</p>
-            </div>
-            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-white">8</p>
-              <p className="text-xs text-slate-400">In Review</p>
-            </div>
-            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-white">5</p>
-              <p className="text-xs text-slate-400">Pending Docs</p>
-            </div>
-            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-cyan-400">23</p>
-              <p className="text-xs text-slate-400">This Week</p>
-            </div>
+            {[
+              { value: "12", label: "New Apps", highlight: false },
+              { value: "8", label: "In Review", highlight: false },
+              { value: "5", label: "Pending Docs", highlight: false },
+              { value: "23", label: "This Week", highlight: true },
+            ].map((stat, i) => (
+              <div key={i} className={`rounded-lg p-3 text-center ${
+                isDark 
+                  ? 'bg-slate-700/50 border border-slate-600'
+                  : 'bg-slate-50 border border-slate-100'
+              }`}>
+                <p className={`text-2xl font-bold ${stat.highlight ? 'text-cyan-500' : (isDark ? 'text-white' : 'text-slate-900')}`}>{stat.value}</p>
+                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{stat.label}</p>
+              </div>
+            ))}
           </div>
           
           {/* Recent Applications */}
@@ -285,25 +325,32 @@ export default function AdminDashboard() {
               { name: "Dr. Jennifer Walsh", specialty: "Orthopedics", submitted: "1 day ago", status: "docs" },
               { name: "Metro Imaging Center", specialty: "Radiology", submitted: "2 days ago", status: "review" },
             ].map((app, i) => (
-              <div key={i} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg hover:bg-slate-700/50 transition-colors cursor-pointer">
+              <div key={i} className={`flex items-center justify-between p-3 rounded-lg transition-colors cursor-pointer ${
+                isDark 
+                  ? 'bg-slate-700/30 hover:bg-slate-700/50'
+                  : 'bg-slate-50 hover:bg-slate-100'
+              }`}>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-600/50 border border-slate-500/50">
-                    <Building2 className="w-5 h-5 text-cyan-400" />
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    isDark 
+                      ? 'bg-slate-600/50 border border-slate-500/50'
+                      : 'bg-white border border-slate-200'
+                  }`}>
+                    <Building2 className="w-5 h-5 text-cyan-500" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">{app.name}</p>
-                    <p className="text-xs text-slate-400">{app.specialty}</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>{app.name}</p>
+                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{app.specialty}</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <span className={`text-xs px-2 py-1 rounded-full ${
-                    app.status === "new" ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30" :
-                    app.status === "review" ? "bg-slate-500/20 text-slate-300 border border-slate-500/30" :
-                    "bg-slate-500/20 text-slate-300 border border-slate-500/30"
+                    app.status === "new" ? "bg-cyan-500/20 text-cyan-500 border border-cyan-500/30" :
+                    "bg-slate-500/20 text-slate-400 border border-slate-400/30"
                   }`}>
                     {app.status === "new" ? "New" : app.status === "review" ? "In Review" : "Pending Docs"}
                   </span>
-                  <p className="text-xs text-slate-500 mt-1">{app.submitted}</p>
+                  <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{app.submitted}</p>
                 </div>
               </div>
             ))}
@@ -311,9 +358,13 @@ export default function AdminDashboard() {
         </div>
 
         {/* Upcoming Tasks */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-          <h2 className="text-lg font-semibold text-white flex items-center gap-2 mb-4">
-            <Calendar className="w-5 h-5 text-teal-400" />
+        <div className={`rounded-xl p-6 ${
+          isDark 
+            ? 'bg-slate-800/50 border border-slate-700'
+            : 'bg-white border border-slate-200 shadow-sm'
+        }`}>
+          <h2 className={`text-lg font-semibold flex items-center gap-2 mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <Calendar className="w-5 h-5 text-teal-500" />
             Upcoming Tasks
           </h2>
           <div className="space-y-3">
@@ -324,17 +375,19 @@ export default function AdminDashboard() {
               { task: "Quarterly network report", due: "Apr 1", priority: "medium" },
               { task: "Provider satisfaction survey", due: "Apr 15", priority: "low" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg">
+              <div key={i} className={`flex items-center justify-between p-3 rounded-lg ${
+                isDark ? 'bg-slate-700/30' : 'bg-slate-50'
+              }`}>
                 <div className="flex items-center gap-3">
                   <div className={`w-2 h-2 rounded-full ${
                     item.priority === "high" ? "bg-red-500" :
                     item.priority === "medium" ? "bg-amber-500" :
                     "bg-slate-400"
                   }`} />
-                  <span className="text-sm text-slate-300">{item.task}</span>
+                  <span className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{item.task}</span>
                 </div>
                 <span className={`text-xs ${
-                  item.due === "Today" ? "text-red-400" : "text-slate-500"
+                  item.due === "Today" ? "text-red-500" : (isDark ? "text-slate-500" : "text-slate-400")
                 }`}>{item.due}</span>
               </div>
             ))}

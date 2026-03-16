@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { BarChart3, TrendingUp, TrendingDown, DollarSign, Building2, FileText, Download, Calendar, X, PieChart, ArrowUpRight, MapPin, CheckCircle, Clock, AlertTriangle, Users, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/components/admin/ThemeContext";
 
 type DateRange = "This Month" | "Last Month" | "This Quarter" | "This Year";
 
@@ -197,6 +198,7 @@ const drilldownData: Record<string, { title: string; subtitle: string; items: { 
 };
 
 export default function AnalyticsPage() {
+  const { isDark } = useTheme();
   const [dateRange, setDateRange] = useState<DateRange>("This Month");
   const [selectedDrilldown, setSelectedDrilldown] = useState<string | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
@@ -221,15 +223,19 @@ export default function AnalyticsPage() {
             <BarChart3 className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Network Analytics</h1>
-            <p className="text-slate-400">Provider network performance and insights</p>
+            <h1 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Network Analytics</h1>
+            <p className={isDark ? 'text-slate-400' : 'text-slate-600'}>Provider network performance and insights</p>
           </div>
         </div>
         <div className="flex flex-wrap gap-3">
           <select 
             value={dateRange} 
             onChange={(e) => setDateRange(e.target.value as DateRange)} 
-            className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white cursor-pointer"
+            className={`px-4 py-2 border rounded-lg cursor-pointer ${
+              isDark 
+                ? 'bg-slate-700 border-slate-600 text-white'
+                : 'bg-white border-slate-300 text-slate-900'
+            }`}
           >
             <option>This Month</option>
             <option>Last Month</option>
@@ -245,22 +251,26 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* KPI Cards - Clickable */}
+      {/* KPI Cards - Theme Aware */}
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {currentData.kpis.map((kpi) => (
           <button
             key={kpi.label}
             onClick={() => setSelectedDrilldown(kpi.drilldown)}
-            className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl p-4 text-left hover:from-teal-600 hover:to-cyan-600 transition-all group shadow-lg"
+            className={`rounded-xl p-4 text-left transition-all group shadow-lg ${
+              isDark 
+                ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20 hover:from-cyan-800/40 hover:to-teal-800/40'
+                : 'bg-gradient-to-br from-blue-900 to-slate-800 border border-blue-700/50 hover:from-blue-800 hover:to-slate-700'
+            }`}
           >
-            <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.7)' }}>{kpi.label}</p>
-            <p className="text-2xl font-bold transition-colors" style={{ color: 'white' }}>{kpi.value}</p>
-            <p className={`text-sm flex items-center gap-1 mt-1 ${kpi.color}`}>
+            <p className={`text-sm mb-1 ${isDark ? 'text-slate-300' : 'text-blue-100'}`}>{kpi.label}</p>
+            <p className={`text-2xl font-bold transition-colors ${isDark ? 'text-cyan-400' : 'text-white'}`}>{kpi.value}</p>
+            <p className={`text-sm flex items-center gap-1 mt-1 ${isDark ? kpi.color : 'text-green-300'}`}>
               {kpi.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
               {kpi.change}
             </p>
             <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-xs flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.8)' }}>
+              <span className={`text-xs flex items-center gap-1 ${isDark ? 'text-cyan-300' : 'text-blue-200'}`}>
                 Click for details <ArrowUpRight className="w-3 h-3" />
               </span>
             </div>
@@ -363,36 +373,41 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - Theme Aware */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-slate-950 rounded-xl p-5 cursor-pointer hover:bg-slate-900 transition-all border border-slate-800 shadow-lg" onClick={() => setSelectedDrilldown("providers")}>
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
-              <Building2 className="w-5 h-5" style={{ color: '#22d3ee' }} />
-            </div>
-            <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>2,891</p>
-            <p style={{ color: 'rgba(255,255,255,0.7)' }}>Total Providers</p>
-          </div>
-          <div className="bg-slate-950 rounded-xl p-5 cursor-pointer hover:bg-slate-900 transition-all border border-slate-800 shadow-lg" onClick={() => setSelectedDrilldown("discounts")}>
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
-              <DollarSign className="w-5 h-5" style={{ color: '#22d3ee' }} />
-            </div>
-            <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>32.4%</p>
-            <p style={{ color: 'rgba(255,255,255,0.7)' }}>Avg Discount Rate</p>
-          </div>
-          <div className="bg-slate-950 rounded-xl p-5 cursor-pointer hover:bg-slate-900 transition-all border border-slate-800 shadow-lg" onClick={() => setSelectedDrilldown("coverage")}>
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
-              <MapPin className="w-5 h-5" style={{ color: '#22d3ee' }} />
-            </div>
-            <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>88</p>
-            <p style={{ color: 'rgba(255,255,255,0.7)' }}>Counties Covered</p>
-          </div>
-          <div className="bg-slate-950 rounded-xl p-5 cursor-pointer hover:bg-slate-900 transition-all border border-slate-800 shadow-lg" onClick={() => setSelectedDrilldown("credentials")}>
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
-              <Shield className="w-5 h-5" style={{ color: '#22d3ee' }} />
-            </div>
-            <p className="text-3xl font-bold" style={{ color: '#22d3ee' }}>98.2%</p>
-            <p style={{ color: 'rgba(255,255,255,0.7)' }}>Credentialed</p>
-          </div>
+          {[
+            { icon: Building2, value: "2,891", label: "Total Providers", drilldown: "providers", highlight: false },
+            { icon: DollarSign, value: "32.4%", label: "Avg Discount Rate", drilldown: "discounts", highlight: false },
+            { icon: MapPin, value: "88", label: "Counties Covered", drilldown: "coverage", highlight: false },
+            { icon: Shield, value: "98.2%", label: "Credentialed", drilldown: "credentials", highlight: true },
+          ].map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <div 
+                key={stat.label}
+                className={`rounded-xl p-5 cursor-pointer transition-all shadow-lg ${
+                  isDark 
+                    ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20 hover:from-cyan-800/40 hover:to-teal-800/40'
+                    : 'bg-gradient-to-br from-blue-900 to-slate-800 border border-blue-700/50 hover:from-blue-800 hover:to-slate-700'
+                }`} 
+                onClick={() => setSelectedDrilldown(stat.drilldown)}
+              >
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${
+                  isDark 
+                    ? 'bg-cyan-500/20 border border-cyan-500/30'
+                    : 'bg-blue-700/50 border border-blue-600/50'
+                }`}>
+                  <Icon className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-200'}`} />
+                </div>
+                <p className={`text-3xl font-bold ${
+                  stat.highlight 
+                    ? (isDark ? 'text-cyan-400' : 'text-cyan-300') 
+                    : (isDark ? 'text-cyan-400' : 'text-white')
+                }`}>{stat.value}</p>
+                <p className={isDark ? 'text-slate-300' : 'text-blue-100'}>{stat.label}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
