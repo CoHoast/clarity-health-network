@@ -351,23 +351,14 @@ export default function ProvidersPage() {
 
                       {/* NPIs */}
                       <div className="bg-slate-700/30 rounded-lg p-4">
-                        <h3 className="text-sm font-semibold text-white mb-4">NPI & Tax Information</h3>
-                        <div className="grid md:grid-cols-3 gap-4">
+                        <h3 className="text-sm font-semibold text-white mb-4">NPI Information</h3>
+                        <div className="grid md:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-xs text-slate-500 mb-1">Servicing Provider NPI</label>
                             <input
                               type="text"
                               value={editForm.servicingNpi}
                               onChange={(e) => updateEditForm("servicingNpi", e.target.value)}
-                              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-xs text-slate-500 mb-1">Tax ID / EIN</label>
-                            <input
-                              type="text"
-                              value={editForm.taxId}
-                              onChange={(e) => updateEditForm("taxId", e.target.value)}
                               className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
                           </div>
@@ -606,14 +597,10 @@ export default function ProvidersPage() {
                           <CreditCard className="w-4 h-4 text-teal-400" />
                           Provider Information
                         </h3>
-                        <div className="grid grid-cols-3 gap-4 mb-4">
+                        <div className="grid grid-cols-2 gap-4 mb-4">
                           <div>
                             <p className="text-xs text-slate-500 mb-1">Servicing Provider NPI</p>
                             <p className="text-white font-mono text-lg">{selectedProvider.servicingNpi}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-slate-500 mb-1">Tax ID / EIN</p>
-                            <p className="text-white font-mono text-lg">{selectedProvider.taxId}</p>
                           </div>
                           <div>
                             <p className="text-xs text-slate-500 mb-1">Accepting New Patients</p>
