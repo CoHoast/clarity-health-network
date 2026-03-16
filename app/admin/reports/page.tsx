@@ -136,8 +136,8 @@ export default function ReportsPage() {
                 <report.icon className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="font-medium text-white" style={{ color: '#ffffff' }}>{report.name}</p>
-                <p className="text-sm mt-0.5 text-slate-200" style={{ color: '#e2e8f0' }}>{report.description}</p>
+                <p className="font-bold" style={{ color: '#ffffff' }}>{report.name}</p>
+                <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.8)' }}>{report.description}</p>
                 <span className={`inline-block mt-2 px-2 py-0.5 text-xs rounded ${categoryColors[report.category] || "bg-slate-600 text-slate-300"}`}>{report.category}</span>
               </div>
             </button>
