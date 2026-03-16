@@ -64,7 +64,7 @@ export default function PaymentsPage() {
             <Download className="w-4 h-4" />
             Export
           </a>
-          <button onClick={() => setShowBatchModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+          <button onClick={() => setShowBatchModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
             <Send className="w-4 h-4" />
             Create Batch
           </button>
@@ -86,7 +86,7 @@ export default function PaymentsPage() {
           <p className="text-sm text-slate-400">Claims Paid</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-purple-400">2.1 days</p>
+          <p className="text-2xl font-bold text-cyan-500">2.1 days</p>
           <p className="text-sm text-slate-400">Avg. Payment Time</p>
         </div>
       </div>
@@ -100,7 +100,7 @@ export default function PaymentsPage() {
             placeholder="Search payments..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
           />
         </div>
       </div>
@@ -127,7 +127,7 @@ export default function PaymentsPage() {
                   <td className="px-4 py-3">
                     <button
                       onClick={() => setSelectedPayment(payment)}
-                      className="font-mono text-sm text-purple-400 hover:text-purple-300 hover:underline"
+                      className="font-mono text-sm text-cyan-500 hover:text-cyan-400 hover:underline"
                     >
                       {payment.id}
                     </button>
@@ -144,7 +144,7 @@ export default function PaymentsPage() {
                   <td className="px-4 py-3 text-slate-400">{payment.date}</td>
                   <td className="px-4 py-3">{getStatusBadge(payment.status)}</td>
                   <td className="px-4 py-3 text-right">
-                    <button onClick={() => setSelectedPayment(payment)} className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded">
+                    <button onClick={() => setSelectedPayment(payment)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
                       <Eye className="w-4 h-4" />
                     </button>
                   </td>
@@ -201,9 +201,9 @@ export default function PaymentsPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-600">
-                      <tr><td className="py-2 text-slate-300">03/01/2024</td><td className="py-2 text-purple-400">CLM-8821</td><td className="py-2 text-right text-white">$450.00</td></tr>
-                      <tr><td className="py-2 text-slate-300">03/02/2024</td><td className="py-2 text-purple-400">CLM-8834</td><td className="py-2 text-right text-white">$225.00</td></tr>
-                      <tr><td className="py-2 text-slate-300">03/03/2024</td><td className="py-2 text-purple-400">CLM-8847</td><td className="py-2 text-right text-white">$180.00</td></tr>
+                      <tr><td className="py-2 text-slate-300">03/01/2024</td><td className="py-2 text-cyan-500">CLM-8821</td><td className="py-2 text-right text-white">$450.00</td></tr>
+                      <tr><td className="py-2 text-slate-300">03/02/2024</td><td className="py-2 text-cyan-500">CLM-8834</td><td className="py-2 text-right text-white">$225.00</td></tr>
+                      <tr><td className="py-2 text-slate-300">03/03/2024</td><td className="py-2 text-cyan-500">CLM-8847</td><td className="py-2 text-right text-white">$180.00</td></tr>
                     </tbody>
                   </table>
                   <p className="text-xs text-slate-500 mt-2">Showing 3 of {selectedPayment.claims} claims</p>
@@ -221,7 +221,7 @@ export default function PaymentsPage() {
                   </Link>
                   <button className="inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm"><Printer className="w-4 h-4" />Print</button>
                 </div>
-                <button onClick={() => setSelectedPayment(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Close</button>
+                <button onClick={() => setSelectedPayment(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
               </div>
             </motion.div>
           </>
@@ -238,7 +238,7 @@ export default function PaymentsPage() {
                 {batchStep === 0 ? (
                   <>
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center"><CreditCard className="w-6 h-6 text-purple-400" /></div>
+                      <div className="w-12 h-12 bg-cyan-600/20 rounded-lg flex items-center justify-center"><CreditCard className="w-6 h-6 text-cyan-500" /></div>
                       <div>
                         <h3 className="text-lg font-semibold text-white">Create Payment Batch</h3>
                         <p className="text-sm text-slate-400">Process pending claims</p>
@@ -249,25 +249,25 @@ export default function PaymentsPage() {
                       {pendingClaims.map((p, i) => (
                         <div key={i} className="flex items-center justify-between py-2 border-b border-slate-600 last:border-0">
                           <div className="flex items-center gap-2">
-                            <input type="checkbox" defaultChecked className="rounded border-slate-500 bg-slate-600 text-purple-500" />
+                            <input type="checkbox" defaultChecked className="rounded border-slate-500 bg-slate-600 text-cyan-600" />
                             <span className="text-white text-sm">{p.provider}</span>
                           </div>
                           <span className="text-green-400 font-medium">${p.amount.toLocaleString()}</span>
                         </div>
                       ))}
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg mb-6">
-                      <span className="text-purple-300">Total Batch Amount</span>
-                      <span className="text-xl font-bold text-purple-400">$49,500.00</span>
+                    <div className="flex items-center justify-between p-3 bg-cyan-600/10 border border-cyan-600/30 rounded-lg mb-6">
+                      <span className="text-cyan-300">Total Batch Amount</span>
+                      <span className="text-xl font-bold text-cyan-500">$49,500.00</span>
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => setShowBatchModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                      <button onClick={handleCreateBatch} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Create Batch</button>
+                      <button onClick={handleCreateBatch} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Create Batch</button>
                     </div>
                   </>
                 ) : batchStep === 1 ? (
                   <div className="text-center py-8">
-                    <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <div className="w-16 h-16 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                     <p className="text-white font-medium">Processing Payment Batch...</p>
                     <p className="text-slate-400 text-sm mt-1">Generating ACH file</p>
                   </div>

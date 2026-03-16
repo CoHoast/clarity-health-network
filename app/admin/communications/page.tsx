@@ -41,7 +41,7 @@ export default function CommunicationsPage() {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "EOB": return "bg-purple-500/20 text-purple-400";
+      case "EOB": return "bg-cyan-600/20 text-cyan-500";
       case "Welcome": return "bg-green-500/20 text-green-400";
       case "ID Card": return "bg-blue-500/20 text-blue-400";
       case "Premium": return "bg-amber-500/20 text-amber-400";
@@ -71,7 +71,7 @@ export default function CommunicationsPage() {
             <p className="text-slate-400">EOB generation, notifications, and templates</p>
           </div>
         </div>
-        <button onClick={() => setShowNewModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+        <button onClick={() => setShowNewModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
           <Send className="w-4 h-4" />Send Communication
         </button>
       </div>
@@ -91,7 +91,7 @@ export default function CommunicationsPage() {
           <p className="text-sm text-slate-400">EOBs Generated</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-purple-400">12</p>
+          <p className="text-2xl font-bold text-cyan-500">12</p>
           <p className="text-sm text-slate-400">Active Templates</p>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function CommunicationsPage() {
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">Communication Templates</h2>
-            <button className="text-purple-400 text-sm hover:text-purple-300">+ New Template</button>
+            <button className="text-cyan-500 text-sm hover:text-cyan-400">+ New Template</button>
           </div>
           <div className="divide-y divide-slate-700">
             {templates.map((template) => (
@@ -197,9 +197,9 @@ export default function CommunicationsPage() {
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-1">Delivery Method</label>
                       <div className="flex gap-2">
-                        <label className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-700 rounded-lg cursor-pointer border-2 border-purple-500">
+                        <label className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-700 rounded-lg cursor-pointer border-2 border-cyan-600">
                           <input type="radio" name="method" defaultChecked className="hidden" />
-                          <Mail className="w-4 h-4 text-purple-400" /><span className="text-white">Email</span>
+                          <Mail className="w-4 h-4 text-cyan-500" /><span className="text-white">Email</span>
                         </label>
                         <label className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-700 rounded-lg cursor-pointer border border-slate-600 hover:border-slate-500">
                           <input type="radio" name="method" className="hidden" />
@@ -214,7 +214,7 @@ export default function CommunicationsPage() {
                   </div>
                   <div className="flex gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowNewModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSend} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Send</button>
+                    <button onClick={handleSend} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Send</button>
                   </div>
                 </>
               )}
@@ -267,7 +267,7 @@ export default function CommunicationsPage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setSelectedTemplate(null)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                <button className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Edit Template</button>
+                <button className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Edit Template</button>
               </div>
             </motion.div>
           </>
@@ -322,7 +322,7 @@ export default function CommunicationsPage() {
                 <button className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm inline-flex items-center gap-2">
                   <Send className="w-4 h-4" />Resend
                 </button>
-                <button onClick={() => setSelectedComm(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Close</button>
+                <button onClick={() => setSelectedComm(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
               </div>
             </motion.div>
           </>

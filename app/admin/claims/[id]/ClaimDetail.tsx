@@ -274,7 +274,7 @@ export default function ClaimDetail({ id }: { id: string }) {
               <h3 className="text-sm font-medium text-slate-400 mb-3 flex items-center gap-2"><User className="w-4 h-4" />Member</h3>
               <p className="font-semibold text-white text-lg">{mockClaim.member.name}</p>
               <p className="text-slate-400 text-sm">DOB: {mockClaim.member.dob}</p>
-              <p className="text-purple-400 text-sm font-mono mt-1">{mockClaim.member.memberId}</p>
+              <p className="text-cyan-500 text-sm font-mono mt-1">{mockClaim.member.memberId}</p>
             </div>
             <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-5">
               <h3 className="text-sm font-medium text-slate-400 mb-3 flex items-center gap-2"><Building2 className="w-4 h-4" />Provider</h3>
@@ -302,7 +302,7 @@ export default function ClaimDetail({ id }: { id: string }) {
                 </button>
                 <button
                   onClick={() => { setShowRepriceModal(true); handleReprice(); }}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-sm rounded-lg transition-colors"
                 >
                   <Calculator className="w-4 h-4" />
                   Reprice
@@ -322,7 +322,7 @@ export default function ClaimDetail({ id }: { id: string }) {
               <tbody className="divide-y divide-slate-700">
                 {serviceLines.map((line, i) => (
                   <tr key={i} className="hover:bg-slate-800/80">
-                    <td className="px-4 py-3 font-mono text-purple-400">{line.cpt}</td>
+                    <td className="px-4 py-3 font-mono text-cyan-500">{line.cpt}</td>
                     <td className="px-4 py-3 text-white">{line.description}</td>
                     <td className="px-4 py-3 text-right text-slate-300">${line.billed.toFixed(2)}</td>
                     <td className="px-4 py-3 text-right text-white font-medium">${line.allowed.toFixed(2)}</td>
@@ -335,7 +335,7 @@ export default function ClaimDetail({ id }: { id: string }) {
 
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-5">
             <h3 className="font-semibold text-white mb-4">Claim History</h3>
-            <div className="space-y-3">{mockClaim.history.map((event, i) => (<div key={i} className="flex items-start gap-3"><div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div><div><p className="text-white">{event.action}</p><p className="text-sm text-slate-500">{event.date} • {event.user}</p></div></div>))}</div>
+            <div className="space-y-3">{mockClaim.history.map((event, i) => (<div key={i} className="flex items-start gap-3"><div className="w-2 h-2 bg-cyan-500 rounded-full mt-2"></div><div><p className="text-white">{event.action}</p><p className="text-sm text-slate-500">{event.date} • {event.user}</p></div></div>))}</div>
           </div>
         </div>
 
@@ -358,7 +358,7 @@ export default function ClaimDetail({ id }: { id: string }) {
               <button onClick={() => setShowApproveModal(true)} className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-2"><CheckCircle className="w-4 h-4" />Approve Claim</button>
               <button onClick={() => setShowDenyModal(true)} className="w-full px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 flex items-center justify-center gap-2"><X className="w-4 h-4" />Deny Claim</button>
               <button onClick={() => { setShowValidateModal(true); handleValidate(); }} className="w-full px-4 py-2 bg-emerald-600/20 text-emerald-400 rounded-lg hover:bg-emerald-600/30 flex items-center justify-center gap-2"><ClipboardCheck className="w-4 h-4" />Validate Claim</button>
-              <button onClick={() => { setShowRepriceModal(true); handleReprice(); }} className="w-full px-4 py-2 bg-purple-600/20 text-purple-400 rounded-lg hover:bg-purple-600/30 flex items-center justify-center gap-2"><Calculator className="w-4 h-4" />Reprice Claim</button>
+              <button onClick={() => { setShowRepriceModal(true); handleReprice(); }} className="w-full px-4 py-2 bg-teal-600/20 text-cyan-500 rounded-lg hover:bg-teal-600/30 flex items-center justify-center gap-2"><Calculator className="w-4 h-4" />Reprice Claim</button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Request More Info</button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">View EOB Preview</button>
             </div>
@@ -410,7 +410,7 @@ export default function ClaimDetail({ id }: { id: string }) {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl max-h-[90vh] overflow-auto bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
               <div className="p-4 border-b border-slate-700 flex items-center justify-between sticky top-0 bg-slate-800">
                 <h3 className="font-semibold text-white flex items-center gap-2">
-                  <Calculator className="w-5 h-5 text-purple-400" />
+                  <Calculator className="w-5 h-5 text-cyan-500" />
                   Claims Repricing Engine
                 </h3>
                 <button onClick={() => setShowRepriceModal(false)} className="p-1 text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
@@ -419,7 +419,7 @@ export default function ClaimDetail({ id }: { id: string }) {
               <div className="p-4 space-y-4">
                 {isRepricing ? (
                   <div className="flex flex-col items-center justify-center py-12">
-                    <RefreshCw className="w-8 h-8 text-purple-400 animate-spin mb-4" />
+                    <RefreshCw className="w-8 h-8 text-cyan-500 animate-spin mb-4" />
                     <p className="text-white font-medium">Running repricing engine...</p>
                     <p className="text-slate-400 text-sm">Calculating allowed amounts based on provider contracts</p>
                   </div>
@@ -431,7 +431,7 @@ export default function ClaimDetail({ id }: { id: string }) {
                 ) : repricingResult ? (
                   <>
                     {/* Summary Card */}
-                    <div className="bg-gradient-to-r from-purple-500/10 to-emerald-500/10 border border-purple-500/30 rounded-xl p-5">
+                    <div className="bg-gradient-to-r from-cyan-600/10 to-emerald-500/10 border border-cyan-600/30 rounded-xl p-5">
                       <div className="flex items-center justify-between mb-4">
                         <div>
                           <p className="text-slate-400 text-sm">Transaction ID</p>
@@ -457,7 +457,7 @@ export default function ClaimDetail({ id }: { id: string }) {
                         </div>
                         <div>
                           <p className="text-slate-400 text-xs uppercase">Savings %</p>
-                          <p className="text-purple-400 text-xl font-bold">{repricingResult.summary.savingsPercent}%</p>
+                          <p className="text-cyan-500 text-xl font-bold">{repricingResult.summary.savingsPercent}%</p>
                         </div>
                       </div>
                     </div>
@@ -517,7 +517,7 @@ export default function ClaimDetail({ id }: { id: string }) {
                         <tbody className="divide-y divide-slate-700">
                           {repricingResult.lines.map((line, i) => (
                             <tr key={i} className="hover:bg-slate-700/50">
-                              <td className="px-3 py-2 font-mono text-purple-400">{line.cptCode}</td>
+                              <td className="px-3 py-2 font-mono text-cyan-500">{line.cptCode}</td>
                               <td className="px-3 py-2 text-white truncate max-w-[200px]">{line.description}</td>
                               <td className="px-3 py-2 text-right text-slate-300">${line.billedAmount.toFixed(2)}</td>
                               <td className="px-3 py-2 text-right text-emerald-400 font-medium">${line.allowedAmount.toFixed(2)}</td>
@@ -538,7 +538,7 @@ export default function ClaimDetail({ id }: { id: string }) {
               {!isRepricing && repricingResult && (
                 <div className="flex gap-2 p-4 border-t border-slate-700 sticky bottom-0 bg-slate-800">
                   <button onClick={() => setShowRepriceModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                  <button onClick={applyRepricingResult} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2">
+                  <button onClick={applyRepricingResult} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
                     Apply Repriced Amounts
                   </button>
@@ -727,7 +727,7 @@ export default function ClaimDetail({ id }: { id: string }) {
                 <div className="flex gap-2 p-4 border-t border-slate-700 sticky bottom-0 bg-slate-800">
                   <button onClick={() => setShowValidateModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
                   {validationResult.status === 'approved' || validationResult.status === 'accepted' ? (
-                    <button onClick={() => { setShowValidateModal(false); setShowRepriceModal(true); handleReprice(); }} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2">
+                    <button onClick={() => { setShowValidateModal(false); setShowRepriceModal(true); handleReprice(); }} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
                       <Calculator className="w-4 h-4" />
                       Continue to Reprice
                     </button>

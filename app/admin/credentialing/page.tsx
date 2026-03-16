@@ -84,7 +84,7 @@ export default function CredentialingPage() {
       case "approved": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Approved</span>;
       case "denied": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded-full"><XCircle className="w-3 h-3" />Denied</span>;
       case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
-      case "committee": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full"><BadgeCheck className="w-3 h-3" />Committee</span>;
+      case "committee": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-600/20 text-cyan-500 text-xs font-medium rounded-full"><BadgeCheck className="w-3 h-3" />Committee</span>;
       default: return null;
     }
   };
@@ -169,7 +169,7 @@ export default function CredentialingPage() {
           </button>
           <button 
             onClick={() => setShowNewAppModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
           >
             <Plus className="w-4 h-4" />
             New Application
@@ -184,7 +184,7 @@ export default function CredentialingPage() {
           <p className="text-sm text-slate-400">Pending Applications</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-purple-400">12</p>
+          <p className="text-2xl font-bold text-cyan-500">12</p>
           <p className="text-sm text-slate-400">Committee Review</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
@@ -209,7 +209,7 @@ export default function CredentialingPage() {
                   placeholder="Search providers, NPI..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600 focus:border-cyan-600"
                 />
               </div>
               <div className="flex gap-2 flex-wrap">
@@ -218,7 +218,7 @@ export default function CredentialingPage() {
                     key={status}
                     onClick={() => setStatusFilter(status)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      statusFilter === status ? "bg-purple-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                      statusFilter === status ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                     }`}
                   >
                     {status}
@@ -254,7 +254,7 @@ export default function CredentialingPage() {
                       <div className="flex items-center justify-end gap-2 relative">
                         <button 
                           onClick={() => setSelectedApplication(app)}
-                          className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded"
+                          className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
@@ -344,7 +344,7 @@ export default function CredentialingPage() {
             ))}
           </div>
           <div className="p-4 border-t border-slate-700">
-            <button className="w-full text-center text-purple-400 hover:text-purple-300 text-sm font-medium">
+            <button className="w-full text-center text-cyan-500 hover:text-cyan-400 text-sm font-medium">
               Send Renewal Reminders
             </button>
           </div>
@@ -359,7 +359,7 @@ export default function CredentialingPage() {
             { stage: "Application", count: 12, color: "bg-blue-500" },
             { stage: "Document Review", count: 18, color: "bg-cyan-500" },
             { stage: "PSV", count: 15, color: "bg-amber-500" },
-            { stage: "Committee", count: 8, color: "bg-purple-500" },
+            { stage: "Committee", count: 8, color: "bg-cyan-600" },
             { stage: "Complete", count: 142, color: "bg-green-500" },
           ].map((stage, i) => (
             <div key={stage.stage} className="text-center">
@@ -380,8 +380,8 @@ export default function CredentialingPage() {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
               <div className="flex items-center justify-between p-4 border-b border-slate-700">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                    <User className="w-6 h-6 text-purple-400" />
+                  <div className="w-12 h-12 bg-cyan-600/20 rounded-lg flex items-center justify-center">
+                    <User className="w-6 h-6 text-cyan-500" />
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-white">{selectedApplication.provider}</h2>
@@ -422,7 +422,7 @@ export default function CredentialingPage() {
 
                   <div className="space-y-4">
                     <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Shield className="w-4 h-4 text-purple-400" />Medical License</h3>
+                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Shield className="w-4 h-4 text-cyan-500" />Medical License</h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between"><span className="text-slate-400">License #</span><span className="text-white font-mono">{selectedApplication.license}</span></div>
                         <div className="flex justify-between"><span className="text-slate-400">Expires</span><span className="text-white">{selectedApplication.licenseExp}</span></div>
@@ -475,7 +475,7 @@ export default function CredentialingPage() {
                       <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">Approve</button>
                     </>
                   )}
-                  <button onClick={() => setSelectedApplication(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Close</button>
+                  <button onClick={() => setSelectedApplication(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
                 </div>
               </div>
             </motion.div>
@@ -501,8 +501,8 @@ export default function CredentialingPage() {
                 <>
                   <div className="flex items-center justify-between p-4 border-b border-slate-700">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                        <Plus className="w-5 h-5 text-purple-400" />
+                      <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
+                        <Plus className="w-5 h-5 text-cyan-500" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-white">New Credentialing Application</h3>
@@ -583,7 +583,7 @@ export default function CredentialingPage() {
                   </div>
                   <div className="flex gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowNewAppModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleNewApplication} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Submit Application</button>
+                    <button onClick={handleNewApplication} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Submit Application</button>
                   </div>
                 </>
               )}

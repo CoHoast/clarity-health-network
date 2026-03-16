@@ -306,7 +306,7 @@ export default function BillReviewPage() {
                       <p className="text-slate-400 text-sm mb-2">Rules Applied:</p>
                       <div className="flex flex-wrap gap-2">
                         <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded">Medicare Benchmark</span>
-                        <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded">Fee Schedule Match</span>
+                        <span className="px-2 py-1 bg-cyan-600/20 text-cyan-300 text-xs rounded">Fee Schedule Match</span>
                         <span className="px-2 py-1 bg-teal-500/20 text-teal-300 text-xs rounded">Network Discount</span>
                         {selectedBill.flags.includes("high-value") && <span className="px-2 py-1 bg-amber-500/20 text-amber-300 text-xs rounded">High-Value Review</span>}
                       </div>

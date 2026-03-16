@@ -68,7 +68,7 @@ export default function ReferencePage() {
             key={codeSet.id}
             onClick={() => setSelectedCodeSet(codeSet.id)}
             className={`bg-slate-800/50 rounded-xl border p-5 text-left transition-all ${
-              selectedCodeSet === codeSet.id ? "border-purple-500 ring-1 ring-purple-500" : "border-slate-700 hover:border-slate-600"
+              selectedCodeSet === codeSet.id ? "border-cyan-600 ring-1 ring-cyan-600" : "border-slate-700 hover:border-slate-600"
             }`}
           >
             <div className="flex items-center gap-3 mb-3">
@@ -110,7 +110,7 @@ export default function ReferencePage() {
                 placeholder="Search by code or description..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
               />
             </div>
           </div>
@@ -130,7 +130,7 @@ export default function ReferencePage() {
                 c.description.toLowerCase().includes(searchQuery.toLowerCase())
               ).map((code) => (
                 <tr key={code.code} className="hover:bg-slate-800/80">
-                  <td className="px-6 py-3 font-mono text-purple-400">{code.code}</td>
+                  <td className="px-6 py-3 font-mono text-cyan-500">{code.code}</td>
                   <td className="px-6 py-3 text-white">{code.description}</td>
                   <td className="px-6 py-3">
                     <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">{code.category}</span>

@@ -42,7 +42,7 @@ export default function NSACompliancePage() {
             <p className="text-slate-400">No Surprises Act - QPA Calculator & IDR Management</p>
           </div>
         </div>
-        <button onClick={() => setShowCalculator(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+        <button onClick={() => setShowCalculator(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
           <Calculator className="w-4 h-4" />QPA Calculator
         </button>
       </div>
@@ -157,7 +157,7 @@ export default function NSACompliancePage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setSelectedCase(null)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                <button className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Submit Response</button>
+                <button className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Submit Response</button>
               </div>
             </motion.div>
           </>
@@ -202,7 +202,7 @@ export default function NSACompliancePage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowCalculator(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                <button className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Calculate</button>
+                <button className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Calculate</button>
               </div>
             </motion.div>
           </>

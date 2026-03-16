@@ -28,7 +28,7 @@ export default function SettingsPage() {
           <h1 className="text-2xl font-bold text-white">Settings</h1>
           <p className="text-slate-400">Configure system preferences and options</p>
         </div>
-        <button onClick={handleSave} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+        <button onClick={handleSave} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
           {saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
           {saved ? "Saved!" : "Save Changes"}
         </button>
@@ -43,7 +43,7 @@ export default function SettingsPage() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  activeTab === tab.id ? "bg-purple-600/20 text-purple-400" : "text-slate-400 hover:bg-slate-700 hover:text-white"
+                  activeTab === tab.id ? "bg-teal-600/20 text-cyan-500" : "text-slate-400 hover:bg-slate-700 hover:text-white"
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -58,7 +58,7 @@ export default function SettingsPage() {
           {activeTab === "general" && (
             <>
               <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2"><Palette className="w-5 h-5 text-purple-400" />Appearance</h2>
+                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2"><Palette className="w-5 h-5 text-cyan-500" />Appearance</h2>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-300 mb-1">Theme</label>
@@ -179,7 +179,7 @@ export default function SettingsPage() {
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked={item.default} className="sr-only peer" />
-                      <div className="w-11 h-6 bg-slate-600 peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                      <div className="w-11 h-6 bg-slate-600 peer-focus:ring-4 peer-focus:ring-teal-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
                     </label>
                   </div>
                 ))}
@@ -199,7 +199,7 @@ export default function SettingsPage() {
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
                     </label>
                   </div>
                   <div>
@@ -233,7 +233,7 @@ export default function SettingsPage() {
                     <button className="px-3 py-1.5 bg-slate-600 text-white rounded hover:bg-slate-500 text-sm">Regenerate</button>
                   </div>
                 </div>
-                <button className="text-purple-400 hover:text-purple-300 text-sm font-medium">+ Create new API key</button>
+                <button className="text-cyan-500 hover:text-cyan-400 text-sm font-medium">+ Create new API key</button>
               </div>
             </>
           )}
@@ -257,7 +257,7 @@ export default function SettingsPage() {
                         <p className="text-sm text-slate-400">{item.description}</p>
                       </div>
                     </div>
-                    <button className={`px-3 py-1.5 rounded text-sm ${item.status === "connected" ? "bg-slate-600 text-white hover:bg-slate-500" : "bg-purple-600 text-white hover:bg-purple-700"}`}>
+                    <button className={`px-3 py-1.5 rounded text-sm ${item.status === "connected" ? "bg-slate-600 text-white hover:bg-slate-500" : "bg-teal-600 text-white hover:bg-teal-700"}`}>
                       {item.status === "connected" ? "Configure" : "Connect"}
                     </button>
                   </div>

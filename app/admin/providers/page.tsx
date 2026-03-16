@@ -65,7 +65,7 @@ export default function ProvidersPage() {
   const getTypeBadge = (type: string) => {
     const colors: Record<string, string> = {
       "Individual": "bg-blue-500/20 text-blue-400",
-      "Group Practice": "bg-purple-500/20 text-purple-400",
+      "Group Practice": "bg-cyan-600/20 text-cyan-500",
       "Facility": "bg-teal-500/20 text-teal-400",
     };
     return <span className={`px-2 py-1 text-xs font-medium rounded ${colors[type] || "bg-slate-600 text-slate-300"}`}>{type}</span>;
@@ -114,7 +114,7 @@ export default function ProvidersPage() {
             <Download className="w-4 h-4" />
             Export
           </a>
-          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
             <Plus className="w-4 h-4" />
             Add Provider
           </button>
@@ -136,7 +136,7 @@ export default function ProvidersPage() {
           <p className="text-sm text-slate-400">Pending Review</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-purple-400">156</p>
+          <p className="text-2xl font-bold text-cyan-500">156</p>
           <p className="text-sm text-slate-400">Locations</p>
         </div>
       </div>
@@ -151,7 +151,7 @@ export default function ProvidersPage() {
               placeholder="Search by name, NPI, or specialty..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
             />
           </div>
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white">
@@ -193,7 +193,7 @@ export default function ProvidersPage() {
                   <td className="px-4 py-3">{getStatusBadge(provider.status)}</td>
                   <td className="px-4 py-3 text-center text-slate-300">{provider.claimsMtd}</td>
                   <td className="px-4 py-3 text-right">
-                    <button onClick={() => setSelectedProvider(provider)} className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded">
+                    <button onClick={() => setSelectedProvider(provider)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
                       <Eye className="w-4 h-4" />
                     </button>
                   </td>
@@ -212,8 +212,8 @@ export default function ProvidersPage() {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
               <div className="flex items-center justify-between p-4 border-b border-slate-700">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                    <Building2 className="w-6 h-6 text-purple-400" />
+                  <div className="w-12 h-12 bg-cyan-600/20 rounded-lg flex items-center justify-center">
+                    <Building2 className="w-6 h-6 text-cyan-500" />
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-white">{selectedProvider.name}</h2>
@@ -249,7 +249,7 @@ export default function ProvidersPage() {
                       <h3 className="font-medium text-white mb-3 flex items-center gap-2"><DollarSign className="w-4 h-4 text-amber-400" />Fee Schedule</h3>
                       <p className="text-2xl font-bold text-white">{selectedProvider.feeSchedule}</p>
                       <p className="text-sm text-slate-400 mt-1">Current reimbursement rate</p>
-                      <a href="/docs/contract" target="_blank" className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-sm mt-3">
+                      <a href="/docs/contract" target="_blank" className="inline-flex items-center gap-1 text-cyan-500 hover:text-cyan-400 text-sm mt-3">
                         <FileText className="w-4 h-4" />View Contract
                       </a>
                     </div>
@@ -261,7 +261,7 @@ export default function ProvidersPage() {
                   </div>
                   <div className="space-y-4">
                     <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Calendar className="w-4 h-4 text-purple-400" />Credentials</h3>
+                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Calendar className="w-4 h-4 text-cyan-500" />Credentials</h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between"><span className="text-slate-400">License</span><span className="text-green-400">Valid</span></div>
                         <div className="flex justify-between"><span className="text-slate-400">DEA</span><span className="text-green-400">Valid</span></div>
@@ -292,7 +292,7 @@ export default function ProvidersPage() {
                 >
                   <Edit className="w-4 h-4" />Edit Provider
                 </button>
-                <button onClick={() => setSelectedProvider(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Close</button>
+                <button onClick={() => setSelectedProvider(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
               </div>
             </motion.div>
           </>
@@ -360,7 +360,7 @@ export default function ProvidersPage() {
                   </div>
                   <div className="flex gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowMessageModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSendMessage} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 inline-flex items-center justify-center gap-2">
+                    <button onClick={handleSendMessage} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 inline-flex items-center justify-center gap-2">
                       <Send className="w-4 h-4" />Send Message
                     </button>
                   </div>
@@ -389,8 +389,8 @@ export default function ProvidersPage() {
                 <>
                   <div className="flex items-center justify-between p-4 border-b border-slate-700">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                        <Edit className="w-5 h-5 text-purple-400" />
+                      <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
+                        <Edit className="w-5 h-5 text-cyan-500" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-white">Edit Provider</h3>
@@ -507,7 +507,7 @@ export default function ProvidersPage() {
                   </div>
                   <div className="flex gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSaveEdit} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Save Changes</button>
+                    <button onClick={handleSaveEdit} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button>
                   </div>
                 </>
               )}
@@ -578,7 +578,7 @@ export default function ProvidersPage() {
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700 bg-slate-800">
                 <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">Cancel</button>
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Add Provider</button>
+                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Add Provider</button>
               </div>
             </motion.div>
           </>

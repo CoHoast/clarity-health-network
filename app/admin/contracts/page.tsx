@@ -64,7 +64,7 @@ export default function ContractsPage() {
           </button>
           <button 
             onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-lg hover:from-purple-700 hover:to-violet-700"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-600 text-white rounded-lg hover:from-teal-700 hover:to-teal-700"
           >
             <Plus className="w-4 h-4" />
             New Contract
@@ -102,7 +102,7 @@ export default function ContractsPage() {
               placeholder="Search contracts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
             />
           </div>
           <div className="flex gap-2">
@@ -112,7 +112,7 @@ export default function ContractsPage() {
                 onClick={() => setStatusFilter(status)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   statusFilter === status
-                    ? "bg-purple-600 text-white"
+                    ? "bg-teal-600 text-white"
                     : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                 }`}
               >
@@ -143,7 +143,7 @@ export default function ContractsPage() {
                 <td className="px-4 py-3">
                   <button
                     onClick={() => setSelectedContract(contract)}
-                    className="font-mono text-purple-400 hover:text-purple-300 hover:underline"
+                    className="font-mono text-cyan-500 hover:text-cyan-400 hover:underline"
                   >
                     {contract.id}
                   </button>
@@ -162,7 +162,7 @@ export default function ContractsPage() {
                   <div className="flex items-center justify-end gap-2">
                     <button
                       onClick={() => setSelectedContract(contract)}
-                      className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded"
+                      className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"
                       title="View Details"
                     >
                       <Eye className="w-4 h-4" />
@@ -191,8 +191,8 @@ export default function ContractsPage() {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
               <div className="flex items-center justify-between p-4 border-b border-slate-700">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                    <FileText className="w-5 h-5 text-purple-400" />
+                  <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-cyan-500" />
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-white">{selectedContract.id}</h2>
@@ -282,7 +282,7 @@ export default function ContractsPage() {
                     <FileText className="w-4 h-4" />View Document
                     <ExternalLink className="w-3 h-3" />
                   </Link>
-                  <button onClick={() => setSelectedContract(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
+                  <button onClick={() => setSelectedContract(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">
                     Close
                   </button>
                 </div>
@@ -335,13 +335,13 @@ export default function ContractsPage() {
                       </select>
                     </div>
                     <label className="flex items-center gap-2">
-                      <input type="checkbox" defaultChecked className="rounded bg-slate-700 border-slate-600 text-purple-600" />
+                      <input type="checkbox" defaultChecked className="rounded bg-slate-700 border-slate-600 text-teal-600" />
                       <span className="text-sm text-slate-300">Enable auto-renewal</span>
                     </label>
                   </div>
                   <div className="flex gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowRenewalModal(null)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleAction} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Send Renewal</button>
+                    <button onClick={handleAction} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Send Renewal</button>
                   </div>
                 </>
               )}
@@ -413,13 +413,13 @@ export default function ContractsPage() {
                       </select>
                     </div>
                     <label className="flex items-center gap-2">
-                      <input type="checkbox" defaultChecked className="rounded bg-slate-700 border-slate-600 text-purple-600" />
+                      <input type="checkbox" defaultChecked className="rounded bg-slate-700 border-slate-600 text-teal-600" />
                       <span className="text-sm text-slate-300">Enable auto-renewal</span>
                     </label>
                   </div>
                   <div className="flex gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowAddModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleAction} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Create Contract</button>
+                    <button onClick={handleAction} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Create Contract</button>
                   </div>
                 </>
               )}

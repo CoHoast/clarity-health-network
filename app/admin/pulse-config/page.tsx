@@ -41,7 +41,7 @@ export default function PulseConfigPage() {
             <p className="text-slate-400">Knowledge base, training, and analytics</p>
           </div>
         </div>
-        <button onClick={() => setShowUploadModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+        <button onClick={() => setShowUploadModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
           <Upload className="w-4 h-4" />Upload Documents
         </button>
       </div>
@@ -76,7 +76,7 @@ export default function PulseConfigPage() {
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
               <Database className="w-5 h-5 text-cyan-400" />Knowledge Bases
             </h2>
-            <button className="text-purple-400 text-sm hover:text-purple-300">+ Add</button>
+            <button className="text-cyan-500 text-sm hover:text-cyan-400">+ Add</button>
           </div>
           <div className="divide-y divide-slate-700">
             {knowledgeBases.map((kb) => (
@@ -124,7 +124,7 @@ export default function PulseConfigPage() {
       {/* Model Settings */}
       <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
         <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-          <Brain className="w-5 h-5 text-purple-400" />Model Configuration
+          <Brain className="w-5 h-5 text-cyan-500" />Model Configuration
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div>
@@ -164,7 +164,7 @@ export default function PulseConfigPage() {
                     {knowledgeBases.map(kb => <option key={kb.id}>{kb.name}</option>)}
                   </select>
                 </div>
-                <div className="border-2 border-dashed border-slate-600 rounded-lg p-8 text-center hover:border-purple-500/50 transition-colors cursor-pointer">
+                <div className="border-2 border-dashed border-slate-600 rounded-lg p-8 text-center hover:border-cyan-600/50 transition-colors cursor-pointer">
                   <Upload className="w-10 h-10 text-slate-400 mx-auto mb-3" />
                   <p className="font-medium text-white">Drop files here</p>
                   <p className="text-sm text-slate-500 mt-1">PDF, DOCX, TXT, MD</p>
@@ -172,7 +172,7 @@ export default function PulseConfigPage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowUploadModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowUploadModal(false)} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Upload & Train</button>
+                <button onClick={() => setShowUploadModal(false)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Upload & Train</button>
               </div>
             </motion.div>
           </>
@@ -217,7 +217,7 @@ export default function PulseConfigPage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setSelectedKB(null)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                <button className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2">
+                <button className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
                   <Play className="w-4 h-4" />Retrain
                 </button>
               </div>

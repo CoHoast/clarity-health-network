@@ -30,7 +30,7 @@ const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }
       { label: "Denial Rate", value: "4.2%", change: "-0.8%", trend: "down", color: "text-green-400", drilldown: "denials" },
       { label: "Clean Claim Rate", value: "94.5%", change: "+2.1%", trend: "up", color: "text-green-400", drilldown: "clean" },
       { label: "Active Members", value: "12,847", change: "+156", trend: "up", color: "text-blue-400", drilldown: "members" },
-      { label: "Network Providers", value: "2,891", change: "+23", trend: "up", color: "text-purple-400", drilldown: "providers" },
+      { label: "Network Providers", value: "2,891", change: "+23", trend: "up", color: "text-cyan-500", drilldown: "providers" },
     ],
     monthlyData: [
       { month: "Oct", claims: 1850000, members: 12100 },
@@ -48,7 +48,7 @@ const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }
       { label: "Denial Rate", value: "5.0%", change: "-0.3%", trend: "down", color: "text-green-400", drilldown: "denials" },
       { label: "Clean Claim Rate", value: "92.4%", change: "+1.5%", trend: "up", color: "text-green-400", drilldown: "clean" },
       { label: "Active Members", value: "12,691", change: "+142", trend: "up", color: "text-blue-400", drilldown: "members" },
-      { label: "Network Providers", value: "2,868", change: "+18", trend: "up", color: "text-purple-400", drilldown: "providers" },
+      { label: "Network Providers", value: "2,868", change: "+18", trend: "up", color: "text-cyan-500", drilldown: "providers" },
     ],
     monthlyData: [
       { month: "Sep", claims: 1720000, members: 11900 },
@@ -66,7 +66,7 @@ const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }
       { label: "Denial Rate", value: "4.5%", change: "-1.2%", trend: "down", color: "text-green-400", drilldown: "denials" },
       { label: "Clean Claim Rate", value: "93.8%", change: "+3.1%", trend: "up", color: "text-green-400", drilldown: "clean" },
       { label: "Active Members", value: "12,847", change: "+347", trend: "up", color: "text-blue-400", drilldown: "members" },
-      { label: "Network Providers", value: "2,891", change: "+68", trend: "up", color: "text-purple-400", drilldown: "providers" },
+      { label: "Network Providers", value: "2,891", change: "+68", trend: "up", color: "text-cyan-500", drilldown: "providers" },
     ],
     monthlyData: [
       { month: "Jan", claims: 2200000, members: 12500 },
@@ -81,7 +81,7 @@ const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }
       { label: "Denial Rate", value: "4.8%", change: "-2.1%", trend: "down", color: "text-green-400", drilldown: "denials" },
       { label: "Clean Claim Rate", value: "92.1%", change: "+4.8%", trend: "up", color: "text-green-400", drilldown: "clean" },
       { label: "Active Members", value: "12,847", change: "+1,247", trend: "up", color: "text-blue-400", drilldown: "members" },
-      { label: "Network Providers", value: "2,891", change: "+312", trend: "up", color: "text-purple-400", drilldown: "providers" },
+      { label: "Network Providers", value: "2,891", change: "+312", trend: "up", color: "text-cyan-500", drilldown: "providers" },
     ],
     monthlyData: [
       { month: "Jan", claims: 2200000, members: 11600 },
@@ -261,7 +261,7 @@ export default function AnalyticsPage() {
           </select>
           <button 
             onClick={() => setShowExportModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
           >
             <Download className="w-4 h-4" />Export
           </button>
@@ -276,7 +276,7 @@ export default function AnalyticsPage() {
             onClick={() => setActiveTab(tab.id)}
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
               activeTab === tab.id
-                ? "bg-purple-600 text-white"
+                ? "bg-teal-600 text-white"
                 : "bg-slate-700 text-slate-300 hover:bg-slate-600"
             }`}
           >
@@ -292,16 +292,16 @@ export default function AnalyticsPage() {
           <button
             key={kpi.label}
             onClick={() => setSelectedDrilldown(kpi.drilldown)}
-            className="bg-slate-800/50 rounded-xl border border-slate-700 p-4 text-left hover:border-purple-500 hover:bg-slate-800 transition-all group"
+            className="bg-slate-800/50 rounded-xl border border-slate-700 p-4 text-left hover:border-cyan-600 hover:bg-slate-800 transition-all group"
           >
             <p className="text-sm text-slate-400 mb-1">{kpi.label}</p>
-            <p className="text-2xl font-bold text-white group-hover:text-purple-400 transition-colors">{kpi.value}</p>
+            <p className="text-2xl font-bold text-white group-hover:text-cyan-500 transition-colors">{kpi.value}</p>
             <p className={`text-sm flex items-center gap-1 mt-1 ${kpi.color}`}>
               {kpi.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
               {kpi.change}
             </p>
             <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-xs text-purple-400 flex items-center gap-1">
+              <span className="text-xs text-cyan-500 flex items-center gap-1">
                 Click for details <ArrowUpRight className="w-3 h-3" />
               </span>
             </div>
@@ -329,7 +329,7 @@ export default function AnalyticsPage() {
                     initial={{ height: 0 }}
                     animate={{ height: `${(d.claims / maxClaims) * 180}px` }}
                     transition={{ delay: i * 0.05, duration: 0.3 }}
-                    className="w-full bg-gradient-to-t from-purple-600 to-purple-400 rounded-t group-hover:from-purple-500 group-hover:to-purple-300 transition-colors"
+                    className="w-full bg-gradient-to-t from-teal-600 to-cyan-500 rounded-t group-hover:from-cyan-600 group-hover:to-cyan-400 transition-colors"
                   />
                   <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-700 px-2 py-1 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
                     ${(d.claims / 1000000).toFixed(2)}M
@@ -351,7 +351,7 @@ export default function AnalyticsPage() {
               {activeTab === "providers" && "Network by Specialty"}
               {activeTab === "financial" && "Financial Summary"}
             </h2>
-            <button className="text-sm text-purple-400 hover:text-purple-300">View All</button>
+            <button className="text-sm text-cyan-500 hover:text-cyan-400">View All</button>
           </div>
           <div className="divide-y divide-slate-700">
             {topProviders.map((provider, i) => (
@@ -363,7 +363,7 @@ export default function AnalyticsPage() {
                 className="px-6 py-4 flex items-center justify-between hover:bg-slate-700/50 cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center text-xs font-medium">{i + 1}</span>
+                  <span className="w-6 h-6 bg-cyan-600/20 text-cyan-500 rounded-full flex items-center justify-center text-xs font-medium">{i + 1}</span>
                   <div>
                     <p className="font-medium text-white">{provider.name}</p>
                     <p className="text-sm text-slate-400">{provider.claims > 0 ? `${provider.claims} claims` : ""}</p>
@@ -393,10 +393,10 @@ export default function AnalyticsPage() {
               <p className="text-3xl font-bold">98.2%</p>
               <p className="text-blue-100">Member Retention</p>
             </div>
-            <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-5 text-white cursor-pointer hover:scale-[1.02] transition-transform" onClick={() => setSelectedDrilldown("processing")}>
-              <FileText className="w-8 h-8 text-purple-200 mb-3" />
+            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white cursor-pointer hover:scale-[1.02] transition-transform" onClick={() => setSelectedDrilldown("processing")}>
+              <FileText className="w-8 h-8 text-cyan-200 mb-3" />
               <p className="text-3xl font-bold">47,234</p>
-              <p className="text-purple-100">Claims Processed</p>
+              <p className="text-cyan-100">Claims Processed</p>
             </div>
             <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl p-5 text-white cursor-pointer hover:scale-[1.02] transition-transform">
               <Activity className="w-8 h-8 text-amber-200 mb-3" />
@@ -422,10 +422,10 @@ export default function AnalyticsPage() {
               <p className="text-3xl font-bold">4.2%</p>
               <p className="text-amber-100">Denial Rate</p>
             </div>
-            <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-5 text-white">
-              <DollarSign className="w-8 h-8 text-purple-200 mb-3" />
+            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white">
+              <DollarSign className="w-8 h-8 text-cyan-200 mb-3" />
               <p className="text-3xl font-bold">$1,847</p>
-              <p className="text-purple-100">Avg Claim Cost</p>
+              <p className="text-cyan-100">Avg Claim Cost</p>
             </div>
           </>
         )}
@@ -441,10 +441,10 @@ export default function AnalyticsPage() {
               <p className="text-3xl font-bold">+156</p>
               <p className="text-green-100">New This Month</p>
             </div>
-            <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-5 text-white">
-              <Building2 className="w-8 h-8 text-purple-200 mb-3" />
+            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white">
+              <Building2 className="w-8 h-8 text-cyan-200 mb-3" />
               <p className="text-3xl font-bold">234</p>
-              <p className="text-purple-100">Employer Groups</p>
+              <p className="text-cyan-100">Employer Groups</p>
             </div>
             <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl p-5 text-white">
               <MapPin className="w-8 h-8 text-amber-200 mb-3" />
@@ -455,10 +455,10 @@ export default function AnalyticsPage() {
         )}
         {activeTab === "providers" && (
           <>
-            <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-5 text-white">
-              <Building2 className="w-8 h-8 text-purple-200 mb-3" />
+            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white">
+              <Building2 className="w-8 h-8 text-cyan-200 mb-3" />
               <p className="text-3xl font-bold">2,891</p>
-              <p className="text-purple-100">Total Providers</p>
+              <p className="text-cyan-100">Total Providers</p>
             </div>
             <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 text-white">
               <CheckCircle className="w-8 h-8 text-green-200 mb-3" />
@@ -489,10 +489,10 @@ export default function AnalyticsPage() {
               <p className="text-3xl font-bold">82.0%</p>
               <p className="text-blue-100">Medical Loss Ratio</p>
             </div>
-            <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-5 text-white">
-              <TrendingUp className="w-8 h-8 text-purple-200 mb-3" />
+            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white">
+              <TrendingUp className="w-8 h-8 text-cyan-200 mb-3" />
               <p className="text-3xl font-bold">$326K</p>
-              <p className="text-purple-100">Net Income Q1</p>
+              <p className="text-cyan-100">Net Income Q1</p>
             </div>
             <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl p-5 text-white">
               <Activity className="w-8 h-8 text-amber-200 mb-3" />
@@ -542,14 +542,14 @@ export default function AnalyticsPage() {
                       <p className="font-medium text-white">{item.label}</p>
                       {item.detail && <p className="text-sm text-slate-400">{item.detail}</p>}
                     </div>
-                    <p className="text-lg font-bold text-purple-400">{item.value}</p>
+                    <p className="text-lg font-bold text-cyan-500">{item.value}</p>
                   </motion.div>
                 ))}
               </div>
               <div className="p-4 border-t border-slate-700 flex justify-end">
                 <button 
                   onClick={() => setSelectedDrilldown(null)} 
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                  className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
                 >
                   Close
                 </button>

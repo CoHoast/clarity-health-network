@@ -50,7 +50,7 @@ const auditLogs: AuditLog[] = [
 
 const categoryConfig: Record<CategoryType, { label: string; icon: React.ElementType; color: string }> = {
   auth: { label: "Authentication", icon: LogIn, color: "text-blue-400" },
-  phi_access: { label: "PHI Access", icon: Eye, color: "text-purple-400" },
+  phi_access: { label: "PHI Access", icon: Eye, color: "text-cyan-500" },
   data_change: { label: "Data Change", icon: Edit, color: "text-amber-400" },
   system: { label: "System", icon: Settings, color: "text-slate-400" },
   security: { label: "Security", icon: Shield, color: "text-red-400" },
@@ -111,7 +111,7 @@ export default function AuditLogsPage() {
           <button className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 border border-slate-600">
             <RefreshCw className="w-4 h-4" />Refresh
           </button>
-          <button className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+          <button className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
             <Download className="w-4 h-4" />Export Logs
           </button>
         </div>
@@ -145,7 +145,7 @@ export default function AuditLogsPage() {
           <p className="text-sm text-slate-400">Errors</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-purple-400">{stats.phiAccess}</p>
+          <p className="text-2xl font-bold text-cyan-500">{stats.phiAccess}</p>
           <p className="text-sm text-slate-400">PHI Access</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
@@ -172,7 +172,7 @@ export default function AuditLogsPage() {
               placeholder="Search logs by user, action, resource, or details..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
             />
           </div>
           <select
@@ -189,7 +189,7 @@ export default function AuditLogsPage() {
           </select>
           <button 
             onClick={() => setShowFilters(!showFilters)}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border ${showFilters ? "bg-purple-600 border-purple-500 text-white" : "bg-slate-700 border-slate-600 text-white hover:bg-slate-600"}`}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border ${showFilters ? "bg-teal-600 border-cyan-600 text-white" : "bg-slate-700 border-slate-600 text-white hover:bg-slate-600"}`}
           >
             <Filter className="w-4 h-4" />Filters
           </button>
@@ -284,10 +284,10 @@ export default function AuditLogsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-white text-sm">{log.action}</td>
-                  <td className="px-4 py-3 text-purple-400 font-mono text-sm">{log.resource}</td>
+                  <td className="px-4 py-3 text-cyan-500 font-mono text-sm">{log.resource}</td>
                   <td className="px-4 py-3 text-center">
                     {log.phiAccessed ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded-full">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-cyan-600/20 text-cyan-500 text-xs rounded-full">
                         <Lock className="w-3 h-3" />PHI
                       </span>
                     ) : (
@@ -300,7 +300,7 @@ export default function AuditLogsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <button onClick={() => setSelectedLog(log)} className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded">
+                    <button onClick={() => setSelectedLog(log)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
                       <Eye className="w-4 h-4" />
                     </button>
                   </td>
@@ -313,7 +313,7 @@ export default function AuditLogsPage() {
           <span className="text-sm text-slate-500">Showing {filteredLogs.length} of {auditLogs.length} entries</span>
           <div className="flex gap-2">
             <button className="px-3 py-1 bg-slate-700 text-slate-300 rounded text-sm hover:bg-slate-600">Previous</button>
-            <span className="px-3 py-1 bg-purple-600 text-white rounded text-sm">1</span>
+            <span className="px-3 py-1 bg-teal-600 text-white rounded text-sm">1</span>
             <button className="px-3 py-1 bg-slate-700 text-slate-300 rounded text-sm hover:bg-slate-600">2</button>
             <button className="px-3 py-1 bg-slate-700 text-slate-300 rounded text-sm hover:bg-slate-600">3</button>
             <button className="px-3 py-1 bg-slate-700 text-slate-300 rounded text-sm hover:bg-slate-600">Next</button>
@@ -329,7 +329,7 @@ export default function AuditLogsPage() {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden flex flex-col">
               <div className="p-4 border-b border-slate-700 flex items-center justify-between flex-shrink-0">
                 <div className="flex items-center gap-3">
-                  <Shield className="w-5 h-5 text-purple-400" />
+                  <Shield className="w-5 h-5 text-cyan-500" />
                   <h3 className="font-semibold text-white">Audit Log Detail</h3>
                 </div>
                 <button onClick={() => setSelectedLog(null)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
@@ -346,7 +346,7 @@ export default function AuditLogsPage() {
                     );
                   })()}
                   {selectedLog.phiAccessed && (
-                    <span className="px-2 py-1 text-xs rounded-full flex items-center gap-1 bg-purple-500/20 text-purple-400">
+                    <span className="px-2 py-1 text-xs rounded-full flex items-center gap-1 bg-cyan-600/20 text-cyan-500">
                       <Lock className="w-3 h-3" />PHI ACCESSED
                     </span>
                   )}
@@ -387,7 +387,7 @@ export default function AuditLogsPage() {
 
                 <div className="bg-slate-700/50 rounded-lg p-3">
                   <p className="text-xs text-slate-400 mb-1">Resource</p>
-                  <p className="text-purple-400 font-mono">{selectedLog.resource}</p>
+                  <p className="text-cyan-500 font-mono">{selectedLog.resource}</p>
                   <p className="text-xs text-slate-500">Type: {selectedLog.resourceType}</p>
                 </div>
 
@@ -414,7 +414,7 @@ export default function AuditLogsPage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700 flex-shrink-0">
                 <button onClick={() => setSelectedLog(null)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                <button className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2">
+                <button className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
                   <FileText className="w-4 h-4" />Generate Report
                 </button>
               </div>

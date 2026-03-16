@@ -204,7 +204,7 @@ export default function UsersPage() {
               Add Role
             </button>
           )}
-          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
             <UserPlus className="w-4 h-4" />
             Add User
           </button>
@@ -222,7 +222,7 @@ export default function UsersPage() {
           <p className="text-sm text-slate-400">Active</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-purple-400">{roles.length}</p>
+          <p className="text-2xl font-bold text-cyan-500">{roles.length}</p>
           <p className="text-sm text-slate-400">Roles</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
@@ -233,9 +233,9 @@ export default function UsersPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 border-b border-slate-700 pb-2">
-        <button onClick={() => setActiveTab("users")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "users" ? "bg-slate-800 text-purple-400 border-b-2 border-purple-400" : "text-slate-400 hover:text-white"}`}>Users</button>
-        <button onClick={() => setActiveTab("roles")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "roles" ? "bg-slate-800 text-purple-400 border-b-2 border-purple-400" : "text-slate-400 hover:text-white"}`}>Roles</button>
-        <button onClick={() => setActiveTab("permissions")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "permissions" ? "bg-slate-800 text-purple-400 border-b-2 border-purple-400" : "text-slate-400 hover:text-white"}`}>Permission Matrix</button>
+        <button onClick={() => setActiveTab("users")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "users" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Users</button>
+        <button onClick={() => setActiveTab("roles")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "roles" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Roles</button>
+        <button onClick={() => setActiveTab("permissions")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "permissions" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Permission Matrix</button>
       </div>
 
       {activeTab === "users" && (
@@ -249,7 +249,7 @@ export default function UsersPage() {
                 placeholder="Search users..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
               />
             </div>
           </div>
@@ -274,8 +274,8 @@ export default function UsersPage() {
                     <tr key={user.id} className="hover:bg-slate-700/50 transition-colors">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">
-                            <span className="text-purple-400 font-medium">{user.name.split(' ').map(n => n[0]).join('')}</span>
+                          <div className="w-10 h-10 bg-cyan-600/20 rounded-full flex items-center justify-center">
+                            <span className="text-cyan-500 font-medium">{user.name.split(' ').map(n => n[0]).join('')}</span>
                           </div>
                           <div>
                             <p className="font-medium text-white">{user.name}</p>
@@ -292,7 +292,7 @@ export default function UsersPage() {
                       <td className="px-4 py-3">{getStatusBadge(user.status)}</td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button onClick={() => { setSelectedUser(user); setShowEditModal(true); }} className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded"><Edit className="w-4 h-4" /></button>
+                          <button onClick={() => { setSelectedUser(user); setShowEditModal(true); }} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"><Edit className="w-4 h-4" /></button>
                           <button className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/20 rounded"><Trash2 className="w-4 h-4" /></button>
                         </div>
                       </td>
@@ -310,8 +310,8 @@ export default function UsersPage() {
           {roles.map((role) => (
             <div key={role.id} className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
               <div className="flex items-start justify-between mb-3">
-                <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-purple-400" />
+                <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-cyan-500" />
                 </div>
                 <div className="flex gap-1">
                   {role.isSystem && (
@@ -319,7 +319,7 @@ export default function UsersPage() {
                   )}
                   <button 
                     onClick={() => { setSelectedRole(role); setShowEditRoleModal(true); }}
-                    className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded"
+                    className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"
                   >
                     <Edit className="w-4 h-4" />
                   </button>
@@ -331,7 +331,7 @@ export default function UsersPage() {
                 <p className="text-xs text-slate-500">{role.users} users</p>
                 <button 
                   onClick={() => { setSelectedRole(role); setActiveTab("permissions"); }}
-                  className="text-xs text-purple-400 hover:text-purple-300"
+                  className="text-xs text-cyan-500 hover:text-cyan-400"
                 >
                   View Permissions →
                 </button>
@@ -466,17 +466,17 @@ export default function UsersPage() {
                   </select>
                 </div>
                 <div className="flex items-center gap-2">
-                  <input type="checkbox" id="sendInvite" defaultChecked className="rounded border-slate-500 bg-slate-600 text-purple-500" />
+                  <input type="checkbox" id="sendInvite" defaultChecked className="rounded border-slate-500 bg-slate-600 text-cyan-600" />
                   <label htmlFor="sendInvite" className="text-sm text-slate-300">Send invitation email</label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <input type="checkbox" id="requireMFA" className="rounded border-slate-500 bg-slate-600 text-purple-500" />
+                  <input type="checkbox" id="requireMFA" className="rounded border-slate-500 bg-slate-600 text-cyan-600" />
                   <label htmlFor="requireMFA" className="text-sm text-slate-300">Require MFA setup</label>
                 </div>
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Add User</button>
+                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Add User</button>
               </div>
             </motion.div>
           </>
@@ -517,12 +517,12 @@ export default function UsersPage() {
                 </div>
                 <div className="pt-2 border-t border-slate-700 space-y-2">
                   <button className="flex items-center gap-2 text-amber-400 hover:text-amber-300 text-sm"><Key className="w-4 h-4" />Reset Password</button>
-                  <button className="flex items-center gap-2 text-purple-400 hover:text-purple-300 text-sm"><Shield className="w-4 h-4" />Reset MFA</button>
+                  <button className="flex items-center gap-2 text-cyan-500 hover:text-cyan-400 text-sm"><Shield className="w-4 h-4" />Reset MFA</button>
                 </div>
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowEditModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowEditModal(false)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Save Changes</button>
+                <button onClick={() => setShowEditModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button>
               </div>
             </motion.div>
           </>
@@ -565,7 +565,7 @@ export default function UsersPage() {
                 <div className="pt-2 border-t border-slate-700">
                   <button 
                     onClick={() => { setShowEditRoleModal(false); setActiveTab("permissions"); }}
-                    className="flex items-center gap-2 text-purple-400 hover:text-purple-300 text-sm"
+                    className="flex items-center gap-2 text-cyan-500 hover:text-cyan-400 text-sm"
                   >
                     <Shield className="w-4 h-4" />Edit Permissions in Matrix →
                   </button>
@@ -584,7 +584,7 @@ export default function UsersPage() {
                       setRoles(roles.map(r => r.id === selectedRole.id ? selectedRole : r));
                       setShowEditRoleModal(false);
                     }} 
-                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                    className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
                   >
                     Save Changes
                   </button>
@@ -624,7 +624,7 @@ export default function UsersPage() {
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowAddRoleModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowAddRoleModal(false)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Create Role</button>
+                <button onClick={() => setShowAddRoleModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Create Role</button>
               </div>
             </motion.div>
           </>

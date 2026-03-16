@@ -66,7 +66,7 @@ export default function MemberDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-white">Member Information</h2>
-              <button onClick={() => setShowEditModal(true)} className="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1">
+              <button onClick={() => setShowEditModal(true)} className="text-cyan-500 hover:text-cyan-400 text-sm flex items-center gap-1">
                 <Edit className="w-4 h-4" />Edit
               </button>
             </div>
@@ -120,14 +120,14 @@ export default function MemberDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white">Dependents</h2>
-              <button className="text-purple-400 hover:text-purple-300 text-sm">+ Add Dependent</button>
+              <button className="text-cyan-500 hover:text-cyan-400 text-sm">+ Add Dependent</button>
             </div>
             <div className="divide-y divide-slate-700">
               {mockMember.dependents.map((dep, i) => (
                 <div key={i} className="px-6 py-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">
-                      <User className="w-5 h-5 text-purple-400" />
+                    <div className="w-10 h-10 bg-cyan-600/20 rounded-full flex items-center justify-center">
+                      <User className="w-5 h-5 text-cyan-500" />
                     </div>
                     <div>
                       <p className="font-medium text-white">{dep.name}</p>
@@ -158,7 +158,7 @@ export default function MemberDetail({ id }: { id: string }) {
               <tbody className="divide-y divide-slate-700">
                 {mockMember.recentClaims.map((claim) => (
                   <tr key={claim.id} className="hover:bg-slate-800/80">
-                    <td className="px-4 py-3 font-mono text-purple-400">{claim.id}</td>
+                    <td className="px-4 py-3 font-mono text-cyan-500">{claim.id}</td>
                     <td className="px-4 py-3 text-white">{claim.provider}</td>
                     <td className="px-4 py-3 text-slate-400">{claim.date}</td>
                     <td className="px-4 py-3 text-right text-white">${claim.amount}</td>
@@ -186,7 +186,7 @@ export default function MemberDetail({ id }: { id: string }) {
                       <p className="text-sm text-slate-400">{comm.type} • {comm.date}</p>
                     </div>
                   </div>
-                  <button className="text-purple-400 hover:text-purple-300 text-sm">View</button>
+                  <button className="text-cyan-500 hover:text-cyan-400 text-sm">View</button>
                 </div>
               ))}
             </div>
@@ -205,7 +205,7 @@ export default function MemberDetail({ id }: { id: string }) {
                   <span className="text-white">${mockMember.benefits.deductible.used} / ${mockMember.benefits.deductible.max}</span>
                 </div>
                 <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-purple-500 rounded-full" style={{ width: `${(mockMember.benefits.deductible.used / mockMember.benefits.deductible.max) * 100}%` }}></div>
+                  <div className="h-full bg-cyan-600 rounded-full" style={{ width: `${(mockMember.benefits.deductible.used / mockMember.benefits.deductible.max) * 100}%` }}></div>
                 </div>
               </div>
               <div>
@@ -214,7 +214,7 @@ export default function MemberDetail({ id }: { id: string }) {
                   <span className="text-white">${mockMember.benefits.outOfPocket.used} / ${mockMember.benefits.outOfPocket.max}</span>
                 </div>
                 <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-purple-500 rounded-full" style={{ width: `${(mockMember.benefits.outOfPocket.used / mockMember.benefits.outOfPocket.max) * 100}%` }}></div>
+                  <div className="h-full bg-cyan-600 rounded-full" style={{ width: `${(mockMember.benefits.outOfPocket.used / mockMember.benefits.outOfPocket.max) * 100}%` }}></div>
                 </div>
               </div>
               <div className="flex justify-between pt-2 border-t border-slate-700">
@@ -247,7 +247,7 @@ export default function MemberDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-5">
             <h3 className="font-semibold text-white mb-4">Actions</h3>
             <div className="space-y-2">
-              <button onClick={() => setShowEditModal(true)} className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+              <button onClick={() => setShowEditModal(true)} className="w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
                 Edit Member
               </button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
@@ -290,7 +290,7 @@ export default function MemberDetail({ id }: { id: string }) {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Save Changes</button>
+                <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button>
               </div>
             </motion.div>
           </>

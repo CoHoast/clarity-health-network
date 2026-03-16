@@ -54,7 +54,7 @@ export default function MembersPage() {
       case "active": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Active</span>;
       case "termed": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded-full"><XCircle className="w-3 h-3" />Termed</span>;
       case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
-      case "cobra": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full">COBRA</span>;
+      case "cobra": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-600/20 text-cyan-500 text-xs font-medium rounded-full">COBRA</span>;
       default: return null;
     }
   };
@@ -88,7 +88,7 @@ export default function MembersPage() {
             <Download className="w-4 h-4" />
             Export Census
           </a>
-          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
             <UserPlus className="w-4 h-4" />
             Add Member
           </button>
@@ -106,7 +106,7 @@ export default function MembersPage() {
           <p className="text-sm text-slate-400">Active</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-purple-400">234</p>
+          <p className="text-2xl font-bold text-cyan-500">234</p>
           <p className="text-sm text-slate-400">COBRA</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
@@ -125,7 +125,7 @@ export default function MembersPage() {
               placeholder="Search by name, ID, or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -134,7 +134,7 @@ export default function MembersPage() {
                 key={status}
                 onClick={() => setStatusFilter(status)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  statusFilter === status ? "bg-purple-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                  statusFilter === status ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                 }`}
               >
                 {status}
@@ -174,7 +174,7 @@ export default function MembersPage() {
                   <td className="px-4 py-3 text-center text-slate-300">{member.claims}</td>
                   <td className="px-4 py-3">{getStatusBadge(member.status)}</td>
                   <td className="px-4 py-3 text-right">
-                    <button onClick={() => setSelectedMember(member)} className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded">
+                    <button onClick={() => setSelectedMember(member)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
                       <Eye className="w-4 h-4" />
                     </button>
                   </td>
@@ -193,8 +193,8 @@ export default function MembersPage() {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
               <div className="flex items-center justify-between p-4 border-b border-slate-700">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
-                    <User className="w-6 h-6 text-purple-400" />
+                  <div className="w-12 h-12 bg-cyan-600/20 rounded-full flex items-center justify-center">
+                    <User className="w-6 h-6 text-cyan-500" />
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-white">{selectedMember.name}</h2>
@@ -233,7 +233,7 @@ export default function MembersPage() {
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm"><span className="text-slate-400">Used</span><span className="text-white">${selectedMember.deductible.used} / ${selectedMember.deductible.max}</span></div>
                         <div className="h-2 bg-slate-600 rounded-full overflow-hidden">
-                          <div className="h-full bg-purple-500 rounded-full" style={{ width: `${(selectedMember.deductible.used / selectedMember.deductible.max) * 100}%` }} />
+                          <div className="h-full bg-cyan-600 rounded-full" style={{ width: `${(selectedMember.deductible.used / selectedMember.deductible.max) * 100}%` }} />
                         </div>
                       </div>
                     </div>
@@ -260,7 +260,7 @@ export default function MembersPage() {
                       </div>
                       <Link 
                         href={`/admin/claims?member=${selectedMember.id}`}
-                        className="w-full text-center text-purple-400 hover:text-purple-300 text-sm font-medium py-2 block"
+                        className="w-full text-center text-cyan-500 hover:text-cyan-400 text-sm font-medium py-2 block"
                       >
                         View All Claims →
                       </Link>
@@ -297,7 +297,7 @@ export default function MembersPage() {
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700 bg-slate-800">
                 <button className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">Edit Member</button>
-                <button onClick={() => setSelectedMember(null)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Close</button>
+                <button onClick={() => setSelectedMember(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
               </div>
             </motion.div>
           </>
@@ -365,7 +365,7 @@ export default function MembersPage() {
                   </div>
                   <div className="flex gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowMessageModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSendMessage} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 inline-flex items-center justify-center gap-2">
+                    <button onClick={handleSendMessage} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 inline-flex items-center justify-center gap-2">
                       <Send className="w-4 h-4" />Send Message
                     </button>
                   </div>
@@ -436,7 +436,7 @@ export default function MembersPage() {
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700 bg-slate-800">
                 <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">Cancel</button>
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Add Member</button>
+                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Add Member</button>
               </div>
             </motion.div>
           </>

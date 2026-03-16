@@ -125,10 +125,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     text: isDark ? "text-white" : "text-gray-900",
     textMuted: isDark ? "text-slate-400" : "text-gray-500",
     textSubtle: isDark ? "text-slate-500" : "text-gray-400",
-    navActive: isDark ? "bg-purple-600/20 text-purple-400" : "bg-purple-100 text-purple-700",
+    navActive: isDark ? "bg-teal-600/20 text-cyan-500" : "bg-teal-50 text-teal-700",
     navInactive: isDark ? "text-slate-400 hover:bg-slate-800 hover:text-white" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
     navIcon: isDark ? "text-slate-500" : "text-gray-400",
-    navIconActive: isDark ? "text-purple-400" : "text-purple-600",
+    navIconActive: isDark ? "text-cyan-500" : "text-teal-600",
     card: isDark ? "bg-slate-800/50 border-slate-700" : "bg-white border-gray-200 shadow-sm",
     buttonGhost: isDark ? "text-slate-400 hover:text-white hover:bg-slate-800" : "text-gray-500 hover:text-gray-900 hover:bg-gray-100",
     dropdown: isDark ? "bg-slate-800 border-slate-700" : "bg-white border-gray-200 shadow-lg",
@@ -173,7 +173,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Admin badge */}
         <div className="p-4 border-b border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-lg flex items-center justify-center">
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -203,11 +203,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       onClick={() => setSidebarOpen(false)}
                       className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                         isActive
-                          ? "bg-purple-600/20 text-purple-400"
+                          ? "bg-teal-600/20 text-cyan-500"
                           : "text-slate-400 hover:bg-slate-800 hover:text-white"
                       }`}
                     >
-                      <item.icon className={`w-5 h-5 ${isActive ? "text-purple-400" : "text-slate-500"}`} />
+                      <item.icon className={`w-5 h-5 ${isActive ? "text-cyan-500" : "text-slate-500"}`} />
                       {item.name}
                     </Link>
                   );
@@ -223,7 +223,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             onClick={() => setShowPulse(true)}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white mb-2"
           >
-            <div className="w-5 h-5 bg-gradient-to-br from-purple-500 to-violet-600 rounded flex items-center justify-center">
+            <div className="w-5 h-5 bg-gradient-to-br from-cyan-600 to-teal-600 rounded flex items-center justify-center">
               <Zap className="w-3 h-3 text-white" />
             </div>
             Ask Pulse AI
@@ -270,7 +270,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Pulse AI quick access */}
             <button
               onClick={() => setShowPulse(true)}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-violet-600 text-white text-sm font-medium rounded-lg hover:from-purple-700 hover:to-violet-700 transition-colors"
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-teal-600 text-white text-sm font-medium rounded-lg hover:from-cyan-600 hover:to-teal-700 transition-colors"
             >
               <Zap className="w-4 h-4" />
               Ask Pulse
@@ -282,7 +282,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className={`flex items-center gap-2 p-1.5 rounded-lg ${isDark ? "hover:bg-slate-800" : "hover:bg-gray-100"}`}
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-violet-600 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-semibold">SA</span>
                 </div>
                 <ChevronDown className={`w-4 h-4 ${theme.textMuted} hidden sm:block`} />
@@ -336,7 +336,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Floating Pulse button (mobile) */}
       <button
         onClick={() => setShowPulse(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center lg:hidden z-40"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-cyan-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center lg:hidden z-40"
       >
         <Zap className="w-6 h-6" />
       </button>

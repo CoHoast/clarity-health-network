@@ -103,7 +103,7 @@ export default function ReportsPage() {
           <h1 className="text-2xl font-bold text-white">Reports</h1>
           <p className="text-slate-400">Generate, schedule, and download reports</p>
         </div>
-        <button onClick={() => setShowScheduleModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+        <button onClick={() => setShowScheduleModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
           <Calendar className="w-4 h-4" />
           Schedule Report
         </button>
@@ -120,13 +120,13 @@ export default function ReportsPage() {
             <button
               key={report.id}
               onClick={() => { setSelectedTemplate(report); setShowGenerateModal(true); }}
-              className="flex items-start gap-3 p-4 bg-slate-700/50 border border-slate-600 rounded-xl hover:border-purple-500 hover:bg-slate-700 text-left transition-all group"
+              className="flex items-start gap-3 p-4 bg-slate-700/50 border border-slate-600 rounded-xl hover:border-cyan-600 hover:bg-slate-700 text-left transition-all group"
             >
-              <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-purple-500/30">
-                <report.icon className="w-5 h-5 text-purple-400" />
+              <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-cyan-600/30">
+                <report.icon className="w-5 h-5 text-cyan-500" />
               </div>
               <div>
-                <p className="font-medium text-white group-hover:text-purple-300">{report.name}</p>
+                <p className="font-medium text-white group-hover:text-cyan-400">{report.name}</p>
                 <p className="text-sm text-slate-400 mt-0.5">{report.description}</p>
                 <span className="inline-block mt-2 px-2 py-0.5 bg-slate-600 text-slate-300 text-xs rounded">{report.category}</span>
               </div>
@@ -198,7 +198,7 @@ export default function ReportsPage() {
                   </button>
                   <button 
                     onClick={() => handleDownload(report.file, report.name)}
-                    className="p-2 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded-lg"
+                    className="p-2 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded-lg"
                     title="Download Report"
                   >
                     <Download className="w-4 h-4" />
@@ -225,8 +225,8 @@ export default function ReportsPage() {
               <div className="p-6">
                 {!generating && !generated ? (
                   <>
-                    <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <selectedTemplate.icon className="w-8 h-8 text-purple-400" />
+                    <div className="w-16 h-16 bg-cyan-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <selectedTemplate.icon className="w-8 h-8 text-cyan-500" />
                     </div>
                     <h3 className="text-xl font-semibold text-white text-center mb-2">Generate Report</h3>
                     <p className="text-slate-400 text-center mb-6">{selectedTemplate.name}</p>
@@ -251,14 +251,14 @@ export default function ReportsPage() {
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => setShowGenerateModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                      <button onClick={handleGenerate} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2">
+                      <button onClick={handleGenerate} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
                         <Play className="w-4 h-4" /> Generate
                       </button>
                     </div>
                   </>
                 ) : generating ? (
                   <div className="text-center py-8">
-                    <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <div className="w-16 h-16 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                     <p className="text-white font-medium">Generating Report...</p>
                     <p className="text-slate-400 text-sm mt-1">This may take a moment</p>
                   </div>
@@ -320,12 +320,12 @@ export default function ReportsPage() {
                   </div>
                   <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowScheduleModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSchedule} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Schedule</button>
+                    <button onClick={handleSchedule} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Schedule</button>
                   </div>
                 </>
               ) : scheduling ? (
                 <div className="p-6 text-center py-12">
-                  <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <div className="w-16 h-16 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                   <p className="text-white font-medium">Scheduling Report...</p>
                 </div>
               ) : (
@@ -360,7 +360,7 @@ export default function ReportsPage() {
                 <div className="flex items-center gap-2">
                   <button 
                     onClick={() => handleDownload(viewingReport.file, viewingReport.name)}
-                    className="px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2 text-sm"
+                    className="px-3 py-1.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center gap-2 text-sm"
                   >
                     <Download className="w-4 h-4" />
                     Download
@@ -371,7 +371,7 @@ export default function ReportsPage() {
               <div className="flex-1 overflow-auto p-4">
                 {loadingPreview ? (
                   <div className="flex items-center justify-center py-12">
-                    <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-8 h-8 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin"></div>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">

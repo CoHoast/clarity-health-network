@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 
 const stats = [
-  { label: "Total Claims", value: "12,847", change: "+12%", trend: "up", icon: FileText, color: "purple" },
+  { label: "Total Claims", value: "12,847", change: "+12%", trend: "up", icon: FileText, color: "cyan" },
   { label: "Active Members", value: "45,230", change: "+3.2%", trend: "up", icon: Users, color: "blue" },
   { label: "Network Providers", value: "2,847", change: "+24", trend: "up", icon: Building2, color: "teal" },
   { label: "Monthly Volume", value: "$4.2M", change: "+8.5%", trend: "up", icon: DollarSign, color: "green" },
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
           </Link>
           <Link
             href="/admin/claims"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
           >
             <FileText className="w-4 h-4" />
             Review Claims
@@ -96,12 +96,12 @@ export default function AdminDashboard() {
             >
               <div className="flex items-center justify-between mb-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  stat.color === "purple" ? "bg-purple-500/20" :
+                  stat.color === "cyan" ? "bg-cyan-500/20" :
                   stat.color === "blue" ? "bg-blue-500/20" :
                   stat.color === "teal" ? "bg-teal-500/20" : "bg-green-500/20"
                 }`}>
                   <Icon className={`w-5 h-5 ${
-                    stat.color === "purple" ? "text-purple-400" :
+                    stat.color === "cyan" ? "text-cyan-500" :
                     stat.color === "blue" ? "text-blue-400" :
                     stat.color === "teal" ? "text-cyan-600" : "text-green-400"
                   }`} />
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
         <div className="lg:col-span-2 bg-slate-800/50 rounded-xl border border-slate-700 p-6 ">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-white">Claims Pipeline</h2>
-            <Link href="/admin/claims" className="text-sm text-purple-400 hover:text-purple-400 flex items-center gap-1">
+            <Link href="/admin/claims" className="text-sm text-cyan-500 hover:text-cyan-500 flex items-center gap-1">
               View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -170,13 +170,13 @@ export default function AdminDashboard() {
                   className="flex items-center justify-between p-3 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors group"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-slate-800/50 rounded-lg flex items-center justify-center  group-hover:bg-purple-600 transition-colors">
+                    <div className="w-8 h-8 bg-slate-800/50 rounded-lg flex items-center justify-center  group-hover:bg-teal-600 transition-colors">
                       <Icon className="w-4 h-4 text-slate-400 group-hover:text-white" />
                     </div>
                     <span className="text-sm font-medium text-slate-300">{action.label}</span>
                   </div>
                   {action.count && (
-                    <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full">
+                    <span className="px-2 py-1 bg-cyan-600/20 text-cyan-500 text-xs font-medium rounded-full">
                       {action.count}
                     </span>
                   )}
@@ -193,7 +193,7 @@ export default function AdminDashboard() {
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 ">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-purple-400" />
+              <Zap className="w-5 h-5 text-cyan-500" />
               <h2 className="text-lg font-semibold text-white">AI Engines</h2>
             </div>
             <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full">
@@ -206,8 +206,8 @@ export default function AdminDashboard() {
               return (
                 <div key={engine.name} className="flex items-center justify-between p-4 bg-slate-800 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-purple-400" />
+                    <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-cyan-500" />
                     </div>
                     <div>
                       <p className="font-medium text-white">{engine.name}</p>
@@ -228,7 +228,7 @@ export default function AdminDashboard() {
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 ">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-white">Recent Alerts</h2>
-            <Link href="/admin/compliance" className="text-sm text-purple-400 hover:text-purple-400">
+            <Link href="/admin/compliance" className="text-sm text-cyan-500 hover:text-cyan-500">
               View All
             </Link>
           </div>
@@ -256,7 +256,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Network Health */}
-      <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-2xl p-6 lg:p-8">
+      <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-2xl p-6 lg:p-8">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">

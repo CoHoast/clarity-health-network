@@ -102,14 +102,14 @@ export default function AdminPulseChat({ isOpen, onClose }: { isOpen: boolean; o
             className="fixed right-0 top-0 h-full w-full sm:w-[420px] bg-white shadow-2xl z-50 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-600 to-violet-600 text-white">
+            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-cyan-500 to-teal-600 text-white">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   <Zap className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="font-semibold">Pulse AI</h3>
-                  <p className="text-xs text-purple-200">Admin Assistant</p>
+                  <p className="text-xs text-cyan-200">Admin Assistant</p>
                 </div>
               </div>
               <button
@@ -131,7 +131,7 @@ export default function AdminPulseChat({ isOpen, onClose }: { isOpen: boolean; o
                     className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                       message.role === "user"
                         ? "bg-gray-200"
-                        : "bg-gradient-to-br from-purple-600 to-violet-600"
+                        : "bg-gradient-to-br from-cyan-500 to-teal-600"
                     }`}
                   >
                     {message.role === "user" ? (
@@ -143,7 +143,7 @@ export default function AdminPulseChat({ isOpen, onClose }: { isOpen: boolean; o
                   <div
                     className={`max-w-[80%] rounded-2xl px-4 py-2 ${
                       message.role === "user"
-                        ? "bg-purple-600 text-white"
+                        ? "bg-teal-600 text-white"
                         : "bg-gray-100 text-gray-900"
                     }`}
                   >
@@ -154,7 +154,7 @@ export default function AdminPulseChat({ isOpen, onClose }: { isOpen: boolean; o
 
               {isTyping && (
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-violet-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
                   <div className="bg-gray-100 rounded-2xl px-4 py-3">
@@ -179,7 +179,7 @@ export default function AdminPulseChat({ isOpen, onClose }: { isOpen: boolean; o
                     <button
                       key={q}
                       onClick={() => handleSend(q)}
-                      className="px-3 py-1.5 bg-purple-50 text-purple-700 text-xs rounded-full hover:bg-purple-100 transition-colors"
+                      className="px-3 py-1.5 bg-teal-50 text-teal-700 text-xs rounded-full hover:bg-teal-100 transition-colors"
                     >
                       {q}
                     </button>
@@ -197,12 +197,12 @@ export default function AdminPulseChat({ isOpen, onClose }: { isOpen: boolean; o
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   placeholder="Query data, run reports, analyze..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-cyan-600"
                 />
                 <button
                   onClick={() => handleSend()}
                   disabled={!input.trim()}
-                  className="p-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-full hover:from-purple-700 hover:to-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="p-2 bg-gradient-to-r from-cyan-500 to-teal-600 text-white rounded-full hover:from-teal-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <Send className="w-5 h-5" />
                 </button>

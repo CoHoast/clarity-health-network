@@ -74,7 +74,7 @@ export default function ProviderDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-white">Provider Information</h2>
-              <button onClick={() => setShowEditModal(true)} className="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1">
+              <button onClick={() => setShowEditModal(true)} className="text-cyan-500 hover:text-cyan-400 text-sm flex items-center gap-1">
                 <Edit className="w-4 h-4" />Edit
               </button>
             </div>
@@ -146,7 +146,7 @@ export default function ProviderDetail({ id }: { id: string }) {
           {/* Credentialing */}
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <Shield className="w-5 h-5 text-purple-400" />Credentialing Status
+              <Shield className="w-5 h-5 text-cyan-500" />Credentialing Status
             </h2>
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
@@ -233,7 +233,7 @@ export default function ProviderDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-5">
             <h3 className="font-semibold text-white mb-4">Actions</h3>
             <div className="space-y-2">
-              <button onClick={() => setShowEditModal(true)} className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+              <button onClick={() => setShowEditModal(true)} className="w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
                 Edit Provider
               </button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
@@ -278,7 +278,7 @@ export default function ProviderDetail({ id }: { id: string }) {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Save Changes</button>
+                <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button>
               </div>
             </motion.div>
           </>

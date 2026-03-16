@@ -63,7 +63,7 @@ function ClaimsContent() {
       case "approved": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Approved</span>;
       case "denied": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded-full"><XCircle className="w-3 h-3" />Denied</span>;
       case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
-      case "review": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full"><AlertTriangle className="w-3 h-3" />Review</span>;
+      case "review": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-600/20 text-cyan-500 text-xs font-medium rounded-full"><AlertTriangle className="w-3 h-3" />Review</span>;
       default: return null;
     }
   };
@@ -96,14 +96,14 @@ function ClaimsContent() {
 
       {/* Member Filter Banner */}
       {memberFilter && (
-        <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4 flex items-center justify-between">
+        <div className="bg-cyan-600/10 border border-cyan-600/30 rounded-xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <User className="w-5 h-5 text-purple-400" />
+            <User className="w-5 h-5 text-cyan-500" />
             <span className="text-white">Showing claims for: <strong>{memberName}</strong> ({memberFilter})</span>
           </div>
           <button 
             onClick={() => setMemberFilter(null)}
-            className="px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm"
+            className="px-3 py-1 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm"
           >
             Show All Claims
           </button>
@@ -125,7 +125,7 @@ function ClaimsContent() {
           <p className="text-sm text-slate-400">Auto-Adjudicated</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-purple-400">$1.24M</p>
+          <p className="text-2xl font-bold text-cyan-500">$1.24M</p>
           <p className="text-sm text-slate-400">Processed Value</p>
         </div>
       </div>
@@ -140,7 +140,7 @@ function ClaimsContent() {
               placeholder="Search claims, members, providers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600 focus:border-cyan-600"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -149,7 +149,7 @@ function ClaimsContent() {
                 key={status}
                 onClick={() => setStatusFilter(status)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  statusFilter === status ? "bg-purple-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                  statusFilter === status ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                 }`}
               >
                 {status}
@@ -182,7 +182,7 @@ function ClaimsContent() {
                   <td className="px-4 py-3">
                     <button
                       onClick={() => setSelectedClaim(claim)}
-                      className="font-mono text-sm text-purple-400 hover:text-purple-300 hover:underline"
+                      className="font-mono text-sm text-cyan-500 hover:text-cyan-400 hover:underline"
                     >
                       {claim.id}
                     </button>
@@ -201,7 +201,7 @@ function ClaimsContent() {
                     <div className="flex items-center justify-end gap-1">
                       <button 
                         onClick={() => setSelectedClaim(claim)}
-                        className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/20 rounded"
+                        className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"
                         title="View Details"
                       >
                         <Eye className="w-4 h-4" />
@@ -271,7 +271,7 @@ function ClaimsContent() {
                   {/* Claim Info */}
                   <div className="space-y-4">
                     <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><FileText className="w-4 h-4 text-purple-400" />Claim Information</h3>
+                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><FileText className="w-4 h-4 text-cyan-500" />Claim Information</h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between"><span className="text-slate-400">Claim ID</span><span className="text-white font-mono">{selectedClaim.id}</span></div>
                         <div className="flex justify-between"><span className="text-slate-400">Status</span>{getStatusBadge(selectedClaim.status)}</div>
@@ -417,7 +417,7 @@ export default function ClaimsPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     }>
       <ClaimsContent />
