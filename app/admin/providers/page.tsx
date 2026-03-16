@@ -781,14 +781,14 @@ export default function ProvidersPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => { setSelectedPractice(practice); setActiveTab("info"); }}
+                      <Link
+                        href={`/admin/providers/${practice.id}`}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-slate-300 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-sm"
                         title="View Practice Details"
                       >
                         <Eye className="w-4 h-4" />
                         View
-                      </button>
+                      </Link>
                       <Link
                         href={`/admin/providers/${practice.id}?edit=true`}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 rounded-lg transition-colors text-sm"
