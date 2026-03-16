@@ -109,15 +109,15 @@ export default function AdminDashboard() {
             >
               <div className="flex items-center justify-between mb-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  isDark ? "bg-cyan-500/20 border border-cyan-500/30" : "bg-white/20"
+                  isDark ? "bg-cyan-500/30 border border-cyan-500/50" : "bg-white/30 border border-white/20"
                 }`}>
-                  <Icon className={`w-5 h-5 ${isDark ? "text-cyan-400" : "text-white"}`} />
+                  <Icon className="w-5 h-5 text-white" />
                 </div>
                 <span 
-                  className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${
                     stat.trend === "warning" 
-                      ? isDark ? "bg-amber-500/20 text-amber-400" : "bg-amber-500/30 text-white"
-                      : isDark ? "bg-cyan-500/20 text-cyan-400" : "bg-white/20 text-white"
+                      ? "bg-amber-500 text-white"
+                      : "bg-teal-500 text-white"
                   }`}
                 >
                   {stat.trend === "up" && <TrendingUp className="w-3 h-3" />}
