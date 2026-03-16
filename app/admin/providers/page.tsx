@@ -8,16 +8,21 @@ import Link from "next/link";
 interface Provider {
   id: string;
   practiceName: string;
-  orgNpi: string;
   servicingNpi: string;
   payToNpi: string;
   taxId: string;
   type: string;
   specialty: string;
+  // Location Address
   address: string;
   city: string;
   state: string;
   zip: string;
+  // Pay-To Address
+  payToAddress: string;
+  payToCity: string;
+  payToState: string;
+  payToZip: string;
   phone: string;
   email: string;
   contactName: string;
@@ -30,16 +35,16 @@ interface Provider {
 }
 
 const providers: Provider[] = [
-  { id: "PRV-001", practiceName: "Cleveland Family Medicine", orgNpi: "1234567890", servicingNpi: "1111111111", payToNpi: "1234567890", taxId: "34-1234567", type: "Group Practice", specialty: "Family Medicine", address: "123 Medical Center Dr", city: "Cleveland", state: "OH", zip: "44101", phone: "(555) 123-4567", email: "info@clevelandfm.com", contactName: "Mary Johnson", status: "active", contractStart: "2024-01-15", contractEnd: "2027-01-14", discountType: "% Off Billed", discountRate: "35%", serviceOverrides: [{ service: "Office Visit", rate: "40%" }] },
-  { id: "PRV-002", practiceName: "Dr. Sarah Chen, MD", orgNpi: "2345678901", servicingNpi: "2345678901", payToNpi: "2345678901", taxId: "34-2345678", type: "Individual", specialty: "Internal Medicine", address: "456 Health Blvd", city: "Lakewood", state: "OH", zip: "44107", phone: "(555) 234-5678", email: "dr.chen@medical.com", contactName: "Dr. Sarah Chen", status: "active", contractStart: "2025-03-01", contractEnd: "2028-02-28", discountType: "% of Medicare", discountRate: "115%", },
-  { id: "PRV-003", practiceName: "Metro Imaging Center", orgNpi: "3456789012", servicingNpi: "3333333333", payToNpi: "3456789012", taxId: "34-3456789", type: "Facility", specialty: "Diagnostic Imaging", address: "789 Imaging Way", city: "Cleveland", state: "OH", zip: "44102", phone: "(555) 345-6789", email: "scheduling@metroimaging.com", contactName: "Tom Richards", status: "active", contractStart: "2023-06-15", contractEnd: "2026-06-14", discountType: "Case Rate", discountRate: "See Schedule", },
-  { id: "PRV-004", practiceName: "Cleveland Orthopedic Associates", orgNpi: "4567890123", servicingNpi: "4444444444", payToNpi: "9999999991", taxId: "34-4567890", type: "Group Practice", specialty: "Orthopedics", address: "321 Bone & Joint Dr", city: "Beachwood", state: "OH", zip: "44122", phone: "(555) 456-7890", email: "contact@clevortho.com", contactName: "James Miller", status: "active", contractStart: "2024-09-01", contractEnd: "2027-08-31", discountType: "% Off Billed", discountRate: "40%", },
-  { id: "PRV-005", practiceName: "Dr. James Wilson, DO", orgNpi: "5678901234", servicingNpi: "5678901234", payToNpi: "5678901234", taxId: "34-5678901", type: "Individual", specialty: "Family Medicine", address: "654 Wellness Ave", city: "Mentor", state: "OH", zip: "44060", phone: "(555) 567-8901", email: "jwilson@healthcare.com", contactName: "Dr. James Wilson", status: "pending", contractStart: "Pending", contractEnd: "Pending", discountType: "TBD", discountRate: "TBD", },
-  { id: "PRV-006", practiceName: "Westlake Urgent Care", orgNpi: "6789012345", servicingNpi: "6666666666", payToNpi: "6789012345", taxId: "34-6789012", type: "Facility", specialty: "Urgent Care", address: "987 Quick Care Blvd", city: "Westlake", state: "OH", zip: "44145", phone: "(555) 678-9012", email: "info@westlakeuc.com", contactName: "Patricia Lee", status: "active", contractStart: "2025-01-01", contractEnd: "2028-12-31", discountType: "% Off Billed", discountRate: "30%", },
-  { id: "PRV-007", practiceName: "Cleveland Cardiology Associates", orgNpi: "9012345678", servicingNpi: "9999999999", payToNpi: "9012345678", taxId: "34-9012345", type: "Group Practice", specialty: "Cardiology", address: "369 Heart Center Dr", city: "Cleveland", state: "OH", zip: "44104", phone: "(555) 901-2345", email: "info@clevcardio.com", contactName: "Robert Thompson", status: "active", contractStart: "2024-03-15", contractEnd: "2027-03-14", discountType: "% of Medicare", discountRate: "130%", },
-  { id: "PRV-008", practiceName: "Quest Diagnostics Cleveland", orgNpi: "8901234567", servicingNpi: "8888888888", payToNpi: "8901234567", taxId: "34-8901234", type: "Facility", specialty: "Laboratory", address: "258 Lab Services Rd", city: "Cleveland", state: "OH", zip: "44103", phone: "(555) 890-1234", email: "clevelandlab@quest.com", contactName: "Lab Admin", status: "active", contractStart: "2023-01-01", contractEnd: "2026-12-31", discountType: "% Off Billed", discountRate: "45%", },
-  { id: "PRV-009", practiceName: "Physical Therapy Plus", orgNpi: "1122334455", servicingNpi: "1122334455", payToNpi: "1122334455", taxId: "34-1122334", type: "Group Practice", specialty: "Physical Therapy", address: "852 Rehab Road", city: "Brooklyn", state: "OH", zip: "44144", phone: "(555) 112-2334", email: "schedule@ptplus.com", contactName: "Linda White", status: "active", contractStart: "2024-05-01", contractEnd: "2027-04-30", discountType: "% of Medicare", discountRate: "100%", },
-  { id: "PRV-010", practiceName: "Inactive Provider LLC", orgNpi: "9900112233", servicingNpi: "9900112233", payToNpi: "9900112233", taxId: "34-9900112", type: "Group Practice", specialty: "General Surgery", address: "147 Old Surgery Ln", city: "Akron", state: "OH", zip: "44301", phone: "(555) 990-0112", email: "contact@inactive.com", contactName: "N/A", status: "inactive", contractStart: "2019-01-01", contractEnd: "2022-12-31", discountType: "Terminated", discountRate: "N/A", },
+  { id: "PRV-001", practiceName: "Cleveland Family Medicine", servicingNpi: "1111111111", payToNpi: "1234567890", taxId: "34-1234567", type: "Group Practice", specialty: "Family Medicine", address: "123 Medical Center Dr", city: "Cleveland", state: "OH", zip: "44101", payToAddress: "P.O. Box 1234", payToCity: "Cleveland", payToState: "OH", payToZip: "44101", phone: "(555) 123-4567", email: "info@clevelandfm.com", contactName: "Mary Johnson", status: "active", contractStart: "2024-01-15", contractEnd: "2027-01-14", discountType: "% Off Billed", discountRate: "35%", serviceOverrides: [{ service: "Office Visit", rate: "40%" }] },
+  { id: "PRV-002", practiceName: "Dr. Sarah Chen, MD", servicingNpi: "2345678901", payToNpi: "2345678901", taxId: "34-2345678", type: "Individual", specialty: "Internal Medicine", address: "456 Health Blvd", city: "Lakewood", state: "OH", zip: "44107", payToAddress: "456 Health Blvd", payToCity: "Lakewood", payToState: "OH", payToZip: "44107", phone: "(555) 234-5678", email: "dr.chen@medical.com", contactName: "Dr. Sarah Chen", status: "active", contractStart: "2025-03-01", contractEnd: "2028-02-28", discountType: "% of Medicare", discountRate: "115%" },
+  { id: "PRV-003", practiceName: "Metro Imaging Center", servicingNpi: "3333333333", payToNpi: "3456789012", taxId: "34-3456789", type: "Facility", specialty: "Diagnostic Imaging", address: "789 Imaging Way", city: "Cleveland", state: "OH", zip: "44102", payToAddress: "789 Imaging Way, Suite 100", payToCity: "Cleveland", payToState: "OH", payToZip: "44102", phone: "(555) 345-6789", email: "scheduling@metroimaging.com", contactName: "Tom Richards", status: "active", contractStart: "2023-06-15", contractEnd: "2026-06-14", discountType: "Case Rate", discountRate: "See Schedule" },
+  { id: "PRV-004", practiceName: "Cleveland Orthopedic Associates", servicingNpi: "4444444444", payToNpi: "9999999991", taxId: "34-4567890", type: "Group Practice", specialty: "Orthopedics", address: "321 Bone & Joint Dr", city: "Beachwood", state: "OH", zip: "44122", payToAddress: "P.O. Box 5678", payToCity: "Beachwood", payToState: "OH", payToZip: "44122", phone: "(555) 456-7890", email: "contact@clevortho.com", contactName: "James Miller", status: "active", contractStart: "2024-09-01", contractEnd: "2027-08-31", discountType: "% Off Billed", discountRate: "40%" },
+  { id: "PRV-005", practiceName: "Dr. James Wilson, DO", servicingNpi: "5678901234", payToNpi: "5678901234", taxId: "34-5678901", type: "Individual", specialty: "Family Medicine", address: "654 Wellness Ave", city: "Mentor", state: "OH", zip: "44060", payToAddress: "654 Wellness Ave", payToCity: "Mentor", payToState: "OH", payToZip: "44060", phone: "(555) 567-8901", email: "jwilson@healthcare.com", contactName: "Dr. James Wilson", status: "pending", contractStart: "Pending", contractEnd: "Pending", discountType: "TBD", discountRate: "TBD" },
+  { id: "PRV-006", practiceName: "Westlake Urgent Care", servicingNpi: "6666666666", payToNpi: "6789012345", taxId: "34-6789012", type: "Facility", specialty: "Urgent Care", address: "987 Quick Care Blvd", city: "Westlake", state: "OH", zip: "44145", payToAddress: "987 Quick Care Blvd", payToCity: "Westlake", payToState: "OH", payToZip: "44145", phone: "(555) 678-9012", email: "info@westlakeuc.com", contactName: "Patricia Lee", status: "active", contractStart: "2025-01-01", contractEnd: "2028-12-31", discountType: "% Off Billed", discountRate: "30%" },
+  { id: "PRV-007", practiceName: "Cleveland Cardiology Associates", servicingNpi: "9999999999", payToNpi: "9012345678", taxId: "34-9012345", type: "Group Practice", specialty: "Cardiology", address: "369 Heart Center Dr", city: "Cleveland", state: "OH", zip: "44104", payToAddress: "P.O. Box 9012", payToCity: "Cleveland", payToState: "OH", payToZip: "44104", phone: "(555) 901-2345", email: "info@clevcardio.com", contactName: "Robert Thompson", status: "active", contractStart: "2024-03-15", contractEnd: "2027-03-14", discountType: "% of Medicare", discountRate: "130%" },
+  { id: "PRV-008", practiceName: "Quest Diagnostics Cleveland", servicingNpi: "8888888888", payToNpi: "8901234567", taxId: "34-8901234", type: "Facility", specialty: "Laboratory", address: "258 Lab Services Rd", city: "Cleveland", state: "OH", zip: "44103", payToAddress: "Quest Diagnostics, P.O. Box 2001", payToCity: "Pittsburgh", payToState: "PA", payToZip: "15230", phone: "(555) 890-1234", email: "clevelandlab@quest.com", contactName: "Lab Admin", status: "active", contractStart: "2023-01-01", contractEnd: "2026-12-31", discountType: "% Off Billed", discountRate: "45%" },
+  { id: "PRV-009", practiceName: "Physical Therapy Plus", servicingNpi: "1122334455", payToNpi: "1122334455", taxId: "34-1122334", type: "Group Practice", specialty: "Physical Therapy", address: "852 Rehab Road", city: "Brooklyn", state: "OH", zip: "44144", payToAddress: "852 Rehab Road", payToCity: "Brooklyn", payToState: "OH", payToZip: "44144", phone: "(555) 112-2334", email: "schedule@ptplus.com", contactName: "Linda White", status: "active", contractStart: "2024-05-01", contractEnd: "2027-04-30", discountType: "% of Medicare", discountRate: "100%" },
+  { id: "PRV-010", practiceName: "Inactive Provider LLC", servicingNpi: "9900112233", payToNpi: "9900112233", taxId: "34-9900112", type: "Group Practice", specialty: "General Surgery", address: "147 Old Surgery Ln", city: "Akron", state: "OH", zip: "44301", payToAddress: "147 Old Surgery Ln", payToCity: "Akron", payToState: "OH", payToZip: "44301", phone: "(555) 990-0112", email: "contact@inactive.com", contactName: "N/A", status: "inactive", contractStart: "2019-01-01", contractEnd: "2022-12-31", discountType: "Terminated", discountRate: "N/A" },
 ];
 
 const statusOptions = ["All", "Active", "Pending", "Inactive"];
@@ -58,8 +63,8 @@ export default function ProvidersPage() {
 
   const filteredProviders = providers.filter((provider) => {
     const matchesSearch = provider.practiceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      provider.orgNpi.includes(searchQuery) ||
       provider.servicingNpi.includes(searchQuery) ||
+      provider.payToNpi.includes(searchQuery) ||
       provider.specialty.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === "All" || provider.status.toLowerCase() === statusFilter.toLowerCase();
     const matchesType = typeFilter === "All Types" || provider.type === typeFilter;
@@ -195,9 +200,8 @@ export default function ProvidersPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="text-xs font-mono space-y-1">
-                      <div><span className="text-slate-500">Org:</span> <span className="text-slate-300">{provider.orgNpi}</span></div>
-                      <div><span className="text-slate-500">Svc:</span> <span className="text-slate-300">{provider.servicingNpi}</span></div>
-                      <div><span className="text-slate-500">Pay:</span> <span className="text-cyan-400">{provider.payToNpi}</span></div>
+                      <div><span className="text-slate-500">Servicing:</span> <span className="text-slate-300">{provider.servicingNpi}</span></div>
+                      <div><span className="text-slate-500">Pay-To:</span> <span className="text-cyan-400">{provider.payToNpi}</span></div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -315,18 +319,9 @@ export default function ProvidersPage() {
                       {/* NPIs */}
                       <div className="bg-slate-700/30 rounded-lg p-4">
                         <h3 className="text-sm font-semibold text-white mb-4">NPI Numbers</h3>
-                        <div className="grid md:grid-cols-3 gap-4">
+                        <div className="grid md:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-xs text-slate-500 mb-1">Organization NPI</label>
-                            <input
-                              type="text"
-                              value={editForm.orgNpi}
-                              onChange={(e) => updateEditForm("orgNpi", e.target.value)}
-                              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-xs text-slate-500 mb-1">Servicing NPI</label>
+                            <label className="block text-xs text-slate-500 mb-1">Servicing Provider NPI</label>
                             <input
                               type="text"
                               value={editForm.servicingNpi}
@@ -382,7 +377,7 @@ export default function ProvidersPage() {
                           />
                         </div>
                         <div className="space-y-4">
-                          <h3 className="text-sm font-semibold text-white">Location</h3>
+                          <h3 className="text-sm font-semibold text-white">Location Address</h3>
                           <input
                             type="text"
                             placeholder="Street Address"
@@ -413,6 +408,41 @@ export default function ProvidersPage() {
                               className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
                           </div>
+                        </div>
+                      </div>
+
+                      {/* Pay-To Address */}
+                      <div className="bg-slate-700/30 rounded-lg p-4">
+                        <h3 className="text-sm font-semibold text-white mb-4">Pay-To Address</h3>
+                        <input
+                          type="text"
+                          placeholder="Pay-To Street Address"
+                          value={editForm.payToAddress}
+                          onChange={(e) => updateEditForm("payToAddress", e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4"
+                        />
+                        <div className="grid grid-cols-3 gap-2">
+                          <input
+                            type="text"
+                            placeholder="City"
+                            value={editForm.payToCity}
+                            onChange={(e) => updateEditForm("payToCity", e.target.value)}
+                            className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                          <input
+                            type="text"
+                            placeholder="State"
+                            value={editForm.payToState}
+                            onChange={(e) => updateEditForm("payToState", e.target.value)}
+                            className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                          <input
+                            type="text"
+                            placeholder="ZIP"
+                            value={editForm.payToZip}
+                            onChange={(e) => updateEditForm("payToZip", e.target.value)}
+                            className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
                         </div>
                       </div>
 
@@ -470,13 +500,9 @@ export default function ProvidersPage() {
                       <div className="bg-slate-700/30 rounded-lg p-4">
                         <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                           <CreditCard className="w-4 h-4 text-teal-400" />
-                          NPI Numbers
+                          NPI & Tax Information
                         </h3>
                         <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <p className="text-xs text-slate-500 mb-1">Organization NPI (Type 2)</p>
-                            <p className="text-white font-mono text-lg">{selectedProvider.orgNpi}</p>
-                          </div>
                           <div>
                             <p className="text-xs text-slate-500 mb-1">Servicing Provider NPI</p>
                             <p className="text-white font-mono text-lg">{selectedProvider.servicingNpi}</p>
@@ -485,31 +511,52 @@ export default function ProvidersPage() {
                             <p className="text-xs text-slate-500 mb-1">Pay-To NPI</p>
                             <p className="text-cyan-400 font-mono text-lg">{selectedProvider.payToNpi}</p>
                           </div>
-                        </div>
-                        <div className="mt-3 pt-3 border-t border-slate-600">
-                          <p className="text-xs text-slate-500 mb-1">Tax ID / EIN</p>
-                          <p className="text-white font-mono">{selectedProvider.taxId}</p>
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Tax ID / EIN</p>
+                            <p className="text-white font-mono text-lg">{selectedProvider.taxId}</p>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Contact & Location */}
+                      {/* Addresses */}
                       <div className="grid md:grid-cols-2 gap-4">
                         <div className="bg-slate-700/30 rounded-lg p-4">
                           <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-teal-400" />
-                            Location
+                            Location Address
                           </h3>
                           <p className="text-slate-300">{selectedProvider.address}</p>
                           <p className="text-slate-300">{selectedProvider.city}, {selectedProvider.state} {selectedProvider.zip}</p>
                         </div>
                         <div className="bg-slate-700/30 rounded-lg p-4">
                           <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                            <User className="w-4 h-4 text-teal-400" />
-                            Contact
+                            <CreditCard className="w-4 h-4 text-cyan-400" />
+                            Pay-To Address
                           </h3>
-                          <p className="text-slate-300">{selectedProvider.contactName}</p>
-                          <p className="text-slate-400 text-sm">{selectedProvider.phone}</p>
-                          <p className="text-slate-400 text-sm">{selectedProvider.email}</p>
+                          <p className="text-cyan-300">{selectedProvider.payToAddress}</p>
+                          <p className="text-cyan-300">{selectedProvider.payToCity}, {selectedProvider.payToState} {selectedProvider.payToZip}</p>
+                        </div>
+                      </div>
+
+                      {/* Contact */}
+                      <div className="bg-slate-700/30 rounded-lg p-4">
+                        <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                          <User className="w-4 h-4 text-teal-400" />
+                          Contact
+                        </h3>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Contact Name</p>
+                            <p className="text-slate-300">{selectedProvider.contactName}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Phone</p>
+                            <p className="text-slate-300">{selectedProvider.phone}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Email</p>
+                            <p className="text-slate-300">{selectedProvider.email}</p>
+                          </div>
                         </div>
                       </div>
 
@@ -573,7 +620,7 @@ export default function ProvidersPage() {
                         
                         <div className="border-t border-slate-200 pt-4">
                           <p className="font-semibold mb-2">1. PARTIES</p>
-                          <p>This Agreement is entered into between TrueCare Health Network ("Network") and <strong>{selectedProvider.practiceName}</strong> ("Provider"), NPI: {selectedProvider.orgNpi}.</p>
+                          <p>This Agreement is entered into between TrueCare Health Network ("Network") and <strong>{selectedProvider.practiceName}</strong> ("Provider"), NPI: {selectedProvider.servicingNpi}.</p>
                         </div>
                         
                         <div className="border-t border-slate-200 pt-4">
