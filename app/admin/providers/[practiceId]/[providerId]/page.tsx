@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft, User, MapPin, Phone, Mail, FileText, DollarSign, Edit, Save, X,
   CheckCircle, Clock, Briefcase, GraduationCap, Globe, Calendar, Stethoscope,
-  CreditCard, Building2, Languages
+  CreditCard, Building2, Languages, Shield, Plus, Trash2
 } from "lucide-react";
 
 // Provider data (in real app, this would come from API)
@@ -38,6 +38,24 @@ const providersData: Record<string, any> = {
     medicalSchool: "Ohio State University College of Medicine",
     graduationYear: "2010",
     residency: "Cleveland Clinic - Family Medicine",
+    // Malpractice Insurance
+    malpracticeCarrier: "Medical Protective Company",
+    malpracticePolicyNumber: "MPR-2024-123456",
+    malpracticeExpiration: "2026-06-30",
+    malpracticeCoverage: "$1M / $3M",
+    // Hospital Affiliations
+    hospitalAffiliations: [
+      { name: "Cleveland Clinic Main Campus", privileges: "Active", department: "Family Medicine" },
+      { name: "University Hospitals Cleveland", privileges: "Courtesy", department: "Primary Care" },
+    ],
+    // Office Location (if different from practice)
+    officeAddress: "123 Medical Center Dr",
+    officeAddress2: "Suite 205",
+    officeCity: "Cleveland",
+    officeState: "OH",
+    officeZip: "44101",
+    officePhone: "(555) 123-4567",
+    officeFax: "(555) 123-4568",
     networks: ["NET-001", "NET-002"],
     clinicHours: {
       monday: "8:00 AM - 5:00 PM",
@@ -91,6 +109,24 @@ const providersData: Record<string, any> = {
     medicalSchool: "Case Western Reserve University",
     graduationYear: "2012",
     residency: "University Hospitals - Family Medicine",
+    // Malpractice Insurance
+    malpracticeCarrier: "The Doctors Company",
+    malpracticePolicyNumber: "TDC-2024-789012",
+    malpracticeExpiration: "2026-09-15",
+    malpracticeCoverage: "$1M / $3M",
+    // Hospital Affiliations
+    hospitalAffiliations: [
+      { name: "University Hospitals Cleveland", privileges: "Active", department: "Family Medicine" },
+      { name: "MetroHealth Medical Center", privileges: "Active", department: "Primary Care" },
+    ],
+    // Office Location
+    officeAddress: "456 Health Plaza",
+    officeAddress2: "Suite 310",
+    officeCity: "Beachwood",
+    officeState: "OH",
+    officeZip: "44122",
+    officePhone: "(555) 234-5678",
+    officeFax: "(555) 234-5679",
     networks: ["NET-001", "NET-002", "NET-005"],
     clinicHours: {
       monday: "9:00 AM - 6:00 PM",
@@ -198,6 +234,9 @@ export default function ProviderDetailPage() {
   const sections = [
     { id: "overview", label: "Overview", icon: User },
     { id: "credentials", label: "Credentials & Licenses", icon: GraduationCap },
+    { id: "malpractice", label: "Malpractice", icon: Shield },
+    { id: "hospitals", label: "Hospital Affiliations", icon: Building2 },
+    { id: "location", label: "Office Location", icon: MapPin },
     { id: "education", label: "Education", icon: Briefcase },
     { id: "schedule", label: "Schedule", icon: Calendar },
     { id: "rates", label: "Rates & Discounts", icon: DollarSign },
@@ -584,6 +623,254 @@ export default function ProviderDetailPage() {
           </div>
         )}
 
+        {/* Malpractice Section */}
+        {activeSection === "malpractice" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <Shield className="w-5 h-5 text-teal-400" />
+              Malpractice Insurance
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Policy Information</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Insurance Carrier</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.malpracticeCarrier || ""}
+                        onChange={(e) => setEditData({ ...editData, malpracticeCarrier: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{provider.malpracticeCarrier || "—"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Policy Number</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.malpracticePolicyNumber || ""}
+                        onChange={(e) => setEditData({ ...editData, malpracticePolicyNumber: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono"
+                      />
+                    ) : (
+                      <p className="text-white font-mono">{provider.malpracticePolicyNumber || "—"}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Coverage Details</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Coverage Limits</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.malpracticeCoverage || ""}
+                        onChange={(e) => setEditData({ ...editData, malpracticeCoverage: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        placeholder="$1M / $3M"
+                      />
+                    ) : (
+                      <p className="text-white">{provider.malpracticeCoverage || "—"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Expiration Date</p>
+                    {isEditing ? (
+                      <input
+                        type="date"
+                        value={editData.malpracticeExpiration || ""}
+                        onChange={(e) => setEditData({ ...editData, malpracticeExpiration: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{provider.malpracticeExpiration || "—"}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Hospital Affiliations Section */}
+        {activeSection === "hospitals" && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-teal-400" />
+                Hospital Affiliations
+              </h2>
+              {isEditing && (
+                <button className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors">
+                  <Plus className="w-4 h-4" />
+                  Add Affiliation
+                </button>
+              )}
+            </div>
+
+            <div className="space-y-4">
+              {(provider.hospitalAffiliations || []).map((hospital: any, index: number) => (
+                <div key={index} className="bg-slate-700/30 rounded-lg p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                      <Building2 className="w-6 h-6 text-cyan-400" />
+                    </div>
+                    <div>
+                      <p className="text-white font-medium">{hospital.name}</p>
+                      <p className="text-slate-400 text-sm">{hospital.department}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      hospital.privileges === "Active" 
+                        ? "bg-green-500/20 text-green-400"
+                        : "bg-amber-500/20 text-amber-400"
+                    }`}>
+                      {hospital.privileges} Privileges
+                    </span>
+                    {isEditing && (
+                      <button className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {(!provider.hospitalAffiliations || provider.hospitalAffiliations.length === 0) && (
+                <div className="text-center py-8 bg-slate-700/20 rounded-xl border border-dashed border-slate-600">
+                  <Building2 className="w-10 h-10 text-slate-600 mx-auto mb-2" />
+                  <p className="text-slate-400">No hospital affiliations on file</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Office Location Section */}
+        {activeSection === "location" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-teal-400" />
+              Office Location
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Address</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 1</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.officeAddress || ""}
+                        onChange={(e) => setEditData({ ...editData, officeAddress: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{provider.officeAddress || "Same as practice"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 2 (Suite/Office)</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.officeAddress2 || ""}
+                        onChange={(e) => setEditData({ ...editData, officeAddress2: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{provider.officeAddress2 || "—"}</p>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">City</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.officeCity || ""}
+                          onChange={(e) => setEditData({ ...editData, officeCity: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{provider.officeCity || "—"}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">State</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.officeState || ""}
+                          onChange={(e) => setEditData({ ...editData, officeState: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{provider.officeState || "—"}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">ZIP</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.officeZip || ""}
+                          onChange={(e) => setEditData({ ...editData, officeZip: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{provider.officeZip || "—"}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Contact</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Phone</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.officePhone || ""}
+                        onChange={(e) => setEditData({ ...editData, officePhone: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{provider.officePhone || "—"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Fax</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.officeFax || ""}
+                        onChange={(e) => setEditData({ ...editData, officeFax: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{provider.officeFax || "—"}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Education Section */}
         {activeSection === "education" && (
           <div className="space-y-6">
@@ -757,7 +1044,7 @@ export default function ProviderDetailPage() {
                 ) : (
                   <div className="bg-slate-700/30 rounded-lg p-6">
                     <h3 className="text-sm font-semibold text-white mb-4">Rates by Service Category</h3>
-                    <div className="grid md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {serviceCategories.map((cat) => (
                         <div key={cat.key} className="bg-slate-700/50 rounded-lg p-4">
                           <label className="block text-sm text-slate-400 mb-2">{cat.label}</label>

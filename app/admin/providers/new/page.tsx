@@ -32,13 +32,23 @@ const networkOptions = [
   { id: "NET-008", name: "Urgent Care Express" },
 ];
 
+const titleOptions = ["MD", "DO", "PhD", "NP", "PA", "DPM", "DC", "PT", "OT", "DDS", "DMD", "PharmD", "PsyD"];
+
 export default function AddProviderPage() {
   const [step, setStep] = useState(1);
+  const [addMode, setAddMode] = useState<"new" | "existing">("new");
   const [formData, setFormData] = useState({
     // Practice Info
     practiceName: "",
+    existingPracticeId: "",
     type: "Group Practice",
     specialty: "",
+    // Individual Provider Info
+    providerFirstName: "",
+    providerLastName: "",
+    providerTitle: "MD",
+    providerNpi: "",
+    providerGender: "",
     // NPIs
     orgNpi: "",
     servicingNpi: "",
@@ -167,8 +177,95 @@ export default function AddProviderPage() {
         {/* Step 1: Practice Info */}
         {step === 1 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
-            <h2 className="text-lg font-semibold text-white">Practice Information</h2>
+            {/* Mode Toggle */}
+            <div className="flex gap-2 p-1 bg-slate-700/50 rounded-lg w-fit">
+              <button
+                onClick={() => setAddMode("new")}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  addMode === "new" ? "bg-teal-600 text-white" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                New Practice
+              </button>
+              <button
+                onClick={() => setAddMode("existing")}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  addMode === "existing" ? "bg-teal-600 text-white" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Add to Existing Practice
+              </button>
+            </div>
+
+            {/* Individual Provider Info (always shown) */}
+            <div className="bg-cyan-900/20 border border-cyan-500/30 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-cyan-400 mb-4">Individual Provider Information</h3>
+              <div className="grid md:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">First Name *</label>
+                  <input
+                    type="text"
+                    value={formData.providerFirstName}
+                    onChange={(e) => updateField("providerFirstName", e.target.value)}
+                    placeholder="Robert"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Last Name *</label>
+                  <input
+                    type="text"
+                    value={formData.providerLastName}
+                    onChange={(e) => updateField("providerLastName", e.target.value)}
+                    placeholder="Smith"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Title *</label>
+                  <select
+                    value={formData.providerTitle}
+                    onChange={(e) => updateField("providerTitle", e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-teal-500"
+                  >
+                    {titleOptions.map(t => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Provider NPI *</label>
+                  <input
+                    type="text"
+                    value={formData.providerNpi}
+                    onChange={(e) => updateField("providerNpi", e.target.value)}
+                    placeholder="10-digit NPI"
+                    maxLength={10}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono placeholder:text-slate-500 focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <h2 className="text-lg font-semibold text-white">
+              {addMode === "new" ? "New Practice Information" : "Select Existing Practice"}
+            </h2>
             
+            {addMode === "existing" ? (
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-2">Select Practice *</label>
+                <select
+                  value={formData.existingPracticeId}
+                  onChange={(e) => updateField("existingPracticeId", e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                >
+                  <option value="">Select a practice...</option>
+                  <option value="PRC-001">Cleveland Family Medicine</option>
+                  <option value="PRC-002">Cleveland Orthopedic Associates</option>
+                  <option value="PRC-003">Metro Imaging Center</option>
+                  <option value="PRC-004">Cleveland Cardiology Associates</option>
+                  <option value="PRC-005">Westlake Urgent Care</option>
+                </select>
+              </div>
+            ) : (
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Practice Name *</label>
@@ -234,6 +331,7 @@ export default function AddProviderPage() {
                 )}
               </div>
             </div>
+            )}
           </motion.div>
         )}
 

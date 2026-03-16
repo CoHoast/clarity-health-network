@@ -51,10 +51,10 @@ const practicesData: Record<string, any> = {
     discountRate: "35%",
     networks: ["NET-001", "NET-002"],
     providers: [
-      { id: "PRV-001", name: "Robert Smith", title: "MD", specialty: "Family Medicine", npi: "1111111111", status: "active" },
-      { id: "PRV-002", name: "Jennifer Adams", title: "MD", specialty: "Family Medicine", npi: "1111111112", status: "active" },
-      { id: "PRV-003", name: "Michael Chen", title: "DO", specialty: "Family Medicine", npi: "1111111113", status: "active" },
-      { id: "PRV-004", name: "Sarah Williams", title: "NP", specialty: "Family Medicine", npi: "1111111114", status: "active" },
+      { id: "PRV-001", name: "Robert Smith", title: "MD", specialty: "Family Medicine", npi: "1111111111", status: "active", useCustomRates: false },
+      { id: "PRV-002", name: "Jennifer Adams", title: "MD", specialty: "Family Medicine", npi: "1111111112", status: "active", useCustomRates: true },
+      { id: "PRV-003", name: "Michael Chen", title: "DO", specialty: "Family Medicine", npi: "1111111113", status: "active", useCustomRates: false },
+      { id: "PRV-004", name: "Sarah Williams", title: "NP", specialty: "Family Medicine", npi: "1111111114", status: "active", useCustomRates: true },
     ],
   },
   "PRC-002": {
@@ -98,10 +98,10 @@ const practicesData: Record<string, any> = {
     discountRate: "40%",
     networks: ["NET-001", "NET-003"],
     providers: [
-      { id: "PRV-005", name: "James Miller", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444441", status: "active" },
-      { id: "PRV-006", name: "Lisa Thompson", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444442", status: "active" },
-      { id: "PRV-007", name: "David Park", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444443", status: "active" },
-      { id: "PRV-008", name: "Amy Rodriguez", title: "PA", specialty: "Orthopedics", npi: "4444444444", status: "active" },
+      { id: "PRV-005", name: "James Miller", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444441", status: "active", useCustomRates: true },
+      { id: "PRV-006", name: "Lisa Thompson", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444442", status: "active", useCustomRates: false },
+      { id: "PRV-007", name: "David Park", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444443", status: "active", useCustomRates: false },
+      { id: "PRV-008", name: "Amy Rodriguez", title: "PA", specialty: "Orthopedics", npi: "4444444444", status: "active", useCustomRates: true },
     ],
   },
 };
@@ -850,7 +850,7 @@ export default function PracticeDetailPage() {
                   <p className="text-slate-400 text-sm mb-6">
                     Set different discount rates for each service category.
                   </p>
-                  <div className="grid md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {serviceCategories.map((cat) => (
                       <div key={cat.key} className="bg-slate-700/50 rounded-lg p-4">
                         <label className="block text-sm text-slate-400 mb-2">{cat.label}</label>
@@ -913,11 +913,20 @@ export default function PracticeDetailPage() {
                         <p className="text-slate-400 text-sm">{provider.specialty}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                       <div className="text-right">
                         <p className="text-slate-400 text-sm">NPI</p>
                         <p className="text-white font-mono">{provider.npi}</p>
                       </div>
+                      {provider.useCustomRates ? (
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-400">
+                          Custom Rates
+                        </span>
+                      ) : (
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-600/50 text-slate-400">
+                          Inherits
+                        </span>
+                      )}
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                         provider.status === "active" 
                           ? "bg-green-500/20 text-green-400"

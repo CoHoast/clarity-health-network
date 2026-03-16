@@ -6,14 +6,14 @@ import Link from "next/link";
 import { Plus, Search, Download, Eye, Edit, CheckCircle, Clock, AlertTriangle, X, FileText, Calendar, Building2, DollarSign, Printer, ExternalLink } from "lucide-react";
 
 const contracts = [
-  { id: "CTR-001", provider: "Cleveland Family Medicine", npi: "1234567890", type: "Primary Care", feeSchedule: "120% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true, totalClaims: 2847, ytdPaid: "$342,500" },
-  { id: "CTR-002", provider: "Metro Imaging Center", npi: "3456789012", type: "Imaging", feeSchedule: "Case Rate", effective: "2023-06-01", expires: "2025-05-31", status: "expiring", autoRenew: false, totalClaims: 1234, ytdPaid: "$567,800" },
-  { id: "CTR-003", provider: "Cleveland Orthopedic", npi: "4567890123", type: "Specialty", feeSchedule: "125% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true, totalClaims: 892, ytdPaid: "$445,200" },
-  { id: "CTR-004", provider: "Dr. Sarah Chen, MD", npi: "2345678901", type: "Primary Care", feeSchedule: "115% Medicare", effective: "2023-03-01", expires: "2025-02-28", status: "expiring", autoRenew: true, totalClaims: 1567, ytdPaid: "$234,100" },
-  { id: "CTR-005", provider: "Westlake Urgent Care", npi: "6789012345", type: "Urgent Care", feeSchedule: "110% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true, totalClaims: 3421, ytdPaid: "$412,300" },
-  { id: "CTR-006", provider: "Pending Provider LLC", npi: "9876543210", type: "Specialty", feeSchedule: "TBD", effective: "Pending", expires: "Pending", status: "pending", autoRenew: false, totalClaims: 0, ytdPaid: "$0" },
-  { id: "CTR-007", provider: "Cleveland Cardiology", npi: "9012345678", type: "Specialty", feeSchedule: "130% Medicare", effective: "2023-01-01", expires: "2025-12-31", status: "active", autoRenew: true, totalClaims: 1892, ytdPaid: "$678,400" },
-  { id: "CTR-008", provider: "Quest Diagnostics Cleveland", npi: "8901234567", type: "Laboratory", feeSchedule: "65% Medicare", effective: "2022-01-01", expires: "2027-12-31", status: "active", autoRenew: true, totalClaims: 8934, ytdPaid: "$234,500" },
+  { id: "CTR-001", provider: "Cleveland Family Medicine", practiceId: "PRC-001", npi: "1234567890", type: "Primary Care", feeSchedule: "120% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true, totalClaims: 2847, ytdPaid: "$342,500" },
+  { id: "CTR-002", provider: "Metro Imaging Center", practiceId: "PRC-003", npi: "3456789012", type: "Imaging", feeSchedule: "Case Rate", effective: "2023-06-01", expires: "2025-05-31", status: "expiring", autoRenew: false, totalClaims: 1234, ytdPaid: "$567,800" },
+  { id: "CTR-003", provider: "Cleveland Orthopedic Associates", practiceId: "PRC-002", npi: "4567890123", type: "Specialty", feeSchedule: "125% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true, totalClaims: 892, ytdPaid: "$445,200" },
+  { id: "CTR-004", provider: "Dr. Sarah Chen, MD", practiceId: null, npi: "2345678901", type: "Primary Care", feeSchedule: "115% Medicare", effective: "2023-03-01", expires: "2025-02-28", status: "expiring", autoRenew: true, totalClaims: 1567, ytdPaid: "$234,100" },
+  { id: "CTR-005", provider: "Westlake Urgent Care", practiceId: "PRC-005", npi: "6789012345", type: "Urgent Care", feeSchedule: "110% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true, totalClaims: 3421, ytdPaid: "$412,300" },
+  { id: "CTR-006", provider: "Pending Provider LLC", practiceId: null, npi: "9876543210", type: "Specialty", feeSchedule: "TBD", effective: "Pending", expires: "Pending", status: "pending", autoRenew: false, totalClaims: 0, ytdPaid: "$0" },
+  { id: "CTR-007", provider: "Cleveland Cardiology Associates", practiceId: "PRC-004", npi: "9012345678", type: "Specialty", feeSchedule: "130% Medicare", effective: "2023-01-01", expires: "2025-12-31", status: "active", autoRenew: true, totalClaims: 1892, ytdPaid: "$678,400" },
+  { id: "CTR-008", provider: "Quest Diagnostics Cleveland", practiceId: null, npi: "8901234567", type: "Laboratory", feeSchedule: "65% Medicare", effective: "2022-01-01", expires: "2027-12-31", status: "active", autoRenew: true, totalClaims: 8934, ytdPaid: "$234,500" },
 ];
 
 export default function ContractsPage() {
@@ -150,7 +150,16 @@ export default function ContractsPage() {
                 </td>
                 <td className="px-4 py-3">
                   <div>
-                    <p className="text-white font-medium">{contract.provider}</p>
+                    {contract.practiceId ? (
+                      <Link 
+                        href={`/admin/providers/${contract.practiceId}`}
+                        className="text-white font-medium hover:text-cyan-400 transition-colors"
+                      >
+                        {contract.provider}
+                      </Link>
+                    ) : (
+                      <p className="text-white font-medium">{contract.provider}</p>
+                    )}
                     <p className="text-xs text-slate-500">NPI: {contract.npi}</p>
                   </div>
                 </td>

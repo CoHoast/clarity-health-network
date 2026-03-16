@@ -38,8 +38,45 @@ export default function NetworksPage() {
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
   const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showAddProvidersModal, setShowAddProvidersModal] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [providerSearchQuery, setProviderSearchQuery] = useState("");
+
+  // Sample providers for bulk add
+  const availableProviders = [
+    { id: "PRV-001", name: "Dr. Robert Smith", specialty: "Family Medicine", npi: "1111111111", practice: "Cleveland Family Medicine" },
+    { id: "PRV-002", name: "Dr. Jennifer Adams", specialty: "Family Medicine", npi: "1111111112", practice: "Cleveland Family Medicine" },
+    { id: "PRV-003", name: "Dr. Michael Chen", specialty: "Family Medicine", npi: "1111111113", practice: "Cleveland Family Medicine" },
+    { id: "PRV-005", name: "Dr. James Miller", specialty: "Orthopedic Surgery", npi: "4444444441", practice: "Cleveland Orthopedic Associates" },
+    { id: "PRV-006", name: "Dr. Lisa Thompson", specialty: "Orthopedic Surgery", npi: "4444444442", practice: "Cleveland Orthopedic Associates" },
+    { id: "PRV-009", name: "Dr. Thomas Richards", specialty: "Radiology", npi: "3333333331", practice: "Metro Imaging Center" },
+    { id: "PRV-011", name: "Dr. Robert Thompson", specialty: "Cardiology", npi: "9999999991", practice: "Cleveland Cardiology Associates" },
+    { id: "PRV-015", name: "Dr. Patricia Lee", specialty: "Emergency Medicine", npi: "6666666661", practice: "Westlake Urgent Care" },
+  ];
+
+  const filteredAvailableProviders = availableProviders.filter(p => 
+    p.name.toLowerCase().includes(providerSearchQuery.toLowerCase()) ||
+    p.specialty.toLowerCase().includes(providerSearchQuery.toLowerCase()) ||
+    p.npi.includes(providerSearchQuery)
+  );
+
+  const toggleProviderSelection = (id: string) => {
+    if (selectedProviders.includes(id)) {
+      setSelectedProviders(selectedProviders.filter(p => p !== id));
+    } else {
+      setSelectedProviders([...selectedProviders, id]);
+    }
+  };
+
+  const selectAllProviders = () => {
+    if (selectedProviders.length === filteredAvailableProviders.length) {
+      setSelectedProviders([]);
+    } else {
+      setSelectedProviders(filteredAvailableProviders.map(p => p.id));
+    }
+  };
 
   const [newNetwork, setNewNetwork] = useState({
     name: "",
@@ -334,7 +371,10 @@ export default function NetworksPage() {
                     <Users className="w-4 h-4" />
                     View Providers ({selectedNetwork.providerCount.toLocaleString()})
                   </Link>
-                  <button className="flex items-center gap-2 px-4 py-3 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors">
+                  <button 
+                    onClick={() => { setShowAddProvidersModal(true); setSelectedProviders([]); }}
+                    className="flex items-center gap-2 px-4 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-500 transition-colors"
+                  >
                     <Plus className="w-4 h-4" />
                     Add Providers
                   </button>
@@ -471,6 +511,121 @@ export default function NetworksPage() {
                   <p className="text-slate-400 text-sm mt-1">You can now add providers to this network</p>
                 </div>
               )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Add Providers Modal (Bulk) */}
+      <AnimatePresence>
+        {showAddProvidersModal && selectedNetwork && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowAddProvidersModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[85vh] overflow-auto border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-slate-700">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Users className="w-6 h-6 text-purple-400" />
+                  Add Providers to {selectedNetwork.name}
+                </h2>
+                <p className="text-slate-400 text-sm mt-1">Select providers to add to this network (bulk assignment)</p>
+              </div>
+              
+              <div className="p-6 space-y-4">
+                {/* Search */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Search providers by name, specialty, or NPI..."
+                    value={providerSearchQuery}
+                    onChange={(e) => setProviderSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-400"
+                  />
+                </div>
+
+                {/* Select All */}
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={selectAllProviders}
+                    className="text-sm text-purple-400 hover:text-purple-300"
+                  >
+                    {selectedProviders.length === filteredAvailableProviders.length ? "Deselect All" : "Select All"}
+                  </button>
+                  <span className="text-sm text-slate-400">
+                    {selectedProviders.length} selected
+                  </span>
+                </div>
+
+                {/* Provider List */}
+                <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                  {filteredAvailableProviders.map(provider => (
+                    <label
+                      key={provider.id}
+                      className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-colors ${
+                        selectedProviders.includes(provider.id)
+                          ? "bg-purple-500/20 border border-purple-500/50"
+                          : "bg-slate-700/30 border border-transparent hover:bg-slate-700/50"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedProviders.includes(provider.id)}
+                        onChange={() => toggleProviderSelection(provider.id)}
+                        className="w-5 h-5 rounded border-slate-500 text-purple-600 focus:ring-purple-500"
+                      />
+                      <div className="flex-1">
+                        <p className="text-white font-medium">{provider.name}</p>
+                        <p className="text-slate-400 text-sm">{provider.specialty} • {provider.practice}</p>
+                      </div>
+                      <span className="text-slate-500 font-mono text-xs">{provider.npi}</span>
+                    </label>
+                  ))}
+                </div>
+
+                {filteredAvailableProviders.length === 0 && (
+                  <div className="text-center py-8 text-slate-400">
+                    No providers found matching your search.
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowAddProvidersModal(false)}
+                  className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    // Handle bulk add
+                    setSaving(true);
+                    setTimeout(() => {
+                      setSaving(false);
+                      setSaved(true);
+                      setTimeout(() => {
+                        setSaved(false);
+                        setShowAddProvidersModal(false);
+                        setSelectedProviders([]);
+                      }, 1500);
+                    }, 1000);
+                  }}
+                  disabled={selectedProviders.length === 0}
+                  className={`px-6 py-2 font-medium rounded-lg flex items-center gap-2 transition-colors ${
+                    selectedProviders.length > 0
+                      ? "bg-purple-600 text-white hover:bg-purple-700"
+                      : "bg-slate-700 text-slate-500 cursor-not-allowed"
+                  }`}
+                >
+                  <Plus className="w-4 h-4" />
+                  Add {selectedProviders.length} Provider{selectedProviders.length !== 1 ? 's' : ''}
+                </button>
+              </div>
             </motion.div>
           </div>
         )}
