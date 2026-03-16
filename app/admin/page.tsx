@@ -254,20 +254,20 @@ export default function AdminDashboard() {
               Full Map <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="relative h-64 bg-slate-900/50 rounded-lg overflow-hidden">
+          <div className="relative h-64 bg-gradient-to-br from-cyan-900/30 to-teal-900/40 rounded-lg overflow-hidden">
             {/* Simple Ohio Map SVG */}
             <svg viewBox="0 0 400 350" className="w-full h-full">
-              {/* Ohio state outline */}
+              {/* Ohio state outline - brighter */}
               <path
                 d="M50,50 L350,30 L370,120 L360,180 L340,220 L280,280 L200,320 L120,300 L60,250 L40,180 L50,100 Z"
-                fill="#1e293b"
-                stroke="#334155"
+                fill="#134e4a"
+                stroke="#5eead4"
                 strokeWidth="2"
               />
-              {/* Region highlights */}
-              <ellipse cx="280" cy="100" rx="50" ry="40" fill="#0d9488" fillOpacity="0.3" />
-              <ellipse cx="180" cy="180" rx="60" ry="50" fill="#0d9488" fillOpacity="0.2" />
-              <ellipse cx="120" cy="260" rx="40" ry="30" fill="#0d9488" fillOpacity="0.15" />
+              {/* Region highlights - brighter */}
+              <ellipse cx="280" cy="100" rx="50" ry="40" fill="#2dd4bf" fillOpacity="0.4" />
+              <ellipse cx="180" cy="180" rx="60" ry="50" fill="#2dd4bf" fillOpacity="0.3" />
+              <ellipse cx="120" cy="260" rx="40" ry="30" fill="#2dd4bf" fillOpacity="0.25" />
               
               {/* Provider location pins */}
               {[
@@ -280,9 +280,9 @@ export default function AdminDashboard() {
                 { x: 80, y: 120, count: 112, city: "Toledo" },
               ].map((loc, i) => (
                 <g key={i} className="cursor-pointer hover:opacity-80 transition-opacity">
-                  <circle cx={loc.x} cy={loc.y} r={Math.min(20, 8 + loc.count / 50)} fill="#0d9488" fillOpacity="0.8" />
-                  <circle cx={loc.x} cy={loc.y} r={4} fill="#2dd4bf" />
-                  <text x={loc.x} y={loc.y + 30} textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="500">
+                  <circle cx={loc.x} cy={loc.y} r={Math.min(20, 8 + loc.count / 50)} fill="#14b8a6" fillOpacity="0.9" />
+                  <circle cx={loc.x} cy={loc.y} r={4} fill="#5eead4" />
+                  <text x={loc.x} y={loc.y + 30} textAnchor="middle" fill="#f0fdfa" fontSize="10" fontWeight="600">
                     {loc.city}
                   </text>
                 </g>
@@ -290,18 +290,18 @@ export default function AdminDashboard() {
             </svg>
             
             {/* Legend */}
-            <div className="absolute bottom-3 left-3 bg-slate-800/90 rounded-lg p-2 text-xs">
+            <div className="absolute bottom-3 left-3 bg-teal-900/80 rounded-lg p-2 text-xs border border-teal-700/50">
               <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-teal-500"></div>
-                <span className="text-slate-300">Provider Concentration</span>
+                <div className="w-3 h-3 rounded-full bg-teal-400"></div>
+                <span className="text-teal-100">Provider Concentration</span>
               </div>
-              <div className="text-slate-400">Circle size = provider count</div>
+              <div className="text-teal-300/80">Circle size = provider count</div>
             </div>
             
             {/* Stats overlay */}
-            <div className="absolute top-3 right-3 bg-slate-800/90 rounded-lg p-3 text-right">
-              <p className="text-2xl font-bold text-white">2,847</p>
-              <p className="text-xs text-slate-400">Total Providers</p>
+            <div className="absolute top-3 right-3 bg-teal-900/80 rounded-lg p-3 text-right border border-teal-700/50">
+              <p className="text-2xl font-bold text-teal-100">2,847</p>
+              <p className="text-xs text-teal-300/80">Total Providers</p>
               <p className="text-xs text-teal-400 mt-1">7 major metro areas</p>
             </div>
           </div>
