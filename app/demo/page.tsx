@@ -217,12 +217,12 @@ export default function ProductDemoPage() {
                 />
               </div>
               
-              {/* Content */}
-              <div style={{ padding: 20 }}>
-                <h4 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>
+              {/* Content - Dark Theme */}
+              <div style={{ padding: 20, background: '#0f172a' }}>
+                <h4 style={{ fontSize: 18, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>
                   {portal.title}
                 </h4>
-                <p style={{ fontSize: 14, color: '#64748b', marginBottom: 16, lineHeight: 1.5 }}>
+                <p style={{ fontSize: 14, color: '#94a3b8', marginBottom: 16, lineHeight: 1.5 }}>
                   {portal.description}
                 </p>
                 
@@ -232,9 +232,9 @@ export default function ProductDemoPage() {
                     <span key={tag} style={{ 
                       fontSize: 12, 
                       padding: '4px 10px', 
-                      background: '#f1f5f9', 
+                      background: '#1e293b', 
                       borderRadius: 20,
-                      color: '#475569',
+                      color: '#cbd5e1',
                       fontWeight: 500,
                     }}>
                       {tag}
@@ -247,7 +247,7 @@ export default function ProductDemoPage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 6,
-                  color: '#0d9488',
+                  color: '#2dd4bf',
                   fontWeight: 600,
                   fontSize: 14,
                 }}>
