@@ -1,30 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Download, Calendar, Clock, BarChart3, Users, DollarSign, Shield, TrendingUp, Play, Eye, Mail, X, Check, FileSpreadsheet, File, Printer, Share2, Trash2 } from "lucide-react";
+import { FileText, Download, Calendar, Clock, BarChart3, Building2, DollarSign, Shield, TrendingUp, Play, Eye, Mail, X, Check, FileSpreadsheet, Printer, Share2, Trash2, MapPin, FileCheck, Users } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const reportTemplates = [
-  { id: "claims-summary", name: "Claims Summary", description: "Overview of all claims by status, amount, and provider", icon: FileText, category: "Claims", file: "/reports/claims-summary.csv" },
-  { id: "member-census", name: "Member Census", description: "Complete member roster with demographics", icon: Users, category: "Members", file: "/reports/member-census.csv" },
-  { id: "financial-overview", name: "Financial Overview", description: "Revenue, expenses, and profitability analysis", icon: DollarSign, category: "Financial", file: "/reports/financial-overview.csv" },
-  { id: "provider-network", name: "Provider Network", description: "Network adequacy and provider statistics", icon: Shield, category: "Network", file: "/reports/provider-network.csv" },
-  { id: "utilization", name: "Utilization Report", description: "Service utilization trends and patterns", icon: TrendingUp, category: "Analytics", file: "/reports/utilization-report.csv" },
-  { id: "fraud-detection", name: "Fraud Detection", description: "Suspicious activity and fraud alerts summary", icon: BarChart3, category: "Compliance", file: "/reports/fraud-detection.csv" },
+  { id: "provider-roster", name: "Provider Roster", description: "Complete list of all network providers with status and contact info", icon: Building2, category: "Providers", file: "/reports/provider-roster.csv" },
+  { id: "contract-summary", name: "Contract Summary", description: "Active contracts with rates, terms, and expiration dates", icon: FileText, category: "Contracts", file: "/reports/contract-summary.csv" },
+  { id: "discount-analysis", name: "Discount Analysis", description: "Fee schedule discounts and savings by provider and specialty", icon: DollarSign, category: "Rates", file: "/reports/discount-analysis.csv" },
+  { id: "credentialing-status", name: "Credentialing Status", description: "Provider verification and credential expiration tracking", icon: Shield, category: "Credentialing", file: "/reports/credentialing-status.csv" },
+  { id: "network-coverage", name: "Network Coverage", description: "Geographic coverage analysis by county and specialty", icon: MapPin, category: "Network", file: "/reports/network-coverage.csv" },
+  { id: "expiring-contracts", name: "Expiring Contracts", description: "Contracts expiring in the next 30, 60, 90 days", icon: Clock, category: "Contracts", file: "/reports/expiring-contracts.csv" },
+  { id: "specialty-distribution", name: "Specialty Distribution", description: "Provider count and distribution by specialty type", icon: Users, category: "Network", file: "/reports/specialty-distribution.csv" },
+  { id: "rate-comparison", name: "Rate Comparison", description: "Compare contracted rates vs Medicare and market benchmarks", icon: TrendingUp, category: "Rates", file: "/reports/rate-comparison.csv" },
+  { id: "credential-expiration", name: "Credential Expiration", description: "Licenses, DEA, malpractice expiring soon", icon: FileCheck, category: "Credentialing", file: "/reports/credential-expiration.csv" },
 ];
 
 const scheduledReports = [
-  { id: 1, name: "Monthly Claims Summary", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["admin@truecare.health", "finance@truecare.health"], status: "active", template: "claims-summary" },
-  { id: 2, name: "Weekly Member Census", frequency: "Weekly", nextRun: "Mar 18, 2026", recipients: ["hr@truecare.health"], status: "active", template: "member-census" },
-  { id: 3, name: "Daily Fraud Alerts", frequency: "Daily", nextRun: "Mar 13, 2026", recipients: ["compliance@truecare.health", "security@truecare.health"], status: "active", template: "fraud-detection" },
+  { id: 1, name: "Weekly Contract Expirations", frequency: "Weekly", nextRun: "Mar 18, 2026", recipients: ["contracts@truecare.health"], status: "active", template: "expiring-contracts" },
+  { id: 2, name: "Monthly Provider Roster", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["network@truecare.health", "admin@truecare.health"], status: "active", template: "provider-roster" },
+  { id: 3, name: "Monthly Credentialing Alerts", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["credentialing@truecare.health"], status: "active", template: "credential-expiration" },
 ];
 
 const recentReports = [
-  { id: 1, name: "Claims Summary - March 2026", generated: "Mar 12, 2026 9:00 AM", size: "2.4 MB", format: "CSV", file: "/reports/claims-summary.csv" },
-  { id: 2, name: "Member Census", generated: "Mar 11, 2026 12:00 PM", size: "1.8 MB", format: "CSV", file: "/reports/member-census.csv" },
-  { id: 3, name: "Financial Overview - Q1 2026", generated: "Mar 10, 2026 3:00 PM", size: "1.2 MB", format: "CSV", file: "/reports/financial-overview.csv" },
-  { id: 4, name: "Provider Network Analysis", generated: "Mar 8, 2026 10:30 AM", size: "956 KB", format: "CSV", file: "/reports/provider-network.csv" },
-  { id: 5, name: "Fraud Detection Summary", generated: "Mar 7, 2026 8:00 AM", size: "856 KB", format: "CSV", file: "/reports/fraud-detection.csv" },
+  { id: 1, name: "Provider Roster - March 2026", generated: "Mar 12, 2026 9:00 AM", size: "1.8 MB", format: "CSV", file: "/reports/provider-roster.csv" },
+  { id: 2, name: "Contract Summary Q1 2026", generated: "Mar 11, 2026 12:00 PM", size: "956 KB", format: "CSV", file: "/reports/contract-summary.csv" },
+  { id: 3, name: "Network Coverage - Ohio", generated: "Mar 10, 2026 3:00 PM", size: "1.2 MB", format: "CSV", file: "/reports/network-coverage.csv" },
+  { id: 4, name: "Discount Analysis - All Specialties", generated: "Mar 8, 2026 10:30 AM", size: "756 KB", format: "CSV", file: "/reports/discount-analysis.csv" },
+  { id: 5, name: "Credentialing Status Report", generated: "Mar 7, 2026 8:00 AM", size: "524 KB", format: "CSV", file: "/reports/credentialing-status.csv" },
 ];
 
 export default function ReportsPage() {
@@ -46,7 +49,6 @@ export default function ReportsPage() {
       setGenerating(false);
       setGenerated(true);
       setTimeout(() => {
-        // Trigger actual download
         if (selectedTemplate) {
           const link = document.createElement("a");
           link.href = selectedTemplate.file;
@@ -81,8 +83,8 @@ export default function ReportsPage() {
       const response = await fetch(report.file);
       const text = await response.text();
       const rows = text.split("\n").map(row => row.split(","));
-      setPreviewData(rows.slice(0, 11)); // Header + 10 rows
-    } catch (error) {
+      setPreviewData(rows.slice(0, 11));
+    } catch {
       setPreviewData([["Error loading preview"]]);
     }
     setLoadingPreview(false);
@@ -95,13 +97,21 @@ export default function ReportsPage() {
     link.click();
   };
 
+  const categoryColors: Record<string, string> = {
+    Providers: "bg-cyan-500/20 text-cyan-400",
+    Contracts: "bg-blue-500/20 text-blue-400",
+    Rates: "bg-green-500/20 text-green-400",
+    Credentialing: "bg-amber-500/20 text-amber-400",
+    Network: "bg-purple-500/20 text-purple-400",
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white">Reports</h1>
-          <p className="text-slate-400">Generate, schedule, and download reports</p>
+          <p className="text-slate-400">Generate provider network reports and exports</p>
         </div>
         <button onClick={() => setShowScheduleModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
           <Calendar className="w-4 h-4" />
@@ -128,7 +138,7 @@ export default function ReportsPage() {
               <div>
                 <p className="font-medium group-hover:text-white" style={{ color: 'white' }}>{report.name}</p>
                 <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.7)' }}>{report.description}</p>
-                <span className="inline-block mt-2 px-2 py-0.5 bg-white/20 text-xs rounded" style={{ color: 'white' }}>{report.category}</span>
+                <span className={`inline-block mt-2 px-2 py-0.5 text-xs rounded ${categoryColors[report.category] || "bg-slate-600 text-slate-300"}`}>{report.category}</span>
               </div>
             </button>
           ))}
@@ -231,13 +241,49 @@ export default function ReportsPage() {
                     <h3 className="text-xl font-semibold text-white text-center mb-2">Generate Report</h3>
                     <p className="text-slate-400 text-center mb-6">{selectedTemplate.name}</p>
                     <div className="space-y-4 mb-6">
+                      {selectedTemplate.category === "Providers" && (
+                        <div>
+                          <label className="block text-sm font-medium text-slate-300 mb-1">Provider Status</label>
+                          <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
+                            <option>All Providers</option>
+                            <option>Active Only</option>
+                            <option>Pending Only</option>
+                            <option>Inactive Only</option>
+                          </select>
+                        </div>
+                      )}
+                      {selectedTemplate.category === "Contracts" && (
+                        <div>
+                          <label className="block text-sm font-medium text-slate-300 mb-1">Contract Status</label>
+                          <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
+                            <option>All Contracts</option>
+                            <option>Active Only</option>
+                            <option>Expiring in 30 days</option>
+                            <option>Expiring in 60 days</option>
+                            <option>Expiring in 90 days</option>
+                          </select>
+                        </div>
+                      )}
+                      {selectedTemplate.category === "Network" && (
+                        <div>
+                          <label className="block text-sm font-medium text-slate-300 mb-1">Region</label>
+                          <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
+                            <option>All Ohio</option>
+                            <option>Northeast Ohio</option>
+                            <option>Central Ohio</option>
+                            <option>Southwest Ohio</option>
+                          </select>
+                        </div>
+                      )}
                       <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Date Range</label>
+                        <label className="block text-sm font-medium text-slate-300 mb-1">Specialty Filter</label>
                         <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                          <option>Last 30 days</option>
-                          <option>Last 90 days</option>
-                          <option>Year to date</option>
-                          <option>Custom range</option>
+                          <option>All Specialties</option>
+                          <option>Primary Care</option>
+                          <option>Cardiology</option>
+                          <option>Orthopedics</option>
+                          <option>Pediatrics</option>
+                          <option>Mental Health</option>
                         </select>
                       </div>
                       <div>
@@ -315,7 +361,7 @@ export default function ReportsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-1">Recipients (comma-separated)</label>
-                      <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="admin@company.com, finance@company.com" />
+                      <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="network@truecare.health, admin@truecare.health" />
                     </div>
                   </div>
                   <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
@@ -338,7 +384,7 @@ export default function ReportsPage() {
                     <Check className="w-8 h-8 text-green-400" />
                   </motion.div>
                   <p className="text-white font-medium">Report Scheduled!</p>
-                  <p className="text-slate-400 text-sm mt-1">You'll receive reports at the specified frequency</p>
+                  <p className="text-slate-400 text-sm mt-1">You&apos;ll receive reports at the specified frequency</p>
                 </div>
               )}
             </motion.div>

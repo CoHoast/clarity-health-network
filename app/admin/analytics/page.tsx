@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { BarChart3, TrendingUp, TrendingDown, DollarSign, Users, FileText, Activity, Download, Calendar, X, PieChart, ArrowUpRight, Building2, MapPin, AlertTriangle, CheckCircle } from "lucide-react";
+import { BarChart3, TrendingUp, TrendingDown, DollarSign, Building2, FileText, Download, Calendar, X, PieChart, ArrowUpRight, MapPin, CheckCircle, Clock, AlertTriangle, Users, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type DateRange = "This Month" | "Last Month" | "This Quarter" | "This Year";
-type TabId = "overview" | "claims" | "members" | "providers" | "financial";
 
 interface KPI {
   label: string;
@@ -18,220 +17,198 @@ interface KPI {
 
 interface MonthlyData {
   month: string;
-  claims: number;
-  members: number;
+  providers: number;
+  contracts: number;
 }
 
 const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }> = {
   "This Month": {
     kpis: [
-      { label: "Total Claims MTD", value: "$2.4M", change: "+12%", trend: "up", color: "text-green-400", drilldown: "claims" },
-      { label: "Avg Processing Time", value: "2.3 days", change: "-18%", trend: "down", color: "text-green-400", drilldown: "processing" },
-      { label: "Denial Rate", value: "4.2%", change: "-0.8%", trend: "down", color: "text-green-400", drilldown: "denials" },
-      { label: "Clean Claim Rate", value: "94.5%", change: "+2.1%", trend: "up", color: "text-green-400", drilldown: "clean" },
-      { label: "Active Members", value: "12,847", change: "+156", trend: "up", color: "text-blue-400", drilldown: "members" },
-      { label: "Network Providers", value: "2,891", change: "+23", trend: "up", color: "text-cyan-500", drilldown: "providers" },
+      { label: "Total Providers", value: "2,891", change: "+23", trend: "up", color: "text-green-400", drilldown: "providers" },
+      { label: "Active Contracts", value: "2,654", change: "+18", trend: "up", color: "text-green-400", drilldown: "contracts" },
+      { label: "Avg Discount Rate", value: "32.4%", change: "+1.2%", trend: "up", color: "text-green-400", drilldown: "discounts" },
+      { label: "Network Coverage", value: "94%", change: "+2%", trend: "up", color: "text-green-400", drilldown: "coverage" },
+      { label: "Pending Credentials", value: "47", change: "-12", trend: "down", color: "text-green-400", drilldown: "credentials" },
+      { label: "Expiring (30 days)", value: "23", change: "-5", trend: "down", color: "text-amber-400", drilldown: "expiring" },
     ],
     monthlyData: [
-      { month: "Oct", claims: 1850000, members: 12100 },
-      { month: "Nov", claims: 2100000, members: 12350 },
-      { month: "Dec", claims: 2450000, members: 12500 },
-      { month: "Jan", claims: 2200000, members: 12650 },
-      { month: "Feb", claims: 2150000, members: 12750 },
-      { month: "Mar", claims: 2400000, members: 12847 },
+      { month: "Oct", providers: 2720, contracts: 2490 },
+      { month: "Nov", providers: 2780, contracts: 2540 },
+      { month: "Dec", providers: 2810, contracts: 2580 },
+      { month: "Jan", providers: 2845, contracts: 2610 },
+      { month: "Feb", providers: 2868, contracts: 2636 },
+      { month: "Mar", providers: 2891, contracts: 2654 },
     ],
   },
   "Last Month": {
     kpis: [
-      { label: "Total Claims MTD", value: "$2.15M", change: "+8%", trend: "up", color: "text-green-400", drilldown: "claims" },
-      { label: "Avg Processing Time", value: "2.5 days", change: "-12%", trend: "down", color: "text-green-400", drilldown: "processing" },
-      { label: "Denial Rate", value: "5.0%", change: "-0.3%", trend: "down", color: "text-green-400", drilldown: "denials" },
-      { label: "Clean Claim Rate", value: "92.4%", change: "+1.5%", trend: "up", color: "text-green-400", drilldown: "clean" },
-      { label: "Active Members", value: "12,691", change: "+142", trend: "up", color: "text-blue-400", drilldown: "members" },
-      { label: "Network Providers", value: "2,868", change: "+18", trend: "up", color: "text-cyan-500", drilldown: "providers" },
+      { label: "Total Providers", value: "2,868", change: "+18", trend: "up", color: "text-green-400", drilldown: "providers" },
+      { label: "Active Contracts", value: "2,636", change: "+14", trend: "up", color: "text-green-400", drilldown: "contracts" },
+      { label: "Avg Discount Rate", value: "31.2%", change: "+0.8%", trend: "up", color: "text-green-400", drilldown: "discounts" },
+      { label: "Network Coverage", value: "92%", change: "+1%", trend: "up", color: "text-green-400", drilldown: "coverage" },
+      { label: "Pending Credentials", value: "59", change: "-8", trend: "down", color: "text-green-400", drilldown: "credentials" },
+      { label: "Expiring (30 days)", value: "28", change: "+3", trend: "up", color: "text-amber-400", drilldown: "expiring" },
     ],
     monthlyData: [
-      { month: "Sep", claims: 1720000, members: 11900 },
-      { month: "Oct", claims: 1850000, members: 12100 },
-      { month: "Nov", claims: 2100000, members: 12350 },
-      { month: "Dec", claims: 2450000, members: 12500 },
-      { month: "Jan", claims: 2200000, members: 12650 },
-      { month: "Feb", claims: 2150000, members: 12691 },
+      { month: "Sep", providers: 2680, contracts: 2450 },
+      { month: "Oct", providers: 2720, contracts: 2490 },
+      { month: "Nov", providers: 2780, contracts: 2540 },
+      { month: "Dec", providers: 2810, contracts: 2580 },
+      { month: "Jan", providers: 2845, contracts: 2610 },
+      { month: "Feb", providers: 2868, contracts: 2636 },
     ],
   },
   "This Quarter": {
     kpis: [
-      { label: "Total Claims QTD", value: "$6.75M", change: "+15%", trend: "up", color: "text-green-400", drilldown: "claims" },
-      { label: "Avg Processing Time", value: "2.4 days", change: "-15%", trend: "down", color: "text-green-400", drilldown: "processing" },
-      { label: "Denial Rate", value: "4.5%", change: "-1.2%", trend: "down", color: "text-green-400", drilldown: "denials" },
-      { label: "Clean Claim Rate", value: "93.8%", change: "+3.1%", trend: "up", color: "text-green-400", drilldown: "clean" },
-      { label: "Active Members", value: "12,847", change: "+347", trend: "up", color: "text-blue-400", drilldown: "members" },
-      { label: "Network Providers", value: "2,891", change: "+68", trend: "up", color: "text-cyan-500", drilldown: "providers" },
+      { label: "Total Providers", value: "2,891", change: "+81", trend: "up", color: "text-green-400", drilldown: "providers" },
+      { label: "Active Contracts", value: "2,654", change: "+74", trend: "up", color: "text-green-400", drilldown: "contracts" },
+      { label: "Avg Discount Rate", value: "32.4%", change: "+2.8%", trend: "up", color: "text-green-400", drilldown: "discounts" },
+      { label: "Network Coverage", value: "94%", change: "+4%", trend: "up", color: "text-green-400", drilldown: "coverage" },
+      { label: "New Providers", value: "81", change: "+15%", trend: "up", color: "text-cyan-400", drilldown: "newproviders" },
+      { label: "Contracts Renewed", value: "156", change: "+22%", trend: "up", color: "text-green-400", drilldown: "renewals" },
     ],
     monthlyData: [
-      { month: "Jan", claims: 2200000, members: 12500 },
-      { month: "Feb", claims: 2150000, members: 12691 },
-      { month: "Mar", claims: 2400000, members: 12847 },
+      { month: "Jan", providers: 2845, contracts: 2610 },
+      { month: "Feb", providers: 2868, contracts: 2636 },
+      { month: "Mar", providers: 2891, contracts: 2654 },
     ],
   },
   "This Year": {
     kpis: [
-      { label: "Total Claims YTD", value: "$18.2M", change: "+22%", trend: "up", color: "text-green-400", drilldown: "claims" },
-      { label: "Avg Processing Time", value: "2.6 days", change: "-25%", trend: "down", color: "text-green-400", drilldown: "processing" },
-      { label: "Denial Rate", value: "4.8%", change: "-2.1%", trend: "down", color: "text-green-400", drilldown: "denials" },
-      { label: "Clean Claim Rate", value: "92.1%", change: "+4.8%", trend: "up", color: "text-green-400", drilldown: "clean" },
-      { label: "Active Members", value: "12,847", change: "+1,247", trend: "up", color: "text-blue-400", drilldown: "members" },
-      { label: "Network Providers", value: "2,891", change: "+312", trend: "up", color: "text-cyan-500", drilldown: "providers" },
+      { label: "Total Providers", value: "2,891", change: "+312", trend: "up", color: "text-green-400", drilldown: "providers" },
+      { label: "Active Contracts", value: "2,654", change: "+285", trend: "up", color: "text-green-400", drilldown: "contracts" },
+      { label: "Avg Discount Rate", value: "32.4%", change: "+5.2%", trend: "up", color: "text-green-400", drilldown: "discounts" },
+      { label: "Network Coverage", value: "94%", change: "+12%", trend: "up", color: "text-green-400", drilldown: "coverage" },
+      { label: "New Providers YTD", value: "312", change: "+28%", trend: "up", color: "text-cyan-400", drilldown: "newproviders" },
+      { label: "Contracts Renewed YTD", value: "489", change: "+35%", trend: "up", color: "text-green-400", drilldown: "renewals" },
     ],
     monthlyData: [
-      { month: "Jan", claims: 2200000, members: 11600 },
-      { month: "Feb", claims: 2150000, members: 11800 },
-      { month: "Mar", claims: 2400000, members: 12000 },
-      { month: "Apr", claims: 2100000, members: 12150 },
-      { month: "May", claims: 2300000, members: 12350 },
-      { month: "Jun", claims: 2450000, members: 12500 },
-      { month: "Jul", claims: 2380000, members: 12600 },
-      { month: "Aug", claims: 2420000, members: 12700 },
-      { month: "Sep", claims: 2350000, members: 12750 },
-      { month: "Oct", claims: 2500000, members: 12800 },
-      { month: "Nov", claims: 2550000, members: 12820 },
-      { month: "Dec", claims: 2400000, members: 12847 },
+      { month: "Jan", providers: 2580, contracts: 2370 },
+      { month: "Feb", providers: 2620, contracts: 2400 },
+      { month: "Mar", providers: 2680, contracts: 2450 },
+      { month: "Apr", providers: 2710, contracts: 2480 },
+      { month: "May", providers: 2740, contracts: 2510 },
+      { month: "Jun", providers: 2770, contracts: 2540 },
+      { month: "Jul", providers: 2795, contracts: 2565 },
+      { month: "Aug", providers: 2820, contracts: 2590 },
+      { month: "Sep", providers: 2845, contracts: 2610 },
+      { month: "Oct", providers: 2860, contracts: 2625 },
+      { month: "Nov", providers: 2875, contracts: 2640 },
+      { month: "Dec", providers: 2891, contracts: 2654 },
     ],
   },
 };
 
-const kpisDefault = dataByRange["This Month"].kpis;
-const monthlyDataDefault = dataByRange["This Month"].monthlyData;
+const specialtyBreakdown = [
+  { name: "Primary Care", count: 892, percentage: 31, color: "bg-cyan-500" },
+  { name: "Specialists", count: 756, percentage: 26, color: "bg-blue-500" },
+  { name: "Hospitals/Facilities", count: 234, percentage: 8, color: "bg-purple-500" },
+  { name: "Urgent Care", count: 345, percentage: 12, color: "bg-amber-500" },
+  { name: "Mental Health", count: 289, percentage: 10, color: "bg-green-500" },
+  { name: "Ancillary/Labs", count: 375, percentage: 13, color: "bg-pink-500" },
+];
 
-const topProvidersByTab = {
-  overview: [
-    { name: "Cleveland Family Medicine", claims: 423, amount: "$156,230", trend: "+12%" },
-    { name: "Metro Hospital", claims: 287, amount: "$892,450", trend: "+8%" },
-    { name: "Westlake Urgent Care", claims: 512, amount: "$98,750", trend: "+15%" },
-    { name: "Cleveland Orthopedic", claims: 156, amount: "$445,200", trend: "+5%" },
-    { name: "Metro Imaging Center", claims: 345, amount: "$234,100", trend: "+10%" },
-  ],
-  claims: [
-    { name: "Metro Hospital", claims: 892, amount: "$2,450,000", trend: "+18%" },
-    { name: "Cleveland Clinic", claims: 756, amount: "$1,890,000", trend: "+12%" },
-    { name: "University Hospitals", claims: 634, amount: "$1,560,000", trend: "+9%" },
-    { name: "Westlake Medical", claims: 512, amount: "$890,000", trend: "+14%" },
-    { name: "Quest Diagnostics", claims: 1245, amount: "$456,000", trend: "+22%" },
-  ],
-  members: [
-    { name: "Acme Corporation", claims: 2340, amount: "1,234 members", trend: "+8%" },
-    { name: "TechStart Inc", claims: 1890, amount: "892 members", trend: "+12%" },
-    { name: "Global Industries", claims: 1560, amount: "756 members", trend: "+5%" },
-    { name: "Cleveland Mfg", claims: 1234, amount: "612 members", trend: "+3%" },
-    { name: "MedTech Solutions", claims: 987, amount: "489 members", trend: "+15%" },
-  ],
-  providers: [
-    { name: "Primary Care", claims: 156, amount: "45% of network", trend: "+12" },
-    { name: "Specialists", claims: 89, amount: "28% of network", trend: "+8" },
-    { name: "Hospitals", claims: 23, amount: "8% of network", trend: "+2" },
-    { name: "Urgent Care", claims: 34, amount: "12% of network", trend: "+5" },
-    { name: "Imaging/Labs", claims: 45, amount: "7% of network", trend: "+3" },
-  ],
-  financial: [
-    { name: "Premium Revenue", claims: 0, amount: "$3.84M", trend: "+8%" },
-    { name: "Claims Expense", claims: 0, amount: "$3.15M", trend: "+12%" },
-    { name: "Admin Costs", claims: 0, amount: "$384K", trend: "+3%" },
-    { name: "Net Income", claims: 0, amount: "$326K", trend: "-15%" },
-    { name: "MLR", claims: 0, amount: "82.0%", trend: "+3.6%" },
-  ],
-};
+const topProviders = [
+  { name: "Cleveland Clinic", specialty: "Multi-Specialty", locations: 45, discount: "38%", status: "active" },
+  { name: "Metro Health System", specialty: "Hospital System", locations: 23, discount: "35%", status: "active" },
+  { name: "University Hospitals", specialty: "Academic Medical", locations: 18, discount: "32%", status: "active" },
+  { name: "Summa Health", specialty: "Regional System", locations: 12, discount: "30%", status: "active" },
+  { name: "Mercy Health", specialty: "Faith-Based System", locations: 15, discount: "33%", status: "active" },
+];
 
 const drilldownData: Record<string, { title: string; subtitle: string; items: { label: string; value: string; detail?: string }[] }> = {
-  claims: {
-    title: "Claims Breakdown",
-    subtitle: "By service category this period",
-    items: [
-      { label: "Inpatient", value: "$890,000", detail: "156 claims" },
-      { label: "Outpatient", value: "$650,000", detail: "423 claims" },
-      { label: "Professional", value: "$480,000", detail: "892 claims" },
-      { label: "Lab/Imaging", value: "$280,000", detail: "567 claims" },
-      { label: "Pharmacy", value: "$100,000", detail: "234 claims" },
-    ],
-  },
-  processing: {
-    title: "Processing Time Details",
-    subtitle: "Average days by claim type",
-    items: [
-      { label: "Clean Claims", value: "1.2 days", detail: "94.5% of total" },
-      { label: "Claims w/ Edits", value: "3.8 days", detail: "4.2% of total" },
-      { label: "Manual Review", value: "5.2 days", detail: "1.3% of total" },
-      { label: "Appeals", value: "12.4 days", detail: "0.8% of total" },
-    ],
-  },
-  denials: {
-    title: "Denial Breakdown",
-    subtitle: "Top denial reasons this period",
-    items: [
-      { label: "Missing Info", value: "1.8%", detail: "234 claims" },
-      { label: "Authorization", value: "1.2%", detail: "156 claims" },
-      { label: "Eligibility", value: "0.7%", detail: "89 claims" },
-      { label: "Duplicate", value: "0.3%", detail: "42 claims" },
-      { label: "Other", value: "0.2%", detail: "28 claims" },
-    ],
-  },
-  clean: {
-    title: "Clean Claim Analysis",
-    subtitle: "First-pass acceptance rate",
-    items: [
-      { label: "Auto-Adjudicated", value: "78.2%", detail: "Processed < 1 day" },
-      { label: "Quick Review", value: "12.3%", detail: "Processed 1-2 days" },
-      { label: "Standard Review", value: "4.0%", detail: "Processed 2-5 days" },
-      { label: "Complex Review", value: "5.5%", detail: "Processed 5+ days" },
-    ],
-  },
-  members: {
-    title: "Member Statistics",
-    subtitle: "Enrollment and demographics",
-    items: [
-      { label: "New Enrollments", value: "+156", detail: "This month" },
-      { label: "Terminations", value: "-42", detail: "This month" },
-      { label: "Net Growth", value: "+114", detail: "0.9% increase" },
-      { label: "Avg Age", value: "42.3 yrs", detail: "Range: 0-85" },
-      { label: "Family Plans", value: "68%", detail: "8,736 members" },
-    ],
-  },
   providers: {
-    title: "Provider Network",
-    subtitle: "Network composition",
+    title: "Provider Breakdown",
+    subtitle: "By provider type",
     items: [
-      { label: "Primary Care", value: "1,245", detail: "43% of network" },
-      { label: "Specialists", value: "892", detail: "31% of network" },
-      { label: "Hospitals", value: "45", detail: "2% of network" },
-      { label: "Urgent Care", value: "156", detail: "5% of network" },
-      { label: "Ancillary", value: "553", detail: "19% of network" },
+      { label: "Physicians", value: "1,892", detail: "65% of network" },
+      { label: "NPs/PAs", value: "456", detail: "16% of network" },
+      { label: "Facilities", value: "234", detail: "8% of network" },
+      { label: "Ancillary", value: "309", detail: "11% of network" },
+    ],
+  },
+  contracts: {
+    title: "Contract Status",
+    subtitle: "Active contract breakdown",
+    items: [
+      { label: "Full Network", value: "1,890", detail: "71% of contracts" },
+      { label: "Specialty Only", value: "456", detail: "17% of contracts" },
+      { label: "Single Location", value: "308", detail: "12% of contracts" },
+    ],
+  },
+  discounts: {
+    title: "Discount Analysis",
+    subtitle: "Average by specialty",
+    items: [
+      { label: "Hospital Inpatient", value: "45%", detail: "vs. billed charges" },
+      { label: "Hospital Outpatient", value: "38%", detail: "vs. billed charges" },
+      { label: "Professional Services", value: "28%", detail: "vs. Medicare" },
+      { label: "Labs/Imaging", value: "52%", detail: "vs. billed charges" },
+    ],
+  },
+  coverage: {
+    title: "Network Coverage",
+    subtitle: "By Ohio region",
+    items: [
+      { label: "Northeast Ohio", value: "98%", detail: "Cleveland metro" },
+      { label: "Central Ohio", value: "94%", detail: "Columbus metro" },
+      { label: "Southwest Ohio", value: "91%", detail: "Cincinnati metro" },
+      { label: "Rural Ohio", value: "78%", detail: "Non-metro counties" },
+    ],
+  },
+  credentials: {
+    title: "Credentialing Queue",
+    subtitle: "Pending verification",
+    items: [
+      { label: "Initial Applications", value: "23", detail: "New providers" },
+      { label: "Re-credentialing", value: "18", detail: "Renewals due" },
+      { label: "Document Updates", value: "6", detail: "Missing docs" },
+    ],
+  },
+  expiring: {
+    title: "Expiring Contracts",
+    subtitle: "Next 30 days",
+    items: [
+      { label: "Primary Care", value: "8", detail: "Action needed" },
+      { label: "Specialists", value: "6", detail: "Renewal pending" },
+      { label: "Facilities", value: "5", detail: "Under negotiation" },
+      { label: "Ancillary", value: "4", detail: "Auto-renew eligible" },
+    ],
+  },
+  newproviders: {
+    title: "New Provider Additions",
+    subtitle: "Recent onboarding",
+    items: [
+      { label: "Primary Care", value: "28", detail: "This quarter" },
+      { label: "Specialists", value: "32", detail: "This quarter" },
+      { label: "Urgent Care", value: "12", detail: "This quarter" },
+      { label: "Mental Health", value: "9", detail: "This quarter" },
+    ],
+  },
+  renewals: {
+    title: "Contract Renewals",
+    subtitle: "Completed this period",
+    items: [
+      { label: "Auto-Renewed", value: "89", detail: "Same terms" },
+      { label: "Renegotiated", value: "45", detail: "Improved terms" },
+      { label: "Extended", value: "22", detail: "1-year extension" },
     ],
   },
 };
 
 export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState<DateRange>("This Month");
-  const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [selectedDrilldown, setSelectedDrilldown] = useState<string | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
 
   const currentData = dataByRange[dateRange];
-  const maxClaims = Math.max(...currentData.monthlyData.map(d => d.claims));
-  const topProviders = topProvidersByTab[activeTab] || topProvidersByTab.overview;
-
-  const tabs: { id: TabId; label: string; icon: React.ElementType }[] = [
-    { id: "overview", label: "Overview", icon: BarChart3 },
-    { id: "claims", label: "Claims", icon: FileText },
-    { id: "members", label: "Members", icon: Users },
-    { id: "providers", label: "Providers", icon: Building2 },
-    { id: "financial", label: "Financial", icon: DollarSign },
-  ];
+  const maxProviders = Math.max(...currentData.monthlyData.map(d => d.providers));
 
   const handleExport = (format: string) => {
     setShowExportModal(false);
-    // Simulate download
     const link = document.createElement("a");
-    link.href = `/reports/claims-summary.csv`;
-    link.download = `analytics-${activeTab}-${dateRange.toLowerCase().replace(" ", "-")}.${format}`;
+    link.href = `/reports/provider-roster.csv`;
+    link.download = `network-analytics-${dateRange.toLowerCase().replace(" ", "-")}.${format}`;
     link.click();
   };
 
@@ -240,12 +217,12 @@ export default function AnalyticsPage() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center">
             <BarChart3 className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Analytics Dashboard</h1>
-            <p className="text-slate-400">Executive summary and KPIs</p>
+            <h1 className="text-2xl font-bold text-white">Network Analytics</h1>
+            <p className="text-slate-400">Provider network performance and insights</p>
           </div>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -266,24 +243,6 @@ export default function AnalyticsPage() {
             <Download className="w-4 h-4" />Export
           </button>
         </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
-              activeTab === tab.id
-                ? "bg-teal-600 text-white"
-                : "bg-slate-700 text-slate-300 hover:bg-slate-600"
-            }`}
-          >
-            <tab.icon className="w-4 h-4" />
-            {tab.label}
-          </button>
-        ))}
       </div>
 
       {/* KPI Cards - Clickable */}
@@ -310,12 +269,10 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Claims Trend Chart - Interactive */}
+        {/* Provider Growth Chart */}
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">
-              {activeTab === "members" ? "Member Growth Trend" : "Claims Volume Trend"}
-            </h2>
+            <h2 className="text-lg font-semibold text-white">Network Growth</h2>
             <div className="flex items-center gap-2 text-sm text-slate-400">
               <Calendar className="w-4 h-4" />
               {dateRange}
@@ -327,30 +284,58 @@ export default function AnalyticsPage() {
                 <div className="relative w-full">
                   <motion.div 
                     initial={{ height: 0 }}
-                    animate={{ height: `${(d.claims / maxClaims) * 180}px` }}
+                    animate={{ height: `${(d.providers / maxProviders) * 180}px` }}
                     transition={{ delay: i * 0.05, duration: 0.3 }}
                     className="w-full bg-gradient-to-t from-teal-600 to-cyan-500 rounded-t group-hover:from-cyan-600 group-hover:to-cyan-400 transition-colors"
                   />
                   <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-700 px-2 py-1 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                    ${(d.claims / 1000000).toFixed(2)}M
+                    {d.providers.toLocaleString()} providers
                   </div>
                 </div>
                 <p className="text-xs text-slate-500 mt-2">{d.month}</p>
               </div>
             ))}
           </div>
+          <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-slate-700">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-gradient-to-t from-teal-600 to-cyan-500 rounded"></div>
+              <span className="text-xs text-slate-400">Total Providers</span>
+            </div>
+          </div>
         </div>
 
-        {/* Dynamic Content Based on Tab */}
+        {/* Specialty Distribution */}
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">
-              {activeTab === "overview" && "Top Providers by Volume"}
-              {activeTab === "claims" && "Highest Claim Volume"}
-              {activeTab === "members" && "Top Employer Groups"}
-              {activeTab === "providers" && "Network by Specialty"}
-              {activeTab === "financial" && "Financial Summary"}
-            </h2>
+            <h2 className="text-lg font-semibold text-white">Specialty Distribution</h2>
+            <PieChart className="w-5 h-5 text-slate-400" />
+          </div>
+          <div className="p-6 space-y-4">
+            {specialtyBreakdown.map((specialty) => (
+              <div key={specialty.name} className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-white">{specialty.name}</span>
+                  <span className="text-slate-400">{specialty.count} ({specialty.percentage}%)</span>
+                </div>
+                <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${specialty.percentage}%` }}
+                    transition={{ duration: 0.5 }}
+                    className={`h-full ${specialty.color} rounded-full`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Top Health Systems */}
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-white">Top Health Systems</h2>
             <button className="text-sm text-cyan-500 hover:text-cyan-400">View All</button>
           </div>
           <div className="divide-y divide-slate-700">
@@ -366,141 +351,119 @@ export default function AnalyticsPage() {
                   <span className="w-6 h-6 bg-cyan-600/20 text-cyan-500 rounded-full flex items-center justify-center text-xs font-medium">{i + 1}</span>
                   <div>
                     <p className="font-medium text-white">{provider.name}</p>
-                    <p className="text-sm text-slate-400">{provider.claims > 0 ? `${provider.claims} claims` : ""}</p>
+                    <p className="text-sm text-slate-400">{provider.specialty}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-white">{provider.amount}</p>
-                  <p className={`text-sm ${provider.trend.startsWith("+") ? "text-green-400" : "text-red-400"}`}>{provider.trend}</p>
+                  <p className="font-bold text-white">{provider.locations} locations</p>
+                  <p className="text-sm text-green-400">{provider.discount} discount</p>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-gradient-to-br from-cyan-600 to-teal-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("providers")}>
+            <Building2 className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
+            <p className="text-3xl font-bold" style={{ color: 'white' }}>2,891</p>
+            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Total Providers</p>
+          </div>
+          <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("discounts")}>
+            <DollarSign className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
+            <p className="text-3xl font-bold" style={{ color: 'white' }}>32.4%</p>
+            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Avg Discount Rate</p>
+          </div>
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("coverage")}>
+            <MapPin className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
+            <p className="text-3xl font-bold" style={{ color: 'white' }}>88</p>
+            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Counties Covered</p>
+          </div>
+          <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("credentials")}>
+            <Shield className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
+            <p className="text-3xl font-bold" style={{ color: 'white' }}>98.2%</p>
+            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Credentialed</p>
+          </div>
+        </div>
       </div>
 
-      {/* Quick Stats - Tab Specific */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {activeTab === "overview" && (
-          <>
-            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("claims")}>
-              <DollarSign className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
-              <p className="text-3xl font-bold" style={{ color: 'white' }}>$18.2M</p>
-              <p style={{ color: 'rgba(255,255,255,0.8)' }}>YTD Paid Claims</p>
+      {/* Contract & Credentialing Status */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+          <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
+            <FileText className="w-5 h-5 text-cyan-400" />
+            Contract Status
+          </h3>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">Active</span>
+              <span className="font-semibold text-green-400">2,654</span>
             </div>
-            <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("members")}>
-              <Users className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
-              <p className="text-3xl font-bold" style={{ color: 'white' }}>98.2%</p>
-              <p style={{ color: 'rgba(255,255,255,0.8)' }}>Member Retention</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">Pending Renewal</span>
+              <span className="font-semibold text-amber-400">89</span>
             </div>
-            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("processing")}>
-              <FileText className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
-              <p className="text-3xl font-bold" style={{ color: 'white' }}>47,234</p>
-              <p style={{ color: 'rgba(255,255,255,0.8)' }}>Claims Processed</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">In Negotiation</span>
+              <span className="font-semibold text-blue-400">45</span>
             </div>
-            <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg">
-              <Activity className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
-              <p className="text-3xl font-bold" style={{ color: 'white' }}>99.9%</p>
-              <p style={{ color: 'rgba(255,255,255,0.8)' }}>System Uptime</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">Terminated</span>
+              <span className="font-semibold text-red-400">12</span>
             </div>
-          </>
-        )}
-        {activeTab === "claims" && (
-          <>
-            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 text-white">
-              <CheckCircle className="w-8 h-8 text-green-200 mb-3" />
-              <p className="text-3xl font-bold">94.5%</p>
-              <p className="text-green-100">Clean Claim Rate</p>
+          </div>
+        </div>
+
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+          <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
+            <Shield className="w-5 h-5 text-green-400" />
+            Credentialing Status
+          </h3>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">Fully Credentialed</span>
+              <span className="font-semibold text-green-400">2,756</span>
             </div>
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-5 text-white">
-              <Activity className="w-8 h-8 text-blue-200 mb-3" />
-              <p className="text-3xl font-bold">2.3 days</p>
-              <p className="text-blue-100">Avg Processing</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">In Process</span>
+              <span className="font-semibold text-amber-400">47</span>
             </div>
-            <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl p-5 text-white">
-              <AlertTriangle className="w-8 h-8 text-amber-200 mb-3" />
-              <p className="text-3xl font-bold">4.2%</p>
-              <p className="text-amber-100">Denial Rate</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">Expiring Soon</span>
+              <span className="font-semibold text-orange-400">56</span>
             </div>
-            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white">
-              <DollarSign className="w-8 h-8 text-cyan-200 mb-3" />
-              <p className="text-3xl font-bold">$1,847</p>
-              <p className="text-cyan-100">Avg Claim Cost</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">Action Required</span>
+              <span className="font-semibold text-red-400">32</span>
             </div>
-          </>
-        )}
-        {activeTab === "members" && (
-          <>
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-5 text-white">
-              <Users className="w-8 h-8 text-blue-200 mb-3" />
-              <p className="text-3xl font-bold">12,847</p>
-              <p className="text-blue-100">Total Members</p>
+          </div>
+        </div>
+
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+          <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
+            <Clock className="w-5 h-5 text-amber-400" />
+            Upcoming Expirations
+          </h3>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">Next 30 days</span>
+              <span className="font-semibold text-red-400">23</span>
             </div>
-            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 text-white">
-              <TrendingUp className="w-8 h-8 text-green-200 mb-3" />
-              <p className="text-3xl font-bold">+156</p>
-              <p className="text-green-100">New This Month</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">31-60 days</span>
+              <span className="font-semibold text-amber-400">45</span>
             </div>
-            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white">
-              <Building2 className="w-8 h-8 text-cyan-200 mb-3" />
-              <p className="text-3xl font-bold">234</p>
-              <p className="text-cyan-100">Employer Groups</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">61-90 days</span>
+              <span className="font-semibold text-yellow-400">67</span>
             </div>
-            <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl p-5 text-white">
-              <MapPin className="w-8 h-8 text-amber-200 mb-3" />
-              <p className="text-3xl font-bold">12</p>
-              <p className="text-amber-100">Counties Served</p>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">90+ days</span>
+              <span className="font-semibold text-green-400">2,519</span>
             </div>
-          </>
-        )}
-        {activeTab === "providers" && (
-          <>
-            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white">
-              <Building2 className="w-8 h-8 text-cyan-200 mb-3" />
-              <p className="text-3xl font-bold">2,891</p>
-              <p className="text-cyan-100">Total Providers</p>
-            </div>
-            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 text-white">
-              <CheckCircle className="w-8 h-8 text-green-200 mb-3" />
-              <p className="text-3xl font-bold">94%</p>
-              <p className="text-green-100">Network Coverage</p>
-            </div>
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-5 text-white">
-              <TrendingUp className="w-8 h-8 text-blue-200 mb-3" />
-              <p className="text-3xl font-bold">+23</p>
-              <p className="text-blue-100">New This Month</p>
-            </div>
-            <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl p-5 text-white">
-              <MapPin className="w-8 h-8 text-amber-200 mb-3" />
-              <p className="text-3xl font-bold">156</p>
-              <p className="text-amber-100">Locations</p>
-            </div>
-          </>
-        )}
-        {activeTab === "financial" && (
-          <>
-            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 text-white">
-              <DollarSign className="w-8 h-8 text-green-200 mb-3" />
-              <p className="text-3xl font-bold">$3.84M</p>
-              <p className="text-green-100">Q1 Revenue</p>
-            </div>
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-5 text-white">
-              <PieChart className="w-8 h-8 text-blue-200 mb-3" />
-              <p className="text-3xl font-bold">82.0%</p>
-              <p className="text-blue-100">Medical Loss Ratio</p>
-            </div>
-            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white">
-              <TrendingUp className="w-8 h-8 text-cyan-200 mb-3" />
-              <p className="text-3xl font-bold">$326K</p>
-              <p className="text-cyan-100">Net Income Q1</p>
-            </div>
-            <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl p-5 text-white">
-              <Activity className="w-8 h-8 text-amber-200 mb-3" />
-              <p className="text-3xl font-bold">10.0%</p>
-              <p className="text-amber-100">Admin Ratio</p>
-            </div>
-          </>
-        )}
+          </div>
+        </div>
       </div>
 
       {/* Drilldown Modal */}

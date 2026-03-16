@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, UserPlus, Eye, Shield, Mail, Edit, Trash2, X, CheckCircle, Clock, XCircle, Key, Lock, Check, Minus } from "lucide-react";
+import { Search, UserPlus, Shield, Mail, Edit, Trash2, X, CheckCircle, Clock, XCircle, Key, Check, Minus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Permission {
@@ -24,16 +24,16 @@ interface Role {
 
 const users = [
   { id: "USR-001", name: "Sarah Mitchell", email: "sarah.m@truecare.health", role: "Super Admin", department: "Administration", status: "active", lastLogin: "2024-03-12 09:15 AM", mfa: true },
-  { id: "USR-002", name: "James Wilson", email: "james.w@truecare.health", role: "Claims Manager", department: "Claims", status: "active", lastLogin: "2024-03-12 08:30 AM", mfa: true },
-  { id: "USR-003", name: "Emily Chen", email: "emily.c@truecare.health", role: "Provider Relations", department: "Network", status: "active", lastLogin: "2024-03-11 04:45 PM", mfa: true },
-  { id: "USR-004", name: "Michael Brown", email: "michael.b@truecare.health", role: "Analyst", department: "Analytics", status: "active", lastLogin: "2024-03-12 10:00 AM", mfa: false },
-  { id: "USR-005", name: "Lisa Rodriguez", email: "lisa.r@truecare.health", role: "Claims Processor", department: "Claims", status: "active", lastLogin: "2024-03-11 05:30 PM", mfa: true },
-  { id: "USR-006", name: "David Kim", email: "david.k@truecare.health", role: "Compliance Officer", department: "Compliance", status: "active", lastLogin: "2024-03-12 07:45 AM", mfa: true },
-  { id: "USR-007", name: "Jennifer Lee", email: "jennifer.l@truecare.health", role: "Member Services", department: "Member Services", status: "inactive", lastLogin: "2024-02-28 03:00 PM", mfa: false },
-  { id: "USR-008", name: "Robert Taylor", email: "robert.t@truecare.health", role: "Analyst", department: "Analytics", status: "pending", lastLogin: "Never", mfa: false },
+  { id: "USR-002", name: "James Wilson", email: "james.w@truecare.health", role: "Network Director", department: "Network Operations", status: "active", lastLogin: "2024-03-12 08:30 AM", mfa: true },
+  { id: "USR-003", name: "Emily Chen", email: "emily.c@truecare.health", role: "Provider Relations Manager", department: "Provider Relations", status: "active", lastLogin: "2024-03-11 04:45 PM", mfa: true },
+  { id: "USR-004", name: "Michael Brown", email: "michael.b@truecare.health", role: "Network Analyst", department: "Analytics", status: "active", lastLogin: "2024-03-12 10:00 AM", mfa: false },
+  { id: "USR-005", name: "Lisa Rodriguez", email: "lisa.r@truecare.health", role: "Credentialing Specialist", department: "Credentialing", status: "active", lastLogin: "2024-03-11 05:30 PM", mfa: true },
+  { id: "USR-006", name: "David Kim", email: "david.k@truecare.health", role: "Contract Manager", department: "Contracts", status: "active", lastLogin: "2024-03-12 07:45 AM", mfa: true },
+  { id: "USR-007", name: "Jennifer Lee", email: "jennifer.l@truecare.health", role: "Credentialing Specialist", department: "Credentialing", status: "inactive", lastLogin: "2024-02-28 03:00 PM", mfa: false },
+  { id: "USR-008", name: "Robert Taylor", email: "robert.t@truecare.health", role: "Network Analyst", department: "Analytics", status: "pending", lastLogin: "Never", mfa: false },
 ];
 
-const modules = ["Dashboard", "Claims", "Members", "Providers", "Payments", "Reports", "Analytics", "Compliance", "Audit Logs", "Users", "Settings", "Workflows"];
+const modules = ["Dashboard", "Providers", "Contracts", "Rates & Discounts", "Credentialing", "Reports", "Analytics", "Settings", "Users"];
 
 const initialRoles: Role[] = [
   { 
@@ -46,92 +46,77 @@ const initialRoles: Role[] = [
   },
   { 
     id: "ROLE-002",
-    name: "Claims Manager", 
-    description: "Manage claims, payments, and generate reports",
+    name: "Network Director", 
+    description: "Oversee all network operations, contracts, and provider relationships",
     permissions: modules.map(m => ({ 
       module: m, 
-      view: ["Dashboard", "Claims", "Members", "Providers", "Payments", "Reports"].includes(m),
-      create: ["Claims"].includes(m),
-      edit: ["Claims", "Payments"].includes(m),
+      view: true,
+      create: ["Providers", "Contracts"].includes(m),
+      edit: ["Providers", "Contracts", "Rates & Discounts"].includes(m),
       delete: false,
-      export: ["Claims", "Payments", "Reports"].includes(m)
+      export: true
     })),
-    users: 3,
+    users: 2,
     isSystem: false
   },
   { 
     id: "ROLE-003",
-    name: "Claims Processor", 
-    description: "Process and adjudicate claims",
+    name: "Provider Relations Manager", 
+    description: "Manage provider onboarding, relationships, and contract negotiations",
     permissions: modules.map(m => ({ 
       module: m, 
-      view: ["Dashboard", "Claims", "Members", "Providers"].includes(m),
-      create: false,
-      edit: ["Claims"].includes(m),
-      delete: false,
-      export: false
-    })),
-    users: 8,
-    isSystem: false
-  },
-  { 
-    id: "ROLE-004",
-    name: "Provider Relations", 
-    description: "Manage provider network, credentialing, and contracts",
-    permissions: modules.map(m => ({ 
-      module: m, 
-      view: ["Dashboard", "Providers", "Reports"].includes(m),
+      view: ["Dashboard", "Providers", "Contracts", "Credentialing", "Reports"].includes(m),
       create: ["Providers"].includes(m),
-      edit: ["Providers"].includes(m),
+      edit: ["Providers", "Contracts"].includes(m),
       delete: false,
-      export: ["Providers", "Reports"].includes(m)
+      export: ["Providers", "Contracts", "Reports"].includes(m)
     })),
     users: 4,
     isSystem: false
   },
   { 
-    id: "ROLE-005",
-    name: "Analyst", 
-    description: "Read-only access to reports and analytics",
+    id: "ROLE-004",
+    name: "Contract Manager", 
+    description: "Create and manage provider contracts, rates, and fee schedules",
     permissions: modules.map(m => ({ 
       module: m, 
-      view: ["Dashboard", "Reports", "Analytics"].includes(m),
+      view: ["Dashboard", "Providers", "Contracts", "Rates & Discounts", "Reports"].includes(m),
+      create: ["Contracts", "Rates & Discounts"].includes(m),
+      edit: ["Contracts", "Rates & Discounts"].includes(m),
+      delete: false,
+      export: ["Contracts", "Rates & Discounts", "Reports"].includes(m)
+    })),
+    users: 3,
+    isSystem: false
+  },
+  { 
+    id: "ROLE-005",
+    name: "Credentialing Specialist", 
+    description: "Process provider credentialing applications and verification",
+    permissions: modules.map(m => ({ 
+      module: m, 
+      view: ["Dashboard", "Providers", "Credentialing", "Reports"].includes(m),
+      create: false,
+      edit: ["Credentialing"].includes(m),
+      delete: false,
+      export: ["Credentialing", "Reports"].includes(m)
+    })),
+    users: 6,
+    isSystem: false
+  },
+  { 
+    id: "ROLE-006",
+    name: "Network Analyst", 
+    description: "Read-only access to network data, reports, and analytics",
+    permissions: modules.map(m => ({ 
+      module: m, 
+      view: ["Dashboard", "Providers", "Contracts", "Reports", "Analytics"].includes(m),
       create: false,
       edit: false,
       delete: false,
       export: ["Reports", "Analytics"].includes(m)
     })),
     users: 5,
-    isSystem: false
-  },
-  { 
-    id: "ROLE-006",
-    name: "Member Services", 
-    description: "Manage member inquiries and eligibility",
-    permissions: modules.map(m => ({ 
-      module: m, 
-      view: ["Dashboard", "Members", "Claims"].includes(m),
-      create: false,
-      edit: ["Members"].includes(m),
-      delete: false,
-      export: false
-    })),
-    users: 6,
-    isSystem: false
-  },
-  { 
-    id: "ROLE-007",
-    name: "Compliance Officer", 
-    description: "Compliance monitoring, fraud detection, and audit logs",
-    permissions: modules.map(m => ({ 
-      module: m, 
-      view: ["Dashboard", "Compliance", "Audit Logs", "Reports"].includes(m),
-      create: false,
-      edit: ["Compliance"].includes(m),
-      delete: false,
-      export: ["Compliance", "Audit Logs", "Reports"].includes(m)
-    })),
-    users: 2,
     isSystem: false
   },
 ];
@@ -194,8 +179,8 @@ export default function UsersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">User Management</h1>
-          <p className="text-slate-400">Manage users, roles, and permissions</p>
+          <h1 className="text-2xl font-bold text-white">Team & Permissions</h1>
+          <p className="text-slate-400">Manage network team members and access control</p>
         </div>
         <div className="flex gap-2">
           {activeTab === "roles" && (
@@ -233,7 +218,7 @@ export default function UsersPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 border-b border-slate-700 pb-2">
-        <button onClick={() => setActiveTab("users")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "users" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Users</button>
+        <button onClick={() => setActiveTab("users")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "users" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Team Members</button>
         <button onClick={() => setActiveTab("roles")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "roles" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Roles</button>
         <button onClick={() => setActiveTab("permissions")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "permissions" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Permission Matrix</button>
       </div>
@@ -246,7 +231,7 @@ export default function UsersPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
               <input
                 type="text"
-                placeholder="Search users..."
+                placeholder="Search team members..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
@@ -436,7 +421,7 @@ export default function UsersPage() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowAddModal(false)} className="fixed inset-0 bg-black/60 z-50" />
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
               <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold text-white">Add New User</h2>
+                <h2 className="text-lg font-semibold text-white">Add Team Member</h2>
                 <button onClick={() => setShowAddModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
               </div>
               <div className="p-4 space-y-4">
@@ -458,11 +443,11 @@ export default function UsersPage() {
                   <label className="block text-sm font-medium text-slate-300 mb-1">Department</label>
                   <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
                     <option>Administration</option>
-                    <option>Claims</option>
-                    <option>Network</option>
+                    <option>Network Operations</option>
+                    <option>Provider Relations</option>
+                    <option>Contracts</option>
+                    <option>Credentialing</option>
                     <option>Analytics</option>
-                    <option>Member Services</option>
-                    <option>Compliance</option>
                   </select>
                 </div>
                 <div className="flex items-center gap-2">
@@ -476,7 +461,7 @@ export default function UsersPage() {
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Add User</button>
+                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Add Member</button>
               </div>
             </motion.div>
           </>
@@ -490,7 +475,7 @@ export default function UsersPage() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowEditModal(false)} className="fixed inset-0 bg-black/60 z-50" />
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
               <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold text-white">Edit User</h2>
+                <h2 className="text-lg font-semibold text-white">Edit Team Member</h2>
                 <button onClick={() => setShowEditModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
               </div>
               <div className="p-4 space-y-4">
@@ -608,7 +593,7 @@ export default function UsersPage() {
               <div className="p-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Role Name</label>
-                  <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="e.g., Billing Specialist" />
+                  <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="e.g., Fee Schedule Analyst" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Description</label>
