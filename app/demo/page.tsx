@@ -495,7 +495,7 @@ export default function ProductDemoPage() {
           Platform Portals
         </h3>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
           {portals.map((portal) => (
             <div 
               key={portal.id}
@@ -509,7 +509,7 @@ export default function ProductDemoPage() {
               }}
             >
               {/* Screenshot with border */}
-              <div style={{ position: 'relative', height: 240, background: '#f1f5f9', borderBottom: '3px solid #0d9488' }}>
+              <div style={{ position: 'relative', height: 180, background: '#f1f5f9', borderBottom: '3px solid #0d9488' }}>
                 <Image
                   src={portal.image}
                   alt={portal.title}
@@ -623,7 +623,7 @@ export default function ProductDemoPage() {
             }}
           >
             {/* Screenshot */}
-            <div style={{ position: 'relative', height: 240, background: '#0f172a', borderBottom: '3px solid #2dd4bf' }}>
+            <div style={{ position: 'relative', height: 180, background: '#0f172a', borderBottom: '3px solid #2dd4bf' }}>
               <Image
                 src="/demo/bill-negotiator.jpg"
                 alt="AI Bill Negotiator Dashboard"
