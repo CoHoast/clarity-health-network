@@ -12,18 +12,20 @@ interface Message {
 }
 
 const suggestedQuestions = [
-  "Show pending claims over $10K",
-  "How many providers expiring this month?",
-  "What's our claim turnaround time?",
-  "Run a fraud detection check",
+  "Show providers with expiring contracts",
+  "Find cardiologists in Cleveland",
+  "What's the average network discount?",
+  "List pending credentialing applications",
 ];
 
 const mockResponses: Record<string, string> = {
-  "pending claims": "Found **23 pending claims** over $10,000:\n\n**High Priority (3):**\n• CLM-8844: $12,500 - Knee Surgery (needs pre-auth)\n• CLM-8839: $18,200 - Cardiac Procedure\n• CLM-8836: $15,750 - Spinal Fusion\n\n**Standard Review (20):**\nRanging from $10,200 to $14,800\n\nWould you like me to open the claims queue filtered to these?",
-  "providers expiring": "**12 providers** have credentials expiring this month:\n\n⚠️ **Critical (expires in 7 days):**\n• Dr. James Wilson - Medical License\n• Metro Imaging - Facility License\n\n📋 **This Month:**\n• 5 DEA Registrations\n• 3 Board Certifications\n• 2 Malpractice Policies\n\nI can send automated renewal reminders to all 12 providers.",
-  "turnaround": "**Claims Turnaround Metrics (Last 30 Days):**\n\n⚡ **Average Processing Time:** 2.3 days\n✅ **Auto-Adjudication Rate:** 92%\n📊 **Clean Claim Rate:** 94.5%\n\n**By Priority:**\n• Urgent (<$1K): 1.1 days\n• Standard: 2.4 days\n• Complex (>$10K): 4.2 days\n\nWe're 18% faster than industry average!",
-  "fraud": "Running fraud detection analysis...\n\n🔴 **3 High-Risk Alerts:**\n• Provider #4521: Unusual billing pattern (98% modifier usage)\n• Member #7823: 47 ER visits in 90 days\n• Claim #8841: Duplicate submission detected\n\n🟡 **8 Medium-Risk Flags:**\nAwaiting review in FraudShield queue\n\nWant me to open the Fraud Detection dashboard?",
-  "default": "I can help you with:\n\n• **Claims** - Query, filter, bulk actions\n• **Providers** - Credentials, contracts, performance\n• **Members** - Eligibility, communications\n• **Analytics** - Reports, metrics, trends\n• **Fraud** - Detection, investigation\n• **System** - Workflows, configurations\n\nWhat would you like to analyze?",
+  "expiring contracts": "**47 contracts** expiring in the next 90 days:\n\n⚠️ **Critical (next 14 days):**\n• Midwest Regional Medical - expires Mar 28\n• Summit Health Specialists - expires Apr 2\n\n📋 **Next 30 Days (12):**\n• 5 Group Practices\n• 4 Individual Providers\n• 3 Facilities\n\nWould you like me to send bulk renewal notices?",
+  "cardiologist": "Found **8 cardiologists** in the Cleveland area:\n\n✅ **Active Contracts:**\n• Cleveland Cardiology Associates (NPI: 9012345678) - 32% discount\n• Dr. Michael Heart, MD (NPI: 1122334455) - 30% discount\n• Lakeside Cardiology (NPI: 6789012345) - 35% discount\n\n📍 **Locations:** Downtown, Beachwood, Westlake, Lakewood\n\nWant me to show contract details or add a new cardiologist?",
+  "average discount": "**Network Discount Analysis:**\n\n📊 **Average Discount:** 34% off billed charges\n\n**By Provider Type:**\n• Hospitals: 28% (% of Medicare: 140%)\n• Group Practices: 35%\n• Individual Providers: 32%\n• Labs & Imaging: 45%\n\n**Top Performers:**\n• Quest Diagnostics: 48%\n• Metro Imaging: 45%\n• Cleveland Orthopedic: 40%\n\nOur rates are 12% better than regional average!",
+  "credentialing": "**12 pending credentialing applications:**\n\n🔄 **In Progress (5):**\n• Dr. James Wilson, DO - License verification\n• Premier PT Group - Insurance pending\n• Valley Care Imaging - Facility license review\n\n📋 **New Applications (7):**\n• 4 Individual Providers\n• 2 Group Practices\n• 1 Urgent Care Facility\n\nWould you like to review the credentialing queue?",
+  "provider": "I found several providers matching your query. Could you be more specific?\n\n• Search by **specialty**: \"Find orthopedists in Beachwood\"\n• Search by **NPI**: \"Lookup NPI 1234567890\"\n• Search by **contract status**: \"Show providers with expiring contracts\"\n• Search by **discount rate**: \"Providers with 40%+ discount\"",
+  "npi": "To look up an NPI, please provide the 10-digit number.\n\nI can show you:\n• Provider details & contact info\n• Contract status & expiration\n• Discount terms & service rates\n• Credentialing verification status",
+  "default": "I can help you with:\n\n• **Providers** - Search, lookup, add new\n• **Contracts** - Expiring, renewals, templates\n• **Discounts** - Rate analysis, schedules\n• **Credentialing** - Applications, verifications\n• **Network** - Coverage, analytics, reports\n\nWhat would you like to explore?",
 };
 
 export default function AdminPulseChat({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -31,7 +33,7 @@ export default function AdminPulseChat({ isOpen, onClose }: { isOpen: boolean; o
     {
       id: "welcome",
       role: "assistant",
-      content: "Hi! I'm Pulse, your admin AI assistant. I can query data, run reports, detect anomalies, and help manage the platform. What would you like to do?",
+      content: "Hi! I'm Pulse, your PPO Network assistant. I can help you find providers, check contract status, analyze discount rates, and manage credentialing. What would you like to explore?",
       timestamp: new Date(),
     },
   ]);
