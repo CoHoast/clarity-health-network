@@ -257,20 +257,16 @@ export default function AnalyticsPage() {
           <button
             key={kpi.label}
             onClick={() => setSelectedDrilldown(kpi.drilldown)}
-            className={`rounded-xl p-4 text-left transition-all group shadow-lg ${
-              isDark 
-                ? 'bg-slate-950 border border-slate-800 hover:bg-slate-900'
-                : 'bg-slate-800 border border-slate-700 hover:bg-slate-700'
-            }`}
+            className="rounded-xl p-4 text-left transition-all group shadow-lg bg-slate-950 border border-slate-800 hover:bg-slate-900"
           >
-            <p className={`text-sm mb-1 ${isDark ? 'text-slate-400' : 'text-cyan-100'}`}>{kpi.label}</p>
-            <p className={`text-2xl font-bold transition-colors ${isDark ? 'text-white' : 'text-white'}`}>{kpi.value}</p>
-            <p className={`text-sm flex items-center gap-1 mt-1 ${isDark ? kpi.color : 'text-green-200'}`}>
+            <p className="text-sm mb-1 text-slate-400">{kpi.label}</p>
+            <p className="text-2xl font-bold transition-colors text-white">{kpi.value}</p>
+            <p className={`text-sm flex items-center gap-1 mt-1 ${kpi.color}`}>
               {kpi.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
               {kpi.change}
             </p>
             <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className={`text-xs flex items-center gap-1 ${isDark ? 'text-cyan-400' : 'text-white/80'}`}>
+              <span className="text-xs flex items-center gap-1 text-cyan-400">
                 Click for details <ArrowUpRight className="w-3 h-3" />
               </span>
             </div>
@@ -385,22 +381,14 @@ export default function AnalyticsPage() {
             return (
               <div 
                 key={stat.label}
-                className={`rounded-xl p-5 cursor-pointer transition-all shadow-lg ${
-                  isDark 
-                    ? 'bg-slate-950 border border-slate-800 hover:bg-slate-900'
-                    : 'bg-slate-800 border border-slate-700 hover:bg-slate-700'
-                }`} 
+                className="rounded-xl p-5 cursor-pointer transition-all shadow-lg bg-slate-950 border border-slate-800 hover:bg-slate-900"
                 onClick={() => setSelectedDrilldown(stat.drilldown)}
               >
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${
-                  isDark 
-                    ? 'bg-cyan-500/20 border border-cyan-500/30'
-                    : 'bg-white/20 border border-white/30'
-                }`}>
-                  <Icon className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-white'}`} />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 bg-cyan-500/20 border border-cyan-500/30">
+                  <Icon className="w-5 h-5 text-cyan-400" />
                 </div>
-                <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-white'}`}>{stat.value}</p>
-                <p className={isDark ? 'text-slate-400' : 'text-cyan-100'}>{stat.label}</p>
+                <p className="text-3xl font-bold text-white">{stat.value}</p>
+                <p className="text-slate-400">{stat.label}</p>
               </div>
             );
           })}

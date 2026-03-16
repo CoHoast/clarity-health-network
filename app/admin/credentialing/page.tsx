@@ -189,14 +189,10 @@ export default function CredentialingPage() {
         ].map((stat, i) => (
           <div 
             key={i}
-            className={`rounded-xl p-4 shadow-lg ${
-              isDark 
-                ? 'bg-slate-950 border border-slate-800'
-                : 'bg-slate-800 border border-slate-700'
-            }`}
+            className="rounded-xl p-4 shadow-lg bg-slate-950 border border-slate-800"
           >
-            <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-white'}`}>{stat.value}</p>
-            <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-cyan-100'}`}>{stat.label}</p>
+            <p className="text-2xl font-bold text-white">{stat.value}</p>
+            <p className="text-sm text-slate-400">{stat.label}</p>
           </div>
         ))}
       </div>

@@ -101,25 +101,17 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className={`rounded-xl p-5 shadow-lg ${
-                isDark 
-                  ? 'bg-slate-950 border border-slate-800'
-                  : 'bg-slate-800 border border-slate-700'
-              }`}
+              className="rounded-xl p-5 shadow-lg bg-slate-950 border border-slate-800"
             >
               <div className="flex items-center justify-between mb-3">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  isDark
-                    ? 'bg-cyan-500/20 border border-cyan-500/30'
-                    : 'bg-white/20 border border-white/30'
-                }`}>
-                  <Icon className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-white'}`} />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-cyan-500/20 border border-cyan-500/30">
+                  <Icon className="w-5 h-5 text-cyan-400" />
                 </div>
                 <span 
                   className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
                     stat.trend === "warning" 
                       ? "bg-amber-500/20 text-amber-400"
-                      : (isDark ? "bg-cyan-500/20 text-cyan-400" : "bg-white/20 text-white")
+                      : "bg-cyan-500/20 text-cyan-400"
                   }`}
                 >
                   {stat.trend === "up" && <TrendingUp className="w-3 h-3" />}
@@ -127,8 +119,8 @@ export default function AdminDashboard() {
                   {stat.change}
                 </span>
               </div>
-              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-white'}`}>{stat.value}</p>
-              <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-cyan-100'}`}>{stat.label}</p>
+              <p className="text-2xl font-bold text-white">{stat.value}</p>
+              <p className="text-sm text-slate-400">{stat.label}</p>
             </motion.div>
           );
         })}
