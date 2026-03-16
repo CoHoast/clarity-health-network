@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X, Check, AlertTriangle, User, Percent, FileText, Filter } from "lucide-react";
+import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X, Check, AlertTriangle, User, Percent, FileText, Filter, Upload, FileSpreadsheet } from "lucide-react";
+import { useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface DiscountSchedule {
@@ -288,6 +289,10 @@ export default function DiscountSchedulesPage() {
   const [saved, setSaved] = useState(false);
   const [serviceRows, setServiceRows] = useState([{ service: "", rate: "" }]);
   const [cptRows, setCptRows] = useState([{ cpt: "", description: "", rate: "" }]);
+  const [csvPreview, setCsvPreview] = useState<{ cpt: string; description: string; rate: string }[] | null>(null);
+  const [csvError, setCsvError] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Provider rate form state
   const [newProviderRate, setNewProviderRate] = useState({
@@ -311,6 +316,8 @@ export default function DiscountSchedulesPage() {
         setShowProviderRateModal(false);
         setServiceRows([{ service: "", rate: "" }]);
         setCptRows([{ cpt: "", description: "", rate: "" }]);
+        setCsvPreview(null);
+        setCsvError(null);
         setNewProviderRate({
           rateType: "flat",
           flatRate: "",
@@ -344,6 +351,95 @@ export default function DiscountSchedulesPage() {
     if (serviceRows.length > 1) {
       setServiceRows(serviceRows.filter((_, i) => i !== index));
     }
+  };
+
+  // CSV Upload handlers
+  const parseCSV = (text: string): { cpt: string; description: string; rate: string }[] => {
+    const lines = text.trim().split('\n');
+    const results: { cpt: string; description: string; rate: string }[] = [];
+    
+    // Skip header row if present
+    const startIndex = lines[0]?.toLowerCase().includes('cpt') ? 1 : 0;
+    
+    for (let i = startIndex; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      
+      // Handle both comma and tab delimiters
+      const delimiter = line.includes('\t') ? '\t' : ',';
+      const parts = line.split(delimiter).map(p => p.trim().replace(/^["']|["']$/g, ''));
+      
+      if (parts.length >= 2) {
+        results.push({
+          cpt: parts[0] || '',
+          description: parts[1] || '',
+          rate: parts[2] || ''
+        });
+      }
+    }
+    
+    return results;
+  };
+
+  const handleFileUpload = (file: File) => {
+    setCsvError(null);
+    
+    if (!file.name.endsWith('.csv') && !file.name.endsWith('.txt')) {
+      setCsvError('Please upload a CSV or TXT file');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result as string;
+        const parsed = parseCSV(text);
+        
+        if (parsed.length === 0) {
+          setCsvError('No valid data found in file');
+          return;
+        }
+        
+        setCsvPreview(parsed);
+      } catch (err) {
+        setCsvError('Failed to parse file. Please check the format.');
+      }
+    };
+    reader.onerror = () => {
+      setCsvError('Failed to read file');
+    };
+    reader.readAsText(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const confirmCsvImport = () => {
+    if (csvPreview) {
+      setCptRows(csvPreview);
+      setCsvPreview(null);
+    }
+  };
+
+  const cancelCsvImport = () => {
+    setCsvPreview(null);
+    setCsvError(null);
   };
 
   const filteredSchedules = discountSchedules.filter(schedule => {
@@ -1149,17 +1245,138 @@ export default function DiscountSchedulesPage() {
                           CPT-Specific Flat Rates
                           <span className="text-xs text-slate-500 font-normal">(Optional)</span>
                         </label>
-                        <button 
-                          type="button"
-                          onClick={addCptRow}
-                          className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
-                        >
-                          <Plus className="w-4 h-4" />
-                          Add CPT Rate
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="file"
+                            ref={fileInputRef}
+                            accept=".csv,.txt"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) handleFileUpload(file);
+                              e.target.value = '';
+                            }}
+                          />
+                          <button 
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="text-sm text-amber-400 hover:text-amber-300 flex items-center gap-1"
+                          >
+                            <Upload className="w-4 h-4" />
+                            Upload CSV
+                          </button>
+                          <button 
+                            type="button"
+                            onClick={addCptRow}
+                            className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                          >
+                            <Plus className="w-4 h-4" />
+                            Add Row
+                          </button>
+                        </div>
                       </div>
+
+                      {/* CSV Preview */}
+                      {csvPreview && (
+                        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <p className="text-amber-300 font-medium flex items-center gap-2">
+                              <FileSpreadsheet className="w-4 h-4" />
+                              Preview: {csvPreview.length} CPT codes found
+                            </p>
+                            <div className="flex gap-2">
+                              <button
+                                type="button"
+                                onClick={cancelCsvImport}
+                                className="px-3 py-1 text-sm bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                type="button"
+                                onClick={confirmCsvImport}
+                                className="px-3 py-1 text-sm bg-amber-600 text-white rounded-lg hover:bg-amber-700"
+                              >
+                                Import All
+                              </button>
+                            </div>
+                          </div>
+                          <div className="max-h-40 overflow-auto bg-slate-900 rounded-lg">
+                            <table className="w-full text-sm">
+                              <thead className="sticky top-0 bg-slate-800">
+                                <tr>
+                                  <th className="px-3 py-2 text-left text-xs text-slate-400">CPT</th>
+                                  <th className="px-3 py-2 text-left text-xs text-slate-400">Description</th>
+                                  <th className="px-3 py-2 text-right text-xs text-slate-400">Rate</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-700">
+                                {csvPreview.slice(0, 10).map((row, i) => (
+                                  <tr key={i}>
+                                    <td className="px-3 py-2 text-amber-400 font-mono">{row.cpt}</td>
+                                    <td className="px-3 py-2 text-slate-300">{row.description}</td>
+                                    <td className="px-3 py-2 text-right text-green-400">{row.rate}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                            {csvPreview.length > 10 && (
+                              <p className="text-center text-slate-500 text-xs py-2">
+                                ... and {csvPreview.length - 10} more rows
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* CSV Error */}
+                      {csvError && (
+                        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 mb-4 flex items-center gap-2">
+                          <AlertTriangle className="w-4 h-4 text-red-400" />
+                          <p className="text-red-300 text-sm">{csvError}</p>
+                          <button
+                            type="button"
+                            onClick={() => setCsvError(null)}
+                            className="ml-auto text-red-400 hover:text-red-300"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Drag and Drop Zone (when no CPT rows) */}
+                      {cptRows.length === 1 && !cptRows[0].cpt && !csvPreview && (
+                        <div
+                          onDrop={handleDrop}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors mb-4 ${
+                            isDragging 
+                              ? 'border-amber-500 bg-amber-500/10' 
+                              : 'border-slate-600 hover:border-slate-500'
+                          }`}
+                        >
+                          <Upload className={`w-8 h-8 mx-auto mb-2 ${isDragging ? 'text-amber-400' : 'text-slate-500'}`} />
+                          <p className="text-slate-400 text-sm">
+                            Drag & drop a CSV file here, or{' '}
+                            <button 
+                              type="button"
+                              onClick={() => fileInputRef.current?.click()}
+                              className="text-amber-400 hover:text-amber-300"
+                            >
+                              browse
+                            </button>
+                          </p>
+                          <p className="text-slate-500 text-xs mt-2">
+                            Format: CPT Code, Description, Rate (e.g., 99213, Office Visit, $85)
+                          </p>
+                        </div>
+                      )}
+
                       <div className="bg-slate-900 rounded-lg p-4 space-y-3">
-                        <p className="text-xs text-slate-500 mb-3">CPT flat rates override category rates for specific procedure codes</p>
+                        {(cptRows.length > 1 || cptRows[0]?.cpt) && (
+                          <p className="text-xs text-slate-500 mb-3">CPT flat rates override category rates for specific procedure codes</p>
+                        )}
                         {cptRows.map((row, index) => (
                           <div key={index} className="flex gap-2">
                             <input 
