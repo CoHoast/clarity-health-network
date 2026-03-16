@@ -177,9 +177,13 @@ export default function ProviderDetailPage() {
 
   // Rates
   const [useCustomRates, setUseCustomRates] = useState(provider.useCustomRates);
-  const [rateType, setRateType] = useState<"flat" | "custom">(provider.rateType);
+  const [rateType, setRateType] = useState<"flat" | "custom" | "cpt">(provider.rateType);
   const [flatRate, setFlatRate] = useState(provider.flatRate);
   const [serviceRates, setServiceRates] = useState(provider.serviceRates);
+  const [cptRates, setCptRates] = useState<{ code: string; description: string; rate: string }[]>([
+    { code: "99213", description: "Office visit, established patient, low complexity", rate: "145" },
+    { code: "99214", description: "Office visit, established patient, moderate complexity", rate: "150" },
+  ]);
 
   const handleSave = () => {
     setSaving(true);
@@ -723,6 +727,14 @@ export default function ProviderDetailPage() {
                   >
                     Custom by Category
                   </button>
+                  <button
+                    onClick={() => setRateType("cpt")}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      rateType === "cpt" ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-400"
+                    }`}
+                  >
+                    Custom by CPT Code
+                  </button>
                 </div>
 
                 {rateType === "flat" ? (
@@ -760,6 +772,94 @@ export default function ProviderDetailPage() {
                           </div>
                         </div>
                       ))}
+                    </div>
+                  </div>
+                )}
+
+                {rateType === "cpt" && (
+                  <div className="bg-slate-700/30 rounded-lg p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-sm font-semibold text-white">Custom Rates by CPT Code</h3>
+                        <p className="text-slate-400 text-xs mt-1">Set specific rates for individual procedure codes</p>
+                      </div>
+                      <button
+                        onClick={() => setCptRates([...cptRates, { code: "", description: "", rate: "" }])}
+                        className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors"
+                      >
+                        <span className="text-lg leading-none">+</span>
+                        Add CPT Code
+                      </button>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {/* Header */}
+                      <div className="grid grid-cols-12 gap-3 text-xs text-slate-500 font-medium px-1">
+                        <div className="col-span-2">CPT Code</div>
+                        <div className="col-span-7">Description</div>
+                        <div className="col-span-2">Rate (%)</div>
+                        <div className="col-span-1"></div>
+                      </div>
+                      
+                      {cptRates.map((cpt, index) => (
+                        <div key={index} className="grid grid-cols-12 gap-3 items-center">
+                          <div className="col-span-2">
+                            <input
+                              type="text"
+                              value={cpt.code}
+                              onChange={(e) => {
+                                const updated = [...cptRates];
+                                updated[index].code = e.target.value;
+                                setCptRates(updated);
+                              }}
+                              placeholder="99213"
+                              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono text-sm"
+                            />
+                          </div>
+                          <div className="col-span-7">
+                            <input
+                              type="text"
+                              value={cpt.description}
+                              onChange={(e) => {
+                                const updated = [...cptRates];
+                                updated[index].description = e.target.value;
+                                setCptRates(updated);
+                              }}
+                              placeholder="Office visit, established patient..."
+                              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 text-sm"
+                            />
+                          </div>
+                          <div className="col-span-2 relative">
+                            <input
+                              type="number"
+                              value={cpt.rate}
+                              onChange={(e) => {
+                                const updated = [...cptRates];
+                                updated[index].rate = e.target.value;
+                                setCptRates(updated);
+                              }}
+                              placeholder="135"
+                              className="w-full px-3 py-2 pr-8 bg-white border border-slate-300 rounded-lg text-slate-900 font-medium text-sm"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">%</span>
+                          </div>
+                          <div className="col-span-1 flex justify-center">
+                            <button
+                              onClick={() => setCptRates(cptRates.filter((_, i) => i !== index))}
+                              className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                              title="Remove"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      
+                      {cptRates.length === 0 && (
+                        <div className="text-center py-8 text-slate-500">
+                          No CPT codes added yet. Click "Add CPT Code" to get started.
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

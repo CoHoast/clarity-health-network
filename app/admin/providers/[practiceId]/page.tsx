@@ -787,10 +787,17 @@ export default function PracticeDetailPage() {
         {/* Rates & Discounts Section */}
         {activeSection === "rates" && (
           <div className="space-y-6">
+            {/* Info Banner */}
+            <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
+              <p className="text-cyan-300 text-sm">
+                <strong>Default Practice Rate:</strong> This rate applies to all providers in this practice unless they have custom rates set on their individual provider page.
+              </p>
+            </div>
+
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white flex items-center gap-2">
                 <DollarSign className="w-5 h-5 text-teal-400" />
-                Provider Discount Rates
+                Default Discount Rate
               </h2>
               <div className="flex gap-2">
                 <button
