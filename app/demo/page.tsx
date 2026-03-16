@@ -1077,45 +1077,6 @@ export default function ProductDemoPage() {
                 )}
               </div>
               
-              {/* Highlights */}
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(3, 1fr)', 
-                gap: 12, 
-                marginBottom: 24,
-              }}>
-                <div style={{ 
-                  background: '#f0fdf4', 
-                  borderRadius: 10, 
-                  padding: 16, 
-                  textAlign: 'center',
-                  border: '1px solid #bbf7d0',
-                }}>
-                  <div style={{ fontSize: 11, color: '#166534', fontWeight: 600, marginBottom: 4 }}>BILLED AMOUNT</div>
-                  <div style={{ fontSize: 20, fontWeight: 700, color: '#dc2626' }}>$6,500</div>
-                </div>
-                <div style={{ 
-                  background: '#f0fdf4', 
-                  borderRadius: 10, 
-                  padding: 16, 
-                  textAlign: 'center',
-                  border: '1px solid #bbf7d0',
-                }}>
-                  <div style={{ fontSize: 11, color: '#166534', fontWeight: 600, marginBottom: 4 }}>OUR OFFER</div>
-                  <div style={{ fontSize: 20, fontWeight: 700, color: '#059669' }}>$3,250</div>
-                </div>
-                <div style={{ 
-                  background: '#f0fdf4', 
-                  borderRadius: 10, 
-                  padding: 16, 
-                  textAlign: 'center',
-                  border: '1px solid #bbf7d0',
-                }}>
-                  <div style={{ fontSize: 11, color: '#166534', fontWeight: 600, marginBottom: 4 }}>SAVINGS</div>
-                  <div style={{ fontSize: 20, fontWeight: 700, color: '#0d9488' }}>50%</div>
-                </div>
-              </div>
-
               <p style={{ fontSize: 13, color: '#64748b', marginBottom: 24, fontStyle: 'italic' }}>
                 {docTab === 'email' 
                   ? "The email includes pricing benchmarks showing the provider's charges are 32.6x the Medicare-allowed amount, with Accept/Counter buttons for easy response."
