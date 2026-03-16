@@ -1067,7 +1067,7 @@ export default function FindProviderPage() {
       <MarketingHeader />
 
       {/* Search Header */}
-      <section className="bg-gradient-to-br from-[teal-600] to-[#003366] text-white py-12">
+      <section className="bg-gradient-to-br from-teal-600 to-cyan-800 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold mb-6">Find a Provider</h1>
           
@@ -1080,7 +1080,7 @@ export default function FindProviderPage() {
                   placeholder="Doctor name or keyword"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[teal-600] focus:border-transparent text-gray-900"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent text-gray-900"
                 />
               </div>
               <div className="relative">
@@ -1090,7 +1090,7 @@ export default function FindProviderPage() {
                   placeholder="City, State or ZIP"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[teal-600] focus:border-transparent text-gray-900"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent text-gray-900"
                 />
               </div>
               <div className="relative">
@@ -1098,7 +1098,7 @@ export default function FindProviderPage() {
                 <select
                   value={specialty}
                   onChange={(e) => setSpecialty(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[teal-600] focus:border-transparent text-gray-900 appearance-none"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent text-gray-900 appearance-none"
                 >
                   {specialties.map((s) => (
                     <option key={s} value={s}>{s}</option>
@@ -1108,7 +1108,7 @@ export default function FindProviderPage() {
               </div>
               <button 
                 onClick={handleSearch}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-[teal-600] text-white font-semibold rounded-lg hover:bg-[teal-700] transition-colors"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors"
               >
                 <Search className="w-5 h-5" />
                 Search
@@ -1118,20 +1118,20 @@ export default function FindProviderPage() {
             <div className="mt-4 flex flex-wrap gap-2">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center gap-2 px-4 py-2 border rounded-lg transition-colors ${showFilters ? 'border-[teal-600] bg-teal-50 text-[teal-600]' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+                className={`flex items-center gap-2 px-4 py-2 border rounded-lg transition-colors ${showFilters ? 'border-teal-600 bg-teal-50 text-teal-600' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
               >
                 <Filter className="w-4 h-4" />
                 Filters
               </button>
               <button 
                 onClick={() => setAcceptingOnly(!acceptingOnly)}
-                className={`px-4 py-2 border rounded-lg transition-colors ${acceptingOnly ? 'border-[teal-600] bg-teal-50 text-[teal-600]' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+                className={`px-4 py-2 border rounded-lg transition-colors ${acceptingOnly ? 'border-teal-600 bg-teal-50 text-teal-600' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
               >
                 Accepting New Patients
               </button>
               <button 
                 onClick={() => setTelehealthOnly(!telehealthOnly)}
-                className={`px-4 py-2 border rounded-lg transition-colors ${telehealthOnly ? 'border-[teal-600] bg-teal-50 text-[teal-600]' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+                className={`px-4 py-2 border rounded-lg transition-colors ${telehealthOnly ? 'border-teal-600 bg-teal-50 text-teal-600' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
               >
                 Telehealth Available
               </button>
@@ -1218,7 +1218,7 @@ export default function FindProviderPage() {
                   setAcceptingOnly(false);
                   setTelehealthOnly(false);
                 }}
-                className="text-[teal-600] font-medium hover:underline"
+                className="text-teal-600 font-medium hover:underline"
               >
                 Clear all filters
               </button>
@@ -1243,7 +1243,7 @@ export default function FindProviderPage() {
                       <div className="flex items-start justify-between">
                         <div>
                           <h3 className="font-bold text-gray-900">{provider.name}{provider.credentials && `, ${provider.credentials}`}</h3>
-                          <p className="text-[teal-600] text-sm">{provider.specialty}</p>
+                          <p className="text-teal-600 text-sm">{provider.specialty}</p>
                         </div>
                         <button className="p-2 text-gray-400 hover:text-red-500 transition-colors">
                           <Heart className="w-5 h-5" />
@@ -1296,7 +1296,7 @@ export default function FindProviderPage() {
                     <div className="flex items-center justify-end mt-4">
                       <button 
                         onClick={() => setSelectedProvider(provider)}
-                        className="px-4 py-2 bg-[teal-600] text-white text-sm font-semibold rounded-lg hover:bg-[teal-700] transition-colors"
+                        className="px-4 py-2 bg-teal-600 text-white text-sm font-semibold rounded-lg hover:bg-teal-700 transition-colors"
                       >
                         View Profile
                       </button>
@@ -1321,7 +1321,7 @@ export default function FindProviderPage() {
             ].map((stat, i) => (
               <div key={i}>
                 <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <stat.icon className="w-6 h-6 text-[teal-600]" />
+                  <stat.icon className="w-6 h-6 text-teal-600" />
                 </div>
                 <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
                 <p className="text-gray-600">{stat.label}</p>
@@ -1352,7 +1352,7 @@ export default function FindProviderPage() {
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}
-                <div className="bg-gradient-to-r from-[teal-600] to-[#003366] text-white p-6">
+                <div className="bg-gradient-to-r from-teal-600 to-cyan-800 text-white p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex gap-6">
                       <img
@@ -1395,7 +1395,7 @@ export default function FindProviderPage() {
 
                   {/* Quick Actions */}
                   <div className="flex flex-wrap gap-3 mt-6">
-                    <button className="flex items-center gap-2 px-4 py-2 bg-white text-[teal-600] font-semibold rounded-lg hover:bg-teal-50 transition-colors">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-white text-teal-600 font-semibold rounded-lg hover:bg-teal-50 transition-colors">
                       <Calendar className="w-4 h-4" />
                       Schedule Appointment
                     </button>
@@ -1427,7 +1427,7 @@ export default function FindProviderPage() {
                         onClick={() => setActiveTab(tab.id as typeof activeTab)}
                         className={`px-6 py-4 font-medium text-sm border-b-2 transition-colors ${
                           activeTab === tab.id
-                            ? "border-[teal-600] text-[teal-600]"
+                            ? "border-teal-600 text-teal-600"
                             : "border-transparent text-gray-600 hover:text-gray-900"
                         }`}
                       >
@@ -1451,11 +1451,11 @@ export default function FindProviderPage() {
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="bg-gray-50 rounded-xl p-4">
                           <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                            <Stethoscope className="w-5 h-5 text-[teal-600]" />
+                            <Stethoscope className="w-5 h-5 text-teal-600" />
                             Specialties
                           </h4>
                           <div className="flex flex-wrap gap-2">
-                            <span className="px-3 py-1 bg-[teal-600] text-white text-sm rounded-full">{selectedProvider.specialty}</span>
+                            <span className="px-3 py-1 bg-teal-600 text-white text-sm rounded-full">{selectedProvider.specialty}</span>
                             {selectedProvider.subspecialties.map((sub) => (
                               <span key={sub} className="px-3 py-1 bg-white border border-gray-200 text-gray-700 text-sm rounded-full">{sub}</span>
                             ))}
@@ -1464,7 +1464,7 @@ export default function FindProviderPage() {
 
                         <div className="bg-gray-50 rounded-xl p-4">
                           <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                            <Languages className="w-5 h-5 text-[teal-600]" />
+                            <Languages className="w-5 h-5 text-teal-600" />
                             Languages
                           </h4>
                           <p className="text-gray-600">{selectedProvider.languages.join(", ")}</p>
@@ -1475,13 +1475,13 @@ export default function FindProviderPage() {
                       {selectedProvider.education.length > 0 && (
                         <div>
                           <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                            <GraduationCap className="w-5 h-5 text-[teal-600]" />
+                            <GraduationCap className="w-5 h-5 text-teal-600" />
                             Education & Training
                           </h3>
                           <div className="space-y-3">
                             {selectedProvider.education.map((edu, i) => (
                               <div key={i} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                                <div className="w-2 h-2 bg-[teal-600] rounded-full mt-2"></div>
+                                <div className="w-2 h-2 bg-teal-600 rounded-full mt-2"></div>
                                 <div>
                                   <p className="font-medium text-gray-900">{edu.name}</p>
                                   <p className="text-sm text-gray-600">{edu.type} • {edu.year}</p>
@@ -1495,7 +1495,7 @@ export default function FindProviderPage() {
                       {/* Certifications */}
                       <div>
                         <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                          <Award className="w-5 h-5 text-[teal-600]" />
+                          <Award className="w-5 h-5 text-teal-600" />
                           Board Certifications
                         </h3>
                         <div className="grid md:grid-cols-2 gap-3">
@@ -1515,7 +1515,7 @@ export default function FindProviderPage() {
                       {selectedProvider.hospitalAffiliations.length > 0 && (
                         <div>
                           <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                            <Building2 className="w-5 h-5 text-[teal-600]" />
+                            <Building2 className="w-5 h-5 text-teal-600" />
                             Hospital Affiliations
                           </h3>
                           <div className="flex flex-wrap gap-2">
@@ -1529,7 +1529,7 @@ export default function FindProviderPage() {
                       {/* Network Info */}
                       <div className="bg-teal-50 rounded-xl p-4">
                         <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                          <Shield className="w-5 h-5 text-[teal-600]" />
+                          <Shield className="w-5 h-5 text-teal-600" />
                           Network Information
                         </h3>
                         <div className="grid md:grid-cols-3 gap-4">
@@ -1631,7 +1631,7 @@ export default function FindProviderPage() {
                           <div className="grid grid-cols-2 gap-4 mb-4">
                             <div>
                               <p className="text-sm text-gray-500">Phone</p>
-                              <a href={`tel:${selectedProvider.phone}`} className="text-[teal-600] font-medium">{selectedProvider.phone}</a>
+                              <a href={`tel:${selectedProvider.phone}`} className="text-teal-600 font-medium">{selectedProvider.phone}</a>
                             </div>
                             <div>
                               <p className="text-sm text-gray-500">Fax</p>
@@ -1640,7 +1640,7 @@ export default function FindProviderPage() {
                           </div>
 
                           <div className="flex gap-3">
-                            <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-[teal-600] text-white font-medium rounded-lg hover:bg-[teal-700]">
+                            <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700">
                               <MapPin className="w-4 h-4" />
                               Get Directions
                             </button>
@@ -1655,7 +1655,7 @@ export default function FindProviderPage() {
                       {/* Office Hours */}
                       <div>
                         <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                          <Clock className="w-5 h-5 text-[teal-600]" />
+                          <Clock className="w-5 h-5 text-teal-600" />
                           Office Hours
                         </h3>
                         <div className="bg-gray-50 rounded-xl p-4">
