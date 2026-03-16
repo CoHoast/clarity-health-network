@@ -362,14 +362,16 @@ const aiEngines = [
     iconPath: 'M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z',
     color: '#ef4444',
     description: 'Real-time fraud detection and prevention system',
-    stats: { detected: '2,847', saved: '$1.2M', accuracy: '99.7%' },
+    howItWorks: 'FraudShield analyzes every claim in real-time using machine learning models trained on millions of healthcare transactions. It identifies suspicious patterns, unusual billing behaviors, and known fraud indicators before claims are paid.',
     capabilities: [
       'Pattern recognition across claim submissions',
       'Provider billing anomaly detection',
       'Member identity verification',
       'Cross-reference with known fraud databases',
       'Real-time risk scoring on every claim',
+      'Automated flagging and investigation workflows',
     ],
+    integrations: ['Claims Processing Pipeline', 'Provider Database', 'Member Verification', 'External Fraud Databases'],
     benefits: 'Protects the network from fraudulent claims, saving millions annually while maintaining trust with legitimate providers and members.',
   },
   {
@@ -378,14 +380,16 @@ const aiEngines = [
     iconPath: 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z',
     color: '#3b82f6',
     description: 'Automated bill analysis and repricing engine',
-    stats: { processed: '45,892', savings: '$3.8M', avgTime: '< 2 sec' },
+    howItWorks: 'BillReview AI extracts line-item details from medical bills, validates CPT/ICD codes, and calculates fair prices using CMS Medicare fee schedules, regional hospital cash prices, and your configured fee schedules.',
     capabilities: [
       'Automatic CPT/ICD code validation',
       'Medicare rate comparison and repricing',
       'Duplicate charge detection',
       'Bundling/unbundling analysis',
       'Fair price calculation based on geography',
+      'Modifier validation and adjustment',
     ],
+    integrations: ['CMS Medicare Fee Schedules', 'State Hospital Price Transparency Data', 'Custom Fee Schedules', 'Provider Contracts'],
     benefits: 'Reduces manual review time by 90% while ensuring accurate, fair pricing for every claim processed.',
   },
   {
@@ -394,14 +398,16 @@ const aiEngines = [
     iconPath: 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
     color: '#22c55e',
     description: 'Real-time member verification and benefits check',
-    stats: { checks: '128K/mo', accuracy: '99.9%', responseTime: '< 500ms' },
+    howItWorks: 'The Eligibility Engine connects to your member database and responds to 270/271 eligibility inquiries in real-time. It validates member status, coverage dates, benefit limits, and coordination of benefits instantly.',
     capabilities: [
       'Instant member eligibility verification',
       'Real-time benefits and coverage lookup',
       'Coordination of benefits (COB) detection',
       'Dependent eligibility tracking',
       'Historical eligibility auditing',
+      'Retroactive eligibility handling',
     ],
+    integrations: ['Member Database', 'Enrollment System', 'Provider Portal', 'Clearinghouse EDI'],
     benefits: 'Eliminates claim denials due to eligibility issues and provides instant verification for providers at point of care.',
   },
   {
@@ -410,14 +416,16 @@ const aiEngines = [
     iconPath: 'M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z',
     color: '#f59e0b',
     description: 'No Surprises Act monitoring and compliance',
-    stats: { monitored: '12,450', compliant: '100%', alerts: '23' },
+    howItWorks: 'NSA Compliance monitors all out-of-network claims and emergency services for balance billing violations. It tracks good faith estimates, manages dispute resolution workflows, and generates required regulatory reports.',
     capabilities: [
       'Automatic balance billing detection',
       'Out-of-network cost monitoring',
       'Good faith estimate tracking',
       'Dispute resolution workflow',
       'Regulatory reporting automation',
+      'Member notification management',
     ],
+    integrations: ['Claims System', 'Provider Network Database', 'Member Communications', 'Regulatory Reporting'],
     benefits: 'Ensures full compliance with federal No Surprises Act requirements, protecting both members and the organization from penalties.',
   },
   {
@@ -426,15 +434,17 @@ const aiEngines = [
     iconPath: 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z',
     color: '#8b5cf6',
     description: 'Conversational AI support for all users',
-    stats: { conversations: '8,234', resolution: '87%', satisfaction: '4.8/5' },
+    howItWorks: 'Pulse AI is embedded in every portal (Member, Provider, Employer, Admin) and understands natural language questions about claims, benefits, eligibility, and more. It has secure access to user-specific data to provide personalized answers.',
     capabilities: [
       'Natural language claim status inquiries',
       'Benefit explanation and guidance',
       'Provider search assistance',
       'Appointment scheduling support',
+      'Document and form assistance',
       'Escalation to human agents when needed',
     ],
-    benefits: 'Provides 24/7 instant support across all portals, reducing call center volume by 60% while improving user satisfaction.',
+    integrations: ['All Portal Dashboards', 'Claims Database', 'Member Records', 'Provider Directory', 'Knowledge Base'],
+    benefits: 'Provides 24/7 instant support across all portals, reducing call center volume while improving user satisfaction and self-service capabilities.',
   },
 ];
 
@@ -807,27 +817,52 @@ export default function ProductDemoPage() {
               <p style={{ fontSize: 14, color: '#94a3b8' }}>{selectedEngine.description}</p>
             </div>
 
-            {/* Stats */}
-            <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0' }}>
-              {Object.entries(selectedEngine.stats).map(([key, value]) => (
-                <div key={key} style={{ flex: 1, padding: 16, textAlign: 'center', borderRight: '1px solid #e2e8f0' }}>
-                  <div style={{ fontSize: 20, fontWeight: 700, color: '#0f172a' }}>{value}</div>
-                  <div style={{ fontSize: 12, color: '#64748b', textTransform: 'capitalize' }}>{key.replace(/([A-Z])/g, ' $1')}</div>
-                </div>
-              ))}
-            </div>
-
             {/* Content */}
             <div style={{ padding: 24 }}>
-              <h5 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 12 }}>Capabilities</h5>
-              <ul style={{ margin: 0, paddingLeft: 20, marginBottom: 24 }}>
-                {selectedEngine.capabilities.map((cap, i) => (
-                  <li key={i} style={{ fontSize: 14, color: '#475569', marginBottom: 8 }}>{cap}</li>
-                ))}
-              </ul>
+              {/* How It Works */}
+              <h5 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 10 }}>How It Works</h5>
+              <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.7, marginBottom: 20 }}>{selectedEngine.howItWorks}</p>
 
-              <h5 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 8 }}>Business Impact</h5>
-              <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6 }}>{selectedEngine.benefits}</p>
+              {/* Capabilities */}
+              <h5 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 12 }}>Capabilities</h5>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 20 }}>
+                {selectedEngine.capabilities.map((cap, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="2" style={{ marginTop: 2, flexShrink: 0 }}>
+                      <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span style={{ fontSize: 13, color: '#475569' }}>{cap}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Integrations */}
+              <h5 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 10 }}>Integrates With</h5>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
+                {selectedEngine.integrations.map((int, i) => (
+                  <span key={i} style={{ 
+                    fontSize: 12, 
+                    color: '#0f172a', 
+                    background: '#f1f5f9', 
+                    padding: '6px 12px', 
+                    borderRadius: 6,
+                    border: '1px solid #e2e8f0',
+                  }}>
+                    {int}
+                  </span>
+                ))}
+              </div>
+
+              {/* Business Impact */}
+              <div style={{ 
+                background: 'linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%)', 
+                borderRadius: 12, 
+                padding: 16,
+                borderLeft: '4px solid #0d9488',
+              }}>
+                <h5 style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', marginBottom: 6 }}>Business Impact</h5>
+                <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, margin: 0 }}>{selectedEngine.benefits}</p>
+              </div>
             </div>
           </div>
         </div>
