@@ -179,21 +179,21 @@ export default function CredentialingPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>47</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending Applications</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">47</p>
+          <p className="text-sm text-slate-400">Pending Applications</p>
         </div>
-        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>12</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Committee Review</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">12</p>
+          <p className="text-sm text-slate-400">Committee Review</p>
         </div>
-        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>18</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Expiring (30 days)</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">18</p>
+          <p className="text-sm text-slate-400">Expiring (30 days)</p>
         </div>
-        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>94%</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Approval Rate</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-cyan-400">94%</p>
+          <p className="text-sm text-slate-400">Approval Rate</p>
         </div>
       </div>
 
@@ -356,14 +356,14 @@ export default function CredentialingPage() {
         <h2 className="font-semibold text-white mb-4">Credentialing Workflow</h2>
         <div className="grid grid-cols-5 gap-4">
           {[
-            { stage: "Application", count: 12, color: "bg-blue-500" },
-            { stage: "Document Review", count: 18, color: "bg-cyan-500" },
-            { stage: "PSV", count: 15, color: "bg-amber-500" },
-            { stage: "Committee", count: 8, color: "bg-cyan-600" },
-            { stage: "Complete", count: 142, color: "bg-green-500" },
+            { stage: "Application", count: 12 },
+            { stage: "Document Review", count: 18 },
+            { stage: "PSV", count: 15 },
+            { stage: "Committee", count: 8 },
+            { stage: "Complete", count: 142 },
           ].map((stage, i) => (
             <div key={stage.stage} className="text-center">
-              <div className={`w-12 h-12 ${stage.color} rounded-full mx-auto flex items-center justify-center text-white font-bold mb-2`}>
+              <div className="w-12 h-12 bg-slate-700 border border-slate-600 rounded-full mx-auto flex items-center justify-center text-cyan-400 font-bold mb-2">
                 {stage.count}
               </div>
               <p className="text-xs text-slate-400">{stage.stage}</p>

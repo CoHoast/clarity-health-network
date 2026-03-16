@@ -18,10 +18,10 @@ import {
 } from "lucide-react";
 
 const stats = [
-  { label: "Total Providers", value: "2,847", change: "+24 this month", trend: "up", icon: Building2, gradient: "from-cyan-600 to-teal-600" },
-  { label: "Active Contracts", value: "2,634", change: "93% of network", trend: "up", icon: FileSignature, gradient: "from-green-500 to-emerald-600" },
-  { label: "Expiring Soon", value: "47", change: "Next 30 days", trend: "warning", icon: AlertTriangle, gradient: "from-amber-500 to-orange-500" },
-  { label: "Avg. Discount", value: "34%", change: "+2.1% vs last year", trend: "up", icon: DollarSign, gradient: "from-teal-500 to-green-500" },
+  { label: "Total Providers", value: "2,847", change: "+24 this month", trend: "up", icon: Building2 },
+  { label: "Active Contracts", value: "2,634", change: "93% of network", trend: "up", icon: FileSignature },
+  { label: "Expiring Soon", value: "47", change: "Next 30 days", trend: "warning", icon: AlertTriangle },
+  { label: "Avg. Discount", value: "34%", change: "+2.1% vs last year", trend: "up", icon: DollarSign },
 ];
 
 const expiringContracts = [
@@ -50,10 +50,10 @@ const providersBySpecialty = [
 ];
 
 const quickActions = [
-  { label: "Add New Provider", href: "/admin/providers/new", icon: Plus, color: "bg-teal-600 hover:bg-teal-700" },
-  { label: "Expiring Contracts", href: "/admin/contracts/expiring", icon: AlertTriangle, count: 47, color: "bg-amber-600 hover:bg-amber-700" },
-  { label: "Pending Credentialing", href: "/admin/credentialing", icon: Clock, count: 12, color: "bg-slate-600 hover:bg-slate-700" },
-  { label: "Network Analytics", href: "/admin/analytics", icon: BarChart3, color: "bg-slate-600 hover:bg-slate-700" },
+  { label: "Add New Provider", href: "/admin/providers/new", icon: Plus },
+  { label: "Expiring Contracts", href: "/admin/contracts/expiring", icon: AlertTriangle, count: 47 },
+  { label: "Pending Credentialing", href: "/admin/credentialing", icon: Clock, count: 12 },
+  { label: "Network Analytics", href: "/admin/analytics", icon: BarChart3 },
 ];
 
 export default function AdminDashboard() {
@@ -94,23 +94,26 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className={`bg-gradient-to-br ${stat.gradient} rounded-xl p-5 shadow-lg`}
+              className="bg-slate-800/80 rounded-xl p-5 border border-slate-700 shadow-lg"
             >
               <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/20">
-                  <Icon className="w-5 h-5" style={{ color: 'white' }} />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-600/20 to-teal-600/20 border border-cyan-500/30">
+                  <Icon className="w-5 h-5 text-cyan-400" />
                 </div>
                 <span 
-                  className="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-white/20"
-                  style={{ color: 'white' }}
+                  className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
+                    stat.trend === "warning" 
+                      ? "bg-amber-500/10 text-amber-400 border border-amber-500/30" 
+                      : "bg-teal-500/10 text-teal-400 border border-teal-500/30"
+                  }`}
                 >
                   {stat.trend === "up" && <TrendingUp className="w-3 h-3" />}
                   {stat.trend === "warning" && <AlertTriangle className="w-3 h-3" />}
                   {stat.change}
                 </span>
               </div>
-              <p className="text-2xl font-bold" style={{ color: 'white' }}>{stat.value}</p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
+              <p className="text-2xl font-bold text-white">{stat.value}</p>
+              <p className="text-sm text-slate-400">{stat.label}</p>
             </motion.div>
           );
         })}
@@ -124,15 +127,15 @@ export default function AdminDashboard() {
             <Link
               key={action.label}
               href={action.href}
-              className={`${action.color} rounded-xl p-4 transition-colors flex items-center gap-3`}
+              className="bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700 hover:border-slate-600 rounded-xl p-4 transition-all flex items-center gap-3"
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/20">
-                <Icon className="w-5 h-5" style={{ color: 'white' }} />
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-600/20 to-teal-600/20 border border-cyan-500/30">
+                <Icon className="w-5 h-5 text-cyan-400" />
               </div>
               <div>
-                <p className="font-medium" style={{ color: 'white' }}>{action.label}</p>
+                <p className="font-medium text-white">{action.label}</p>
                 {action.count && (
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>{action.count} pending</p>
+                  <p className="text-sm text-slate-400">{action.count} pending</p>
                 )}
               </div>
             </Link>
@@ -256,21 +259,21 @@ export default function AdminDashboard() {
           
           {/* Queue Stats */}
           <div className="grid grid-cols-4 gap-3 mb-5">
-            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-amber-400">12</p>
-              <p className="text-xs text-amber-300/70">New Apps</p>
+            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3 text-center">
+              <p className="text-2xl font-bold text-white">12</p>
+              <p className="text-xs text-slate-400">New Apps</p>
             </div>
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-blue-400">8</p>
-              <p className="text-xs text-blue-300/70">In Review</p>
+            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3 text-center">
+              <p className="text-2xl font-bold text-white">8</p>
+              <p className="text-xs text-slate-400">In Review</p>
             </div>
-            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-purple-400">5</p>
-              <p className="text-xs text-purple-300/70">Pending Docs</p>
+            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3 text-center">
+              <p className="text-2xl font-bold text-white">5</p>
+              <p className="text-xs text-slate-400">Pending Docs</p>
             </div>
-            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-green-400">23</p>
-              <p className="text-xs text-green-300/70">This Week</p>
+            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3 text-center">
+              <p className="text-2xl font-bold text-cyan-400">23</p>
+              <p className="text-xs text-slate-400">This Week</p>
             </div>
           </div>
           
@@ -284,16 +287,8 @@ export default function AdminDashboard() {
             ].map((app, i) => (
               <div key={i} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg hover:bg-slate-700/50 transition-colors cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    app.status === "new" ? "bg-amber-500/20" :
-                    app.status === "review" ? "bg-blue-500/20" :
-                    "bg-purple-500/20"
-                  }`}>
-                    <Building2 className={`w-5 h-5 ${
-                      app.status === "new" ? "text-amber-400" :
-                      app.status === "review" ? "text-blue-400" :
-                      "text-purple-400"
-                    }`} />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-600/50 border border-slate-500/50">
+                    <Building2 className="w-5 h-5 text-cyan-400" />
                   </div>
                   <div>
                     <p className="text-sm font-medium text-white">{app.name}</p>
@@ -302,9 +297,9 @@ export default function AdminDashboard() {
                 </div>
                 <div className="text-right">
                   <span className={`text-xs px-2 py-1 rounded-full ${
-                    app.status === "new" ? "bg-amber-500/20 text-amber-400" :
-                    app.status === "review" ? "bg-blue-500/20 text-blue-400" :
-                    "bg-purple-500/20 text-purple-400"
+                    app.status === "new" ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30" :
+                    app.status === "review" ? "bg-slate-500/20 text-slate-300 border border-slate-500/30" :
+                    "bg-slate-500/20 text-slate-300 border border-slate-500/30"
                   }`}>
                     {app.status === "new" ? "New" : app.status === "review" ? "In Review" : "Pending Docs"}
                   </span>

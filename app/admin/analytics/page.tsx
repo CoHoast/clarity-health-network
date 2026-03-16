@@ -365,25 +365,33 @@ export default function AnalyticsPage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gradient-to-br from-cyan-600 to-teal-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("providers")}>
-            <Building2 className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
-            <p className="text-3xl font-bold" style={{ color: 'white' }}>2,891</p>
-            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Total Providers</p>
+          <div className="bg-slate-800/80 rounded-xl p-5 cursor-pointer hover:bg-slate-700/80 transition-all border border-slate-700 shadow-lg" onClick={() => setSelectedDrilldown("providers")}>
+            <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
+              <Building2 className="w-5 h-5 text-cyan-400" />
+            </div>
+            <p className="text-3xl font-bold text-white">2,891</p>
+            <p className="text-slate-400">Total Providers</p>
           </div>
-          <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("discounts")}>
-            <DollarSign className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
-            <p className="text-3xl font-bold" style={{ color: 'white' }}>32.4%</p>
-            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Avg Discount Rate</p>
+          <div className="bg-slate-800/80 rounded-xl p-5 cursor-pointer hover:bg-slate-700/80 transition-all border border-slate-700 shadow-lg" onClick={() => setSelectedDrilldown("discounts")}>
+            <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
+              <DollarSign className="w-5 h-5 text-cyan-400" />
+            </div>
+            <p className="text-3xl font-bold text-white">32.4%</p>
+            <p className="text-slate-400">Avg Discount Rate</p>
           </div>
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("coverage")}>
-            <MapPin className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
-            <p className="text-3xl font-bold" style={{ color: 'white' }}>88</p>
-            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Counties Covered</p>
+          <div className="bg-slate-800/80 rounded-xl p-5 cursor-pointer hover:bg-slate-700/80 transition-all border border-slate-700 shadow-lg" onClick={() => setSelectedDrilldown("coverage")}>
+            <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
+              <MapPin className="w-5 h-5 text-cyan-400" />
+            </div>
+            <p className="text-3xl font-bold text-white">88</p>
+            <p className="text-slate-400">Counties Covered</p>
           </div>
-          <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("credentials")}>
-            <Shield className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
-            <p className="text-3xl font-bold" style={{ color: 'white' }}>98.2%</p>
-            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Credentialed</p>
+          <div className="bg-slate-800/80 rounded-xl p-5 cursor-pointer hover:bg-slate-700/80 transition-all border border-slate-700 shadow-lg" onClick={() => setSelectedDrilldown("credentials")}>
+            <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
+              <Shield className="w-5 h-5 text-cyan-400" />
+            </div>
+            <p className="text-3xl font-bold text-cyan-400">98.2%</p>
+            <p className="text-slate-400">Credentialed</p>
           </div>
         </div>
       </div>

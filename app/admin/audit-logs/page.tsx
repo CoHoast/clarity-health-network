@@ -128,37 +128,37 @@ export default function AuditLogsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4">
-        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>{stats.total.toLocaleString()}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Total Events</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">{stats.total.toLocaleString()}</p>
+          <p className="text-sm text-slate-400">Total Events</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>{stats.info}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Info</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">{stats.info}</p>
+          <p className="text-sm text-slate-400">Info</p>
         </div>
-        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>{stats.warning}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Warnings</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">{stats.warning}</p>
+          <p className="text-sm text-slate-400">Warnings</p>
         </div>
-        <div className="bg-gradient-to-br from-red-500 to-rose-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>{stats.error + stats.critical}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Errors</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">{stats.error + stats.critical}</p>
+          <p className="text-sm text-slate-400">Errors</p>
         </div>
-        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>{stats.phiAccess}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>PHI Access</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">{stats.phiAccess}</p>
+          <p className="text-sm text-slate-400">PHI Access</p>
         </div>
-        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>{stats.authEvents}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Auth Events</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">{stats.authEvents}</p>
+          <p className="text-sm text-slate-400">Auth Events</p>
         </div>
-        <div className="bg-gradient-to-br from-rose-500 to-red-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>{stats.failedLogins}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Failed Logins</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-white">{stats.failedLogins}</p>
+          <p className="text-sm text-slate-400">Failed Logins</p>
         </div>
-        <div className="bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>6 yrs</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Retention</p>
+        <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700 shadow-lg">
+          <p className="text-2xl font-bold text-cyan-400">6 yrs</p>
+          <p className="text-sm text-slate-400">Retention</p>
         </div>
       </div>
 
