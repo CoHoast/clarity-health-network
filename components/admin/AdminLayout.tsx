@@ -131,7 +131,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
-  const [isDark, setIsDark] = useState(true); // Default to dark theme
+  const [isDark, setIsDark] = useState(false); // Default to light theme
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const handleSignOut = () => {
@@ -140,14 +140,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push("/admin-login");
   };
 
-  // Persist theme preference (default to dark if no preference saved)
+  // Persist theme preference (default to light if no preference saved)
   useEffect(() => {
     const saved = localStorage.getItem("admin-theme");
     if (saved) {
       setIsDark(saved === "dark");
     } else {
-      // No preference saved, keep dark and save it
-      localStorage.setItem("admin-theme", "dark");
+      // No preference saved, default to light
+      setIsDark(false);
+      localStorage.setItem("admin-theme", "light");
     }
   }, []);
 
