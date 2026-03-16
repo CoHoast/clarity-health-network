@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X } from "lucide-react";
+import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X, Check, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface DiscountSchedule {
@@ -120,6 +120,32 @@ export default function DiscountSchedulesPage() {
   const [typeFilter, setTypeFilter] = useState("All Types");
   const [selectedSchedule, setSelectedSchedule] = useState<DiscountSchedule | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [serviceRows, setServiceRows] = useState([{ service: "", rate: "" }]);
+
+  const handleSave = () => {
+    setSaving(true);
+    setTimeout(() => {
+      setSaving(false);
+      setSaved(true);
+      setTimeout(() => {
+        setSaved(false);
+        setShowCreateModal(false);
+        setServiceRows([{ service: "", rate: "" }]);
+      }, 1500);
+    }, 1000);
+  };
+
+  const addServiceRow = () => {
+    setServiceRows([...serviceRows, { service: "", rate: "" }]);
+  };
+
+  const removeServiceRow = (index: number) => {
+    if (serviceRows.length > 1) {
+      setServiceRows(serviceRows.filter((_, i) => i !== index));
+    }
+  };
 
   const filteredSchedules = discountSchedules.filter(schedule => {
     const matchesSearch = schedule.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -304,6 +330,194 @@ export default function DiscountSchedulesPage() {
                   </button>
                 </div>
               </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Create Schedule Modal */}
+      <AnimatePresence>
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => !saving && setShowCreateModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[85vh] overflow-hidden border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {!saving && !saved ? (
+                <>
+                  <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-white">Create New Discount Schedule</h2>
+                      <p className="text-slate-400 text-sm">Define rates for a group of providers or services</p>
+                    </div>
+                    <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-white p-2 hover:bg-slate-700 rounded-lg">
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  <div className="p-6 overflow-auto max-h-[60vh] space-y-5">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Schedule Name *</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+                        placeholder="e.g., Primary Care Standard Rates"
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Rate Type *</label>
+                        <select className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500">
+                          <option value="">Select type...</option>
+                          <option>% Off Billed</option>
+                          <option>% of Medicare</option>
+                          <option>Case Rate</option>
+                          <option>Flat Rate</option>
+                          <option>Per Diem</option>
+                          <option>Fee Schedule</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Default Rate *</label>
+                        <input 
+                          type="text" 
+                          className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500"
+                          placeholder="e.g., 35% or $150"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                      <textarea 
+                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 h-20 resize-none"
+                        placeholder="Brief description of this discount schedule..."
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Provider Type</label>
+                      <select className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500">
+                        <option value="">All Provider Types</option>
+                        <option>Primary Care</option>
+                        <option>Specialists</option>
+                        <option>Hospitals/Facilities</option>
+                        <option>Urgent Care</option>
+                        <option>Imaging Centers</option>
+                        <option>Laboratories</option>
+                        <option>Mental Health</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-sm font-medium text-slate-300">Service-Specific Rates</label>
+                        <button 
+                          type="button"
+                          onClick={addServiceRow}
+                          className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Add Service
+                        </button>
+                      </div>
+                      <div className="space-y-2">
+                        {serviceRows.map((row, index) => (
+                          <div key={index} className="flex gap-2">
+                            <input 
+                              type="text" 
+                              className="flex-1 px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 text-sm"
+                              placeholder="Service name or CPT code"
+                              value={row.service}
+                              onChange={(e) => {
+                                const newRows = [...serviceRows];
+                                newRows[index].service = e.target.value;
+                                setServiceRows(newRows);
+                              }}
+                            />
+                            <input 
+                              type="text" 
+                              className="w-32 px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 text-sm"
+                              placeholder="Rate"
+                              value={row.rate}
+                              onChange={(e) => {
+                                const newRows = [...serviceRows];
+                                newRows[index].rate = e.target.value;
+                                setServiceRows(newRows);
+                              }}
+                            />
+                            <button 
+                              type="button"
+                              onClick={() => removeServiceRow(index)}
+                              className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg"
+                              disabled={serviceRows.length === 1}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-xs text-slate-500 mt-2">Leave blank to use default rate for all services</p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Effective Date</label>
+                      <input 
+                        type="date" 
+                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <input type="checkbox" id="applyToNew" className="rounded bg-slate-600 border-slate-500 text-teal-500 focus:ring-teal-500" />
+                      <label htmlFor="applyToNew" className="text-slate-300 text-sm">Automatically apply to new providers of this type</label>
+                    </div>
+
+                    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 flex gap-3">
+                      <AlertTriangle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <div className="text-sm">
+                        <p className="text-blue-300 font-medium">Rate Changes</p>
+                        <p className="text-blue-200/70 mt-1">Existing provider contracts will not be affected. New rates apply only to new contracts or renewals.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 border-t border-slate-700 flex justify-end gap-3">
+                    <button
+                      onClick={() => setShowCreateModal(false)}
+                      className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={handleSave}
+                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Create Schedule
+                    </button>
+                  </div>
+                </>
+              ) : saving ? (
+                <div className="p-12 text-center">
+                  <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-white font-medium">Creating schedule...</p>
+                </div>
+              ) : (
+                <div className="p-12 text-center">
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Check className="w-8 h-8 text-green-400" />
+                  </motion.div>
+                  <p className="text-white font-medium">Schedule Created!</p>
+                  <p className="text-slate-400 text-sm mt-1">You can now assign providers to this schedule</p>
+                </div>
+              )}
             </motion.div>
           </div>
         )}
