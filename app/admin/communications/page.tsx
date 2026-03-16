@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Mail, Send, Users, UserPlus, Search, FileText, CheckCircle, Building2, X, Plus, Edit, Trash2, Copy, Check, Eye, Settings, MessageCircle, Reply, Clock, Inbox } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -312,7 +312,7 @@ Cleveland Women's Health Associates`,
   },
 ];
 
-export default function CommunicationsPage() {
+function CommunicationsContent() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
   const [activeTab, setActiveTab] = useState<"messages" | "outreach">("messages");
@@ -1652,5 +1652,13 @@ export default function CommunicationsPage() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export default function CommunicationsPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+      <CommunicationsContent />
+    </Suspense>
   );
 }
