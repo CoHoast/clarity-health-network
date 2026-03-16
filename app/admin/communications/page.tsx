@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Mail, Send, Users, UserPlus, Search, FileText, CheckCircle, Clock, Building2, Phone, Globe, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -114,8 +115,19 @@ const outreachHistory = [
 ];
 
 export default function CommunicationsPage() {
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
   const [activeTab, setActiveTab] = useState<"messages" | "outreach">("messages");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Set tab from URL param on mount
+  useEffect(() => {
+    if (tabParam === "outreach") {
+      setActiveTab("outreach");
+    } else {
+      setActiveTab("messages");
+    }
+  }, [tabParam]);
   const [showComposeModal, setShowComposeModal] = useState(false);
   const [showOutreachModal, setShowOutreachModal] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<typeof networkProviders[0] | null>(null);

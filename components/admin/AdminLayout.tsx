@@ -94,8 +94,8 @@ const navigationGroups: NavGroup[] = [
     icon: MessageSquare,
     collapsible: true,
     items: [
-      { name: "Provider Messages", href: "/admin/communications", icon: Bell },
-      { name: "Outreach", href: "/admin/outreach", icon: Send },
+      { name: "Provider Messages", href: "/admin/communications?tab=messages", icon: Bell },
+      { name: "Outreach", href: "/admin/communications?tab=outreach", icon: Send },
     ],
   },
   {
