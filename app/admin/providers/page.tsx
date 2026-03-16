@@ -1386,114 +1386,494 @@ export default function ProvidersPage() {
         )}
       </AnimatePresence>
 
-      {/* Provider Detail Modal */}
+      {/* Provider Detail Modal - Enhanced with Tabs */}
       <AnimatePresence>
-        {selectedProvider && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4" onClick={() => setSelectedProvider(null)}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-800 rounded-xl max-w-lg w-full border border-slate-700"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-6 border-b border-slate-700 flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`p-3 rounded-lg ${selectedProvider.gender === "Female" ? "bg-pink-500/20" : "bg-blue-500/20"}`}>
-                    <User className={`w-6 h-6 ${selectedProvider.gender === "Female" ? "text-pink-400" : "text-blue-400"}`} />
+        {selectedProvider && (() => {
+          const providerPractice = practices.find(p => p.id === selectedProvider.practiceId);
+          return (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4" onClick={() => { setSelectedProvider(null); setIsEditingProvider(false); }}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-auto border border-slate-700"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="p-6 border-b border-slate-700 flex items-start justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className={`p-3 rounded-xl ${selectedProvider.gender === "Female" ? "bg-pink-500/20" : "bg-blue-500/20"}`}>
+                      <User className={`w-8 h-8 ${selectedProvider.gender === "Female" ? "text-pink-400" : "text-blue-400"}`} />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-white">{selectedProvider.name}, {selectedProvider.credential}</h2>
+                      <p className="text-slate-400">{selectedProvider.specialty}</p>
+                      {providerPractice && (
+                        <p className="text-cyan-400 text-sm mt-1">{providerPractice.name}</p>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-white">{selectedProvider.name}, {selectedProvider.credential}</h2>
-                    <p className="text-slate-400">{selectedProvider.specialty}</p>
+                  <div className="flex items-center gap-3">
+                    {selectedProvider.acceptingNewPatients ? (
+                      <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-500/20 text-green-400 text-sm rounded-full">
+                        <CheckCircle className="w-4 h-4" />Accepting Patients
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-500/20 text-red-400 text-sm rounded-full">
+                        <XCircle className="w-4 h-4" />Not Accepting
+                      </span>
+                    )}
+                    <button onClick={() => { setSelectedProvider(null); setIsEditingProvider(false); }} className="text-slate-400 hover:text-white">
+                      <X className="w-6 h-6" />
+                    </button>
                   </div>
                 </div>
-                <button onClick={() => setSelectedProvider(null)} className="text-slate-400 hover:text-white">
-                  <X className="w-6 h-6" />
-                </button>
+
+                {/* Provider Detail Tabs */}
+                <ProviderDetailTabs 
+                  provider={selectedProvider} 
+                  practice={providerPractice}
+                  isEditing={isEditingProvider}
+                  setIsEditing={setIsEditingProvider}
+                />
+
+                {/* Footer */}
+                <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+                  <button onClick={() => { setSelectedProvider(null); setIsEditingProvider(false); }} className="px-4 py-2 text-slate-400 hover:text-white transition-colors">Close</button>
+                  {!isEditingProvider ? (
+                    <button 
+                      onClick={() => setIsEditingProvider(true)}
+                      className="flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 transition-colors"
+                    >
+                      <Edit className="w-4 h-4" />
+                      Edit Provider
+                    </button>
+                  ) : (
+                    <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-500 transition-colors">
+                      <Save className="w-4 h-4" />
+                      Save Changes
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            </div>
+          );
+        })()}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// Separate component for Provider Detail Tabs to keep code organized
+function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: { 
+  provider: Provider; 
+  practice: Practice | undefined;
+  isEditing: boolean;
+  setIsEditing: (val: boolean) => void;
+}) {
+  const [providerTab, setProviderTab] = useState<"overview" | "taxonomy" | "hours" | "location" | "billing">("overview");
+
+  return (
+    <>
+      {/* Tab Navigation */}
+      <div className="px-6 pt-4 flex gap-2 border-b border-slate-700 overflow-x-auto">
+        {[
+          { id: "overview", label: "Overview", icon: User },
+          { id: "taxonomy", label: "Taxonomy & License", icon: FileText },
+          { id: "hours", label: "Office Hours", icon: Clock },
+          { id: "location", label: "Location & Contact", icon: MapPin },
+          { id: "billing", label: "Billing Info", icon: DollarSign },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setProviderTab(tab.id as typeof providerTab)}
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+              providerTab === tab.id
+                ? "text-cyan-400 border-cyan-400"
+                : "text-slate-400 border-transparent hover:text-white"
+            }`}
+          >
+            <tab.icon className="w-4 h-4" />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      <div className="p-6">
+        {/* Overview Tab */}
+        {providerTab === "overview" && (
+          <div className="space-y-6">
+            {/* Basic Info Grid */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-slate-700/30 rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                  <User className="w-4 h-4 text-cyan-400" />
+                  Provider Information
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Full Name</span>
+                    <span className="text-white font-medium">{provider.name}, {provider.credential}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">NPI</span>
+                    <span className="text-white font-mono">{provider.npi}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Gender</span>
+                    <span className="text-white">{provider.gender || "Not Specified"}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Specialty</span>
+                    <span className="text-white">{provider.specialty}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Credential</span>
+                    <span className="text-cyan-400 font-medium">{provider.credential}</span>
+                  </div>
+                </div>
               </div>
 
-              <div className="p-6 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-slate-700/30 rounded-lg p-3">
-                    <p className="text-xs text-slate-500 mb-1">NPI</p>
-                    <p className="text-white font-mono">{selectedProvider.npi}</p>
+              <div className="bg-slate-700/30 rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-cyan-400" />
+                  License Information
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">License State</span>
+                    <span className="text-white">{provider.licenseState}</span>
                   </div>
-                  <div className="bg-slate-700/30 rounded-lg p-3">
-                    <p className="text-xs text-slate-500 mb-1">Gender</p>
-                    <p className="text-white">{selectedProvider.gender || "N/A"}</p>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">License Number</span>
+                    <span className="text-white font-mono">{provider.licenseNumber}</span>
                   </div>
-                  <div className="bg-slate-700/30 rounded-lg p-3">
-                    <p className="text-xs text-slate-500 mb-1">License State</p>
-                    <p className="text-white">{selectedProvider.licenseState}</p>
-                  </div>
-                  <div className="bg-slate-700/30 rounded-lg p-3">
-                    <p className="text-xs text-slate-500 mb-1">License Number</p>
-                    <p className="text-white font-mono">{selectedProvider.licenseNumber}</p>
-                  </div>
-                </div>
-
-                <div className="bg-slate-700/30 rounded-lg p-3">
-                  <p className="text-xs text-slate-500 mb-1">Primary Taxonomy</p>
-                  <p className="text-white font-mono">{selectedProvider.primaryTaxonomy}</p>
-                  <p className="text-teal-400 text-sm">{selectedProvider.primaryTaxonomyDesc}</p>
-                </div>
-
-                {selectedProvider.secondaryTaxonomy && (
-                  <div className="bg-slate-700/30 rounded-lg p-3">
-                    <p className="text-xs text-slate-500 mb-1">Secondary Taxonomy</p>
-                    <p className="text-white font-mono">{selectedProvider.secondaryTaxonomy}</p>
-                    <p className="text-teal-400 text-sm">{selectedProvider.secondaryTaxonomyDesc}</p>
-                  </div>
-                )}
-
-                <div className="bg-slate-700/30 rounded-lg p-3">
-                  <p className="text-xs text-slate-500 mb-2">Languages Spoken</p>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProvider.languages.map(lang => (
-                      <span key={lang} className="px-2 py-1 bg-cyan-500/20 text-cyan-400 text-sm rounded-full">
-                        {languageNames[lang] || lang} ({lang.toUpperCase()})
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">Accepting New Patients</span>
+                    {provider.acceptingNewPatients ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">
+                        <CheckCircle className="w-3 h-3" />Yes
                       </span>
-                    ))}
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded-full">
+                        <XCircle className="w-3 h-3" />No
+                      </span>
+                    )}
                   </div>
                 </div>
+              </div>
+            </div>
 
-                <div className="bg-slate-700/30 rounded-lg p-3">
-                  <p className="text-xs text-slate-500 mb-2">Clinic Hours</p>
-                  <div className="grid grid-cols-2 gap-1 text-sm">
-                    {Object.entries(selectedProvider.clinicHours).map(([day, hours]) => (
-                      <div key={day} className="flex justify-between">
-                        <span className="text-slate-400 capitalize">{day.slice(0, 3)}</span>
-                        <span className={hours === "Closed" ? "text-red-400" : "text-white"}>{hours}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            {/* Languages */}
+            <div className="bg-slate-700/30 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                <svg className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1M21 12l-5 10-2-4-4-2 10-5z"/>
+                </svg>
+                Languages Spoken
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {provider.languages.map(lang => (
+                  <span key={lang} className="px-3 py-1.5 bg-cyan-500/20 text-cyan-400 rounded-full text-sm">
+                    {languageNames[lang] || lang} ({lang.toUpperCase()})
+                  </span>
+                ))}
+              </div>
+            </div>
 
+            {/* Practice Info (linked) */}
+            {practice && (
+              <div className="bg-slate-700/30 rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-cyan-400" />
+                  Affiliated Practice
+                </h3>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Accepting New Patients</span>
-                  {selectedProvider.acceptingNewPatients ? (
-                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-500/20 text-green-400 text-sm rounded-full">
-                      <CheckCircle className="w-4 h-4" />Yes
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-500/20 text-red-400 text-sm rounded-full">
-                      <XCircle className="w-4 h-4" />No
+                  <div>
+                    <p className="text-white font-medium">{practice.name}</p>
+                    <p className="text-slate-400 text-sm">{practice.specialty} • {practice.type}</p>
+                    <p className="text-slate-500 text-sm">{practice.city}, {practice.state}</p>
+                  </div>
+                  {practice.status === "active" && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">
+                      <CheckCircle className="w-3 h-3" />Active Contract
                     </span>
                   )}
                 </div>
               </div>
-
-              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
-                <button onClick={() => setSelectedProvider(null)} className="px-4 py-2 text-slate-400 hover:text-white transition-colors">Close</button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 transition-colors">
-                  <Edit className="w-4 h-4" />
-                  Edit Provider
-                </button>
-              </div>
-            </motion.div>
+            )}
           </div>
         )}
-      </AnimatePresence>
-    </div>
+
+        {/* Taxonomy & License Tab */}
+        {providerTab === "taxonomy" && (
+          <div className="space-y-6">
+            {/* Primary Taxonomy */}
+            <div className="bg-slate-700/30 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-teal-400" />
+                Primary Taxonomy
+              </h3>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">Taxonomy Code</p>
+                  <p className="text-xl text-white font-mono">{provider.primaryTaxonomy || "Not Set"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">Description</p>
+                  <p className="text-lg text-teal-400">{provider.primaryTaxonomyDesc || "No description"}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Secondary Taxonomy */}
+            <div className="bg-slate-700/30 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-purple-400" />
+                Secondary Taxonomy
+              </h3>
+              {provider.secondaryTaxonomy ? (
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Taxonomy Code</p>
+                    <p className="text-xl text-white font-mono">{provider.secondaryTaxonomy}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Description</p>
+                    <p className="text-lg text-purple-400">{provider.secondaryTaxonomyDesc}</p>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-slate-500 italic">No secondary taxonomy specified</p>
+              )}
+            </div>
+
+            {/* License Details */}
+            <div className="bg-slate-700/30 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                License Details
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">License State</p>
+                  <p className="text-xl text-white">{provider.licenseState}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">License Number</p>
+                  <p className="text-xl text-white font-mono">{provider.licenseNumber}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Office Hours Tab */}
+        {providerTab === "hours" && (
+          <div className="space-y-6">
+            <div className="bg-slate-700/30 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-cyan-400" />
+                Clinic Hours
+              </h3>
+              <div className="space-y-3">
+                {Object.entries(provider.clinicHours).map(([day, hours]) => (
+                  <div key={day} className="flex items-center justify-between py-2 border-b border-slate-700/50 last:border-0">
+                    <span className="text-slate-300 capitalize font-medium">{day}</span>
+                    <span className={`font-medium ${
+                      hours === "Closed" || hours === "closed" 
+                        ? "text-red-400" 
+                        : hours.includes("Surgery") || hours.includes("Lab") || hours.includes("Cath")
+                          ? "text-amber-400"
+                          : "text-green-400"
+                    }`}>
+                      {hours}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+              <p className="text-sm text-amber-300">
+                <strong>Note:</strong> Hours may vary. Contact the practice directly to confirm availability.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Location & Contact Tab */}
+        {providerTab === "location" && (
+          <div className="space-y-6">
+            {practice ? (
+              <>
+                {/* Practice Location */}
+                <div className="bg-slate-700/30 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-cyan-400" />
+                    Practice Location
+                  </h3>
+                  <div className="space-y-2">
+                    <p className="text-lg text-white font-medium">{practice.name}</p>
+                    <p className="text-slate-300">{practice.address}</p>
+                    <p className="text-slate-300">{practice.city}, {practice.county} County</p>
+                    <p className="text-slate-300">{practice.state} {practice.zip}</p>
+                    <p className="text-slate-400">{practice.country}</p>
+                  </div>
+                </div>
+
+                {/* Contact Information */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-slate-700/30 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                      <Phone className="w-5 h-5 text-cyan-400" />
+                      Main Office Contact
+                    </h3>
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Contact Name</p>
+                        <p className="text-white">{practice.contactName}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Phone</p>
+                        <p className="text-cyan-400 font-medium">{practice.phone}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Fax</p>
+                        <p className="text-white">{practice.fax}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Email</p>
+                        <p className="text-cyan-400">{practice.email}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-700/30 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                      <Mail className="w-5 h-5 text-cyan-400" />
+                      Correspondence Address
+                    </h3>
+                    <div className="space-y-2">
+                      <p className="text-slate-300">{practice.correspondenceAddress}</p>
+                      <p className="text-slate-300">{practice.correspondenceCity}, {practice.correspondenceState} {practice.correspondenceZip}</p>
+                      <p className="text-slate-400">{practice.correspondenceCountry}</p>
+                      <div className="pt-2">
+                        <p className="text-xs text-slate-500 mb-1">Correspondence Fax</p>
+                        <p className="text-white">{practice.correspondenceFax}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-8 text-slate-400">
+                <MapPin className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                <p>No practice linked to this provider</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Billing Info Tab */}
+        {providerTab === "billing" && (
+          <div className="space-y-6">
+            {practice ? (
+              <>
+                {/* Billing Department */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-slate-700/30 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                      <Phone className="w-5 h-5 text-green-400" />
+                      Billing Department
+                    </h3>
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Billing Phone</p>
+                        <p className="text-xl text-white">{practice.billingPhone}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Billing Fax</p>
+                        <p className="text-xl text-white">{practice.billingFax}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-700/30 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                      <CreditCard className="w-5 h-5 text-green-400" />
+                      Pay-To Information
+                    </h3>
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Pay-To Name</p>
+                        <p className="text-white font-medium">{practice.payToName}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Pay-To NPI</p>
+                        <p className="text-white font-mono">{practice.payToNpi}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 mb-1">Tax ID / EIN</p>
+                        <p className="text-white font-mono">{practice.payToTaxId}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pay-To Address */}
+                <div className="bg-slate-700/30 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-green-400" />
+                    Pay-To / Remittance Address
+                  </h3>
+                  <div className="space-y-2">
+                    <p className="text-lg text-white font-medium">{practice.payToName}</p>
+                    <p className="text-cyan-400">{practice.payToAddress}</p>
+                    <p className="text-cyan-400">{practice.payToCity}, {practice.payToState} {practice.payToZip}</p>
+                    <p className="text-cyan-300">{practice.payToCountry}</p>
+                  </div>
+                </div>
+
+                {/* Contract Info */}
+                <div className="bg-slate-700/30 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-amber-400" />
+                    Contract Terms
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Contract Period</p>
+                      <p className="text-white">{practice.contractStart}</p>
+                      <p className="text-slate-400 text-sm">to {practice.contractEnd}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Discount Type</p>
+                      <p className="text-white">{practice.discountType}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Discount Rate</p>
+                      <p className="text-2xl text-cyan-400 font-bold">{practice.discountRate}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                  <p className="text-sm text-amber-300">
+                    <strong>Note:</strong> Billing and Pay-To information is inherited from the practice. All providers at this practice share the same billing settings.
+                  </p>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-8 text-slate-400">
+                <DollarSign className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                <p>No practice linked to this provider</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
