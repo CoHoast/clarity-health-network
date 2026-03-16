@@ -665,7 +665,7 @@ export default function ProductDemoPage() {
                 fontWeight: 600,
                 fontSize: 14,
               }}>
-                View Walkthrough →
+                More Info
               </div>
             </div>
           </div>
