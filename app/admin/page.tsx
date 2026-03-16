@@ -74,7 +74,8 @@ export default function AdminDashboard() {
           </Link>
           <Link
             href="/admin/claims"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 font-medium rounded-lg hover:bg-teal-700 transition-colors"
+            style={{ color: 'white' }}
           >
             <FileText className="w-4 h-4" />
             Review Claims
@@ -96,17 +97,20 @@ export default function AdminDashboard() {
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/20">
-                  <Icon className="w-5 h-5 text-white" />
+                  <Icon className="w-5 h-5" style={{ color: 'white' }} />
                 </div>
-                <span className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
-                  stat.trend === "up" ? "bg-white/20 text-white" : "bg-red-500/30 text-red-200"
-                }`}>
+                <span 
+                  className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
+                    stat.trend === "up" ? "bg-white/20" : "bg-red-500/30"
+                  }`}
+                  style={{ color: 'white' }}
+                >
                   {stat.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                   {stat.change}
                 </span>
               </div>
-              <p className="text-2xl font-bold text-white">{stat.value}</p>
-              <p className="text-sm text-white/80">{stat.label}</p>
+              <p className="text-2xl font-bold" style={{ color: 'white' }}>{stat.value}</p>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
             </motion.div>
           );
         })}
