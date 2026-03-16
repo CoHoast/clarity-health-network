@@ -14,6 +14,7 @@ interface Practice {
   // Location
   address: string;
   city: string;
+  county: string;
   state: string;
   zip: string;
   country: string;
@@ -99,6 +100,7 @@ const practices: Practice[] = [
     specialty: "Family Medicine",
     address: "123 Medical Center Dr",
     city: "Cleveland",
+    county: "Cuyahoga",
     state: "OH",
     zip: "44101",
     country: "USA",
@@ -135,6 +137,7 @@ const practices: Practice[] = [
     specialty: "Orthopedics",
     address: "321 Bone & Joint Dr",
     city: "Beachwood",
+    county: "Cuyahoga",
     state: "OH",
     zip: "44122",
     country: "USA",
@@ -171,6 +174,7 @@ const practices: Practice[] = [
     specialty: "Diagnostic Imaging",
     address: "789 Imaging Way",
     city: "Cleveland",
+    county: "Cuyahoga",
     state: "OH",
     zip: "44102",
     country: "USA",
@@ -207,6 +211,7 @@ const practices: Practice[] = [
     specialty: "Cardiology",
     address: "369 Heart Center Dr",
     city: "Cleveland",
+    county: "Cuyahoga",
     state: "OH",
     zip: "44104",
     country: "USA",
@@ -243,6 +248,7 @@ const practices: Practice[] = [
     specialty: "Urgent Care",
     address: "987 Quick Care Blvd",
     city: "Westlake",
+    county: "Cuyahoga",
     state: "OH",
     zip: "44145",
     country: "USA",
@@ -280,23 +286,23 @@ const providers: Provider[] = [
   { id: "PRV-002", practiceId: "PRC-001", name: "Jennifer Adams", credential: "MD", npi: "1111111112", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "207QA0505X", secondaryTaxonomyDesc: "Adult Medicine", licenseState: "OH", licenseNumber: "MD-35-123457", acceptingNewPatients: true, languages: ["eng", "spa"] },
   { id: "PRV-003", practiceId: "PRC-001", name: "Michael Chen", credential: "DO", npi: "1111111113", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-123458", acceptingNewPatients: false, languages: ["eng", "cmn", "yue"] },
   { id: "PRV-004", practiceId: "PRC-001", name: "Sarah Williams", credential: "NP", npi: "1111111114", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-123459", acceptingNewPatients: true, languages: ["eng"] },
-  
+
   // Cleveland Orthopedic Associates providers
   { id: "PRV-005", practiceId: "PRC-002", name: "James Miller", credential: "MD", npi: "4444444441", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XS0114X", secondaryTaxonomyDesc: "Sports Medicine", licenseState: "OH", licenseNumber: "MD-35-456789", acceptingNewPatients: true, languages: ["eng"] },
   { id: "PRV-006", practiceId: "PRC-002", name: "Lisa Thompson", credential: "MD", npi: "4444444442", gender: "Female", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XP3100X", secondaryTaxonomyDesc: "Pediatric Orthopedics", licenseState: "OH", licenseNumber: "MD-35-456790", acceptingNewPatients: true, languages: ["eng", "fra"] },
   { id: "PRV-007", practiceId: "PRC-002", name: "David Park", credential: "MD", npi: "4444444443", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XX0004X", secondaryTaxonomyDesc: "Spine Surgery", licenseState: "OH", licenseNumber: "MD-35-456791", acceptingNewPatients: false, languages: ["eng", "kor"] },
   { id: "PRV-008", practiceId: "PRC-002", name: "Amy Rodriguez", credential: "PA", npi: "4444444444", gender: "Female", specialty: "Orthopedics", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-456792", acceptingNewPatients: true, languages: ["eng", "spa"] },
-  
+
   // Metro Imaging Center providers
   { id: "PRV-009", practiceId: "PRC-003", name: "Thomas Richards", credential: "MD", npi: "3333333331", gender: "Male", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-345678", acceptingNewPatients: true, languages: ["eng"] },
   { id: "PRV-010", practiceId: "PRC-003", name: "Karen Lee", credential: "MD", npi: "3333333332", gender: "Female", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "2085N0700X", secondaryTaxonomyDesc: "Neuroradiology", licenseState: "OH", licenseNumber: "MD-35-345679", acceptingNewPatients: true, languages: ["eng", "kor", "jpn"] },
-  
+
   // Cleveland Cardiology Associates providers
   { id: "PRV-011", practiceId: "PRC-004", name: "Robert Thompson", credential: "MD", npi: "9999999991", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RI0011X", secondaryTaxonomyDesc: "Interventional Cardiology", licenseState: "OH", licenseNumber: "MD-35-901234", acceptingNewPatients: false, languages: ["eng"] },
   { id: "PRV-012", practiceId: "PRC-004", name: "Michelle Wang", credential: "MD", npi: "9999999992", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RE0101X", secondaryTaxonomyDesc: "Electrophysiology", licenseState: "OH", licenseNumber: "MD-35-901235", acceptingNewPatients: true, languages: ["eng", "cmn"] },
   { id: "PRV-013", practiceId: "PRC-004", name: "Daniel Kim", credential: "MD", npi: "9999999993", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-901236", acceptingNewPatients: true, languages: ["eng", "kor"] },
   { id: "PRV-014", practiceId: "PRC-004", name: "Emily Foster", credential: "NP", npi: "9999999994", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-901237", acceptingNewPatients: true, languages: ["eng", "spa"] },
-  
+
   // Westlake Urgent Care providers
   { id: "PRV-015", practiceId: "PRC-005", name: "Patricia Lee", credential: "MD", npi: "6666666661", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-678901", acceptingNewPatients: true, languages: ["eng", "vie"] },
   { id: "PRV-016", practiceId: "PRC-005", name: "Mark Johnson", credential: "DO", npi: "6666666662", gender: "Male", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-678902", acceptingNewPatients: true, languages: ["eng"] },
@@ -317,7 +323,7 @@ export default function ProvidersPage() {
   const [showAddProvider, setShowAddProvider] = useState(false);
   const [isEditingPractice, setIsEditingPractice] = useState(false);
   const [isEditingProvider, setIsEditingProvider] = useState(false);
-  
+
   // New practice form
   const [newPractice, setNewPractice] = useState<Partial<Practice>>({
     type: "Group Practice",
@@ -325,7 +331,7 @@ export default function ProvidersPage() {
     country: "USA",
     payToCountry: "USA",
   });
-  
+
   // New provider form
   const [newProvider, setNewProvider] = useState<Partial<Provider>>({
     credential: "MD",
@@ -373,7 +379,7 @@ export default function ProvidersPage() {
             <Download className="w-4 h-4" />
             Export
           </button>
-          <button 
+          <button
             onClick={() => setShowAddPractice(true)}
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-lg hover:from-cyan-500 hover:to-teal-500 transition-colors"
           >
@@ -515,7 +521,7 @@ export default function ProvidersPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2">
-                      <button 
+                      <button
                         onClick={() => { setSelectedPractice(practice); setActiveTab("info"); }}
                         className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
                         title="View Details"
@@ -597,7 +603,8 @@ export default function ProvidersPage() {
                         Location Address
                       </h3>
                       <p className="text-slate-300">{selectedPractice.address}</p>
-                      <p className="text-slate-300">{selectedPractice.city}, {selectedPractice.state} {selectedPractice.zip}</p>
+                      <p className="text-slate-300">{selectedPractice.city}, {selectedPractice.county} County</p>
+                      <p className="text-slate-300">{selectedPractice.state} {selectedPractice.zip}</p>
                       <p className="text-slate-400">{selectedPractice.country}</p>
                     </div>
 
@@ -649,7 +656,7 @@ export default function ProvidersPage() {
                         Add Provider
                       </button>
                     </div>
-                    
+
                     <div className="bg-slate-700/30 rounded-lg overflow-hidden">
                       <table className="w-full">
                         <thead className="bg-slate-900/30">
@@ -747,7 +754,7 @@ export default function ProvidersPage() {
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="bg-slate-700/30 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                           <MapPin className="w-5 h-5 text-cyan-400" />
@@ -760,7 +767,7 @@ export default function ProvidersPage() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
                       <p className="text-sm text-amber-300">
                         <strong>Note:</strong> All providers affiliated with this practice inherit these Pay-To settings. Payments will be sent to the entity listed above.
@@ -816,7 +823,7 @@ export default function ProvidersPage() {
                 <h2 className="text-xl font-bold text-white">Add New Practice</h2>
                 <p className="text-slate-400 mt-1">Create a practice first, then add individual providers to it</p>
               </div>
-              
+
               <div className="p-6 space-y-6">
                 {/* Basic Info */}
                 <div className="space-y-4">
@@ -846,7 +853,7 @@ export default function ProvidersPage() {
                     className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
                 </div>
-                
+
                 {/* Location */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Location</h3>
@@ -857,14 +864,15 @@ export default function ProvidersPage() {
                     onChange={(e) => setNewPractice({...newPractice, address: e.target.value})}
                     className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-5 gap-2">
                     <input type="text" placeholder="City *" value={newPractice.city || ""} onChange={(e) => setNewPractice({...newPractice, city: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="County" value={newPractice.county || ""} onChange={(e) => setNewPractice({...newPractice, county: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                     <input type="text" placeholder="State *" value={newPractice.state || ""} onChange={(e) => setNewPractice({...newPractice, state: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                     <input type="text" placeholder="Postal Code *" value={newPractice.zip || ""} onChange={(e) => setNewPractice({...newPractice, zip: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                     <input type="text" placeholder="Country" value={newPractice.country || "USA"} onChange={(e) => setNewPractice({...newPractice, country: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                   </div>
                 </div>
-                
+
                 {/* Correspondence Address */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Correspondence Address</h3>
@@ -903,7 +911,7 @@ export default function ProvidersPage() {
                     <input type="tel" placeholder="Billing Fax" value={newPractice.billingFax || ""} onChange={(e) => setNewPractice({...newPractice, billingFax: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                   </div>
                 </div>
-                
+
                 {/* Pay-To */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Pay-To Information</h3>
@@ -920,7 +928,7 @@ export default function ProvidersPage() {
                     <input type="text" placeholder="Country" value={newPractice.payToCountry || "USA"} onChange={(e) => setNewPractice({...newPractice, payToCountry: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                   </div>
                 </div>
-                
+
                 {/* Contract */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Contract Terms</h3>
@@ -947,7 +955,7 @@ export default function ProvidersPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
                 <button onClick={() => setShowAddPractice(false)} className="px-4 py-2 text-slate-400 hover:text-white transition-colors">Cancel</button>
                 <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-lg hover:from-cyan-500 hover:to-teal-500 transition-colors">
@@ -975,7 +983,7 @@ export default function ProvidersPage() {
                 <h2 className="text-xl font-bold text-white">Add Provider to Practice</h2>
                 <p className="text-slate-400 mt-1">Adding provider to: <span className="text-cyan-400">{selectedPractice.name}</span></p>
               </div>
-              
+
               <div className="p-6 space-y-6">
                 {/* Provider Info */}
                 <div className="space-y-4">
@@ -1002,7 +1010,7 @@ export default function ProvidersPage() {
                     </select>
                   </div>
                 </div>
-                
+
                 {/* Specialty & Taxonomy */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Specialty & Taxonomy</h3>
@@ -1016,7 +1024,7 @@ export default function ProvidersPage() {
                     <input type="text" placeholder="Secondary Taxonomy Description" value={newProvider.secondaryTaxonomyDesc || ""} onChange={(e) => setNewProvider({...newProvider, secondaryTaxonomyDesc: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                   </div>
                 </div>
-                
+
                 {/* License */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">License Information</h3>
@@ -1025,7 +1033,7 @@ export default function ProvidersPage() {
                     <input type="text" placeholder="License Number *" value={newProvider.licenseNumber || ""} onChange={(e) => setNewProvider({...newProvider, licenseNumber: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono" />
                   </div>
                 </div>
-                
+
                 {/* Languages */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Languages Spoken (ISO 639-3 codes)</h3>
@@ -1073,7 +1081,7 @@ export default function ProvidersPage() {
                   </button>
                 </div>
               </div>
-              
+
               <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
                 <button onClick={() => setShowAddProvider(false)} className="px-4 py-2 text-slate-400 hover:text-white transition-colors">Cancel</button>
                 <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg hover:from-teal-500 hover:to-cyan-500 transition-colors">
@@ -1111,7 +1119,7 @@ export default function ProvidersPage() {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              
+
               <div className="p-6 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-slate-700/30 rounded-lg p-3">
@@ -1131,13 +1139,13 @@ export default function ProvidersPage() {
                     <p className="text-white font-mono">{selectedProvider.licenseNumber}</p>
                   </div>
                 </div>
-                
+
                 <div className="bg-slate-700/30 rounded-lg p-3">
                   <p className="text-xs text-slate-500 mb-1">Primary Taxonomy</p>
                   <p className="text-white font-mono">{selectedProvider.primaryTaxonomy}</p>
                   <p className="text-teal-400 text-sm">{selectedProvider.primaryTaxonomyDesc}</p>
                 </div>
-                
+
                 {selectedProvider.secondaryTaxonomy && (
                   <div className="bg-slate-700/30 rounded-lg p-3">
                     <p className="text-xs text-slate-500 mb-1">Secondary Taxonomy</p>
@@ -1145,7 +1153,7 @@ export default function ProvidersPage() {
                     <p className="text-teal-400 text-sm">{selectedProvider.secondaryTaxonomyDesc}</p>
                   </div>
                 )}
-                
+
                 <div className="bg-slate-700/30 rounded-lg p-3">
                   <p className="text-xs text-slate-500 mb-2">Languages Spoken</p>
                   <div className="flex flex-wrap gap-2">
@@ -1156,7 +1164,7 @@ export default function ProvidersPage() {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Accepting New Patients</span>
                   {selectedProvider.acceptingNewPatients ? (
@@ -1170,7 +1178,7 @@ export default function ProvidersPage() {
                   )}
                 </div>
               </div>
-              
+
               <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
                 <button onClick={() => setSelectedProvider(null)} className="px-4 py-2 text-slate-400 hover:text-white transition-colors">Close</button>
                 <button className="flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 transition-colors">
