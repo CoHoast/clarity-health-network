@@ -22,18 +22,18 @@ import {
 } from "lucide-react";
 
 const stats = [
-  { label: "Total Claims", value: "12,847", change: "+12%", trend: "up", icon: FileText, color: "cyan" },
-  { label: "Active Members", value: "45,230", change: "+3.2%", trend: "up", icon: Users, color: "blue" },
-  { label: "Network Providers", value: "2,847", change: "+24", trend: "up", icon: Building2, color: "teal" },
-  { label: "Monthly Volume", value: "$4.2M", change: "+8.5%", trend: "up", icon: DollarSign, color: "green" },
+  { label: "Total Claims", value: "12,847", change: "+12%", trend: "up", icon: FileText },
+  { label: "Active Members", value: "45,230", change: "+3.2%", trend: "up", icon: Users },
+  { label: "Network Providers", value: "2,847", change: "+24", trend: "up", icon: Building2 },
+  { label: "Monthly Volume", value: "$4.2M", change: "+8.5%", trend: "up", icon: DollarSign },
 ];
 
 const claimsPipeline = [
-  { status: "Received", count: 234, color: "bg-slate-400" },
-  { status: "Processing", count: 156, color: "bg-blue-500" },
-  { status: "Review", count: 89, color: "bg-amber-500" },
-  { status: "Approved", count: 612, color: "bg-green-500" },
-  { status: "Denied", count: 23, color: "bg-red-500" },
+  { status: "Received", count: 234, color: "bg-slate-500" },
+  { status: "Processing", count: 156, color: "bg-cyan-500" },
+  { status: "Review", count: 89, color: "bg-teal-500" },
+  { status: "Approved", count: 612, color: "bg-teal-600" },
+  { status: "Denied", count: 23, color: "bg-slate-400" },
 ];
 
 const recentAlerts = [
@@ -92,29 +92,21 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-slate-800/50 rounded-xl border border-slate-700 p-5 "
+              className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-5 shadow-lg"
             >
               <div className="flex items-center justify-between mb-3">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  stat.color === "cyan" ? "bg-cyan-500/20" :
-                  stat.color === "blue" ? "bg-blue-500/20" :
-                  stat.color === "teal" ? "bg-teal-500/20" : "bg-green-500/20"
-                }`}>
-                  <Icon className={`w-5 h-5 ${
-                    stat.color === "cyan" ? "text-cyan-500" :
-                    stat.color === "blue" ? "text-blue-400" :
-                    stat.color === "teal" ? "text-cyan-600" : "text-green-400"
-                  }`} />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/20">
+                  <Icon className="w-5 h-5 text-white" />
                 </div>
                 <span className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
-                  stat.trend === "up" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
+                  stat.trend === "up" ? "bg-white/20 text-white" : "bg-red-500/30 text-red-200"
                 }`}>
                   {stat.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                   {stat.change}
                 </span>
               </div>
               <p className="text-2xl font-bold text-white">{stat.value}</p>
-              <p className="text-sm text-slate-400">{stat.label}</p>
+              <p className="text-sm text-white/80">{stat.label}</p>
             </motion.div>
           );
         })}
