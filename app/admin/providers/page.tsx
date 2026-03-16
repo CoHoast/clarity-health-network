@@ -123,21 +123,21 @@ export default function ProvidersPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">2,847</p>
-          <p className="text-sm text-slate-400">Total Providers</p>
+        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>2,847</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Total Providers</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">2,789</p>
-          <p className="text-sm text-slate-400">Credentialed</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>2,789</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Credentialed</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-amber-400">34</p>
-          <p className="text-sm text-slate-400">Pending Review</p>
+        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>34</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending Review</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-cyan-500">156</p>
-          <p className="text-sm text-slate-400">Locations</p>
+        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>156</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Locations</p>
         </div>
       </div>
 

@@ -179,21 +179,21 @@ export default function CredentialingPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">47</p>
-          <p className="text-sm text-slate-400">Pending Applications</p>
+        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>47</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending Applications</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-cyan-500">12</p>
-          <p className="text-sm text-slate-400">Committee Review</p>
+        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>12</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Committee Review</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-amber-400">18</p>
-          <p className="text-sm text-slate-400">Expiring (30 days)</p>
+        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>18</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Expiring (30 days)</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">94%</p>
-          <p className="text-sm text-slate-400">Approval Rate</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>94%</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Approval Rate</p>
         </div>
       </div>
 

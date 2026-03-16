@@ -73,21 +73,21 @@ export default function PaymentsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">$1.24M</p>
-          <p className="text-sm text-slate-400">Paid This Month</p>
+        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>$1.24M</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Paid This Month</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-amber-400">$49,500</p>
-          <p className="text-sm text-slate-400">Pending</p>
+        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>$49,500</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">847</p>
-          <p className="text-sm text-slate-400">Claims Paid</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>847</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Claims Paid</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-cyan-500">2.1 days</p>
-          <p className="text-sm text-slate-400">Avg. Payment Time</p>
+        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>2.1 days</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Avg. Payment Time</p>
         </div>
       </div>
 

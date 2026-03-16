@@ -97,21 +97,21 @@ export default function MembersPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">12,847</p>
-          <p className="text-sm text-slate-400">Total Members</p>
+        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>12,847</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Total Members</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">12,456</p>
-          <p className="text-sm text-slate-400">Active</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>12,456</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Active</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-cyan-500">234</p>
-          <p className="text-sm text-slate-400">COBRA</p>
+        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>234</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>COBRA</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-amber-400">157</p>
-          <p className="text-sm text-slate-400">Pending</p>
+        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>157</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending</p>
         </div>
       </div>
 

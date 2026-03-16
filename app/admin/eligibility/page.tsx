@@ -72,21 +72,21 @@ export default function EligibilityPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">3,456</p>
-          <p className="text-sm text-slate-400">Checks Today</p>
+        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>3,456</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Checks Today</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">99.8%</p>
-          <p className="text-sm text-slate-400">Success Rate</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>99.8%</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Success Rate</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-blue-400">&lt;1s</p>
-          <p className="text-sm text-slate-400">Avg Response Time</p>
+        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>&lt;1s</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Avg Response Time</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-amber-400">8</p>
-          <p className="text-sm text-slate-400">Issues Found</p>
+        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>8</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Issues Found</p>
         </div>
       </div>
 

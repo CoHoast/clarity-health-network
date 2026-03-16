@@ -112,21 +112,21 @@ function ClaimsContent() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">1,114</p>
-          <p className="text-sm text-slate-400">Total Today</p>
+        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>1,114</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Total Today</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-amber-400">89</p>
-          <p className="text-sm text-slate-400">Pending Review</p>
+        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>89</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending Review</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">92%</p>
-          <p className="text-sm text-slate-400">Auto-Adjudicated</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>92%</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Auto-Adjudicated</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-cyan-500">$1.24M</p>
-          <p className="text-sm text-slate-400">Processed Value</p>
+        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>$1.24M</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Processed Value</p>
         </div>
       </div>
 
