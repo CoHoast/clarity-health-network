@@ -96,11 +96,11 @@ export default function ExpiringContractsPage() {
             className={`rounded-xl p-5 shadow-lg ${
               isDark 
                 ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
-                : "bg-gradient-to-br from-blue-900 to-slate-800"
+                : "bg-cyan-600"
             }`}
           >
             <p className="text-3xl font-bold" style={{ color: 'white' }}>{stat.count}</p>
-            <p className={`text-sm ${isDark ? "text-cyan-300/70" : "text-blue-200"}`}>{stat.label}</p>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
           </div>
         ))}
       </div>

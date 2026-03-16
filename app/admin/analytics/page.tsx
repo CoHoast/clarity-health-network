@@ -257,16 +257,20 @@ export default function AnalyticsPage() {
           <button
             key={kpi.label}
             onClick={() => setSelectedDrilldown(kpi.drilldown)}
-            className="rounded-xl p-4 text-left transition-all group shadow-lg bg-slate-950 border border-slate-800 hover:bg-slate-900"
+            className={`rounded-xl p-4 text-left transition-all group shadow-lg ${
+              isDark 
+                ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30 hover:from-cyan-900/40 hover:to-teal-900/40" 
+                : "bg-cyan-600 hover:bg-cyan-700"
+            }`}
           >
-            <p className="text-sm mb-1 text-slate-400">{kpi.label}</p>
-            <p className="text-2xl font-bold transition-colors text-white">{kpi.value}</p>
-            <p className={`text-sm flex items-center gap-1 mt-1 ${kpi.color}`}>
+            <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.7)' }}>{kpi.label}</p>
+            <p className="text-2xl font-bold transition-colors" style={{ color: 'white' }}>{kpi.value}</p>
+            <p className={`text-sm flex items-center gap-1 mt-1 ${isDark ? kpi.color : 'text-white/90'}`}>
               {kpi.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
               {kpi.change}
             </p>
             <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-xs flex items-center gap-1 text-cyan-400">
+              <span className={`text-xs flex items-center gap-1 ${isDark ? 'text-cyan-400' : 'text-white/80'}`}>
                 Click for details <ArrowUpRight className="w-3 h-3" />
               </span>
             </div>
