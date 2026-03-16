@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, Calendar, X, DollarSign, Edit, User, CreditCard } from "lucide-react";
+import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, X, DollarSign, Edit, User, CreditCard, Save } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -44,12 +44,17 @@ const providers: Provider[] = [
 
 const statusOptions = ["All", "Active", "Pending", "Inactive"];
 const typeOptions = ["All Types", "Individual", "Group Practice", "Facility"];
+const specialties = ["Family Medicine", "Internal Medicine", "Pediatrics", "Cardiology", "Orthopedics", "Diagnostic Imaging", "Laboratory", "Urgent Care", "Physical Therapy", "General Surgery"];
 
 export default function ProvidersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All Types");
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
+  const [modalTab, setModalTab] = useState<"details" | "contract">("details");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState<Provider | null>(null);
+  const [showSaveSuccess, setShowSaveSuccess] = useState(false);
 
   const filteredProviders = providers.filter((provider) => {
     const matchesSearch = provider.practiceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -67,6 +72,43 @@ export default function ProvidersPage() {
       case "inactive": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded-full"><XCircle className="w-3 h-3" />Inactive</span>;
       case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
       default: return null;
+    }
+  };
+
+  const openProviderModal = (provider: Provider) => {
+    setSelectedProvider(provider);
+    setModalTab("details");
+    setIsEditing(false);
+    setEditForm(null);
+  };
+
+  const startEditing = () => {
+    if (selectedProvider) {
+      setEditForm({ ...selectedProvider });
+      setIsEditing(true);
+    }
+  };
+
+  const cancelEditing = () => {
+    setIsEditing(false);
+    setEditForm(null);
+  };
+
+  const saveChanges = () => {
+    // In a real app, this would save to the database
+    setShowSaveSuccess(true);
+    setTimeout(() => {
+      setShowSaveSuccess(false);
+      setIsEditing(false);
+      if (editForm) {
+        setSelectedProvider(editForm);
+      }
+    }, 1500);
+  };
+
+  const updateEditForm = (field: keyof Provider, value: string) => {
+    if (editForm) {
+      setEditForm({ ...editForm, [field]: value });
     }
   };
 
@@ -181,7 +223,7 @@ export default function ProvidersPage() {
                   <td className="px-6 py-4">{getStatusBadge(provider.status)}</td>
                   <td className="px-6 py-4 text-right">
                     <button
-                      onClick={() => setSelectedProvider(provider)}
+                      onClick={() => openProviderModal(provider)}
                       className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
                     >
                       <Eye className="w-4 h-4" />
@@ -198,137 +240,431 @@ export default function ProvidersPage() {
       {/* Provider Detail Modal */}
       <AnimatePresence>
         {selectedProvider && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProvider(null)}>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => { setSelectedProvider(null); setIsEditing(false); }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-auto border border-slate-700"
+              className="bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-auto border border-slate-700"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
               <div className="p-6 border-b border-slate-700 flex items-start justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white">{selectedProvider.practiceName}</h2>
+                  <h2 className="text-xl font-bold text-white">{isEditing && editForm ? editForm.practiceName : selectedProvider.practiceName}</h2>
                   <p className="text-slate-400">{selectedProvider.specialty} • {selectedProvider.type}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   {getStatusBadge(selectedProvider.status)}
-                  <button onClick={() => setSelectedProvider(null)} className="text-slate-400 hover:text-white">
+                  <button onClick={() => { setSelectedProvider(null); setIsEditing(false); }} className="text-slate-400 hover:text-white">
                     <X className="w-6 h-6" />
                   </button>
                 </div>
               </div>
 
+              {/* Tabs */}
+              <div className="px-6 pt-4 flex gap-2 border-b border-slate-700">
+                <button
+                  onClick={() => setModalTab("details")}
+                  className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${
+                    modalTab === "details" ? "bg-slate-700 text-white" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  Provider Details
+                </button>
+                <button
+                  onClick={() => setModalTab("contract")}
+                  className={`px-4 py-2 font-medium rounded-t-lg transition-colors flex items-center gap-2 ${
+                    modalTab === "contract" ? "bg-slate-700 text-white" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <FileText className="w-4 h-4" />
+                  Contract Document
+                </button>
+              </div>
+
               {/* Modal Content */}
-              <div className="p-6 space-y-6">
-                {/* NPI Section */}
-                <div className="bg-slate-700/30 rounded-lg p-4">
-                  <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-                    <CreditCard className="w-4 h-4 text-teal-400" />
-                    NPI Numbers
-                  </h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <p className="text-xs text-slate-500 mb-1">Organization NPI (Type 2)</p>
-                      <p className="text-white font-mono text-lg">{selectedProvider.orgNpi}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-slate-500 mb-1">Servicing Provider NPI (Type 1)</p>
-                      <p className="text-white font-mono text-lg">{selectedProvider.servicingNpi}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-slate-500 mb-1">Pay-To NPI</p>
-                      <p className="text-cyan-400 font-mono text-lg">{selectedProvider.payToNpi}</p>
-                    </div>
-                  </div>
-                  <div className="mt-3 pt-3 border-t border-slate-600">
-                    <p className="text-xs text-slate-500 mb-1">Tax ID / EIN</p>
-                    <p className="text-white font-mono">{selectedProvider.taxId}</p>
-                  </div>
-                </div>
+              <div className="p-6">
+                {modalTab === "details" ? (
+                  isEditing && editForm ? (
+                    /* Edit Mode */
+                    <div className="space-y-6">
+                      {/* Practice Info */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-slate-400 mb-2">Practice Name</label>
+                          <input
+                            type="text"
+                            value={editForm.practiceName}
+                            onChange={(e) => updateEditForm("practiceName", e.target.value)}
+                            className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-slate-400 mb-2">Specialty</label>
+                          <select
+                            value={editForm.specialty}
+                            onChange={(e) => updateEditForm("specialty", e.target.value)}
+                            className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          >
+                            {specialties.map(s => <option key={s} value={s}>{s}</option>)}
+                          </select>
+                        </div>
+                      </div>
 
-                {/* Contact & Location */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-slate-700/30 rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-teal-400" />
-                      Location
-                    </h3>
-                    <p className="text-slate-300">{selectedProvider.address}</p>
-                    <p className="text-slate-300">{selectedProvider.city}, {selectedProvider.state} {selectedProvider.zip}</p>
-                  </div>
-                  <div className="bg-slate-700/30 rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                      <User className="w-4 h-4 text-teal-400" />
-                      Contact
-                    </h3>
-                    <p className="text-slate-300">{selectedProvider.contactName}</p>
-                    <p className="text-slate-400 text-sm">{selectedProvider.phone}</p>
-                    <p className="text-slate-400 text-sm">{selectedProvider.email}</p>
-                  </div>
-                </div>
-
-                {/* Contract & Discount */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-slate-700/30 rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-teal-400" />
-                      Contract
-                    </h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Start Date</span>
-                        <span className="text-white">{selectedProvider.contractStart}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">End Date</span>
-                        <span className="text-white">{selectedProvider.contractEnd}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-slate-700/30 rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-teal-400" />
-                      Discount Terms
-                    </h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Type</span>
-                        <span className="text-white">{selectedProvider.discountType}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Rate</span>
-                        <span className="text-green-400 font-semibold">{selectedProvider.discountRate}</span>
-                      </div>
-                    </div>
-                    {selectedProvider.serviceOverrides && (
-                      <div className="mt-3 pt-3 border-t border-slate-600">
-                        <p className="text-xs text-slate-500 mb-2">Service-Specific Overrides</p>
-                        {selectedProvider.serviceOverrides.map((override, i) => (
-                          <div key={i} className="flex justify-between text-sm">
-                            <span className="text-slate-400">{override.service}</span>
-                            <span className="text-amber-400">{override.rate}</span>
+                      {/* NPIs */}
+                      <div className="bg-slate-700/30 rounded-lg p-4">
+                        <h3 className="text-sm font-semibold text-white mb-4">NPI Numbers</h3>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-xs text-slate-500 mb-1">Organization NPI</label>
+                            <input
+                              type="text"
+                              value={editForm.orgNpi}
+                              onChange={(e) => updateEditForm("orgNpi", e.target.value)}
+                              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            />
                           </div>
-                        ))}
+                          <div>
+                            <label className="block text-xs text-slate-500 mb-1">Servicing NPI</label>
+                            <input
+                              type="text"
+                              value={editForm.servicingNpi}
+                              onChange={(e) => updateEditForm("servicingNpi", e.target.value)}
+                              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-slate-500 mb-1">Pay-To NPI</label>
+                            <input
+                              type="text"
+                              value={editForm.payToNpi}
+                              onChange={(e) => updateEditForm("payToNpi", e.target.value)}
+                              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-4">
+                          <label className="block text-xs text-slate-500 mb-1">Tax ID / EIN</label>
+                          <input
+                            type="text"
+                            value={editForm.taxId}
+                            onChange={(e) => updateEditForm("taxId", e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                        </div>
                       </div>
-                    )}
+
+                      {/* Contact & Location */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-4">
+                          <h3 className="text-sm font-semibold text-white">Contact</h3>
+                          <input
+                            type="text"
+                            placeholder="Contact Name"
+                            value={editForm.contactName}
+                            onChange={(e) => updateEditForm("contactName", e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                          <input
+                            type="tel"
+                            placeholder="Phone"
+                            value={editForm.phone}
+                            onChange={(e) => updateEditForm("phone", e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                          <input
+                            type="email"
+                            placeholder="Email"
+                            value={editForm.email}
+                            onChange={(e) => updateEditForm("email", e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                        </div>
+                        <div className="space-y-4">
+                          <h3 className="text-sm font-semibold text-white">Location</h3>
+                          <input
+                            type="text"
+                            placeholder="Street Address"
+                            value={editForm.address}
+                            onChange={(e) => updateEditForm("address", e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                          <div className="grid grid-cols-3 gap-2">
+                            <input
+                              type="text"
+                              placeholder="City"
+                              value={editForm.city}
+                              onChange={(e) => updateEditForm("city", e.target.value)}
+                              className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            />
+                            <input
+                              type="text"
+                              placeholder="State"
+                              value={editForm.state}
+                              onChange={(e) => updateEditForm("state", e.target.value)}
+                              className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            />
+                            <input
+                              type="text"
+                              placeholder="ZIP"
+                              value={editForm.zip}
+                              onChange={(e) => updateEditForm("zip", e.target.value)}
+                              className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Contract & Discount */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-4">
+                          <h3 className="text-sm font-semibold text-white">Contract Dates</h3>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Start Date</label>
+                              <input
+                                type="date"
+                                value={editForm.contractStart}
+                                onChange={(e) => updateEditForm("contractStart", e.target.value)}
+                                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">End Date</label>
+                              <input
+                                type="date"
+                                value={editForm.contractEnd}
+                                onChange={(e) => updateEditForm("contractEnd", e.target.value)}
+                                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="space-y-4">
+                          <h3 className="text-sm font-semibold text-white">Discount Terms</h3>
+                          <select
+                            value={editForm.discountType}
+                            onChange={(e) => updateEditForm("discountType", e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          >
+                            <option value="% Off Billed">% Off Billed</option>
+                            <option value="% of Medicare">% of Medicare</option>
+                            <option value="Case Rate">Case Rate</option>
+                            <option value="Flat Rate">Flat Rate</option>
+                          </select>
+                          <input
+                            type="text"
+                            placeholder="Discount Rate"
+                            value={editForm.discountRate}
+                            onChange={(e) => updateEditForm("discountRate", e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    /* View Mode */
+                    <div className="space-y-6">
+                      {/* NPI Section */}
+                      <div className="bg-slate-700/30 rounded-lg p-4">
+                        <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                          <CreditCard className="w-4 h-4 text-teal-400" />
+                          NPI Numbers
+                        </h3>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Organization NPI (Type 2)</p>
+                            <p className="text-white font-mono text-lg">{selectedProvider.orgNpi}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Servicing Provider NPI</p>
+                            <p className="text-white font-mono text-lg">{selectedProvider.servicingNpi}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Pay-To NPI</p>
+                            <p className="text-cyan-400 font-mono text-lg">{selectedProvider.payToNpi}</p>
+                          </div>
+                        </div>
+                        <div className="mt-3 pt-3 border-t border-slate-600">
+                          <p className="text-xs text-slate-500 mb-1">Tax ID / EIN</p>
+                          <p className="text-white font-mono">{selectedProvider.taxId}</p>
+                        </div>
+                      </div>
+
+                      {/* Contact & Location */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-slate-700/30 rounded-lg p-4">
+                          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                            <MapPin className="w-4 h-4 text-teal-400" />
+                            Location
+                          </h3>
+                          <p className="text-slate-300">{selectedProvider.address}</p>
+                          <p className="text-slate-300">{selectedProvider.city}, {selectedProvider.state} {selectedProvider.zip}</p>
+                        </div>
+                        <div className="bg-slate-700/30 rounded-lg p-4">
+                          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                            <User className="w-4 h-4 text-teal-400" />
+                            Contact
+                          </h3>
+                          <p className="text-slate-300">{selectedProvider.contactName}</p>
+                          <p className="text-slate-400 text-sm">{selectedProvider.phone}</p>
+                          <p className="text-slate-400 text-sm">{selectedProvider.email}</p>
+                        </div>
+                      </div>
+
+                      {/* Contract & Discount */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-slate-700/30 rounded-lg p-4">
+                          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                            <FileText className="w-4 h-4 text-teal-400" />
+                            Contract
+                          </h3>
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Start Date</span>
+                              <span className="text-white">{selectedProvider.contractStart}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">End Date</span>
+                              <span className="text-white">{selectedProvider.contractEnd}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-slate-700/30 rounded-lg p-4">
+                          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                            <DollarSign className="w-4 h-4 text-teal-400" />
+                            Discount Terms
+                          </h3>
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Type</span>
+                              <span className="text-white">{selectedProvider.discountType}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Rate</span>
+                              <span className="text-green-400 font-semibold">{selectedProvider.discountRate}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  /* Contract Document Tab */
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-white font-semibold">Provider Network Participation Agreement</h3>
+                      <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors">
+                        <Download className="w-4 h-4" />
+                        Download PDF
+                      </button>
+                    </div>
+                    
+                    {/* Sample Contract Preview */}
+                    <div className="bg-white rounded-lg p-8 text-slate-900 max-h-96 overflow-y-auto">
+                      <div className="text-center mb-6">
+                        <h1 className="text-xl font-bold text-slate-800">TRUECARE HEALTH NETWORK</h1>
+                        <p className="text-sm text-slate-600">Provider Network Participation Agreement</p>
+                      </div>
+                      
+                      <div className="space-y-4 text-sm">
+                        <p className="font-semibold">Contract Reference: CTR-{selectedProvider.id}</p>
+                        
+                        <div className="border-t border-slate-200 pt-4">
+                          <p className="font-semibold mb-2">1. PARTIES</p>
+                          <p>This Agreement is entered into between TrueCare Health Network ("Network") and <strong>{selectedProvider.practiceName}</strong> ("Provider"), NPI: {selectedProvider.orgNpi}.</p>
+                        </div>
+                        
+                        <div className="border-t border-slate-200 pt-4">
+                          <p className="font-semibold mb-2">2. TERM</p>
+                          <p>This Agreement shall commence on <strong>{selectedProvider.contractStart}</strong> and continue through <strong>{selectedProvider.contractEnd}</strong>, unless earlier terminated in accordance with this Agreement.</p>
+                        </div>
+                        
+                        <div className="border-t border-slate-200 pt-4">
+                          <p className="font-semibold mb-2">3. COMPENSATION</p>
+                          <p>Network shall compensate Provider according to the following schedule:</p>
+                          <ul className="list-disc list-inside mt-2 ml-4">
+                            <li>Discount Type: <strong>{selectedProvider.discountType}</strong></li>
+                            <li>Discount Rate: <strong>{selectedProvider.discountRate}</strong></li>
+                          </ul>
+                        </div>
+                        
+                        <div className="border-t border-slate-200 pt-4">
+                          <p className="font-semibold mb-2">4. PROVIDER INFORMATION</p>
+                          <ul className="list-disc list-inside mt-2 ml-4">
+                            <li>Tax ID: {selectedProvider.taxId}</li>
+                            <li>Servicing NPI: {selectedProvider.servicingNpi}</li>
+                            <li>Pay-To NPI: {selectedProvider.payToNpi}</li>
+                            <li>Address: {selectedProvider.address}, {selectedProvider.city}, {selectedProvider.state} {selectedProvider.zip}</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="border-t border-slate-200 pt-4">
+                          <p className="font-semibold mb-2">5. OBLIGATIONS</p>
+                          <p>Provider agrees to provide healthcare services to Network members in accordance with all applicable laws, regulations, and professional standards.</p>
+                        </div>
+                        
+                        <div className="border-t border-slate-200 pt-4">
+                          <p className="font-semibold mb-2">6. TERMINATION</p>
+                          <p>Either party may terminate this Agreement with 90 days written notice. Immediate termination may occur for cause, including loss of licensure or material breach.</p>
+                        </div>
+                        
+                        <div className="border-t border-slate-200 pt-4 mt-8">
+                          <div className="grid grid-cols-2 gap-8 mt-4">
+                            <div>
+                              <p className="font-semibold">TrueCare Health Network</p>
+                              <div className="border-b border-slate-400 mt-8 mb-2"></div>
+                              <p className="text-xs text-slate-500">Authorized Signature</p>
+                            </div>
+                            <div>
+                              <p className="font-semibold">{selectedProvider.practiceName}</p>
+                              <div className="border-b border-slate-400 mt-8 mb-2"></div>
+                              <p className="text-xs text-slate-500">Provider Signature</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Modal Footer */}
               <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
-                <button
-                  onClick={() => setSelectedProvider(null)}
-                  className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
-                >
-                  Close
-                </button>
-                <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
-                  <Edit className="w-4 h-4" />
-                  Edit Provider
-                </button>
+                {isEditing ? (
+                  <>
+                    <button
+                      onClick={cancelEditing}
+                      className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={saveChanges}
+                      className="px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+                    >
+                      <Save className="w-4 h-4" />
+                      {showSaveSuccess ? "Saved!" : "Save Changes"}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => { setSelectedProvider(null); setIsEditing(false); }}
+                      className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Close
+                    </button>
+                    <button
+                      onClick={startEditing}
+                      className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                    >
+                      <Edit className="w-4 h-4" />
+                      Edit Provider
+                    </button>
+                  </>
+                )}
               </div>
             </motion.div>
           </div>
