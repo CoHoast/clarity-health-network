@@ -19,11 +19,12 @@ interface Provider {
   city: string;
   state: string;
   zip: string;
-  // Pay-To Address
+  // Pay-To Info
   payToAddress: string;
   payToCity: string;
   payToState: string;
   payToZip: string;
+  payToTaxId: string;
   phone: string;
   fax: string;
   email: string;
@@ -37,16 +38,16 @@ interface Provider {
 }
 
 const providers: Provider[] = [
-  { id: "PRV-001", practiceName: "Cleveland Family Medicine", servicingNpi: "1111111111", payToNpi: "1234567890", payToName: "Cleveland Family Medicine LLC", taxId: "34-1234567", type: "Group Practice", specialty: "Family Medicine", address: "123 Medical Center Dr", city: "Cleveland", state: "OH", zip: "44101", payToAddress: "P.O. Box 1234", payToCity: "Cleveland", payToState: "OH", payToZip: "44101", phone: "(555) 123-4567", fax: "(555) 123-4568", email: "info@clevelandfm.com", contactName: "Mary Johnson", status: "active", contractStart: "2024-01-15", contractEnd: "2027-01-14", discountType: "% Off Billed", discountRate: "35%", serviceOverrides: [{ service: "Office Visit", rate: "40%" }] },
-  { id: "PRV-002", practiceName: "Dr. Sarah Chen, MD", servicingNpi: "2345678901", payToNpi: "2345678901", payToName: "Sarah Chen MD PC", taxId: "34-2345678", type: "Individual", specialty: "Internal Medicine", address: "456 Health Blvd", city: "Lakewood", state: "OH", zip: "44107", payToAddress: "456 Health Blvd", payToCity: "Lakewood", payToState: "OH", payToZip: "44107", phone: "(555) 234-5678", fax: "(555) 234-5679", email: "dr.chen@medical.com", contactName: "Dr. Sarah Chen", status: "active", contractStart: "2025-03-01", contractEnd: "2028-02-28", discountType: "% of Medicare", discountRate: "115%" },
-  { id: "PRV-003", practiceName: "Metro Imaging Center", servicingNpi: "3333333333", payToNpi: "3456789012", payToName: "Metro Imaging Center Inc", taxId: "34-3456789", type: "Facility", specialty: "Diagnostic Imaging", address: "789 Imaging Way", city: "Cleveland", state: "OH", zip: "44102", payToAddress: "789 Imaging Way, Suite 100", payToCity: "Cleveland", payToState: "OH", payToZip: "44102", phone: "(555) 345-6789", fax: "(555) 345-6780", email: "scheduling@metroimaging.com", contactName: "Tom Richards", status: "active", contractStart: "2023-06-15", contractEnd: "2026-06-14", discountType: "Case Rate", discountRate: "See Schedule" },
-  { id: "PRV-004", practiceName: "Cleveland Orthopedic Associates", servicingNpi: "4444444444", payToNpi: "9999999991", payToName: "COA Billing Services LLC", taxId: "34-4567890", type: "Group Practice", specialty: "Orthopedics", address: "321 Bone & Joint Dr", city: "Beachwood", state: "OH", zip: "44122", payToAddress: "P.O. Box 5678", payToCity: "Beachwood", payToState: "OH", payToZip: "44122", phone: "(555) 456-7890", fax: "(555) 456-7891", email: "contact@clevortho.com", contactName: "James Miller", status: "active", contractStart: "2024-09-01", contractEnd: "2027-08-31", discountType: "% Off Billed", discountRate: "40%" },
-  { id: "PRV-005", practiceName: "Dr. James Wilson, DO", servicingNpi: "5678901234", payToNpi: "5678901234", payToName: "James Wilson DO", taxId: "34-5678901", type: "Individual", specialty: "Family Medicine", address: "654 Wellness Ave", city: "Mentor", state: "OH", zip: "44060", payToAddress: "654 Wellness Ave", payToCity: "Mentor", payToState: "OH", payToZip: "44060", phone: "(555) 567-8901", fax: "(555) 567-8902", email: "jwilson@healthcare.com", contactName: "Dr. James Wilson", status: "pending", contractStart: "Pending", contractEnd: "Pending", discountType: "TBD", discountRate: "TBD" },
-  { id: "PRV-006", practiceName: "Westlake Urgent Care", servicingNpi: "6666666666", payToNpi: "6789012345", payToName: "Westlake Urgent Care LLC", taxId: "34-6789012", type: "Facility", specialty: "Urgent Care", address: "987 Quick Care Blvd", city: "Westlake", state: "OH", zip: "44145", payToAddress: "987 Quick Care Blvd", payToCity: "Westlake", payToState: "OH", payToZip: "44145", phone: "(555) 678-9012", fax: "(555) 678-9013", email: "info@westlakeuc.com", contactName: "Patricia Lee", status: "active", contractStart: "2025-01-01", contractEnd: "2028-12-31", discountType: "% Off Billed", discountRate: "30%" },
-  { id: "PRV-007", practiceName: "Cleveland Cardiology Associates", servicingNpi: "9999999999", payToNpi: "9012345678", payToName: "CCA Management Group", taxId: "34-9012345", type: "Group Practice", specialty: "Cardiology", address: "369 Heart Center Dr", city: "Cleveland", state: "OH", zip: "44104", payToAddress: "P.O. Box 9012", payToCity: "Cleveland", payToState: "OH", payToZip: "44104", phone: "(555) 901-2345", fax: "(555) 901-2346", email: "info@clevcardio.com", contactName: "Robert Thompson", status: "active", contractStart: "2024-03-15", contractEnd: "2027-03-14", discountType: "% of Medicare", discountRate: "130%" },
-  { id: "PRV-008", practiceName: "Quest Diagnostics Cleveland", servicingNpi: "8888888888", payToNpi: "8901234567", payToName: "Quest Diagnostics Incorporated", taxId: "34-8901234", type: "Facility", specialty: "Laboratory", address: "258 Lab Services Rd", city: "Cleveland", state: "OH", zip: "44103", payToAddress: "Quest Diagnostics, P.O. Box 2001", payToCity: "Pittsburgh", payToState: "PA", payToZip: "15230", phone: "(555) 890-1234", fax: "(555) 890-1235", email: "clevelandlab@quest.com", contactName: "Lab Admin", status: "active", contractStart: "2023-01-01", contractEnd: "2026-12-31", discountType: "% Off Billed", discountRate: "45%" },
-  { id: "PRV-009", practiceName: "Physical Therapy Plus", servicingNpi: "1122334455", payToNpi: "1122334455", payToName: "Physical Therapy Plus Inc", taxId: "34-1122334", type: "Group Practice", specialty: "Physical Therapy", address: "852 Rehab Road", city: "Brooklyn", state: "OH", zip: "44144", payToAddress: "852 Rehab Road", payToCity: "Brooklyn", payToState: "OH", payToZip: "44144", phone: "(555) 112-2334", fax: "(555) 112-2335", email: "schedule@ptplus.com", contactName: "Linda White", status: "active", contractStart: "2024-05-01", contractEnd: "2027-04-30", discountType: "% of Medicare", discountRate: "100%" },
-  { id: "PRV-010", practiceName: "Inactive Provider LLC", servicingNpi: "9900112233", payToNpi: "9900112233", payToName: "Inactive Provider LLC", taxId: "34-9900112", type: "Group Practice", specialty: "General Surgery", address: "147 Old Surgery Ln", city: "Akron", state: "OH", zip: "44301", payToAddress: "147 Old Surgery Ln", payToCity: "Akron", payToState: "OH", payToZip: "44301", phone: "(555) 990-0112", fax: "(555) 990-0113", email: "contact@inactive.com", contactName: "N/A", status: "inactive", contractStart: "2019-01-01", contractEnd: "2022-12-31", discountType: "Terminated", discountRate: "N/A" },
+  { id: "PRV-001", practiceName: "Cleveland Family Medicine", servicingNpi: "1111111111", payToNpi: "1234567890", payToName: "Cleveland Family Medicine LLC", taxId: "34-1234567", type: "Group Practice", specialty: "Family Medicine", address: "123 Medical Center Dr", city: "Cleveland", state: "OH", zip: "44101", payToAddress: "P.O. Box 1234", payToCity: "Cleveland", payToState: "OH", payToZip: "44101", payToTaxId: "34-1234567", phone: "(555) 123-4567", fax: "(555) 123-4568", email: "info@clevelandfm.com", contactName: "Mary Johnson", status: "active", contractStart: "2024-01-15", contractEnd: "2027-01-14", discountType: "% Off Billed", discountRate: "35%", serviceOverrides: [{ service: "Office Visit", rate: "40%" }] },
+  { id: "PRV-002", practiceName: "Dr. Sarah Chen, MD", servicingNpi: "2345678901", payToNpi: "2345678901", payToName: "Sarah Chen MD PC", taxId: "34-2345678", type: "Individual", specialty: "Internal Medicine", address: "456 Health Blvd", city: "Lakewood", state: "OH", zip: "44107", payToAddress: "456 Health Blvd", payToCity: "Lakewood", payToState: "OH", payToZip: "44107", payToTaxId: "34-2345678", phone: "(555) 234-5678", fax: "(555) 234-5679", email: "dr.chen@medical.com", contactName: "Dr. Sarah Chen", status: "active", contractStart: "2025-03-01", contractEnd: "2028-02-28", discountType: "% of Medicare", discountRate: "115%" },
+  { id: "PRV-003", practiceName: "Metro Imaging Center", servicingNpi: "3333333333", payToNpi: "3456789012", payToName: "Metro Imaging Center Inc", taxId: "34-3456789", type: "Facility", specialty: "Diagnostic Imaging", address: "789 Imaging Way", city: "Cleveland", state: "OH", zip: "44102", payToAddress: "789 Imaging Way, Suite 100", payToCity: "Cleveland", payToState: "OH", payToZip: "44102", payToTaxId: "34-3456789", phone: "(555) 345-6789", fax: "(555) 345-6780", email: "scheduling@metroimaging.com", contactName: "Tom Richards", status: "active", contractStart: "2023-06-15", contractEnd: "2026-06-14", discountType: "Case Rate", discountRate: "See Schedule" },
+  { id: "PRV-004", practiceName: "Cleveland Orthopedic Associates", servicingNpi: "4444444444", payToNpi: "9999999991", payToName: "COA Billing Services LLC", taxId: "34-4567890", type: "Group Practice", specialty: "Orthopedics", address: "321 Bone & Joint Dr", city: "Beachwood", state: "OH", zip: "44122", payToAddress: "P.O. Box 5678", payToCity: "Beachwood", payToState: "OH", payToZip: "44122", payToTaxId: "34-9999991", phone: "(555) 456-7890", fax: "(555) 456-7891", email: "contact@clevortho.com", contactName: "James Miller", status: "active", contractStart: "2024-09-01", contractEnd: "2027-08-31", discountType: "% Off Billed", discountRate: "40%" },
+  { id: "PRV-005", practiceName: "Dr. James Wilson, DO", servicingNpi: "5678901234", payToNpi: "5678901234", payToName: "James Wilson DO", taxId: "34-5678901", type: "Individual", specialty: "Family Medicine", address: "654 Wellness Ave", city: "Mentor", state: "OH", zip: "44060", payToAddress: "654 Wellness Ave", payToCity: "Mentor", payToState: "OH", payToZip: "44060", payToTaxId: "34-5678901", phone: "(555) 567-8901", fax: "(555) 567-8902", email: "jwilson@healthcare.com", contactName: "Dr. James Wilson", status: "pending", contractStart: "Pending", contractEnd: "Pending", discountType: "TBD", discountRate: "TBD" },
+  { id: "PRV-006", practiceName: "Westlake Urgent Care", servicingNpi: "6666666666", payToNpi: "6789012345", payToName: "Westlake Urgent Care LLC", taxId: "34-6789012", type: "Facility", specialty: "Urgent Care", address: "987 Quick Care Blvd", city: "Westlake", state: "OH", zip: "44145", payToAddress: "987 Quick Care Blvd", payToCity: "Westlake", payToState: "OH", payToZip: "44145", payToTaxId: "34-6789012", phone: "(555) 678-9012", fax: "(555) 678-9013", email: "info@westlakeuc.com", contactName: "Patricia Lee", status: "active", contractStart: "2025-01-01", contractEnd: "2028-12-31", discountType: "% Off Billed", discountRate: "30%" },
+  { id: "PRV-007", practiceName: "Cleveland Cardiology Associates", servicingNpi: "9999999999", payToNpi: "9012345678", payToName: "CCA Management Group", taxId: "34-9012345", type: "Group Practice", specialty: "Cardiology", address: "369 Heart Center Dr", city: "Cleveland", state: "OH", zip: "44104", payToAddress: "P.O. Box 9012", payToCity: "Cleveland", payToState: "OH", payToZip: "44104", payToTaxId: "34-9012000", phone: "(555) 901-2345", fax: "(555) 901-2346", email: "info@clevcardio.com", contactName: "Robert Thompson", status: "active", contractStart: "2024-03-15", contractEnd: "2027-03-14", discountType: "% of Medicare", discountRate: "130%" },
+  { id: "PRV-008", practiceName: "Quest Diagnostics Cleveland", servicingNpi: "8888888888", payToNpi: "8901234567", payToName: "Quest Diagnostics Incorporated", taxId: "34-8901234", type: "Facility", specialty: "Laboratory", address: "258 Lab Services Rd", city: "Cleveland", state: "OH", zip: "44103", payToAddress: "Quest Diagnostics, P.O. Box 2001", payToCity: "Pittsburgh", payToState: "PA", payToZip: "15230", payToTaxId: "16-1210695", phone: "(555) 890-1234", fax: "(555) 890-1235", email: "clevelandlab@quest.com", contactName: "Lab Admin", status: "active", contractStart: "2023-01-01", contractEnd: "2026-12-31", discountType: "% Off Billed", discountRate: "45%" },
+  { id: "PRV-009", practiceName: "Physical Therapy Plus", servicingNpi: "1122334455", payToNpi: "1122334455", payToName: "Physical Therapy Plus Inc", taxId: "34-1122334", type: "Group Practice", specialty: "Physical Therapy", address: "852 Rehab Road", city: "Brooklyn", state: "OH", zip: "44144", payToAddress: "852 Rehab Road", payToCity: "Brooklyn", payToState: "OH", payToZip: "44144", payToTaxId: "34-1122334", phone: "(555) 112-2334", fax: "(555) 112-2335", email: "schedule@ptplus.com", contactName: "Linda White", status: "active", contractStart: "2024-05-01", contractEnd: "2027-04-30", discountType: "% of Medicare", discountRate: "100%" },
+  { id: "PRV-010", practiceName: "Inactive Provider LLC", servicingNpi: "9900112233", payToNpi: "9900112233", payToName: "Inactive Provider LLC", taxId: "34-9900112", type: "Group Practice", specialty: "General Surgery", address: "147 Old Surgery Ln", city: "Akron", state: "OH", zip: "44301", payToAddress: "147 Old Surgery Ln", payToCity: "Akron", payToState: "OH", payToZip: "44301", payToTaxId: "34-9900112", phone: "(555) 990-0112", fax: "(555) 990-0113", email: "contact@inactive.com", contactName: "N/A", status: "inactive", contractStart: "2019-01-01", contractEnd: "2022-12-31", discountType: "Terminated", discountRate: "N/A" },
 ];
 
 const statusOptions = ["All", "Active", "Pending", "Inactive"];
@@ -58,7 +59,7 @@ export default function ProvidersPage() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All Types");
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
-  const [modalTab, setModalTab] = useState<"details" | "contract">("details");
+  const [modalTab, setModalTab] = useState<"details" | "payto" | "contract">("details");
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState<Provider | null>(null);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
@@ -277,6 +278,15 @@ export default function ProvidersPage() {
                   }`}
                 >
                   Provider Details
+                </button>
+                <button
+                  onClick={() => setModalTab("payto")}
+                  className={`px-4 py-2 font-medium rounded-t-lg transition-colors flex items-center gap-2 ${
+                    modalTab === "payto" ? "bg-slate-700 text-white" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <CreditCard className="w-4 h-4" />
+                  Pay-To Info
                 </button>
                 <button
                   onClick={() => setModalTab("contract")}
@@ -520,9 +530,9 @@ export default function ProvidersPage() {
                       <div className="bg-slate-700/30 rounded-lg p-4">
                         <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                           <CreditCard className="w-4 h-4 text-teal-400" />
-                          NPI & Tax Information
+                          Provider Information
                         </h3>
-                        <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="grid grid-cols-2 gap-4">
                           <div>
                             <p className="text-xs text-slate-500 mb-1">Servicing Provider NPI</p>
                             <p className="text-white font-mono text-lg">{selectedProvider.servicingNpi}</p>
@@ -532,32 +542,16 @@ export default function ProvidersPage() {
                             <p className="text-white font-mono text-lg">{selectedProvider.taxId}</p>
                           </div>
                         </div>
-                        <div className="pt-3 border-t border-slate-600">
-                          <p className="text-xs text-slate-500 mb-1">Pay-To Name</p>
-                          <p className="text-cyan-300 text-lg mb-2">{selectedProvider.payToName}</p>
-                          <p className="text-xs text-slate-500 mb-1">Pay-To NPI</p>
-                          <p className="text-cyan-400 font-mono">{selectedProvider.payToNpi}</p>
-                        </div>
                       </div>
 
-                      {/* Addresses */}
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div className="bg-slate-700/30 rounded-lg p-4">
-                          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-teal-400" />
-                            Location Address
-                          </h3>
-                          <p className="text-slate-300">{selectedProvider.address}</p>
-                          <p className="text-slate-300">{selectedProvider.city}, {selectedProvider.state} {selectedProvider.zip}</p>
-                        </div>
-                        <div className="bg-slate-700/30 rounded-lg p-4">
-                          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                            <CreditCard className="w-4 h-4 text-cyan-400" />
-                            Pay-To Address
-                          </h3>
-                          <p className="text-cyan-300">{selectedProvider.payToAddress}</p>
-                          <p className="text-cyan-300">{selectedProvider.payToCity}, {selectedProvider.payToState} {selectedProvider.payToZip}</p>
-                        </div>
+                      {/* Location */}
+                      <div className="bg-slate-700/30 rounded-lg p-4">
+                        <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                          <MapPin className="w-4 h-4 text-teal-400" />
+                          Location Address
+                        </h3>
+                        <p className="text-slate-300">{selectedProvider.address}</p>
+                        <p className="text-slate-300">{selectedProvider.city}, {selectedProvider.state} {selectedProvider.zip}</p>
                       </div>
 
                       {/* Contact */}
@@ -623,6 +617,50 @@ export default function ProvidersPage() {
                       </div>
                     </div>
                   )
+                ) : modalTab === "payto" ? (
+                  /* Pay-To Info Tab */
+                  <div className="space-y-6">
+                    {/* Pay-To Entity */}
+                    <div className="bg-slate-700/30 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <CreditCard className="w-5 h-5 text-cyan-400" />
+                        Pay-To Entity
+                      </h3>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                          <p className="text-xs text-slate-500 mb-1">Pay-To Name</p>
+                          <p className="text-xl text-cyan-300 font-medium">{selectedProvider.payToName}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-500 mb-1">Pay-To NPI</p>
+                          <p className="text-xl text-white font-mono">{selectedProvider.payToNpi}</p>
+                        </div>
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-slate-600">
+                        <p className="text-xs text-slate-500 mb-1">Pay-To Tax ID / EIN</p>
+                        <p className="text-lg text-white font-mono">{selectedProvider.payToTaxId}</p>
+                      </div>
+                    </div>
+
+                    {/* Pay-To Address */}
+                    <div className="bg-slate-700/30 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <MapPin className="w-5 h-5 text-cyan-400" />
+                        Pay-To Address
+                      </h3>
+                      <div className="space-y-2">
+                        <p className="text-lg text-cyan-300">{selectedProvider.payToAddress}</p>
+                        <p className="text-lg text-cyan-300">{selectedProvider.payToCity}, {selectedProvider.payToState} {selectedProvider.payToZip}</p>
+                      </div>
+                    </div>
+
+                    {/* Note */}
+                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                      <p className="text-sm text-amber-300">
+                        <strong>Note:</strong> All payments will be sent to the Pay-To entity listed above. Ensure this information is accurate to avoid payment delays.
+                      </p>
+                    </div>
+                  </div>
                 ) : (
                   /* Contract Document Tab */
                   <div className="space-y-4">
