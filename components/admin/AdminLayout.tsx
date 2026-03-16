@@ -12,13 +12,13 @@ import {
   DollarSign,
   BarChart3,
   Shield,
-  Brain,
   Settings,
   LogOut,
   Menu,
   X,
   Bell,
   ChevronDown,
+  ChevronRight,
   Zap,
   FileSignature,
   UserCheck,
@@ -29,10 +29,25 @@ import {
   Sun,
   Moon,
   BadgeCheck,
+  MessageSquare,
+  Send,
 } from "lucide-react";
 import AdminPulseChat from "@/components/pulse/AdminPulseChat";
 
-const navigationGroups = [
+interface NavItem {
+  name: string;
+  href: string;
+  icon: React.ElementType;
+}
+
+interface NavGroup {
+  label: string | null;
+  icon?: React.ElementType;
+  items: NavItem[];
+  collapsible?: boolean;
+}
+
+const navigationGroups: NavGroup[] = [
   {
     label: null,
     items: [
@@ -44,11 +59,12 @@ const navigationGroups = [
     items: [
       { name: "All Providers", href: "/admin/providers", icon: Building2 },
       { name: "Add Provider", href: "/admin/providers/new", icon: Users },
-      { name: "Network Map", href: "/admin/network-map", icon: Globe },
     ],
   },
   {
     label: "Contracts",
+    icon: FileSignature,
+    collapsible: true,
     items: [
       { name: "Active Contracts", href: "/admin/contracts", icon: FileSignature },
       { name: "Expiring Soon", href: "/admin/contracts/expiring", icon: AlertTriangle },
@@ -57,13 +73,17 @@ const navigationGroups = [
   },
   {
     label: "Rates & Discounts",
+    icon: DollarSign,
+    collapsible: true,
     items: [
       { name: "Discount Schedules", href: "/admin/discounts", icon: DollarSign },
-      { name: "Service Rate Matrix", href: "/admin/fee-schedules", icon: Calculator },
+      { name: "Fee Schedules", href: "/admin/fee-schedules", icon: Calculator },
     ],
   },
   {
     label: "Credentialing",
+    icon: BadgeCheck,
+    collapsible: true,
     items: [
       { name: "Applications", href: "/admin/credentialing", icon: BadgeCheck },
       { name: "Verification Status", href: "/admin/credentialing/verification", icon: UserCheck },
@@ -71,13 +91,17 @@ const navigationGroups = [
   },
   {
     label: "Communications",
+    icon: MessageSquare,
+    collapsible: true,
     items: [
       { name: "Provider Messages", href: "/admin/communications", icon: Bell },
-      { name: "Outreach", href: "/admin/communications?tab=outreach", icon: Users },
+      { name: "Outreach", href: "/admin/outreach", icon: Send },
     ],
   },
   {
     label: "Reports",
+    icon: BarChart3,
+    collapsible: true,
     items: [
       { name: "Network Analytics", href: "/admin/analytics", icon: BarChart3 },
       { name: "Export Data", href: "/admin/reports", icon: FileText },
@@ -85,6 +109,8 @@ const navigationGroups = [
   },
   {
     label: "Settings",
+    icon: Settings,
+    collapsible: true,
     items: [
       { name: "Organization", href: "/admin/settings", icon: Settings },
       { name: "Team & Permissions", href: "/admin/users", icon: Users },
@@ -101,6 +127,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
@@ -114,10 +141,32 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (saved) setIsDark(saved === "dark");
   }, []);
 
+  // Auto-expand section if current page is in it
+  useEffect(() => {
+    navigationGroups.forEach(group => {
+      if (group.collapsible && group.label) {
+        const isInSection = group.items.some(item => 
+          pathname === item.href || (item.href !== "/admin" && pathname?.startsWith(item.href.split("?")[0]))
+        );
+        if (isInSection && !expandedSections.includes(group.label)) {
+          setExpandedSections(prev => [...prev, group.label!]);
+        }
+      }
+    });
+  }, [pathname]);
+
   const toggleTheme = () => {
     const newTheme = !isDark;
     setIsDark(newTheme);
     localStorage.setItem("admin-theme", newTheme ? "dark" : "light");
+  };
+
+  const toggleSection = (label: string) => {
+    setExpandedSections(prev => 
+      prev.includes(label) 
+        ? prev.filter(l => l !== label)
+        : [...prev, label]
+    );
   };
 
   // Theme classes
@@ -188,37 +237,81 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Navigation */}
-        <nav className="p-3 space-y-4 flex-1 overflow-y-auto max-h-[calc(100vh-240px)]">
-          {navigationGroups.map((group, groupIndex) => (
-            <div key={groupIndex}>
-              {group.label && (
-                <p className="px-3 mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  {group.label}
-                </p>
-              )}
-              <div className="space-y-1">
-                {group.items.map((item) => {
-                  const isActive = pathname === item.href || 
-                    (item.href !== "/admin" && pathname?.startsWith(item.href));
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setSidebarOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        isActive
-                          ? "bg-teal-600/20 text-cyan-500"
-                          : "text-slate-400 hover:bg-slate-800 hover:text-white"
-                      }`}
+        <nav className="p-3 space-y-1 flex-1 overflow-y-auto max-h-[calc(100vh-240px)]">
+          {navigationGroups.map((group, groupIndex) => {
+            const isExpanded = group.label ? expandedSections.includes(group.label) : true;
+            const hasActiveChild = group.items.some(item => 
+              pathname === item.href || (item.href !== "/admin" && pathname?.startsWith(item.href.split("?")[0]))
+            );
+            const GroupIcon = group.icon;
+            
+            return (
+              <div key={groupIndex} className={group.label ? "mt-2" : ""}>
+                {/* Non-collapsible section label OR collapsible header */}
+                {group.label && !group.collapsible && (
+                  <p className="px-3 mb-2 mt-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    {group.label}
+                  </p>
+                )}
+                
+                {/* Collapsible section header */}
+                {group.label && group.collapsible && (
+                  <button
+                    onClick={() => toggleSection(group.label!)}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      hasActiveChild 
+                        ? "text-cyan-400" 
+                        : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      {GroupIcon && <GroupIcon className={`w-5 h-5 ${hasActiveChild ? "text-cyan-500" : "text-slate-500"}`} />}
+                      <span>{group.label}</span>
+                    </div>
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
                     >
-                      <item.icon className={`w-5 h-5 ${isActive ? "text-cyan-500" : "text-slate-500"}`} />
-                      {item.name}
-                    </Link>
-                  );
-                })}
+                      <ChevronDown className="w-4 h-4" />
+                    </motion.div>
+                  </button>
+                )}
+
+                {/* Navigation items */}
+                <AnimatePresence initial={false}>
+                  {(!group.collapsible || isExpanded) && (
+                    <motion.div
+                      initial={group.collapsible ? { height: 0, opacity: 0 } : false}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={group.collapsible ? { height: 0, opacity: 0 } : undefined}
+                      transition={{ duration: 0.2 }}
+                      className={`space-y-1 overflow-hidden ${group.collapsible ? "ml-4 mt-1" : ""}`}
+                    >
+                      {group.items.map((item) => {
+                        const isActive = pathname === item.href || 
+                          (item.href !== "/admin" && pathname?.startsWith(item.href.split("?")[0]));
+                        return (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            onClick={() => setSidebarOpen(false)}
+                            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              isActive
+                                ? "bg-teal-600/20 text-cyan-500"
+                                : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                            }`}
+                          >
+                            <item.icon className={`w-4 h-4 ${isActive ? "text-cyan-500" : "text-slate-500"}`} />
+                            {item.name}
+                          </Link>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </nav>
 
         {/* Bottom section */}
