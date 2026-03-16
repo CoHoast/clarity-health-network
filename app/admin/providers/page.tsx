@@ -876,6 +876,7 @@ export default function ProvidersPage() {
                           Pay-To Address
                         </h3>
                         <div className="space-y-2">
+                          <p className="text-lg text-white font-medium">{selectedPractice.payToName}</p>
                           <p className="text-lg text-cyan-300">{selectedPractice.payToAddress}</p>
                           <p className="text-lg text-cyan-300">{selectedPractice.payToCity}, {selectedPractice.payToState} {selectedPractice.payToZip}</p>
                           <p className="text-cyan-400">{selectedPractice.payToCountry}</p>
