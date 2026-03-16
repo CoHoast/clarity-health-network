@@ -65,6 +65,15 @@ interface Provider {
   licenseNumber: string;
   acceptingNewPatients: boolean;
   languages: string[]; // ISO 639-3 codes (eng, spa, cmn, etc.)
+  clinicHours: {
+    monday: string;
+    tuesday: string;
+    wednesday: string;
+    thursday: string;
+    friday: string;
+    saturday: string;
+    sunday: string;
+  };
 }
 
 // ISO 639-3 language code mapping
@@ -282,31 +291,31 @@ const practices: Practice[] = [
 
 const providers: Provider[] = [
   // Cleveland Family Medicine providers
-  { id: "PRV-001", practiceId: "PRC-001", name: "Robert Smith", credential: "MD", npi: "1111111111", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-123456", acceptingNewPatients: true, languages: ["eng"] },
-  { id: "PRV-002", practiceId: "PRC-001", name: "Jennifer Adams", credential: "MD", npi: "1111111112", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "207QA0505X", secondaryTaxonomyDesc: "Adult Medicine", licenseState: "OH", licenseNumber: "MD-35-123457", acceptingNewPatients: true, languages: ["eng", "spa"] },
-  { id: "PRV-003", practiceId: "PRC-001", name: "Michael Chen", credential: "DO", npi: "1111111113", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-123458", acceptingNewPatients: false, languages: ["eng", "cmn", "yue"] },
-  { id: "PRV-004", practiceId: "PRC-001", name: "Sarah Williams", credential: "NP", npi: "1111111114", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-123459", acceptingNewPatients: true, languages: ["eng"] },
-
+  { id: "PRV-001", practiceId: "PRC-001", name: "Robert Smith", credential: "MD", npi: "1111111111", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-123456", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-002", practiceId: "PRC-001", name: "Jennifer Adams", credential: "MD", npi: "1111111112", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "207QA0505X", secondaryTaxonomyDesc: "Adult Medicine", licenseState: "OH", licenseNumber: "MD-35-123457", acceptingNewPatients: true, languages: ["eng", "spa"], clinicHours: { monday: "9:00 AM - 6:00 PM", tuesday: "9:00 AM - 6:00 PM", wednesday: "Closed", thursday: "9:00 AM - 6:00 PM", friday: "9:00 AM - 6:00 PM", saturday: "9:00 AM - 12:00 PM", sunday: "Closed" } },
+  { id: "PRV-003", practiceId: "PRC-001", name: "Michael Chen", credential: "DO", npi: "1111111113", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-123458", acceptingNewPatients: false, languages: ["eng", "cmn", "yue"], clinicHours: { monday: "7:00 AM - 4:00 PM", tuesday: "7:00 AM - 4:00 PM", wednesday: "7:00 AM - 4:00 PM", thursday: "7:00 AM - 4:00 PM", friday: "7:00 AM - 12:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-004", practiceId: "PRC-001", name: "Sarah Williams", credential: "NP", npi: "1111111114", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-123459", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 5:00 PM", saturday: "Closed", sunday: "Closed" } },
+  
   // Cleveland Orthopedic Associates providers
-  { id: "PRV-005", practiceId: "PRC-002", name: "James Miller", credential: "MD", npi: "4444444441", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XS0114X", secondaryTaxonomyDesc: "Sports Medicine", licenseState: "OH", licenseNumber: "MD-35-456789", acceptingNewPatients: true, languages: ["eng"] },
-  { id: "PRV-006", practiceId: "PRC-002", name: "Lisa Thompson", credential: "MD", npi: "4444444442", gender: "Female", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XP3100X", secondaryTaxonomyDesc: "Pediatric Orthopedics", licenseState: "OH", licenseNumber: "MD-35-456790", acceptingNewPatients: true, languages: ["eng", "fra"] },
-  { id: "PRV-007", practiceId: "PRC-002", name: "David Park", credential: "MD", npi: "4444444443", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XX0004X", secondaryTaxonomyDesc: "Spine Surgery", licenseState: "OH", licenseNumber: "MD-35-456791", acceptingNewPatients: false, languages: ["eng", "kor"] },
-  { id: "PRV-008", practiceId: "PRC-002", name: "Amy Rodriguez", credential: "PA", npi: "4444444444", gender: "Female", specialty: "Orthopedics", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-456792", acceptingNewPatients: true, languages: ["eng", "spa"] },
-
+  { id: "PRV-005", practiceId: "PRC-002", name: "James Miller", credential: "MD", npi: "4444444441", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XS0114X", secondaryTaxonomyDesc: "Sports Medicine", licenseState: "OH", licenseNumber: "MD-35-456789", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "8:00 AM - 4:00 PM", tuesday: "Surgery Day", wednesday: "8:00 AM - 4:00 PM", thursday: "Surgery Day", friday: "8:00 AM - 12:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-006", practiceId: "PRC-002", name: "Lisa Thompson", credential: "MD", npi: "4444444442", gender: "Female", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XP3100X", secondaryTaxonomyDesc: "Pediatric Orthopedics", licenseState: "OH", licenseNumber: "MD-35-456790", acceptingNewPatients: true, languages: ["eng", "fra"], clinicHours: { monday: "9:00 AM - 5:00 PM", tuesday: "9:00 AM - 5:00 PM", wednesday: "Surgery Day", thursday: "9:00 AM - 5:00 PM", friday: "9:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-007", practiceId: "PRC-002", name: "David Park", credential: "MD", npi: "4444444443", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XX0004X", secondaryTaxonomyDesc: "Spine Surgery", licenseState: "OH", licenseNumber: "MD-35-456791", acceptingNewPatients: false, languages: ["eng", "kor"], clinicHours: { monday: "Surgery Day", tuesday: "8:00 AM - 4:00 PM", wednesday: "Surgery Day", thursday: "8:00 AM - 4:00 PM", friday: "8:00 AM - 12:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-008", practiceId: "PRC-002", name: "Amy Rodriguez", credential: "PA", npi: "4444444444", gender: "Female", specialty: "Orthopedics", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-456792", acceptingNewPatients: true, languages: ["eng", "spa"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 5:00 PM", saturday: "Closed", sunday: "Closed" } },
+  
   // Metro Imaging Center providers
-  { id: "PRV-009", practiceId: "PRC-003", name: "Thomas Richards", credential: "MD", npi: "3333333331", gender: "Male", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-345678", acceptingNewPatients: true, languages: ["eng"] },
-  { id: "PRV-010", practiceId: "PRC-003", name: "Karen Lee", credential: "MD", npi: "3333333332", gender: "Female", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "2085N0700X", secondaryTaxonomyDesc: "Neuroradiology", licenseState: "OH", licenseNumber: "MD-35-345679", acceptingNewPatients: true, languages: ["eng", "kor", "jpn"] },
-
+  { id: "PRV-009", practiceId: "PRC-003", name: "Thomas Richards", credential: "MD", npi: "3333333331", gender: "Male", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-345678", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "7:00 AM - 3:00 PM", tuesday: "7:00 AM - 3:00 PM", wednesday: "7:00 AM - 3:00 PM", thursday: "7:00 AM - 3:00 PM", friday: "7:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-010", practiceId: "PRC-003", name: "Karen Lee", credential: "MD", npi: "3333333332", gender: "Female", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "2085N0700X", secondaryTaxonomyDesc: "Neuroradiology", licenseState: "OH", licenseNumber: "MD-35-345679", acceptingNewPatients: true, languages: ["eng", "kor", "jpn"], clinicHours: { monday: "10:00 AM - 6:00 PM", tuesday: "10:00 AM - 6:00 PM", wednesday: "10:00 AM - 6:00 PM", thursday: "10:00 AM - 6:00 PM", friday: "10:00 AM - 6:00 PM", saturday: "8:00 AM - 12:00 PM", sunday: "Closed" } },
+  
   // Cleveland Cardiology Associates providers
-  { id: "PRV-011", practiceId: "PRC-004", name: "Robert Thompson", credential: "MD", npi: "9999999991", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RI0011X", secondaryTaxonomyDesc: "Interventional Cardiology", licenseState: "OH", licenseNumber: "MD-35-901234", acceptingNewPatients: false, languages: ["eng"] },
-  { id: "PRV-012", practiceId: "PRC-004", name: "Michelle Wang", credential: "MD", npi: "9999999992", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RE0101X", secondaryTaxonomyDesc: "Electrophysiology", licenseState: "OH", licenseNumber: "MD-35-901235", acceptingNewPatients: true, languages: ["eng", "cmn"] },
-  { id: "PRV-013", practiceId: "PRC-004", name: "Daniel Kim", credential: "MD", npi: "9999999993", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-901236", acceptingNewPatients: true, languages: ["eng", "kor"] },
-  { id: "PRV-014", practiceId: "PRC-004", name: "Emily Foster", credential: "NP", npi: "9999999994", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-901237", acceptingNewPatients: true, languages: ["eng", "spa"] },
-
+  { id: "PRV-011", practiceId: "PRC-004", name: "Robert Thompson", credential: "MD", npi: "9999999991", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RI0011X", secondaryTaxonomyDesc: "Interventional Cardiology", licenseState: "OH", licenseNumber: "MD-35-901234", acceptingNewPatients: false, languages: ["eng"], clinicHours: { monday: "8:00 AM - 4:00 PM", tuesday: "Cath Lab", wednesday: "8:00 AM - 4:00 PM", thursday: "Cath Lab", friday: "8:00 AM - 12:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-012", practiceId: "PRC-004", name: "Michelle Wang", credential: "MD", npi: "9999999992", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RE0101X", secondaryTaxonomyDesc: "Electrophysiology", licenseState: "OH", licenseNumber: "MD-35-901235", acceptingNewPatients: true, languages: ["eng", "cmn"], clinicHours: { monday: "9:00 AM - 5:00 PM", tuesday: "9:00 AM - 5:00 PM", wednesday: "EP Lab", thursday: "9:00 AM - 5:00 PM", friday: "9:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-013", practiceId: "PRC-004", name: "Daniel Kim", credential: "MD", npi: "9999999993", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-901236", acceptingNewPatients: true, languages: ["eng", "kor"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 5:00 PM", saturday: "Closed", sunday: "Closed" } },
+  { id: "PRV-014", practiceId: "PRC-004", name: "Emily Foster", credential: "NP", npi: "9999999994", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-901237", acceptingNewPatients: true, languages: ["eng", "spa"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
+  
   // Westlake Urgent Care providers
-  { id: "PRV-015", practiceId: "PRC-005", name: "Patricia Lee", credential: "MD", npi: "6666666661", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-678901", acceptingNewPatients: true, languages: ["eng", "vie"] },
-  { id: "PRV-016", practiceId: "PRC-005", name: "Mark Johnson", credential: "DO", npi: "6666666662", gender: "Male", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-678902", acceptingNewPatients: true, languages: ["eng"] },
-  { id: "PRV-017", practiceId: "PRC-005", name: "Jessica Brown", credential: "PA", npi: "6666666663", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-678903", acceptingNewPatients: true, languages: ["eng", "spa", "por"] },
+  { id: "PRV-015", practiceId: "PRC-005", name: "Patricia Lee", credential: "MD", npi: "6666666661", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-678901", acceptingNewPatients: true, languages: ["eng", "vie"], clinicHours: { monday: "8:00 AM - 8:00 PM", tuesday: "8:00 AM - 8:00 PM", wednesday: "Closed", thursday: "8:00 AM - 8:00 PM", friday: "8:00 AM - 8:00 PM", saturday: "9:00 AM - 5:00 PM", sunday: "9:00 AM - 5:00 PM" } },
+  { id: "PRV-016", practiceId: "PRC-005", name: "Mark Johnson", credential: "DO", npi: "6666666662", gender: "Male", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-678902", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "Closed", tuesday: "8:00 AM - 8:00 PM", wednesday: "8:00 AM - 8:00 PM", thursday: "8:00 AM - 8:00 PM", friday: "8:00 AM - 8:00 PM", saturday: "9:00 AM - 5:00 PM", sunday: "Closed" } },
+  { id: "PRV-017", practiceId: "PRC-005", name: "Jessica Brown", credential: "PA", npi: "6666666663", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-678903", acceptingNewPatients: true, languages: ["eng", "spa", "por"], clinicHours: { monday: "10:00 AM - 8:00 PM", tuesday: "10:00 AM - 8:00 PM", wednesday: "10:00 AM - 8:00 PM", thursday: "Closed", friday: "10:00 AM - 8:00 PM", saturday: "10:00 AM - 6:00 PM", sunday: "10:00 AM - 6:00 PM" } },
 ];
 
 const statusOptions = ["All", "Active", "Pending", "Inactive"];
@@ -338,6 +347,15 @@ export default function ProvidersPage() {
     gender: "",
     acceptingNewPatients: true,
     languages: ["eng"],
+    clinicHours: {
+      monday: "8:00 AM - 5:00 PM",
+      tuesday: "8:00 AM - 5:00 PM",
+      wednesday: "8:00 AM - 5:00 PM",
+      thursday: "8:00 AM - 5:00 PM",
+      friday: "8:00 AM - 5:00 PM",
+      saturday: "Closed",
+      sunday: "Closed",
+    },
   });
 
   const getProvidersForPractice = (practiceId: string) => {
@@ -1034,6 +1052,28 @@ export default function ProvidersPage() {
                   </div>
                 </div>
 
+                {/* Clinic Hours */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-white">Clinic Hours</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map(day => (
+                      <div key={day} className="flex items-center gap-2">
+                        <span className="text-slate-400 text-sm w-12 capitalize">{day.slice(0, 3)}</span>
+                        <input
+                          type="text"
+                          placeholder="e.g. 8:00 AM - 5:00 PM"
+                          value={(newProvider.clinicHours as any)?.[day] || ""}
+                          onChange={(e) => setNewProvider({
+                            ...newProvider,
+                            clinicHours: { ...(newProvider.clinicHours as any), [day]: e.target.value }
+                          })}
+                          className="flex-1 px-2 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Languages */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Languages Spoken (ISO 639-3 codes)</h3>
@@ -1161,6 +1201,18 @@ export default function ProvidersPage() {
                       <span key={lang} className="px-2 py-1 bg-cyan-500/20 text-cyan-400 text-sm rounded-full">
                         {languageNames[lang] || lang} ({lang.toUpperCase()})
                       </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-slate-700/30 rounded-lg p-3">
+                  <p className="text-xs text-slate-500 mb-2">Clinic Hours</p>
+                  <div className="grid grid-cols-2 gap-1 text-sm">
+                    {Object.entries(selectedProvider.clinicHours).map(([day, hours]) => (
+                      <div key={day} className="flex justify-between">
+                        <span className="text-slate-400 capitalize">{day.slice(0, 3)}</span>
+                        <span className={hours === "Closed" ? "text-red-400" : "text-white"}>{hours}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
