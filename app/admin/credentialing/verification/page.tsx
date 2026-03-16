@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { UserCheck, Search, CheckCircle, XCircle, Clock, AlertTriangle, RefreshCw, Eye, ExternalLink, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/components/admin/ThemeContext";
 
 interface VerificationRecord {
   id: string;
@@ -35,6 +36,7 @@ const statusOptions = ["All Statuses", "Verified", "Pending", "Failed", "Expirin
 const typeOptions = ["All Types", "Medical License", "DEA Registration", "Board Certification", "NPI Validation", "Liability Insurance", "Facility License", "CLIA Certificate"];
 
 export default function VerificationStatusPage() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
   const [typeFilter, setTypeFilter] = useState("All Types");
@@ -86,50 +88,33 @@ export default function VerificationStatusPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <CheckCircle className="w-5 h-5" style={{ color: '#22d3ee' }} />
+        {[
+          { icon: CheckCircle, value: verifiedCount, label: "Verified" },
+          { icon: Clock, value: pendingCount, label: "Pending" },
+          { icon: XCircle, value: failedCount, label: "Failed" },
+          { icon: AlertTriangle, value: expiringCount, label: "Expiring Soon" },
+        ].map((stat, i) => {
+          const Icon = stat.icon;
+          return (
+            <div key={i} className={`rounded-xl p-5 shadow-lg ${
+              isDark 
+                ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
+                : "bg-cyan-600"
+            }`}>
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                  isDark ? "bg-cyan-500/20 border border-cyan-500/30" : "bg-white/20"
+                }`}>
+                  <Icon className="w-5 h-5" style={{ color: 'white' }} />
+                </div>
+                <div>
+                  <p className="text-3xl font-bold" style={{ color: 'white' }}>{stat.value}</p>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>{verifiedCount}</p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Verified</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <Clock className="w-5 h-5" style={{ color: '#22d3ee' }} />
-            </div>
-            <div>
-              <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>{pendingCount}</p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Pending</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <XCircle className="w-5 h-5" style={{ color: '#22d3ee' }} />
-            </div>
-            <div>
-              <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>{failedCount}</p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Failed</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <AlertTriangle className="w-5 h-5" style={{ color: '#22d3ee' }} />
-            </div>
-            <div>
-              <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>{expiringCount}</p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Expiring Soon</p>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
 
       {/* Filters */}

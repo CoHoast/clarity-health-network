@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollText, Search, Download, Filter, X, User, Clock, AlertTriangle, CheckCircle, Eye, Shield, FileText, Lock, LogIn, LogOut, Settings, Edit, Trash2, Database, Activity, Globe, UserX, RefreshCw, Calendar } from "lucide-react";
+import { useTheme } from "@/components/admin/ThemeContext";
 
 type SeverityType = "info" | "warning" | "error" | "critical";
 type CategoryType = "auth" | "phi_access" | "data_change" | "system" | "security" | "export";
@@ -65,6 +66,7 @@ const severityConfig: Record<SeverityType, { bg: string; text: string; icon: Rea
 };
 
 export default function AuditLogsPage() {
+  const { isDark } = useTheme();
   const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterSeverity, setFilterSeverity] = useState("all");
@@ -128,36 +130,30 @@ export default function AuditLogsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4">
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stats.total.toLocaleString()}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Total Events</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stats.info}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Info</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stats.warning}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Warnings</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stats.error + stats.critical}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Errors</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stats.phiAccess}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>PHI Access</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stats.authEvents}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Auth Events</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stats.failedLogins}</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Failed Logins</p>
-        </div>
-        <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: '#22d3ee' }}>6 yrs</p>
+        {[
+          { value: stats.total.toLocaleString(), label: "Total Events" },
+          { value: stats.info, label: "Info" },
+          { value: stats.warning, label: "Warnings" },
+          { value: stats.error + stats.critical, label: "Errors" },
+          { value: stats.phiAccess, label: "PHI Access" },
+          { value: stats.authEvents, label: "Auth Events" },
+          { value: stats.failedLogins, label: "Failed Logins" },
+        ].map((stat, i) => (
+          <div key={i} className={`rounded-xl p-4 shadow-lg ${
+            isDark 
+              ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
+              : "bg-cyan-600"
+          }`}>
+            <p className="text-2xl font-bold" style={{ color: 'white' }}>{stat.value}</p>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
+          </div>
+        ))}
+        <div className={`rounded-xl p-4 shadow-lg ${
+          isDark 
+            ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
+            : "bg-cyan-600"
+        }`}>
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>6 yrs</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Retention</p>
         </div>
       </div>
