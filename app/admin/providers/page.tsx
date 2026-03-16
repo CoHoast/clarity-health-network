@@ -229,13 +229,27 @@ export default function ProvidersPage() {
                   </td>
                   <td className="px-6 py-4">{getStatusBadge(provider.status)}</td>
                   <td className="px-6 py-4 text-right">
-                    <button
-                      onClick={() => openProviderModal(provider)}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
-                    >
-                      <Eye className="w-4 h-4" />
-                      View
-                    </button>
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => openProviderModal(provider)}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                      >
+                        <Eye className="w-4 h-4" />
+                        View
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedProvider(provider);
+                          setEditForm({ ...provider });
+                          setIsEditing(true);
+                          setModalTab("details");
+                        }}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                      >
+                        <Edit className="w-4 h-4" />
+                        Edit
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
