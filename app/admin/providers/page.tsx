@@ -48,12 +48,27 @@ interface Practice {
   discountRate: string;
 }
 
+// Network Organization
+interface Network {
+  id: string;
+  name: string;
+  description: string;
+  state?: string; // Optional - networks can span multiple states
+  providerCount: number;
+  status: "active" | "inactive";
+  createdDate: string;
+}
+
 // Provider = Individual doctor/clinician linked to a practice
 interface Provider {
   id: string;
   practiceId: string;
-  name: string;
-  credential: string; // MD, DO, NP, PA, etc.
+  // Name fields - support both legacy (name) and new (firstName/lastName/title)
+  name?: string; // Legacy: "Robert Smith" - will be parsed into firstName/lastName
+  firstName?: string;
+  lastName?: string;
+  title?: string; // MD, DO, PhD, NP, PA, DPM, DC, etc.
+  credential: string; // Full credential string
   npi: string;
   gender: "Male" | "Female" | "";
   specialty: string;
@@ -65,6 +80,7 @@ interface Provider {
   licenseNumber: string;
   acceptingNewPatients: boolean;
   languages: string[]; // ISO 639-3 codes (eng, spa, cmn, etc.)
+  networks?: string[]; // Array of network IDs
   clinicHours: {
     monday: string;
     tuesday: string;
@@ -75,6 +91,30 @@ interface Provider {
     sunday: string;
   };
 }
+
+// Helper to parse names - handles both new and legacy formats
+const parseProviderName = (p: Provider) => {
+  if (p.firstName && p.lastName) {
+    return { firstName: p.firstName, lastName: p.lastName, title: p.title || p.credential };
+  }
+  // Parse legacy name field
+  const name = p.name || "";
+  const parts = name.replace(/^Dr\.\s*/i, "").split(" ");
+  const lastName = parts.pop() || "";
+  const firstName = parts.join(" ") || "";
+  return { firstName, lastName, title: p.title || p.credential };
+};
+
+// Helper to get display name
+const getProviderDisplayName = (p: Provider) => {
+  const { firstName, lastName, title } = parseProviderName(p);
+  return `${firstName} ${lastName}, ${title}`;
+};
+
+const getProviderFullName = (p: Provider) => {
+  const { firstName, lastName } = parseProviderName(p);
+  return `${firstName} ${lastName}`;
+};
 
 // ISO 639-3 language code mapping
 const languageNames: Record<string, string> = {
@@ -99,6 +139,21 @@ const languageNames: Record<string, string> = {
   heb: "Hebrew",
   fas: "Persian/Farsi",
 };
+
+// Provider Title Options
+const titleOptions = ["MD", "DO", "PhD", "NP", "PA", "DPM", "DC", "PT", "OT", "DDS", "DMD", "PharmD", "PsyD"];
+
+// Network Organizations
+const networks: Network[] = [
+  { id: "NET-001", name: "Ohio PPO Network", description: "Primary PPO network covering all of Ohio", state: "OH", providerCount: 1847, status: "active", createdDate: "2020-01-01" },
+  { id: "NET-002", name: "Cleveland Metro Network", description: "Greater Cleveland metropolitan area providers", state: "OH", providerCount: 892, status: "active", createdDate: "2021-03-15" },
+  { id: "NET-003", name: "Northeast Ohio Specialists", description: "Specialty care providers in NE Ohio", state: "OH", providerCount: 456, status: "active", createdDate: "2022-06-01" },
+  { id: "NET-004", name: "Ohio Hospital Alliance", description: "Hospital and facility network", state: "OH", providerCount: 89, status: "active", createdDate: "2019-08-20" },
+  { id: "NET-005", name: "Midwest Regional Network", description: "Multi-state network covering OH, PA, MI, IN", providerCount: 3421, status: "active", createdDate: "2018-01-01" },
+  { id: "NET-006", name: "TrueCare Value Network", description: "Cost-effective care network", providerCount: 1256, status: "active", createdDate: "2023-01-15" },
+  { id: "NET-007", name: "Pennsylvania PPO", description: "Pennsylvania state network", state: "PA", providerCount: 2134, status: "active", createdDate: "2020-04-01" },
+  { id: "NET-008", name: "Urgent Care Express", description: "Urgent care and walk-in clinics", providerCount: 234, status: "active", createdDate: "2022-09-01" },
+];
 
 // Mock Data
 const practices: Practice[] = [

@@ -61,6 +61,7 @@ const navigationGroups: NavGroup[] = [
     items: [
       { name: "All Providers", href: "/admin/providers", icon: Building2 },
       { name: "Add Provider", href: "/admin/providers/new", icon: Users },
+      { name: "Networks", href: "/admin/networks", icon: Globe },
     ],
     dividerAfter: true,
   },
