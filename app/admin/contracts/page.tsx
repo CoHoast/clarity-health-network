@@ -253,21 +253,6 @@ export default function ContractsPage() {
                   </div>
                 </div>
 
-                <div className="bg-slate-700/50 rounded-lg p-4">
-                  <h3 className="font-medium text-white mb-3 flex items-center gap-2">
-                    <DollarSign className="w-4 h-4 text-amber-400" />Performance
-                  </h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-2xl font-bold text-white">{selectedContract.totalClaims.toLocaleString()}</p>
-                      <p className="text-sm text-slate-400">Total Claims</p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-green-400">{selectedContract.ytdPaid}</p>
-                      <p className="text-sm text-slate-400">YTD Paid</p>
-                    </div>
-                  </div>
-                </div>
               </div>
               <div className="flex items-center justify-between p-4 border-t border-slate-700 bg-slate-800">
                 <button className="inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">
