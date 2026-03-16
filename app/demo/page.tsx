@@ -207,8 +207,8 @@ export default function ProductDemoPage() {
                 e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
               }}
             >
-              {/* Screenshot */}
-              <div style={{ position: 'relative', height: 200, background: '#f1f5f9' }}>
+              {/* Screenshot with border */}
+              <div style={{ position: 'relative', height: 200, background: '#f1f5f9', borderBottom: '3px solid #0d9488' }}>
                 <Image
                   src={portal.image}
                   alt={portal.title}
@@ -217,12 +217,12 @@ export default function ProductDemoPage() {
                 />
               </div>
               
-              {/* Content - Dark Theme */}
-              <div style={{ padding: 20, background: '#0f172a' }}>
-                <h4 style={{ fontSize: 18, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>
+              {/* Content - Light Theme */}
+              <div style={{ padding: 20 }}>
+                <h4 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>
                   {portal.title}
                 </h4>
-                <p style={{ fontSize: 14, color: '#94a3b8', marginBottom: 16, lineHeight: 1.5 }}>
+                <p style={{ fontSize: 14, color: '#64748b', marginBottom: 16, lineHeight: 1.5 }}>
                   {portal.description}
                 </p>
                 
@@ -232,9 +232,9 @@ export default function ProductDemoPage() {
                     <span key={tag} style={{ 
                       fontSize: 12, 
                       padding: '4px 10px', 
-                      background: '#1e293b', 
+                      background: '#f1f5f9', 
                       borderRadius: 20,
-                      color: '#cbd5e1',
+                      color: '#475569',
                       fontWeight: 500,
                     }}>
                       {tag}
@@ -247,7 +247,7 @@ export default function ProductDemoPage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 6,
-                  color: '#2dd4bf',
+                  color: '#0d9488',
                   fontWeight: 600,
                   fontSize: 14,
                 }}>
@@ -260,12 +260,12 @@ export default function ProductDemoPage() {
       </section>
 
       {/* AI Engines */}
-      <section style={{ padding: '60px 24px', background: '#0f172a' }}>
+      <section style={{ padding: '60px 24px', background: 'white' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <h3 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 8, textAlign: 'center' }}>
+          <h3 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', marginBottom: 8, textAlign: 'center' }}>
             Built-in AI Engines
           </h3>
-          <p style={{ fontSize: 16, color: '#94a3b8', marginBottom: 32, textAlign: 'center' }}>
+          <p style={{ fontSize: 16, color: '#64748b', marginBottom: 32, textAlign: 'center' }}>
             Click any engine to learn more
           </p>
           
@@ -275,8 +275,8 @@ export default function ProductDemoPage() {
                 key={engine.id}
                 onClick={() => setSelectedEngine(engine)}
                 style={{
-                  background: '#1e293b',
-                  border: '1px solid #334155',
+                  background: 'white',
+                  border: `2px solid ${engine.color}`,
                   borderRadius: 12,
                   padding: 24,
                   cursor: 'pointer',
@@ -284,12 +284,10 @@ export default function ProductDemoPage() {
                   textAlign: 'center',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = engine.color;
                   e.currentTarget.style.transform = 'translateY(-2px)';
                   e.currentTarget.style.boxShadow = `0 8px 24px ${engine.color}33`;
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#334155';
                   e.currentTarget.style.transform = 'translateY(0)';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
@@ -298,7 +296,7 @@ export default function ProductDemoPage() {
                   width: 48, 
                   height: 48, 
                   borderRadius: 12, 
-                  background: `${engine.color}20`,
+                  background: `${engine.color}15`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -308,8 +306,8 @@ export default function ProductDemoPage() {
                     <path d={engine.iconPath} />
                   </svg>
                 </div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: '#ffffff' }}>{engine.name}</div>
-                <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 6, lineHeight: 1.4 }}>{engine.description}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a' }}>{engine.name}</div>
+                <div style={{ fontSize: 12, color: '#64748b', marginTop: 6, lineHeight: 1.4 }}>{engine.description}</div>
               </button>
             ))}
           </div>
@@ -352,7 +350,7 @@ export default function ProductDemoPage() {
             {/* Modal Header */}
             <div style={{ 
               padding: 24, 
-              background: '#0f172a',
+              background: `${selectedEngine.color}10`,
               borderRadius: '20px 20px 0 0',
               position: 'relative',
               borderBottom: `3px solid ${selectedEngine.color}`,
@@ -363,13 +361,13 @@ export default function ProductDemoPage() {
                   position: 'absolute',
                   top: 16,
                   right: 16,
-                  background: '#1e293b',
-                  border: 'none',
+                  background: 'white',
+                  border: '1px solid #e2e8f0',
                   borderRadius: 8,
                   width: 32,
                   height: 32,
                   cursor: 'pointer',
-                  color: '#94a3b8',
+                  color: '#64748b',
                   fontSize: 18,
                 }}
               >
@@ -379,7 +377,8 @@ export default function ProductDemoPage() {
                 width: 64, 
                 height: 64, 
                 borderRadius: 16, 
-                background: `${selectedEngine.color}20`,
+                background: 'white',
+                border: `2px solid ${selectedEngine.color}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -389,8 +388,8 @@ export default function ProductDemoPage() {
                   <path d={selectedEngine.iconPath} />
                 </svg>
               </div>
-              <h4 style={{ fontSize: 24, fontWeight: 700, color: 'white', marginBottom: 8 }}>{selectedEngine.name}</h4>
-              <p style={{ fontSize: 14, color: '#94a3b8' }}>{selectedEngine.description}</p>
+              <h4 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{selectedEngine.name}</h4>
+              <p style={{ fontSize: 14, color: '#64748b' }}>{selectedEngine.description}</p>
             </div>
 
             {/* Stats */}
