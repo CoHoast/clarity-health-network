@@ -442,6 +442,7 @@ export default function ProductDemoPage() {
   const [selectedEngine, setSelectedEngine] = useState<typeof aiEngines[0] | null>(null);
   const [showBillNegotiator, setShowBillNegotiator] = useState(false);
   const [selectedPortalInfo, setSelectedPortalInfo] = useState<string | null>(null);
+  const [docTab, setDocTab] = useState<'email' | 'pdf'>('email');
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)' }}>
       {/* Header */}
@@ -954,8 +955,46 @@ export default function ProductDemoPage() {
                 ))}
               </div>
 
-              {/* Sample Settlement Email */}
-              <h5 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 16 }}>Sample Settlement Offer Email</h5>
+              {/* Sample Documents Tabs */}
+              <h5 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 16 }}>What Providers Receive</h5>
+              
+              {/* Tab Buttons */}
+              <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+                <button
+                  onClick={() => setDocTab('email')}
+                  style={{
+                    padding: '10px 20px',
+                    borderRadius: 8,
+                    border: 'none',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                    background: docTab === 'email' ? '#0d9488' : '#f1f5f9',
+                    color: docTab === 'email' ? 'white' : '#64748b',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  📧 Settlement Email
+                </button>
+                <button
+                  onClick={() => setDocTab('pdf')}
+                  style={{
+                    padding: '10px 20px',
+                    borderRadius: 8,
+                    border: 'none',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                    background: docTab === 'pdf' ? '#0d9488' : '#f1f5f9',
+                    color: docTab === 'pdf' ? 'white' : '#64748b',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  📄 Attached PDF
+                </button>
+              </div>
+
+              {/* Document Preview */}
               <div style={{ 
                 borderRadius: 12, 
                 overflow: 'hidden', 
@@ -963,36 +1002,61 @@ export default function ProductDemoPage() {
                 marginBottom: 24,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
               }}>
-                {/* Email Header Bar */}
-                <div style={{ 
-                  background: '#f1f5f9', 
-                  padding: '10px 16px', 
-                  borderBottom: '1px solid #e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                }}>
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    <div style={{ width: 12, height: 12, borderRadius: 6, background: '#ef4444' }} />
-                    <div style={{ width: 12, height: 12, borderRadius: 6, background: '#eab308' }} />
-                    <div style={{ width: 12, height: 12, borderRadius: 6, background: '#22c55e' }} />
-                  </div>
-                  <span style={{ fontSize: 12, color: '#64748b', marginLeft: 8 }}>
-                    settlements@medcarehealthnetwork.com
-                  </span>
-                </div>
-                {/* Email Content */}
-                <img 
-                  src="/demo/settlement-offer-email.jpg" 
-                  alt="Sample Settlement Offer Email"
-                  style={{ 
-                    width: '100%', 
-                    display: 'block',
-                  }} 
-                />
+                {docTab === 'email' ? (
+                  <>
+                    {/* Email Header Bar */}
+                    <div style={{ 
+                      background: '#f1f5f9', 
+                      padding: '10px 16px', 
+                      borderBottom: '1px solid #e2e8f0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8,
+                    }}>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <div style={{ width: 12, height: 12, borderRadius: 6, background: '#ef4444' }} />
+                        <div style={{ width: 12, height: 12, borderRadius: 6, background: '#eab308' }} />
+                        <div style={{ width: 12, height: 12, borderRadius: 6, background: '#22c55e' }} />
+                      </div>
+                      <span style={{ fontSize: 12, color: '#64748b', marginLeft: 8 }}>
+                        settlements@medcarehealthnetwork.com
+                      </span>
+                    </div>
+                    {/* Email Content */}
+                    <img 
+                      src="/demo/settlement-offer-email.jpg" 
+                      alt="Sample Settlement Offer Email"
+                      style={{ width: '100%', display: 'block' }} 
+                    />
+                  </>
+                ) : (
+                  <>
+                    {/* PDF Header Bar */}
+                    <div style={{ 
+                      background: '#0f172a', 
+                      padding: '10px 16px', 
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                      <span style={{ fontSize: 12, color: 'white', fontWeight: 500 }}>
+                        📎 Settlement_Offer_OFF-56-MMTCNI6O.pdf
+                      </span>
+                      <span style={{ fontSize: 11, color: '#94a3b8' }}>
+                        Attached to all offer emails
+                      </span>
+                    </div>
+                    {/* PDF Content */}
+                    <img 
+                      src="/demo/settlement-offer-pdf.jpg" 
+                      alt="Settlement Offer PDF Document"
+                      style={{ width: '100%', display: 'block' }} 
+                    />
+                  </>
+                )}
               </div>
               
-              {/* Email Highlights */}
+              {/* Highlights */}
               <div style={{ 
                 display: 'grid', 
                 gridTemplateColumns: 'repeat(3, 1fr)', 
@@ -1032,7 +1096,10 @@ export default function ProductDemoPage() {
               </div>
 
               <p style={{ fontSize: 13, color: '#64748b', marginBottom: 24, fontStyle: 'italic' }}>
-                The email includes pricing benchmarks showing the provider&apos;s charges are 32.6x the Medicare-allowed amount, making our offer reasonable and well-documented.
+                {docTab === 'email' 
+                  ? "The email includes pricing benchmarks showing the provider's charges are 32.6x the Medicare-allowed amount, with Accept/Counter buttons for easy response."
+                  : "The PDF attachment includes full CPT code breakdown comparing Medicare rates, regional hospital rates, and billed amounts for complete transparency."
+                }
               </p>
 
               {/* Key Features */}
