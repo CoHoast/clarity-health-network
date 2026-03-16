@@ -981,7 +981,7 @@ export default function ProductDemoPage() {
                   View Sample Email
                 </button>
                 <button
-                  onClick={() => window.open('/demo/sample-offer-letter.pdf', '_blank')}
+                  onClick={() => window.open('/demo/sample-offer-letter.html', '_blank')}
                   style={{
                     flex: 1,
                     padding: '14px 20px',
