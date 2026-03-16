@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
             className={`rounded-xl p-4 text-left transition-all group shadow-lg ${
               isDark 
                 ? 'bg-slate-950 border border-slate-800 hover:bg-slate-900'
-                : 'bg-gradient-to-br from-cyan-600 to-teal-600 border border-cyan-500/50 hover:from-cyan-500 hover:to-teal-500'
+                : 'bg-cyan-600 border border-cyan-500 hover:bg-cyan-500'
             }`}
           >
             <p className={`text-sm mb-1 ${isDark ? 'text-slate-400' : 'text-cyan-100'}`}>{kpi.label}</p>
@@ -388,7 +388,7 @@ export default function AnalyticsPage() {
                 className={`rounded-xl p-5 cursor-pointer transition-all shadow-lg ${
                   isDark 
                     ? 'bg-slate-950 border border-slate-800 hover:bg-slate-900'
-                    : 'bg-gradient-to-br from-cyan-600 to-teal-600 border border-cyan-500/50 hover:from-cyan-500 hover:to-teal-500'
+                    : 'bg-cyan-600 border border-cyan-500 hover:bg-cyan-500'
                 }`} 
                 onClick={() => setSelectedDrilldown(stat.drilldown)}
               >
