@@ -733,7 +733,7 @@ export default function ProductDemoPage() {
       {/* Footer */}
       <footer style={{ padding: '40px 24px', textAlign: 'center' }}>
         <p style={{ fontSize: 14, color: '#94a3b8' }}>
-          © 2026 Solidarity Health Network. All rights reserved.
+          © 2026 DOKit LLC. All rights reserved.
         </p>
       </footer>
 
