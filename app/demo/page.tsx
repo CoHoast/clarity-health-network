@@ -212,7 +212,7 @@ export default function ProductDemoPage() {
           Platform Portals
         </h3>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 24 }}>
           {portals.map((portal) => (
             <a 
               key={portal.id}
