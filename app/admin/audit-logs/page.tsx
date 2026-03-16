@@ -142,7 +142,7 @@ export default function AuditLogsPage() {
           <div key={i} className={`rounded-xl p-4 shadow-lg ${
             isDark 
               ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
-              : "bg-cyan-600"
+              : "bg-slate-900 border border-slate-700"
           }`}>
             <p className="text-2xl font-bold" style={{ color: 'white' }}>{stat.value}</p>
             <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
@@ -151,7 +151,7 @@ export default function AuditLogsPage() {
         <div className={`rounded-xl p-4 shadow-lg ${
           isDark 
             ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
-            : "bg-cyan-600"
+            : "bg-slate-900 border border-slate-700"
         }`}>
           <p className="text-2xl font-bold" style={{ color: 'white' }}>6 yrs</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Retention</p>

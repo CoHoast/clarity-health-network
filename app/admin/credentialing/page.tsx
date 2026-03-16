@@ -192,7 +192,7 @@ export default function CredentialingPage() {
             className={`rounded-xl p-4 shadow-lg ${
               isDark 
                 ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
-                : "bg-cyan-600"
+                : "bg-slate-900 border border-slate-700"
             }`}
           >
             <p className="text-2xl font-bold" style={{ color: 'white' }}>{stat.value}</p>

@@ -96,7 +96,7 @@ export default function ExpiringContractsPage() {
             className={`rounded-xl p-5 shadow-lg ${
               isDark 
                 ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
-                : "bg-cyan-600"
+                : "bg-slate-900 border border-slate-700"
             }`}
           >
             <p className="text-3xl font-bold" style={{ color: 'white' }}>{stat.count}</p>

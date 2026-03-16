@@ -99,7 +99,7 @@ export default function VerificationStatusPage() {
             <div key={i} className={`rounded-xl p-5 shadow-lg ${
               isDark 
                 ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
-                : "bg-cyan-600"
+                : "bg-slate-900 border border-slate-700"
             }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
