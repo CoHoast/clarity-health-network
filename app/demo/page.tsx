@@ -50,8 +50,8 @@ const aiEngines = [
   {
     id: 'fraudshield',
     name: 'FraudShield AI',
-    icon: '🛡️',
-    color: 'from-red-500 to-rose-600',
+    iconPath: 'M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z',
+    color: '#ef4444',
     description: 'Real-time fraud detection and prevention system',
     stats: { detected: '2,847', saved: '$1.2M', accuracy: '99.7%' },
     capabilities: [
@@ -66,8 +66,8 @@ const aiEngines = [
   {
     id: 'billreview',
     name: 'BillReview AI',
-    icon: '📋',
-    color: 'from-blue-500 to-indigo-600',
+    iconPath: 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z',
+    color: '#3b82f6',
     description: 'Automated bill analysis and repricing engine',
     stats: { processed: '45,892', savings: '$3.8M', avgTime: '< 2 sec' },
     capabilities: [
@@ -82,8 +82,8 @@ const aiEngines = [
   {
     id: 'eligibility',
     name: 'Eligibility Engine',
-    icon: '✅',
-    color: 'from-green-500 to-emerald-600',
+    iconPath: 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+    color: '#22c55e',
     description: 'Real-time member verification and benefits check',
     stats: { checks: '128K/mo', accuracy: '99.9%', responseTime: '< 500ms' },
     capabilities: [
@@ -98,8 +98,8 @@ const aiEngines = [
   {
     id: 'nsa',
     name: 'NSA Compliance',
-    icon: '⚖️',
-    color: 'from-amber-500 to-orange-600',
+    iconPath: 'M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z',
+    color: '#f59e0b',
     description: 'No Surprises Act monitoring and compliance',
     stats: { monitored: '12,450', compliant: '100%', alerts: '23' },
     capabilities: [
@@ -114,8 +114,8 @@ const aiEngines = [
   {
     id: 'pulse',
     name: 'Pulse AI Assistant',
-    icon: '💬',
-    color: 'from-purple-500 to-violet-600',
+    iconPath: 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z',
+    color: '#8b5cf6',
     description: 'Conversational AI support for all users',
     stats: { conversations: '8,234', resolution: '87%', satisfaction: '4.8/5' },
     capabilities: [
@@ -260,12 +260,12 @@ export default function ProductDemoPage() {
       </section>
 
       {/* AI Engines */}
-      <section style={{ padding: '60px 24px', background: 'white' }}>
+      <section style={{ padding: '60px 24px', background: '#0f172a' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <h3 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', marginBottom: 8, textAlign: 'center' }}>
+          <h3 style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', marginBottom: 8, textAlign: 'center' }}>
             Built-in AI Engines
           </h3>
-          <p style={{ fontSize: 16, color: '#64748b', marginBottom: 32, textAlign: 'center' }}>
+          <p style={{ fontSize: 16, color: '#94a3b8', marginBottom: 32, textAlign: 'center' }}>
             Click any engine to learn more
           </p>
           
@@ -275,26 +275,41 @@ export default function ProductDemoPage() {
                 key={engine.id}
                 onClick={() => setSelectedEngine(engine)}
                 style={{
-                  background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-                  border: '1px solid #e2e8f0',
+                  background: '#1e293b',
+                  border: '1px solid #334155',
                   borderRadius: 12,
-                  padding: 20,
+                  padding: 24,
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                   textAlign: 'center',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#0d9488';
+                  e.currentTarget.style.borderColor = engine.color;
                   e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = `0 8px 24px ${engine.color}33`;
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#e2e8f0';
+                  e.currentTarget.style.borderColor = '#334155';
                   e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                <div style={{ fontSize: 32, marginBottom: 8 }}>{engine.icon}</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a' }}>{engine.name}</div>
-                <div style={{ fontSize: 12, color: '#64748b', marginTop: 4 }}>{engine.description}</div>
+                <div style={{ 
+                  width: 48, 
+                  height: 48, 
+                  borderRadius: 12, 
+                  background: `${engine.color}20`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 12px',
+                }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={engine.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={engine.iconPath} />
+                  </svg>
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: '#ffffff' }}>{engine.name}</div>
+                <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 6, lineHeight: 1.4 }}>{engine.description}</div>
               </button>
             ))}
           </div>
@@ -337,9 +352,10 @@ export default function ProductDemoPage() {
             {/* Modal Header */}
             <div style={{ 
               padding: 24, 
-              background: `linear-gradient(135deg, ${selectedEngine.color.includes('red') ? '#ef4444' : selectedEngine.color.includes('blue') ? '#3b82f6' : selectedEngine.color.includes('green') ? '#22c55e' : selectedEngine.color.includes('amber') ? '#f59e0b' : '#8b5cf6'} 0%, ${selectedEngine.color.includes('red') ? '#e11d48' : selectedEngine.color.includes('blue') ? '#4f46e5' : selectedEngine.color.includes('green') ? '#059669' : selectedEngine.color.includes('amber') ? '#ea580c' : '#7c3aed'} 100%)`,
+              background: '#0f172a',
               borderRadius: '20px 20px 0 0',
               position: 'relative',
+              borderBottom: `3px solid ${selectedEngine.color}`,
             }}>
               <button
                 onClick={() => setSelectedEngine(null)}
@@ -347,21 +363,34 @@ export default function ProductDemoPage() {
                   position: 'absolute',
                   top: 16,
                   right: 16,
-                  background: 'rgba(255,255,255,0.2)',
+                  background: '#1e293b',
                   border: 'none',
                   borderRadius: 8,
                   width: 32,
                   height: 32,
                   cursor: 'pointer',
-                  color: 'white',
+                  color: '#94a3b8',
                   fontSize: 18,
                 }}
               >
                 ✕
               </button>
-              <div style={{ fontSize: 48, marginBottom: 12 }}>{selectedEngine.icon}</div>
+              <div style={{ 
+                width: 64, 
+                height: 64, 
+                borderRadius: 16, 
+                background: `${selectedEngine.color}20`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 16,
+              }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={selectedEngine.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d={selectedEngine.iconPath} />
+                </svg>
+              </div>
               <h4 style={{ fontSize: 24, fontWeight: 700, color: 'white', marginBottom: 8 }}>{selectedEngine.name}</h4>
-              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.9)' }}>{selectedEngine.description}</p>
+              <p style={{ fontSize: 14, color: '#94a3b8' }}>{selectedEngine.description}</p>
             </div>
 
             {/* Stats */}
