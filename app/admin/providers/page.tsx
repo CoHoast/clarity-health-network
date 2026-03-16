@@ -615,17 +615,19 @@ export default function ProvidersPage() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => { setSelectedPractice(practice); setActiveTab("info"); }}
-                        className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
-                        title="View Details"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-slate-300 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-sm"
+                        title="View Practice Details"
                       >
                         <Eye className="w-4 h-4" />
+                        View
                       </button>
                       <button
                         onClick={() => { setSelectedPractice(practice); setActiveTab("providers"); }}
-                        className="p-2 text-slate-400 hover:text-teal-400 hover:bg-slate-700 rounded-lg transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-teal-400 bg-teal-500/10 hover:bg-teal-500/20 rounded-lg transition-colors text-sm"
                         title="View Providers"
                       >
                         <Users className="w-4 h-4" />
+                        Providers
                       </button>
                     </div>
                   </td>
@@ -762,87 +764,125 @@ export default function ProvidersPage() {
                 {activeTab === "providers" && (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <h3 className="text-lg font-semibold text-white">Affiliated Providers</h3>
+                      <h3 className="text-lg font-semibold text-white">Affiliated Providers ({getProvidersForPractice(selectedPractice.id).length})</h3>
                       <button
                         onClick={() => setShowAddProvider(true)}
-                        className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors text-sm"
+                        className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors text-sm font-medium"
                       >
                         <Plus className="w-4 h-4" />
                         Add Provider
                       </button>
                     </div>
 
-                    <div className="bg-slate-700/30 rounded-lg overflow-hidden">
-                      <table className="w-full">
-                        <thead className="bg-slate-900/30">
-                          <tr>
-                            <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">Provider</th>
-                            <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">NPI</th>
-                            <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">Specialty</th>
-                            <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">License</th>
-                            <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">Languages</th>
-                            <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">Accepting</th>
-                            <th className="text-right px-4 py-3 text-xs font-medium text-slate-400">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-700/50">
-                          {getProvidersForPractice(selectedPractice.id).map(provider => (
-                            <tr key={provider.id} className="hover:bg-slate-700/20">
-                              <td className="px-4 py-3">
-                                <div className="flex items-center gap-3">
-                                  <div className={`p-2 rounded-lg ${provider.gender === "Female" ? "bg-pink-500/20" : "bg-blue-500/20"}`}>
-                                    <User className={`w-4 h-4 ${provider.gender === "Female" ? "text-pink-400" : "text-blue-400"}`} />
+                    {/* Provider Cards - More Readable Layout */}
+                    <div className="space-y-3">
+                      {getProvidersForPractice(selectedPractice.id).map(provider => (
+                        <div key={provider.id} className="bg-slate-700/30 rounded-xl p-4 hover:bg-slate-700/50 transition-colors border border-slate-600/50">
+                          <div className="flex items-start justify-between">
+                            {/* Provider Info */}
+                            <div className="flex items-start gap-4">
+                              <div className={`p-3 rounded-xl ${provider.gender === "Female" ? "bg-pink-500/20" : "bg-blue-500/20"}`}>
+                                <User className={`w-6 h-6 ${provider.gender === "Female" ? "text-pink-400" : "text-blue-400"}`} />
+                              </div>
+                              <div className="space-y-2">
+                                <div>
+                                  <h4 className="text-lg font-semibold text-white">{provider.name}, {provider.credential}</h4>
+                                  <p className="text-slate-400">{provider.specialty}</p>
+                                </div>
+                                
+                                {/* Key Details Row */}
+                                <div className="flex flex-wrap gap-4 text-sm">
+                                  <div>
+                                    <span className="text-slate-500">NPI:</span>
+                                    <span className="ml-1 text-white font-mono">{provider.npi}</span>
                                   </div>
                                   <div>
-                                    <p className="font-medium text-white">{provider.name}, {provider.credential}</p>
-                                    <p className="text-xs text-slate-400">{provider.gender || "N/A"}</p>
+                                    <span className="text-slate-500">License:</span>
+                                    <span className="ml-1 text-white">{provider.licenseState} {provider.licenseNumber}</span>
+                                  </div>
+                                  <div>
+                                    <span className="text-slate-500">Gender:</span>
+                                    <span className="ml-1 text-white">{provider.gender || "N/A"}</span>
                                   </div>
                                 </div>
-                              </td>
-                              <td className="px-4 py-3">
-                                <span className="font-mono text-slate-300">{provider.npi}</span>
-                              </td>
-                              <td className="px-4 py-3">
-                                <p className="text-slate-300">{provider.specialty}</p>
-                                <p className="text-xs text-slate-500">{provider.primaryTaxonomy}</p>
-                              </td>
-                              <td className="px-4 py-3">
-                                <p className="text-slate-300">{provider.licenseState}</p>
-                                <p className="text-xs text-slate-500">{provider.licenseNumber}</p>
-                              </td>
-                              <td className="px-4 py-3">
-                                <div className="flex flex-wrap gap-1">
-                                  {provider.languages.map(lang => (
-                                    <span key={lang} className="px-1.5 py-0.5 bg-slate-600 text-slate-300 text-xs rounded" title={languageNames[lang] || lang}>
-                                      {lang.toUpperCase()}
-                                    </span>
-                                  ))}
+
+                                {/* Taxonomy Codes */}
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs text-slate-500">Primary:</span>
+                                    <span className="text-xs font-mono text-cyan-400">{provider.primaryTaxonomy}</span>
+                                    <span className="text-xs text-teal-400">— {provider.primaryTaxonomyDesc}</span>
+                                  </div>
+                                  {provider.secondaryTaxonomy && (
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-xs text-slate-500">Secondary:</span>
+                                      <span className="text-xs font-mono text-purple-400">{provider.secondaryTaxonomy}</span>
+                                      <span className="text-xs text-purple-300">— {provider.secondaryTaxonomyDesc}</span>
+                                    </div>
+                                  )}
                                 </div>
-                              </td>
-                              <td className="px-4 py-3">
-                                {provider.acceptingNewPatients ? (
-                                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">
-                                    <CheckCircle className="w-3 h-3" />Yes
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded-full">
-                                    <XCircle className="w-3 h-3" />No
-                                  </span>
-                                )}
-                              </td>
-                              <td className="px-4 py-3 text-right">
+
+                                {/* Languages */}
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-slate-500">Languages:</span>
+                                  <div className="flex flex-wrap gap-1">
+                                    {provider.languages.map(lang => (
+                                      <span key={lang} className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-xs rounded-full">
+                                        {languageNames[lang] || lang}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Right Side - Status & Actions */}
+                            <div className="flex flex-col items-end gap-3">
+                              {/* Accepting Patients Badge */}
+                              {provider.acceptingNewPatients ? (
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-500/20 text-green-400 text-sm font-medium rounded-full">
+                                  <CheckCircle className="w-4 h-4" />
+                                  Accepting Patients
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-500/20 text-red-400 text-sm font-medium rounded-full">
+                                  <XCircle className="w-4 h-4" />
+                                  Not Accepting
+                                </span>
+                              )}
+
+                              {/* Action Buttons */}
+                              <div className="flex items-center gap-2">
                                 <button
-                                  onClick={() => setSelectedProvider(provider)}
-                                  className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+                                  onClick={() => { setSelectedProvider(provider); setIsEditingProvider(false); }}
+                                  className="flex items-center gap-2 px-3 py-2 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-500 transition-colors"
+                                  title="View Provider Details"
+                                >
+                                  <Eye className="w-4 h-4" />
+                                  View
+                                </button>
+                                <button
+                                  onClick={() => { setSelectedProvider(provider); setIsEditingProvider(true); }}
+                                  className="flex items-center gap-2 px-3 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-500 transition-colors"
+                                  title="Edit Provider"
                                 >
                                   <Edit className="w-4 h-4" />
+                                  Edit
                                 </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
+
+                    {getProvidersForPractice(selectedPractice.id).length === 0 && (
+                      <div className="text-center py-12 bg-slate-700/20 rounded-xl border border-slate-600/50">
+                        <Users className="w-12 h-12 text-slate-500 mx-auto mb-3" />
+                        <p className="text-slate-400 font-medium">No providers added yet</p>
+                        <p className="text-slate-500 text-sm mt-1">Click "Add Provider" to add clinicians to this practice</p>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -1396,7 +1436,7 @@ export default function ProvidersPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-auto border border-slate-700"
+                className="bg-slate-800 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-auto border border-slate-700"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}
@@ -1406,10 +1446,20 @@ export default function ProvidersPage() {
                       <User className={`w-8 h-8 ${selectedProvider.gender === "Female" ? "text-pink-400" : "text-blue-400"}`} />
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-white">{selectedProvider.name}, {selectedProvider.credential}</h2>
+                      <div className="flex items-center gap-3">
+                        <h2 className="text-xl font-bold text-white">{selectedProvider.name}, {selectedProvider.credential}</h2>
+                        {isEditingProvider && (
+                          <span className="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full">
+                            Editing
+                          </span>
+                        )}
+                      </div>
                       <p className="text-slate-400">{selectedProvider.specialty}</p>
                       {providerPractice && (
-                        <p className="text-cyan-400 text-sm mt-1">{providerPractice.name}</p>
+                        <p className="text-cyan-400 text-sm mt-1 flex items-center gap-1">
+                          <Building2 className="w-3 h-3" />
+                          {providerPractice.name}
+                        </p>
                       )}
                     </div>
                   </div>
