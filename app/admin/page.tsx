@@ -104,7 +104,7 @@ export default function AdminDashboard() {
               className={`rounded-xl p-5 shadow-lg ${
                 isDark 
                   ? 'bg-slate-950 border border-slate-800'
-                  : 'bg-cyan-600 border border-cyan-500'
+                  : 'bg-slate-800 border border-slate-700'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
