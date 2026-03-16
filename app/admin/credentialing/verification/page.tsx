@@ -89,44 +89,44 @@ export default function VerificationStatusPage() {
         <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <CheckCircle className="w-5 h-5 text-cyan-400" />
+              <CheckCircle className="w-5 h-5" style={{ color: '#22d3ee' }} />
             </div>
             <div>
-              <p className="text-3xl font-bold text-white">{verifiedCount}</p>
-              <p className="text-sm text-slate-300">Verified</p>
+              <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>{verifiedCount}</p>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Verified</p>
             </div>
           </div>
         </div>
         <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <Clock className="w-5 h-5 text-cyan-400" />
+              <Clock className="w-5 h-5" style={{ color: '#22d3ee' }} />
             </div>
             <div>
-              <p className="text-3xl font-bold text-white">{pendingCount}</p>
-              <p className="text-sm text-slate-300">Pending</p>
+              <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>{pendingCount}</p>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Pending</p>
             </div>
           </div>
         </div>
         <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <XCircle className="w-5 h-5 text-cyan-400" />
+              <XCircle className="w-5 h-5" style={{ color: '#22d3ee' }} />
             </div>
             <div>
-              <p className="text-3xl font-bold text-white">{failedCount}</p>
-              <p className="text-sm text-slate-300">Failed</p>
+              <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>{failedCount}</p>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Failed</p>
             </div>
           </div>
         </div>
         <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <AlertTriangle className="w-5 h-5 text-cyan-400" />
+              <AlertTriangle className="w-5 h-5" style={{ color: '#22d3ee' }} />
             </div>
             <div>
-              <p className="text-3xl font-bold text-white">{expiringCount}</p>
-              <p className="text-sm text-slate-300">Expiring Soon</p>
+              <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>{expiringCount}</p>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Expiring Soon</p>
             </div>
           </div>
         </div>

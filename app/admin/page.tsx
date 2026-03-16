@@ -112,8 +112,8 @@ export default function AdminDashboard() {
                   {stat.change}
                 </span>
               </div>
-              <p className="text-2xl font-bold text-white">{stat.value}</p>
-              <p className="text-sm text-slate-300">{stat.label}</p>
+              <p className="text-2xl font-bold" style={{ color: '#ffffff' }}>{stat.value}</p>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>{stat.label}</p>
             </motion.div>
           );
         })}

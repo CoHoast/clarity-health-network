@@ -90,8 +90,8 @@ export default function ExpiringContractsPage() {
           { label: "61-90 Days", count: expiringContracts.filter(c => c.daysLeft > 60 && c.daysLeft <= 90).length, urgent: false },
         ].map((stat) => (
           <div key={stat.label} className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-lg">
-            <p className={`text-3xl font-bold ${stat.urgent ? 'text-cyan-400' : 'text-white'}`}>{stat.count}</p>
-            <p className="text-sm text-slate-300">{stat.label}</p>
+            <p className="text-3xl font-bold" style={{ color: stat.urgent ? '#22d3ee' : '#ffffff' }}>{stat.count}</p>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>{stat.label}</p>
           </div>
         ))}
       </div>
