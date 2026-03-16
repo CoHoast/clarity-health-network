@@ -629,19 +629,6 @@ export default function ProductDemoPage() {
                 fill
                 style={{ objectFit: 'cover', objectPosition: 'top' }}
               />
-              <div style={{
-                position: 'absolute',
-                top: 12,
-                right: 12,
-                background: 'rgba(13,148,136,0.9)',
-                padding: '6px 12px',
-                borderRadius: 20,
-                fontSize: 11,
-                fontWeight: 600,
-                color: 'white',
-              }}>
-                COMING SOON
-              </div>
             </div>
             
             {/* Content */}
@@ -897,19 +884,7 @@ export default function ProductDemoPage() {
               >
                 ✕
               </button>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-                <h4 style={{ fontSize: 28, fontWeight: 700, color: 'white' }}>AI Bill Negotiator</h4>
-                <span style={{ 
-                  background: 'rgba(13,148,136,0.3)', 
-                  color: '#2dd4bf',
-                  padding: '4px 12px', 
-                  borderRadius: 20, 
-                  fontSize: 11, 
-                  fontWeight: 600,
-                }}>
-                  COMING SOON
-                </span>
-              </div>
+              <h4 style={{ fontSize: 28, fontWeight: 700, color: 'white', marginBottom: 8 }}>AI Bill Negotiator</h4>
               <p style={{ fontSize: 16, color: '#2dd4bf', fontWeight: 500 }}>
                 Automated Medical Bill Negotiation
               </p>
