@@ -908,7 +908,7 @@ export default function ProductDemoPage() {
             <div style={{ padding: 24 }}>
               {/* Description */}
               <p style={{ fontSize: 15, color: '#475569', lineHeight: 1.7, marginBottom: 24 }}>
-                Our AI-powered bill negotiation system automatically analyzes medical bills, calculates fair prices using Medicare rates, and negotiates with providers to achieve significant savings for your members.
+                Our AI-powered bill negotiation system automatically analyzes medical bills and calculates fair prices by comparing against both <strong>Medicare reimbursement rates</strong> and <strong>state-specific hospital cash payer rates</strong>. The system then negotiates with providers on your behalf to achieve significant savings for your members.
               </p>
 
               {/* How It Works */}
@@ -916,10 +916,11 @@ export default function ProductDemoPage() {
               <div style={{ display: 'grid', gap: 12, marginBottom: 24 }}>
                 {[
                   { step: '1', title: 'Bill Intake', desc: 'Bills are automatically pulled from your MCO via SFTP and ingested into the system' },
-                  { step: '2', title: 'AI Analysis', desc: 'AI extracts data, validates codes, and calculates fair price using Medicare rates' },
-                  { step: '3', title: 'Send Offer', desc: 'Professional negotiation letter sent to provider via email or fax' },
-                  { step: '4', title: 'Provider Response', desc: 'Provider accepts, counters, or requests a call - response captured digitally' },
-                  { step: '5', title: 'Settlement', desc: 'Negotiation continues until settled at fair price or escalated to human rep' },
+                  { step: '2', title: 'AI Analysis & Fair Price Calculation', desc: 'AI extracts data, validates CPT codes, and calculates a fair price using Medicare rates combined with state-specific hospital cash payer rates' },
+                  { step: '3', title: 'Send Offer', desc: 'Professional negotiation letter with fair price offer sent to provider via email or fax' },
+                  { step: '4', title: 'Provider Response', desc: 'Provider reviews the offer and either accepts the settlement amount or submits a counter-offer' },
+                  { step: '5', title: 'Automated Negotiation', desc: 'Counter-offers are automatically evaluated against the rules you configure in your admin dashboard. The system will accept, counter again, or escalate based on your thresholds' },
+                  { step: '6', title: 'Settlement or Escalation', desc: 'Negotiation continues automatically until the bill is settled at an acceptable price, or escalated to a human representative for complex cases' },
                 ].map((item) => (
                   <div key={item.step} style={{ 
                     display: 'flex',
@@ -953,17 +954,68 @@ export default function ProductDemoPage() {
                 ))}
               </div>
 
+              {/* Sample Documents */}
+              <h5 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 16 }}>See What Providers Receive</h5>
+              <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+                <button
+                  onClick={() => window.open('/demo/sample-email.html', '_blank')}
+                  style={{
+                    flex: 1,
+                    padding: '14px 20px',
+                    background: '#0f172a',
+                    border: 'none',
+                    borderRadius: 10,
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
+                  View Sample Email
+                </button>
+                <button
+                  onClick={() => window.open('/demo/sample-offer-letter.pdf', '_blank')}
+                  style={{
+                    flex: 1,
+                    padding: '14px 20px',
+                    background: 'linear-gradient(135deg, #0d9488 0%, #0891b2 100%)',
+                    border: 'none',
+                    borderRadius: 10,
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                  </svg>
+                  View Offer Letter PDF
+                </button>
+              </div>
+
               {/* Key Features */}
               <h5 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 16 }}>Key Features</h5>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 24 }}>
                 {[
                   'Automatic bill intake via SFTP, email, or fax',
                   'AI-powered data extraction (99%+ accuracy)',
-                  'Medicare rate comparison & fair pricing',
+                  'Medicare + state cash payer rate comparison',
                   'Automated offer letter generation',
-                  'Counter-offer handling & escalation',
+                  'Configurable negotiation rules & thresholds',
+                  'Auto-accept, counter, or escalate logic',
                   'Real-time tracking dashboard',
-                  'Detailed savings analytics',
                   'HIPAA-compliant processing',
                 ].map((feature, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -981,7 +1033,7 @@ export default function ProductDemoPage() {
                   Interested in the AI Bill Negotiator?
                 </p>
                 <p style={{ fontSize: 13, color: '#64748b' }}>
-                  Contact us to learn more about early access and pricing.
+                  Contact us to learn more about implementation and pricing.
                 </p>
               </div>
             </div>
