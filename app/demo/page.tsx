@@ -1110,15 +1110,6 @@ export default function ProductDemoPage() {
                 ))}
               </div>
 
-              {/* CTA */}
-              <div style={{ padding: 20, background: 'linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%)', borderRadius: 12, textAlign: 'center' }}>
-                <p style={{ fontSize: 14, color: '#0f172a', marginBottom: 4, fontWeight: 600 }}>
-                  Interested in the AI Bill Negotiator?
-                </p>
-                <p style={{ fontSize: 13, color: '#64748b' }}>
-                  Contact us to learn more about implementation and pricing.
-                </p>
-              </div>
             </div>
           </div>
         </div>
