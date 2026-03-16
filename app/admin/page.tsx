@@ -104,22 +104,22 @@ export default function AdminDashboard() {
               className={`rounded-xl p-5 shadow-lg ${
                 isDark 
                   ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20'
-                  : 'bg-gradient-to-br from-blue-900 to-slate-800 border border-blue-700/50'
+                  : 'bg-gradient-to-br from-cyan-600 to-teal-600 border border-cyan-500/50'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                   isDark
                     ? 'bg-cyan-500/20 border border-cyan-500/30'
-                    : 'bg-blue-700/50 border border-blue-600/50'
+                    : 'bg-white/20 border border-white/30'
                 }`}>
-                  <Icon className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-200'}`} />
+                  <Icon className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-white'}`} />
                 </div>
                 <span 
                   className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
                     stat.trend === "warning" 
-                      ? (isDark ? "bg-amber-500/20 text-amber-400" : "bg-amber-500/30 text-amber-300")
-                      : (isDark ? "bg-cyan-500/20 text-cyan-400" : "bg-blue-600/50 text-blue-200")
+                      ? (isDark ? "bg-amber-500/20 text-amber-400" : "bg-amber-500/30 text-amber-200")
+                      : (isDark ? "bg-cyan-500/20 text-cyan-400" : "bg-white/20 text-white")
                   }`}
                 >
                   {stat.trend === "up" && <TrendingUp className="w-3 h-3" />}
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
                 </span>
               </div>
               <p className={`text-2xl font-bold ${isDark ? 'text-cyan-400' : 'text-white'}`}>{stat.value}</p>
-              <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-blue-100'}`}>{stat.label}</p>
+              <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-cyan-100'}`}>{stat.label}</p>
             </motion.div>
           );
         })}

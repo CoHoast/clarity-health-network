@@ -96,15 +96,11 @@ export default function ExpiringContractsPage() {
             className={`rounded-xl p-5 shadow-lg ${
               isDark 
                 ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20'
-                : 'bg-gradient-to-br from-blue-900 to-slate-800 border border-blue-700/50'
+                : 'bg-gradient-to-br from-cyan-600 to-teal-600 border border-cyan-500/50'
             }`}
           >
-            <p className={`text-3xl font-bold ${
-              stat.urgent 
-                ? (isDark ? 'text-cyan-400' : 'text-cyan-300') 
-                : (isDark ? 'text-cyan-400' : 'text-white')
-            }`}>{stat.count}</p>
-            <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-blue-100'}`}>{stat.label}</p>
+            <p className={`text-3xl font-bold ${isDark ? 'text-cyan-400' : 'text-white'}`}>{stat.count}</p>
+            <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-cyan-100'}`}>{stat.label}</p>
           </div>
         ))}
       </div>
