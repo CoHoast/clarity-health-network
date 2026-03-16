@@ -54,7 +54,32 @@ interface Provider {
   licenseState: string;
   licenseNumber: string;
   acceptingNewPatients: boolean;
+  languages: string[]; // ISO 639-3 codes (eng, spa, cmn, etc.)
 }
+
+// ISO 639-3 language code mapping
+const languageNames: Record<string, string> = {
+  eng: "English",
+  spa: "Spanish",
+  cmn: "Mandarin Chinese",
+  yue: "Cantonese",
+  kor: "Korean",
+  vie: "Vietnamese",
+  ara: "Arabic",
+  rus: "Russian",
+  por: "Portuguese",
+  fra: "French",
+  deu: "German",
+  ita: "Italian",
+  pol: "Polish",
+  hin: "Hindi",
+  urd: "Urdu",
+  ben: "Bengali",
+  jpn: "Japanese",
+  tgl: "Tagalog",
+  heb: "Hebrew",
+  fas: "Persian/Farsi",
+};
 
 // Mock Data
 const practices: Practice[] = [
@@ -202,31 +227,31 @@ const practices: Practice[] = [
 
 const providers: Provider[] = [
   // Cleveland Family Medicine providers
-  { id: "PRV-001", practiceId: "PRC-001", name: "Robert Smith", credential: "MD", npi: "1111111111", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-123456", acceptingNewPatients: true },
-  { id: "PRV-002", practiceId: "PRC-001", name: "Jennifer Adams", credential: "MD", npi: "1111111112", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "207QA0505X", secondaryTaxonomyDesc: "Adult Medicine", licenseState: "OH", licenseNumber: "MD-35-123457", acceptingNewPatients: true },
-  { id: "PRV-003", practiceId: "PRC-001", name: "Michael Chen", credential: "DO", npi: "1111111113", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-123458", acceptingNewPatients: false },
-  { id: "PRV-004", practiceId: "PRC-001", name: "Sarah Williams", credential: "NP", npi: "1111111114", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-123459", acceptingNewPatients: true },
+  { id: "PRV-001", practiceId: "PRC-001", name: "Robert Smith", credential: "MD", npi: "1111111111", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-123456", acceptingNewPatients: true, languages: ["eng"] },
+  { id: "PRV-002", practiceId: "PRC-001", name: "Jennifer Adams", credential: "MD", npi: "1111111112", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "207QA0505X", secondaryTaxonomyDesc: "Adult Medicine", licenseState: "OH", licenseNumber: "MD-35-123457", acceptingNewPatients: true, languages: ["eng", "spa"] },
+  { id: "PRV-003", practiceId: "PRC-001", name: "Michael Chen", credential: "DO", npi: "1111111113", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-123458", acceptingNewPatients: false, languages: ["eng", "cmn", "yue"] },
+  { id: "PRV-004", practiceId: "PRC-001", name: "Sarah Williams", credential: "NP", npi: "1111111114", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-123459", acceptingNewPatients: true, languages: ["eng"] },
   
   // Cleveland Orthopedic Associates providers
-  { id: "PRV-005", practiceId: "PRC-002", name: "James Miller", credential: "MD", npi: "4444444441", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XS0114X", secondaryTaxonomyDesc: "Sports Medicine", licenseState: "OH", licenseNumber: "MD-35-456789", acceptingNewPatients: true },
-  { id: "PRV-006", practiceId: "PRC-002", name: "Lisa Thompson", credential: "MD", npi: "4444444442", gender: "Female", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XP3100X", secondaryTaxonomyDesc: "Pediatric Orthopedics", licenseState: "OH", licenseNumber: "MD-35-456790", acceptingNewPatients: true },
-  { id: "PRV-007", practiceId: "PRC-002", name: "David Park", credential: "MD", npi: "4444444443", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XX0004X", secondaryTaxonomyDesc: "Spine Surgery", licenseState: "OH", licenseNumber: "MD-35-456791", acceptingNewPatients: false },
-  { id: "PRV-008", practiceId: "PRC-002", name: "Amy Rodriguez", credential: "PA", npi: "4444444444", gender: "Female", specialty: "Orthopedics", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-456792", acceptingNewPatients: true },
+  { id: "PRV-005", practiceId: "PRC-002", name: "James Miller", credential: "MD", npi: "4444444441", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XS0114X", secondaryTaxonomyDesc: "Sports Medicine", licenseState: "OH", licenseNumber: "MD-35-456789", acceptingNewPatients: true, languages: ["eng"] },
+  { id: "PRV-006", practiceId: "PRC-002", name: "Lisa Thompson", credential: "MD", npi: "4444444442", gender: "Female", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XP3100X", secondaryTaxonomyDesc: "Pediatric Orthopedics", licenseState: "OH", licenseNumber: "MD-35-456790", acceptingNewPatients: true, languages: ["eng", "fra"] },
+  { id: "PRV-007", practiceId: "PRC-002", name: "David Park", credential: "MD", npi: "4444444443", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XX0004X", secondaryTaxonomyDesc: "Spine Surgery", licenseState: "OH", licenseNumber: "MD-35-456791", acceptingNewPatients: false, languages: ["eng", "kor"] },
+  { id: "PRV-008", practiceId: "PRC-002", name: "Amy Rodriguez", credential: "PA", npi: "4444444444", gender: "Female", specialty: "Orthopedics", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-456792", acceptingNewPatients: true, languages: ["eng", "spa"] },
   
   // Metro Imaging Center providers
-  { id: "PRV-009", practiceId: "PRC-003", name: "Thomas Richards", credential: "MD", npi: "3333333331", gender: "Male", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-345678", acceptingNewPatients: true },
-  { id: "PRV-010", practiceId: "PRC-003", name: "Karen Lee", credential: "MD", npi: "3333333332", gender: "Female", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "2085N0700X", secondaryTaxonomyDesc: "Neuroradiology", licenseState: "OH", licenseNumber: "MD-35-345679", acceptingNewPatients: true },
+  { id: "PRV-009", practiceId: "PRC-003", name: "Thomas Richards", credential: "MD", npi: "3333333331", gender: "Male", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-345678", acceptingNewPatients: true, languages: ["eng"] },
+  { id: "PRV-010", practiceId: "PRC-003", name: "Karen Lee", credential: "MD", npi: "3333333332", gender: "Female", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "2085N0700X", secondaryTaxonomyDesc: "Neuroradiology", licenseState: "OH", licenseNumber: "MD-35-345679", acceptingNewPatients: true, languages: ["eng", "kor", "jpn"] },
   
   // Cleveland Cardiology Associates providers
-  { id: "PRV-011", practiceId: "PRC-004", name: "Robert Thompson", credential: "MD", npi: "9999999991", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RI0011X", secondaryTaxonomyDesc: "Interventional Cardiology", licenseState: "OH", licenseNumber: "MD-35-901234", acceptingNewPatients: false },
-  { id: "PRV-012", practiceId: "PRC-004", name: "Michelle Wang", credential: "MD", npi: "9999999992", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RE0101X", secondaryTaxonomyDesc: "Electrophysiology", licenseState: "OH", licenseNumber: "MD-35-901235", acceptingNewPatients: true },
-  { id: "PRV-013", practiceId: "PRC-004", name: "Daniel Kim", credential: "MD", npi: "9999999993", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-901236", acceptingNewPatients: true },
-  { id: "PRV-014", practiceId: "PRC-004", name: "Emily Foster", credential: "NP", npi: "9999999994", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-901237", acceptingNewPatients: true },
+  { id: "PRV-011", practiceId: "PRC-004", name: "Robert Thompson", credential: "MD", npi: "9999999991", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RI0011X", secondaryTaxonomyDesc: "Interventional Cardiology", licenseState: "OH", licenseNumber: "MD-35-901234", acceptingNewPatients: false, languages: ["eng"] },
+  { id: "PRV-012", practiceId: "PRC-004", name: "Michelle Wang", credential: "MD", npi: "9999999992", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RE0101X", secondaryTaxonomyDesc: "Electrophysiology", licenseState: "OH", licenseNumber: "MD-35-901235", acceptingNewPatients: true, languages: ["eng", "cmn"] },
+  { id: "PRV-013", practiceId: "PRC-004", name: "Daniel Kim", credential: "MD", npi: "9999999993", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-901236", acceptingNewPatients: true, languages: ["eng", "kor"] },
+  { id: "PRV-014", practiceId: "PRC-004", name: "Emily Foster", credential: "NP", npi: "9999999994", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-901237", acceptingNewPatients: true, languages: ["eng", "spa"] },
   
   // Westlake Urgent Care providers
-  { id: "PRV-015", practiceId: "PRC-005", name: "Patricia Lee", credential: "MD", npi: "6666666661", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-678901", acceptingNewPatients: true },
-  { id: "PRV-016", practiceId: "PRC-005", name: "Mark Johnson", credential: "DO", npi: "6666666662", gender: "Male", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-678902", acceptingNewPatients: true },
-  { id: "PRV-017", practiceId: "PRC-005", name: "Jessica Brown", credential: "PA", npi: "6666666663", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-678903", acceptingNewPatients: true },
+  { id: "PRV-015", practiceId: "PRC-005", name: "Patricia Lee", credential: "MD", npi: "6666666661", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-678901", acceptingNewPatients: true, languages: ["eng", "vie"] },
+  { id: "PRV-016", practiceId: "PRC-005", name: "Mark Johnson", credential: "DO", npi: "6666666662", gender: "Male", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-678902", acceptingNewPatients: true, languages: ["eng"] },
+  { id: "PRV-017", practiceId: "PRC-005", name: "Jessica Brown", credential: "PA", npi: "6666666663", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-678903", acceptingNewPatients: true, languages: ["eng", "spa", "por"] },
 ];
 
 const statusOptions = ["All", "Active", "Pending", "Inactive"];
@@ -257,6 +282,7 @@ export default function ProvidersPage() {
     credential: "MD",
     gender: "",
     acceptingNewPatients: true,
+    languages: ["eng"],
   });
 
   const getProvidersForPractice = (practiceId: string) => {
@@ -561,6 +587,7 @@ export default function ProvidersPage() {
                             <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">NPI</th>
                             <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">Specialty</th>
                             <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">License</th>
+                            <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">Languages</th>
                             <th className="text-left px-4 py-3 text-xs font-medium text-slate-400">Accepting</th>
                             <th className="text-right px-4 py-3 text-xs font-medium text-slate-400">Actions</th>
                           </tr>
@@ -589,6 +616,15 @@ export default function ProvidersPage() {
                               <td className="px-4 py-3">
                                 <p className="text-slate-300">{provider.licenseState}</p>
                                 <p className="text-xs text-slate-500">{provider.licenseNumber}</p>
+                              </td>
+                              <td className="px-4 py-3">
+                                <div className="flex flex-wrap gap-1">
+                                  {provider.languages.map(lang => (
+                                    <span key={lang} className="px-1.5 py-0.5 bg-slate-600 text-slate-300 text-xs rounded" title={languageNames[lang] || lang}>
+                                      {lang.toUpperCase()}
+                                    </span>
+                                  ))}
+                                </div>
                               </td>
                               <td className="px-4 py-3">
                                 {provider.acceptingNewPatients ? (
@@ -891,6 +927,34 @@ export default function ProvidersPage() {
                   </div>
                 </div>
                 
+                {/* Languages */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-white">Languages Spoken (ISO 639-3 codes)</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(languageNames).map(([code, name]) => (
+                      <button
+                        key={code}
+                        type="button"
+                        onClick={() => {
+                          const langs = newProvider.languages || [];
+                          if (langs.includes(code)) {
+                            setNewProvider({...newProvider, languages: langs.filter(l => l !== code)});
+                          } else {
+                            setNewProvider({...newProvider, languages: [...langs, code]});
+                          }
+                        }}
+                        className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                          (newProvider.languages || []).includes(code)
+                            ? "bg-cyan-600 text-white"
+                            : "bg-slate-700 text-slate-400 hover:bg-slate-600"
+                        }`}
+                      >
+                        {name} ({code.toUpperCase()})
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Accepting Patients */}
                 <div className="flex items-center gap-3">
                   <button
@@ -982,6 +1046,17 @@ export default function ProvidersPage() {
                     <p className="text-teal-400 text-sm">{selectedProvider.secondaryTaxonomyDesc}</p>
                   </div>
                 )}
+                
+                <div className="bg-slate-700/30 rounded-lg p-3">
+                  <p className="text-xs text-slate-500 mb-2">Languages Spoken</p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProvider.languages.map(lang => (
+                      <span key={lang} className="px-2 py-1 bg-cyan-500/20 text-cyan-400 text-sm rounded-full">
+                        {languageNames[lang] || lang} ({lang.toUpperCase()})
+                      </span>
+                    ))}
+                  </div>
+                </div>
                 
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Accepting New Patients</span>
