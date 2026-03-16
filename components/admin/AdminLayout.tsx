@@ -160,7 +160,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Logo */}
         <div className="h-20 flex items-center justify-between px-4 border-b border-slate-800 bg-slate-950">
           <Link href="/" className="flex items-center">
-            <img src="/medcare-logo.png" alt="MedCare Health Network" className="h-12 w-auto" />
+            <img src="/medcare-logo-dark.png" alt="MedCare Health Network" className="h-12 w-auto" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
