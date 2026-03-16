@@ -22,10 +22,10 @@ import {
 } from "lucide-react";
 
 const stats = [
-  { label: "Total Claims", value: "12,847", change: "+12%", trend: "up", icon: FileText },
-  { label: "Active Members", value: "45,230", change: "+3.2%", trend: "up", icon: Users },
-  { label: "Network Providers", value: "2,847", change: "+24", trend: "up", icon: Building2 },
-  { label: "Monthly Volume", value: "$4.2M", change: "+8.5%", trend: "up", icon: DollarSign },
+  { label: "Total Claims", value: "12,847", change: "+12%", trend: "up", icon: FileText, gradient: "from-cyan-600 to-teal-600" },
+  { label: "Active Members", value: "45,230", change: "+3.2%", trend: "up", icon: Users, gradient: "from-amber-500 to-orange-500" },
+  { label: "Network Providers", value: "2,847", change: "+24", trend: "up", icon: Building2, gradient: "from-green-500 to-emerald-600" },
+  { label: "Monthly Volume", value: "$4.2M", change: "+8.5%", trend: "up", icon: DollarSign, gradient: "from-teal-500 to-green-500" },
 ];
 
 const claimsPipeline = [
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-5 shadow-lg"
+              className={`bg-gradient-to-br ${stat.gradient} rounded-xl p-5 shadow-lg`}
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/20">
