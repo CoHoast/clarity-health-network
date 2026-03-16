@@ -84,14 +84,14 @@ export default function ExpiringContractsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Next 14 Days", count: expiringContracts.filter(c => c.daysLeft <= 14).length, color: "from-red-500 to-red-600", urgent: true },
-          { label: "15-30 Days", count: expiringContracts.filter(c => c.daysLeft > 14 && c.daysLeft <= 30).length, color: "from-amber-500 to-orange-500", urgent: false },
-          { label: "31-60 Days", count: expiringContracts.filter(c => c.daysLeft > 30 && c.daysLeft <= 60).length, color: "from-cyan-500 to-teal-500", urgent: false },
-          { label: "61-90 Days", count: expiringContracts.filter(c => c.daysLeft > 60 && c.daysLeft <= 90).length, color: "from-slate-500 to-slate-600", urgent: false },
+          { label: "Next 14 Days", count: expiringContracts.filter(c => c.daysLeft <= 14).length, urgent: true },
+          { label: "15-30 Days", count: expiringContracts.filter(c => c.daysLeft > 14 && c.daysLeft <= 30).length, urgent: false },
+          { label: "31-60 Days", count: expiringContracts.filter(c => c.daysLeft > 30 && c.daysLeft <= 60).length, urgent: false },
+          { label: "61-90 Days", count: expiringContracts.filter(c => c.daysLeft > 60 && c.daysLeft <= 90).length, urgent: false },
         ].map((stat) => (
-          <div key={stat.label} className={`bg-gradient-to-br ${stat.color} rounded-xl p-5 shadow-lg`}>
-            <p className="text-3xl font-bold" style={{ color: 'white' }}>{stat.count}</p>
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
+          <div key={stat.label} className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-5 border border-blue-800/50 shadow-lg">
+            <p className={`text-3xl font-bold ${stat.urgent ? 'text-cyan-400' : 'text-white'}`}>{stat.count}</p>
+            <p className="text-sm text-slate-400">{stat.label}</p>
           </div>
         ))}
       </div>

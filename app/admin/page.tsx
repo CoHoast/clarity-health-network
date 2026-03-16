@@ -94,17 +94,17 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-slate-800/80 rounded-xl p-5 border border-slate-700 shadow-lg"
+              className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-5 border border-blue-800/50 shadow-lg"
             >
               <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-600/20 to-teal-600/20 border border-cyan-500/30">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-cyan-500/20 border border-cyan-500/30">
                   <Icon className="w-5 h-5 text-cyan-400" />
                 </div>
                 <span 
                   className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
                     stat.trend === "warning" 
-                      ? "bg-amber-500/10 text-amber-400 border border-amber-500/30" 
-                      : "bg-teal-500/10 text-teal-400 border border-teal-500/30"
+                      ? "bg-amber-500/20 text-amber-400" 
+                      : "bg-cyan-500/20 text-cyan-400"
                   }`}
                 >
                   {stat.trend === "up" && <TrendingUp className="w-3 h-3" />}
@@ -113,7 +113,7 @@ export default function AdminDashboard() {
                 </span>
               </div>
               <p className="text-2xl font-bold text-white">{stat.value}</p>
-              <p className="text-sm text-slate-400">{stat.label}</p>
+              <p className="text-sm text-slate-300">{stat.label}</p>
             </motion.div>
           );
         })}
@@ -127,9 +127,9 @@ export default function AdminDashboard() {
             <Link
               key={action.label}
               href={action.href}
-              className="bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700 hover:border-slate-600 rounded-xl p-4 transition-all flex items-center gap-3"
+              className="bg-gradient-to-br from-slate-800 to-slate-800/60 hover:from-blue-900/60 hover:to-slate-800 border border-slate-700 hover:border-blue-700/50 rounded-xl p-4 transition-all flex items-center gap-3"
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-600/20 to-teal-600/20 border border-cyan-500/30">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-cyan-500/20 border border-cyan-500/30">
                 <Icon className="w-5 h-5 text-cyan-400" />
               </div>
               <div>
