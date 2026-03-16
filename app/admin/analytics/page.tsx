@@ -365,28 +365,28 @@ export default function AnalyticsPage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-slate-900 rounded-xl p-5 cursor-pointer hover:bg-slate-800 transition-all border border-slate-700 shadow-lg" onClick={() => setSelectedDrilldown("providers")}>
+          <div className="bg-slate-950 rounded-xl p-5 cursor-pointer hover:bg-slate-900 transition-all border border-slate-800 shadow-lg" onClick={() => setSelectedDrilldown("providers")}>
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
               <Building2 className="w-5 h-5 text-cyan-400" />
             </div>
             <p className="text-3xl font-bold text-white">2,891</p>
             <p className="text-slate-300">Total Providers</p>
           </div>
-          <div className="bg-slate-900 rounded-xl p-5 cursor-pointer hover:bg-slate-800 transition-all border border-slate-700 shadow-lg" onClick={() => setSelectedDrilldown("discounts")}>
+          <div className="bg-slate-950 rounded-xl p-5 cursor-pointer hover:bg-slate-900 transition-all border border-slate-800 shadow-lg" onClick={() => setSelectedDrilldown("discounts")}>
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
               <DollarSign className="w-5 h-5 text-cyan-400" />
             </div>
             <p className="text-3xl font-bold text-white">32.4%</p>
             <p className="text-slate-300">Avg Discount Rate</p>
           </div>
-          <div className="bg-slate-900 rounded-xl p-5 cursor-pointer hover:bg-slate-800 transition-all border border-slate-700 shadow-lg" onClick={() => setSelectedDrilldown("coverage")}>
+          <div className="bg-slate-950 rounded-xl p-5 cursor-pointer hover:bg-slate-900 transition-all border border-slate-800 shadow-lg" onClick={() => setSelectedDrilldown("coverage")}>
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
               <MapPin className="w-5 h-5 text-cyan-400" />
             </div>
             <p className="text-3xl font-bold text-white">88</p>
             <p className="text-slate-300">Counties Covered</p>
           </div>
-          <div className="bg-slate-900 rounded-xl p-5 cursor-pointer hover:bg-slate-800 transition-all border border-slate-700 shadow-lg" onClick={() => setSelectedDrilldown("credentials")}>
+          <div className="bg-slate-950 rounded-xl p-5 cursor-pointer hover:bg-slate-900 transition-all border border-slate-800 shadow-lg" onClick={() => setSelectedDrilldown("credentials")}>
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30 mb-3">
               <Shield className="w-5 h-5 text-cyan-400" />
             </div>
