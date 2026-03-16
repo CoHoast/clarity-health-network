@@ -131,7 +131,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true); // Default to dark theme
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const handleSignOut = () => {
@@ -140,10 +140,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push("/admin-login");
   };
 
-  // Persist theme preference
+  // Persist theme preference (default to dark if no preference saved)
   useEffect(() => {
     const saved = localStorage.getItem("admin-theme");
-    if (saved) setIsDark(saved === "dark");
+    if (saved) {
+      setIsDark(saved === "dark");
+    } else {
+      // No preference saved, keep dark and save it
+      localStorage.setItem("admin-theme", "dark");
+    }
   }, []);
 
   // Auto-expand section if current page is in it
