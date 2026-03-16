@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Mail, Send, Users, UserPlus, Search, FileText, CheckCircle, Building2, X, Plus, Edit, Trash2, Copy, Check, Eye, Settings } from "lucide-react";
+import { Mail, Send, Users, UserPlus, Search, FileText, CheckCircle, Building2, X, Plus, Edit, Trash2, Copy, Check, Eye, Settings, MessageCircle, Reply, Clock, Inbox } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Existing network providers
@@ -191,22 +191,148 @@ const outreachHistory = [
   { id: 4, practice: "Riverside Family Practice", email: "office@riversidecare.com", template: "Follow-Up Invitation", date: "2026-03-08", status: "sent" },
 ];
 
+interface OutreachResponse {
+  id: number;
+  practice: string;
+  contact: string;
+  email: string;
+  specialty: string;
+  originalOutreach: string;
+  responseDate: string;
+  receivedDate: string;
+  subject: string;
+  body: string;
+  status: "new" | "read" | "replied" | "archived";
+  interested: boolean;
+}
+
+// Provider responses to outreach
+const initialResponses: OutreachResponse[] = [
+  {
+    id: 1,
+    practice: "Dr. Michael Torres, MD",
+    contact: "Dr. Michael Torres",
+    email: "mtorres@cleveclinic.com",
+    specialty: "Cardiology",
+    originalOutreach: "Specialty-Specific Outreach",
+    responseDate: "2026-03-13",
+    receivedDate: "2026-03-13 2:45 PM",
+    subject: "Re: TrueCare Seeking Cardiology Providers in Cleveland",
+    body: `Hello,
+
+Thank you for reaching out about joining TrueCare Health Network. I've been looking for opportunities to expand my practice's reach, and your network sounds like a good fit.
+
+I'm particularly interested in learning more about:
+- Your reimbursement rates for cardiology services
+- The credentialing timeline
+- Current patient volume from TrueCare members in the Cleveland area
+
+I'm available for a call this Thursday or Friday afternoon if that works for your team.
+
+Best regards,
+Dr. Michael Torres
+Cleveland Cardiology Specialists
+(216) 555-0147`,
+    status: "new",
+    interested: true,
+  },
+  {
+    id: 2,
+    practice: "Lakeside Pediatrics",
+    contact: "Dr. Amanda Chen",
+    email: "achen@lakesidepeds.com",
+    specialty: "Pediatrics",
+    originalOutreach: "Initial Network Invitation",
+    responseDate: "2026-03-11",
+    receivedDate: "2026-03-11 10:22 AM",
+    subject: "Re: Join TrueCare Health Network - Invitation to Partner",
+    body: `Hi there,
+
+We received your invitation to join TrueCare Health Network. Our practice has been considering expanding our insurance network participation.
+
+Could you send over more details about:
+1. The fee schedule for pediatric services
+2. Any participation requirements
+3. How claims are processed
+
+We're definitely interested in learning more.
+
+Thanks,
+Dr. Amanda Chen
+Lakeside Pediatrics`,
+    status: "read",
+    interested: true,
+  },
+  {
+    id: 3,
+    practice: "Summit Orthopedic Group",
+    contact: "Office Manager - Janet Miller",
+    email: "jmiller@summitortho.com",
+    specialty: "Orthopedics",
+    originalOutreach: "Follow-Up Invitation",
+    responseDate: "2026-03-09",
+    receivedDate: "2026-03-09 4:15 PM",
+    subject: "Re: Following Up - TrueCare Health Network Partnership",
+    body: `Thank you for following up.
+
+After discussing with our physicians, we've decided that we're not looking to add new network partnerships at this time. We're at capacity with our current patient load.
+
+However, please keep us in mind for the future. Our situation may change in 6-12 months.
+
+Best,
+Janet Miller
+Office Manager
+Summit Orthopedic Group`,
+    status: "replied",
+    interested: false,
+  },
+  {
+    id: 4,
+    practice: "Cleveland Women's Health",
+    contact: "Dr. Rebecca Thompson",
+    email: "rthompson@clevewomens.com",
+    specialty: "OB/GYN",
+    originalOutreach: "Specialty-Specific Outreach",
+    responseDate: "2026-03-08",
+    receivedDate: "2026-03-08 11:30 AM",
+    subject: "Re: TrueCare Seeking OB/GYN Providers in Cleveland",
+    body: `Hello,
+
+Yes, we would be very interested in joining TrueCare Health Network! We've heard good things about your organization from colleagues.
+
+Can we schedule a call for early next week? I'd like to discuss the onboarding process and get started as soon as possible.
+
+My direct line is (216) 555-0234.
+
+Looking forward to partnering with you,
+Dr. Rebecca Thompson
+Cleveland Women's Health Associates`,
+    status: "read",
+    interested: true,
+  },
+];
+
 export default function CommunicationsPage() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
   const [activeTab, setActiveTab] = useState<"messages" | "outreach">("messages");
-  const [outreachSubTab, setOutreachSubTab] = useState<"send" | "templates">("send");
+  const [outreachSubTab, setOutreachSubTab] = useState<"send" | "templates" | "responses">("send");
   const [searchQuery, setSearchQuery] = useState("");
   const [showComposeModal, setShowComposeModal] = useState(false);
   const [showOutreachModal, setShowOutreachModal] = useState(false);
   const [showEditTemplateModal, setShowEditTemplateModal] = useState(false);
   const [showNewTemplateModal, setShowNewTemplateModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [showReplyModal, setShowReplyModal] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<typeof networkProviders[0] | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<OutreachTemplate | null>(null);
+  const [selectedResponse, setSelectedResponse] = useState<OutreachResponse | null>(null);
+  const [responses, setResponses] = useState<OutreachResponse[]>(initialResponses);
   const [templates, setTemplates] = useState<OutreachTemplate[]>(initialTemplates);
   const [messageSubject, setMessageSubject] = useState("");
   const [messageBody, setMessageBody] = useState("");
+  const [replyBody, setReplyBody] = useState("");
   const [sendSuccess, setSendSuccess] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -369,6 +495,51 @@ export default function CommunicationsPage() {
     setTemplates([...templates, newTemplate]);
   };
 
+  const openResponseModal = (response: OutreachResponse) => {
+    setSelectedResponse(response);
+    // Mark as read
+    if (response.status === "new") {
+      setResponses(responses.map(r => 
+        r.id === response.id ? { ...r, status: "read" as const } : r
+      ));
+    }
+    setShowResponseModal(true);
+  };
+
+  const openReplyModal = (response: OutreachResponse) => {
+    setSelectedResponse(response);
+    setReplyBody("");
+    setSendSuccess(false);
+    setShowReplyModal(true);
+  };
+
+  const handleSendReply = () => {
+    setSendSuccess(true);
+    setTimeout(() => {
+      // Mark as replied
+      if (selectedResponse) {
+        setResponses(responses.map(r => 
+          r.id === selectedResponse.id ? { ...r, status: "replied" as const } : r
+        ));
+      }
+      setShowReplyModal(false);
+      setShowResponseModal(false);
+      setSendSuccess(false);
+    }, 1500);
+  };
+
+  const newResponsesCount = responses.filter(r => r.status === "new").length;
+
+  const getResponseStatusBadge = (status: string) => {
+    switch (status) {
+      case "new": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-medium rounded-full"><Mail className="w-3 h-3" />New</span>;
+      case "read": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-500/20 text-slate-400 text-xs font-medium rounded-full"><Eye className="w-3 h-3" />Read</span>;
+      case "replied": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><Reply className="w-3 h-3" />Replied</span>;
+      case "archived": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-600/20 text-slate-500 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Archived</span>;
+      default: return null;
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "delivered": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-500/20 text-slate-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Delivered</span>;
@@ -516,6 +687,20 @@ export default function CommunicationsPage() {
               Send Outreach
             </button>
             <button
+              onClick={() => setOutreachSubTab("responses")}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors relative ${
+                outreachSubTab === "responses" ? "bg-slate-700 text-white" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Inbox className="w-4 h-4 inline mr-2" />
+              Responses
+              {newResponsesCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-cyan-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                  {newResponsesCount}
+                </span>
+              )}
+            </button>
+            <button
               onClick={() => setOutreachSubTab("templates")}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 outreachSubTab === "templates" ? "bg-slate-700 text-white" : "text-slate-400 hover:text-white"
@@ -583,6 +768,88 @@ export default function CommunicationsPage() {
                       ))}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            </>
+          ) : outreachSubTab === "responses" ? (
+            <>
+              {/* Responses Section */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <Inbox className="w-5 h-5 text-cyan-400" />
+                      Provider Responses
+                    </h2>
+                    <p className="text-slate-400 text-sm mt-1">
+                      {newResponsesCount > 0 ? `${newResponsesCount} new response${newResponsesCount > 1 ? 's' : ''} • ` : ''}
+                      {responses.length} total responses
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {responses.map((response) => (
+                    <div 
+                      key={response.id} 
+                      className={`rounded-lg p-4 transition-colors cursor-pointer ${
+                        response.status === "new" 
+                          ? "bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20" 
+                          : "bg-slate-700/30 hover:bg-slate-700/50"
+                      }`}
+                      onClick={() => openResponseModal(response)}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4 flex-1">
+                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                            response.interested ? "bg-green-500/20" : "bg-slate-600/50"
+                          }`}>
+                            <Building2 className={`w-6 h-6 ${response.interested ? "text-green-400" : "text-slate-400"}`} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-3 mb-1">
+                              <h3 className="text-white font-semibold">{response.practice}</h3>
+                              {getResponseStatusBadge(response.status)}
+                              {response.interested && (
+                                <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-medium rounded-full">
+                                  Interested
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-slate-300 text-sm mb-1">{response.subject}</p>
+                            <p className="text-slate-400 text-sm line-clamp-2">{response.body.split('\n')[0]}</p>
+                            <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {response.receivedDate}
+                              </span>
+                              <span>•</span>
+                              <span>{response.contact}</span>
+                              <span>•</span>
+                              <span>{response.specialty}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); openReplyModal(response); }}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                          >
+                            <Reply className="w-4 h-4" />
+                            Reply
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {responses.length === 0 && (
+                    <div className="text-center py-12">
+                      <Inbox className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+                      <p className="text-slate-400">No responses yet</p>
+                      <p className="text-slate-500 text-sm mt-1">Responses to your outreach emails will appear here</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </>
@@ -1187,6 +1454,197 @@ export default function CommunicationsPage() {
                 >
                   <Edit className="w-4 h-4" />
                   Edit Template
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* View Response Modal */}
+      <AnimatePresence>
+        {showResponseModal && selectedResponse && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowResponseModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-xl font-bold text-gray-900">{selectedResponse.practice}</h2>
+                    {selectedResponse.interested && (
+                      <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                        Interested
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gray-600 text-sm mt-1">{selectedResponse.contact} • {selectedResponse.specialty}</p>
+                </div>
+                <button onClick={() => setShowResponseModal(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-200 rounded-lg">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="p-6 overflow-auto max-h-[60vh] bg-white">
+                {/* Email Header */}
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="text-gray-500">From:</p>
+                      <p className="text-gray-900 font-medium">{selectedResponse.contact}</p>
+                      <p className="text-gray-600">{selectedResponse.email}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Received:</p>
+                      <p className="text-gray-900">{selectedResponse.receivedDate}</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <p className="text-gray-500 text-sm">In response to:</p>
+                    <p className="text-gray-700 text-sm">{selectedResponse.originalOutreach}</p>
+                  </div>
+                </div>
+
+                {/* Subject */}
+                <div className="mb-4">
+                  <p className="text-gray-500 text-sm mb-1">Subject:</p>
+                  <p className="text-gray-900 font-semibold">{selectedResponse.subject}</p>
+                </div>
+
+                {/* Email Body */}
+                <div className="bg-white border border-gray-200 rounded-lg p-6">
+                  <div className="whitespace-pre-line text-gray-700 text-sm leading-relaxed">
+                    {selectedResponse.body}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-gray-200 flex justify-between bg-gray-50">
+                <div className="flex gap-2">
+                  <button
+                    className="px-3 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    Archive
+                  </button>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowResponseModal(false)}
+                    className="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowResponseModal(false);
+                      openReplyModal(selectedResponse);
+                    }}
+                    className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                  >
+                    <Reply className="w-4 h-4" />
+                    Reply
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Reply Modal */}
+      <AnimatePresence>
+        {showReplyModal && selectedResponse && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => !sendSuccess && setShowReplyModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Reply to {selectedResponse.contact}</h2>
+                  <p className="text-slate-400 text-sm">{selectedResponse.email}</p>
+                </div>
+                <button onClick={() => setShowReplyModal(false)} className="text-slate-400 hover:text-white p-2 hover:bg-slate-700 rounded-lg">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-4 max-h-[60vh] overflow-auto">
+                {/* Original Message Reference */}
+                <div className="bg-slate-700/50 rounded-lg p-4">
+                  <p className="text-slate-400 text-xs uppercase font-semibold mb-2">Replying to:</p>
+                  <p className="text-slate-300 text-sm font-medium">{selectedResponse.subject}</p>
+                  <p className="text-slate-500 text-sm mt-2 line-clamp-3">{selectedResponse.body.split('\n').slice(0, 3).join('\n')}...</p>
+                </div>
+
+                {/* Reply Subject */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Subject</label>
+                  <input
+                    type="text"
+                    defaultValue={`Re: ${selectedResponse.subject}`}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                  />
+                </div>
+
+                {/* Reply Body */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Your Reply</label>
+                  <textarea
+                    value={replyBody}
+                    onChange={(e) => setReplyBody(e.target.value)}
+                    placeholder={`Hi ${selectedResponse.contact.split(' ')[0]},\n\nThank you for your response...\n\nBest regards,\nNetwork Relations Team\nTrueCare Health Network`}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 h-48 resize-none"
+                  />
+                </div>
+
+                {/* Quick Response Buttons */}
+                <div>
+                  <p className="text-slate-400 text-xs uppercase font-semibold mb-2">Quick Responses:</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setReplyBody(`Hi ${selectedResponse.contact.split(' ')[0]},\n\nThank you for your interest in joining TrueCare Health Network! I'd be happy to schedule a call to discuss the details.\n\nWould any of the following times work for you?\n- [Option 1]\n- [Option 2]\n- [Option 3]\n\nAlternatively, feel free to suggest a time that works best for your schedule.\n\nBest regards,\nNetwork Relations Team\nTrueCare Health Network\n1-800-555-0199`)}
+                      className="px-3 py-1.5 bg-slate-700 text-slate-300 text-sm rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Schedule Call
+                    </button>
+                    <button
+                      onClick={() => setReplyBody(`Hi ${selectedResponse.contact.split(' ')[0]},\n\nThank you for your response. I've attached the following information you requested:\n\n• Fee schedule for ${selectedResponse.specialty} services\n• Credentialing requirements\n• Network participation agreement\n\nPlease review these documents and let me know if you have any questions. I'm happy to schedule a call to walk through anything in detail.\n\nBest regards,\nNetwork Relations Team\nTrueCare Health Network\n1-800-555-0199`)}
+                      className="px-3 py-1.5 bg-slate-700 text-slate-300 text-sm rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Send Info
+                    </button>
+                    <button
+                      onClick={() => setReplyBody(`Hi ${selectedResponse.contact.split(' ')[0]},\n\nThank you for letting us know. We completely understand and appreciate you taking the time to respond.\n\nWe'll keep your information on file, and please don't hesitate to reach out if your situation changes in the future. Our door is always open.\n\nWishing you continued success!\n\nBest regards,\nNetwork Relations Team\nTrueCare Health Network`)}
+                      className="px-3 py-1.5 bg-slate-700 text-slate-300 text-sm rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Not Interested (Polite)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-slate-700 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowReplyModal(false)}
+                  className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSendReply}
+                  disabled={!replyBody}
+                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  {sendSuccess ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
+                  {sendSuccess ? "Sent!" : "Send Reply"}
                 </button>
               </div>
             </motion.div>
