@@ -789,14 +789,14 @@ export default function ProvidersPage() {
                         <Eye className="w-4 h-4" />
                         View
                       </button>
-                      <button
-                        onClick={() => { setSelectedPractice(practice); setActiveTab("providers"); }}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-teal-400 bg-teal-500/10 hover:bg-teal-500/20 rounded-lg transition-colors text-sm"
-                        title="View Providers"
+                      <Link
+                        href={`/admin/providers/${practice.id}?edit=true`}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 rounded-lg transition-colors text-sm"
+                        title="Edit Practice"
                       >
-                        <Users className="w-4 h-4" />
-                        Providers
-                      </button>
+                        <Edit className="w-4 h-4" />
+                        Edit
+                      </Link>
                     </div>
                   </td>
                 </tr>

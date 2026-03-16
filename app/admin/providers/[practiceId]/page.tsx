@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, Building2, MapPin, Phone, Mail, FileText, DollarSign, Users, Edit, Save, X,
@@ -129,6 +129,7 @@ const serviceCategories = [
 
 export default function PracticeDetailPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const practiceId = params.practiceId as string;
   const practice = practicesData[practiceId] || practicesData["PRC-001"];
 
@@ -137,6 +138,13 @@ export default function PracticeDetailPage() {
   const [editData, setEditData] = useState(practice);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  // Auto-enable edit mode if ?edit=true
+  useEffect(() => {
+    if (searchParams.get("edit") === "true") {
+      setIsEditing(true);
+    }
+  }, [searchParams]);
 
   // Discount rates state
   const [rateType, setRateType] = useState<"flat" | "custom">("flat");
