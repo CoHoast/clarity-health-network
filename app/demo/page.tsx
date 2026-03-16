@@ -954,56 +954,86 @@ export default function ProductDemoPage() {
                 ))}
               </div>
 
-              {/* Sample Documents */}
-              <h5 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 16 }}>See What Providers Receive</h5>
-              <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-                <button
-                  onClick={() => window.open('/demo/sample-email.html', '_blank')}
-                  style={{
-                    flex: 1,
-                    padding: '14px 20px',
-                    background: '#0f172a',
-                    border: 'none',
-                    borderRadius: 10,
-                    color: 'white',
-                    fontWeight: 600,
-                    fontSize: 14,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                  }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                  </svg>
-                  View Sample Email
-                </button>
-                <button
-                  onClick={() => window.open('/demo/sample-offer-letter.html', '_blank')}
-                  style={{
-                    flex: 1,
-                    padding: '14px 20px',
-                    background: 'linear-gradient(135deg, #0d9488 0%, #0891b2 100%)',
-                    border: 'none',
-                    borderRadius: 10,
-                    color: 'white',
-                    fontWeight: 600,
-                    fontSize: 14,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                  }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                  </svg>
-                  View Offer Letter PDF
-                </button>
+              {/* Sample Settlement Email */}
+              <h5 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 16 }}>Sample Settlement Offer Email</h5>
+              <div style={{ 
+                borderRadius: 12, 
+                overflow: 'hidden', 
+                border: '2px solid #e2e8f0',
+                marginBottom: 24,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+              }}>
+                {/* Email Header Bar */}
+                <div style={{ 
+                  background: '#f1f5f9', 
+                  padding: '10px 16px', 
+                  borderBottom: '1px solid #e2e8f0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <div style={{ width: 12, height: 12, borderRadius: 6, background: '#ef4444' }} />
+                    <div style={{ width: 12, height: 12, borderRadius: 6, background: '#eab308' }} />
+                    <div style={{ width: 12, height: 12, borderRadius: 6, background: '#22c55e' }} />
+                  </div>
+                  <span style={{ fontSize: 12, color: '#64748b', marginLeft: 8 }}>
+                    settlements@medcarehealthnetwork.com
+                  </span>
+                </div>
+                {/* Email Content */}
+                <img 
+                  src="/demo/settlement-offer-email.jpg" 
+                  alt="Sample Settlement Offer Email"
+                  style={{ 
+                    width: '100%', 
+                    display: 'block',
+                  }} 
+                />
               </div>
+              
+              {/* Email Highlights */}
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(3, 1fr)', 
+                gap: 12, 
+                marginBottom: 24,
+              }}>
+                <div style={{ 
+                  background: '#f0fdf4', 
+                  borderRadius: 10, 
+                  padding: 16, 
+                  textAlign: 'center',
+                  border: '1px solid #bbf7d0',
+                }}>
+                  <div style={{ fontSize: 11, color: '#166534', fontWeight: 600, marginBottom: 4 }}>BILLED AMOUNT</div>
+                  <div style={{ fontSize: 20, fontWeight: 700, color: '#dc2626' }}>$6,500</div>
+                </div>
+                <div style={{ 
+                  background: '#f0fdf4', 
+                  borderRadius: 10, 
+                  padding: 16, 
+                  textAlign: 'center',
+                  border: '1px solid #bbf7d0',
+                }}>
+                  <div style={{ fontSize: 11, color: '#166534', fontWeight: 600, marginBottom: 4 }}>OUR OFFER</div>
+                  <div style={{ fontSize: 20, fontWeight: 700, color: '#059669' }}>$3,250</div>
+                </div>
+                <div style={{ 
+                  background: '#f0fdf4', 
+                  borderRadius: 10, 
+                  padding: 16, 
+                  textAlign: 'center',
+                  border: '1px solid #bbf7d0',
+                }}>
+                  <div style={{ fontSize: 11, color: '#166534', fontWeight: 600, marginBottom: 4 }}>SAVINGS</div>
+                  <div style={{ fontSize: 20, fontWeight: 700, color: '#0d9488' }}>50%</div>
+                </div>
+              </div>
+
+              <p style={{ fontSize: 13, color: '#64748b', marginBottom: 24, fontStyle: 'italic' }}>
+                The email includes pricing benchmarks showing the provider&apos;s charges are 32.6x the Medicare-allowed amount, making our offer reasonable and well-documented.
+              </p>
 
               {/* Key Features */}
               <h5 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 16 }}>Key Features</h5>
