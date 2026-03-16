@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
             className={`rounded-xl p-4 text-left transition-all group shadow-lg ${
               isDark 
                 ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30 hover:from-cyan-900/40 hover:to-teal-900/40" 
-                : "bg-cyan-600 hover:bg-cyan-700"
+                : "bg-slate-900 border border-slate-700 hover:bg-slate-800"
             }`}
           >
             <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.7)' }}>{kpi.label}</p>
