@@ -86,17 +86,21 @@ export default function ExpiringContractsPage() {
       {/* Stats - Theme Aware */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Next 14 Days", count: expiringContracts.filter(c => c.daysLeft <= 14).length, urgent: true },
-          { label: "15-30 Days", count: expiringContracts.filter(c => c.daysLeft > 14 && c.daysLeft <= 30).length, urgent: false },
-          { label: "31-60 Days", count: expiringContracts.filter(c => c.daysLeft > 30 && c.daysLeft <= 60).length, urgent: false },
-          { label: "61-90 Days", count: expiringContracts.filter(c => c.daysLeft > 60 && c.daysLeft <= 90).length, urgent: false },
+          { label: "Next 14 Days", count: expiringContracts.filter(c => c.daysLeft <= 14).length },
+          { label: "15-30 Days", count: expiringContracts.filter(c => c.daysLeft > 14 && c.daysLeft <= 30).length },
+          { label: "31-60 Days", count: expiringContracts.filter(c => c.daysLeft > 30 && c.daysLeft <= 60).length },
+          { label: "61-90 Days", count: expiringContracts.filter(c => c.daysLeft > 60 && c.daysLeft <= 90).length },
         ].map((stat) => (
           <div 
             key={stat.label} 
-            className="rounded-xl p-5 shadow-lg bg-slate-950 border border-slate-800"
+            className={`rounded-xl p-5 shadow-lg ${
+              isDark 
+                ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
+                : "bg-gradient-to-br from-blue-900 to-slate-800"
+            }`}
           >
-            <p className="text-3xl font-bold text-white">{stat.count}</p>
-            <p className="text-sm text-slate-400">{stat.label}</p>
+            <p className="text-3xl font-bold" style={{ color: 'white' }}>{stat.count}</p>
+            <p className={`text-sm ${isDark ? "text-cyan-300/70" : "text-blue-200"}`}>{stat.label}</p>
           </div>
         ))}
       </div>

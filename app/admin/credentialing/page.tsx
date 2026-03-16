@@ -182,17 +182,21 @@ export default function CredentialingPage() {
       {/* Stats - Theme Aware */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { value: "47", label: "Pending Applications", highlight: false },
-          { value: "12", label: "Committee Review", highlight: false },
-          { value: "18", label: "Expiring (30 days)", highlight: false },
-          { value: "94%", label: "Approval Rate", highlight: true },
+          { value: "47", label: "Pending Applications" },
+          { value: "12", label: "Committee Review" },
+          { value: "18", label: "Expiring (30 days)" },
+          { value: "94%", label: "Approval Rate" },
         ].map((stat, i) => (
           <div 
             key={i}
-            className="rounded-xl p-4 shadow-lg bg-slate-950 border border-slate-800"
+            className={`rounded-xl p-4 shadow-lg ${
+              isDark 
+                ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
+                : "bg-gradient-to-br from-blue-900 to-slate-800"
+            }`}
           >
-            <p className="text-2xl font-bold text-white">{stat.value}</p>
-            <p className="text-sm text-slate-400">{stat.label}</p>
+            <p className="text-2xl font-bold" style={{ color: 'white' }}>{stat.value}</p>
+            <p className={`text-sm ${isDark ? "text-cyan-300/70" : "text-blue-200"}`}>{stat.label}</p>
           </div>
         ))}
       </div>
