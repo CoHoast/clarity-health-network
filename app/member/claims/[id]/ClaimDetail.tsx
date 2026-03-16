@@ -75,7 +75,7 @@ export default function ClaimDetail({ id }: { id: string }) {
 </head>
 <body>
   <div class="header">
-    <div class="logo">MedCare<span>Health</span></div>
+    <div class="logo">TrueCare<span>Health</span></div>
     <div class="document-title">
       <h1>Explanation of Benefits</h1>
       <p>This is not a bill</p>
@@ -107,7 +107,7 @@ export default function ClaimDetail({ id }: { id: string }) {
     </div>
     <div class="info-box">
       <h3>Plan Information</h3>
-      <p><strong>Plan:</strong> MedCare Health PPO</p>
+      <p><strong>Plan:</strong> TrueCare Health PPO</p>
       <p><strong>Network:</strong> In-Network</p>
       <p><strong>Coinsurance:</strong> ${mockClaim.coinsurance}</p>
     </div>
@@ -176,11 +176,11 @@ export default function ClaimDetail({ id }: { id: string }) {
 
   <div class="help-text">
     <h4>Questions About This EOB?</h4>
-    <p>Contact Member Services at 1-800-555-0123 or visit member.medcarehealth.com for help understanding your benefits.</p>
+    <p>Contact Member Services at 1-800-555-0123 or visit member.truecarehealth.com for help understanding your benefits.</p>
   </div>
 
   <div class="footer">
-    <p><strong>MedCare Health Network</strong> | Member Services: 1-800-555-0123 | www.medcarehealth.com</p>
+    <p><strong>TrueCare Health Network</strong> | Member Services: 1-800-555-0123 | www.truecarehealth.com</p>
     <p>This Explanation of Benefits (EOB) is a summary of how your claim was processed. Please keep for your records.</p>
     <p style="margin-top: 10px; color: #999;">Generated on ${new Date().toLocaleDateString()} | Document ID: EOB-${mockClaim.id}</p>
   </div>

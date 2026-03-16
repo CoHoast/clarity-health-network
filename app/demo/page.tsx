@@ -1040,7 +1040,7 @@ export default function ProductDemoPage() {
                         <div style={{ width: 12, height: 12, borderRadius: 6, background: '#22c55e' }} />
                       </div>
                       <span style={{ fontSize: 12, color: '#64748b', marginLeft: 8 }}>
-                        settlements@medcarehealthnetwork.com
+                        settlements@truecarehealthnetwork.com
                       </span>
                     </div>
                     {/* Email Content */}

@@ -43,7 +43,7 @@ export default function HowItWorksPage() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Getting started with MedCare Health Network is easy. 
+              Getting started with TrueCare Health Network is easy. 
               Follow these simple steps to start saving on your healthcare today.
             </p>
           </motion.div>
@@ -66,7 +66,7 @@ export default function HowItWorksPage() {
               {
                 step: "02",
                 title: "Show Your Member ID",
-                description: "At your appointment, present your MedCare Health Network member ID card. Your provider will verify your network status and apply our negotiated rates.",
+                description: "At your appointment, present your TrueCare Health Network member ID card. Your provider will verify your network status and apply our negotiated rates.",
                 features: ["Digital ID available 24/7", "Instant verification", "No referrals needed", "Direct specialist access"],
                 image: "/doctor-patient-care.jpg",
                 icon: CreditCard,

@@ -192,7 +192,7 @@ export default function MembersPage() {
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <p className="text-teal-200 text-sm">Member ID Card</p>
-                    <h3 className="text-xl font-bold">MedCare Health Network</h3>
+                    <h3 className="text-xl font-bold">TrueCare Health Network</h3>
                   </div>
                   <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                     <span className="text-2xl font-bold">C</span>

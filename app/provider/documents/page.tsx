@@ -245,7 +245,7 @@ export default function DocumentsPage() {
                       <FileText className="w-8 h-8 text-slate-600" />
                     </div>
                     <h1 className="text-2xl font-bold text-gray-900">{showViewModal.name.replace('.pdf', '')}</h1>
-                    <p className="text-gray-500 mt-2">MedCare Health Network</p>
+                    <p className="text-gray-500 mt-2">TrueCare Health Network</p>
                   </div>
 
                   <div className="space-y-6 text-sm text-gray-700">

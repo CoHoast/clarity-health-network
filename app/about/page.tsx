@@ -44,7 +44,7 @@ export default function AboutPage() {
               </h1>
               <p className="text-xl text-gray-600 mb-8">
                 Founded on the belief that everyone deserves quality healthcare, 
-                MedCare Health Network connects members with trusted providers 
+                TrueCare Health Network connects members with trusted providers 
                 at prices that make sense.
               </p>
               <div className="flex flex-wrap gap-4">

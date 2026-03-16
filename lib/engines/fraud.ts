@@ -2,7 +2,7 @@
  * Fraud Detection Engine
  * 
  * AI/ML-powered detection of healthcare fraud, waste, and abuse (FWA).
- * Adapted from DOKit Fraud Detection module for MedCare Health Network.
+ * Adapted from DOKit Fraud Detection module for TrueCare Health Network.
  * 
  * Features:
  * - Rule-based detection (20+ pre-built rules)

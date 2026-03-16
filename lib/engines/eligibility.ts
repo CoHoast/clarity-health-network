@@ -2,7 +2,7 @@
  * Eligibility Engine
  * 
  * Real-time member eligibility verification.
- * Adapted from DOKit Eligibility Engine for MedCare Health Network.
+ * Adapted from DOKit Eligibility Engine for TrueCare Health Network.
  */
 
 import prisma from '../db';
@@ -290,7 +290,7 @@ export class EligibilityEngine {
           relationship: member.relationship,
         },
         coverage: {
-          planName: `MedCare Health ${member.planType}`,
+          planName: `TrueCare Health ${member.planType}`,
           planType: member.planType,
           effectiveDate: member.effectiveDate.toISOString().split('T')[0],
           terminationDate: member.terminationDate?.toISOString().split('T')[0],
@@ -340,7 +340,7 @@ export class EligibilityEngine {
       },
       
       coverage: {
-        planName: `MedCare Health ${member.planType}`,
+        planName: `TrueCare Health ${member.planType}`,
         planType: member.planType,
         effectiveDate: member.effectiveDate.toISOString().split('T')[0],
         terminationDate: member.terminationDate?.toISOString().split('T')[0],
@@ -438,7 +438,7 @@ export class EligibilityEngine {
           'Verify member ID is correct (check insurance card)',
           'Confirm date of birth matches exactly',
           'Member may be enrolled under different ID',
-          'Contact MedCare Health member services: 1-800-MEDCARE',
+          'Contact TrueCare Health member services: 1-800-MEDCARE',
         ],
       },
     };

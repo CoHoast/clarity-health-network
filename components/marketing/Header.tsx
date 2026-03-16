@@ -43,7 +43,7 @@ export default function MarketingHeader() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/medcare-logo.png" alt="MedCare Health Network" className="h-14 w-auto" />
+            <img src="/truecare-logo.png" alt="TrueCare Health Network" className="h-14 w-auto" />
           </Link>
 
           {/* Desktop nav */}

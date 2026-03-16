@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Search, Send, Paperclip, MoreVertical, CheckCheck } from "lucide-react";
 
 const conversations = [
-  { id: 1, name: "MedCare Health Support", avatar: "CH", lastMessage: "Your fee schedule has been updated for 2024.", time: "2:30 PM", unread: 2 },
+  { id: 1, name: "TrueCare Health Support", avatar: "CH", lastMessage: "Your fee schedule has been updated for 2024.", time: "2:30 PM", unread: 2 },
   { id: 2, name: "Provider Relations", avatar: "PR", lastMessage: "Contract renewal documents are ready for review.", time: "Yesterday", unread: 0 },
   { id: 3, name: "Claims Department", avatar: "CD", lastMessage: "Claim #CLM-2024-1234 requires additional documentation.", time: "Mar 10", unread: 1 },
   { id: 4, name: "Credentialing Team", avatar: "CT", lastMessage: "Dr. Garcia's credentialing application has been approved.", time: "Mar 8", unread: 0 },
@@ -21,10 +21,10 @@ type Message = {
 
 const messageThreads: Record<number, Message[]> = {
   1: [
-    { id: 1, sender: "MedCare Health Support", content: "Hello! Your fee schedule has been updated for 2024. You can view the new rates in your Fee Schedule section.", time: "2:30 PM", isMe: false },
-    { id: 2, sender: "MedCare Health Support", content: "The new rates are effective as of January 1, 2024 and reflect a 3% increase from last year.", time: "2:31 PM", isMe: false },
+    { id: 1, sender: "TrueCare Health Support", content: "Hello! Your fee schedule has been updated for 2024. You can view the new rates in your Fee Schedule section.", time: "2:30 PM", isMe: false },
+    { id: 2, sender: "TrueCare Health Support", content: "The new rates are effective as of January 1, 2024 and reflect a 3% increase from last year.", time: "2:31 PM", isMe: false },
     { id: 3, sender: "Me", content: "Thank you for the update. Are there any changes to the E&M codes specifically?", time: "2:45 PM", isMe: true, status: "read" },
-    { id: 4, sender: "MedCare Health Support", content: "Yes, E&M codes 99213-99215 have been updated to align with CMS guidelines. You'll see approximately a 2-4% increase depending on the specific code.", time: "3:00 PM", isMe: false },
+    { id: 4, sender: "TrueCare Health Support", content: "Yes, E&M codes 99213-99215 have been updated to align with CMS guidelines. You'll see approximately a 2-4% increase depending on the specific code.", time: "3:00 PM", isMe: false },
   ],
   2: [
     { id: 1, sender: "Provider Relations", content: "Good morning! This is a reminder that your Primary Care Provider Agreement is coming up for renewal in December 2026.", time: "Mar 11, 9:00 AM", isMe: false },
@@ -42,7 +42,7 @@ const messageThreads: Record<number, Message[]> = {
   ],
   4: [
     { id: 1, sender: "Credentialing Team", content: "Great news! We've completed the credentialing review for Maria Garcia, NP.", time: "Mar 8, 10:00 AM", isMe: false },
-    { id: 2, sender: "Credentialing Team", content: "Dr. Garcia's credentialing application has been approved. She is now fully credentialed with MedCare Health Network and can begin seeing our members effective immediately.", time: "Mar 8, 10:01 AM", isMe: false },
+    { id: 2, sender: "Credentialing Team", content: "Dr. Garcia's credentialing application has been approved. She is now fully credentialed with TrueCare Health Network and can begin seeing our members effective immediately.", time: "Mar 8, 10:01 AM", isMe: false },
     { id: 3, sender: "Me", content: "That's great news! Thank you for the quick turnaround. How long until she appears in the provider directory?", time: "Mar 8, 11:00 AM", isMe: true, status: "read" },
     { id: 4, sender: "Credentialing Team", content: "Provider directory updates occur weekly on Mondays. Maria Garcia should be visible in the directory by March 11th.", time: "Mar 8, 11:15 AM", isMe: false },
     { id: 5, sender: "Me", content: "Perfect, thank you!", time: "Mar 8, 11:20 AM", isMe: true, status: "read" },
@@ -61,7 +61,7 @@ export default function MessagesPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
-        <p className="text-gray-600">Communicate with MedCare Health Network teams</p>
+        <p className="text-gray-600">Communicate with TrueCare Health Network teams</p>
       </div>
 
       {/* Messages Container */}

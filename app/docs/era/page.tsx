@@ -22,9 +22,9 @@ function ERAContent() {
       address: "1234 Main Street, Cleveland, OH 44101",
     },
     payer: {
-      name: "MedCare Health Network",
+      name: "TrueCare Health Network",
       payerId: "CHN001",
-      address: "100 MedCare Way, Cleveland, OH 44115",
+      address: "100 TrueCare Way, Cleveland, OH 44115",
     },
     claims: [
       { claimId: "CLM-8821", patient: "John Smith", dos: "03/01/2024", billed: 450.00, allowed: 380.00, paid: 342.00, patientResp: 38.00, adjustments: "CO-45: $70.00" },

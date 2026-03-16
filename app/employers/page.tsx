@@ -48,7 +48,7 @@ export default function EmployersPage() {
               </h1>
               <p className="text-xl text-gray-600 mb-8">
                 Give your employees access to quality healthcare at costs that work for your business.
-                MedCare Health Network makes it possible.
+                TrueCare Health Network makes it possible.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
@@ -89,7 +89,7 @@ export default function EmployersPage() {
               WHY CHOOSE US
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Why Employers Choose MedCare
+              Why Employers Choose TrueCare
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Control costs while giving employees access to quality healthcare.

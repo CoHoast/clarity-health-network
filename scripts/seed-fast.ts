@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Fast seeding MedCare Health database...');
+  console.log('🌱 Fast seeding TrueCare Health database...');
 
   // Clear existing data
   await prisma.$executeRaw`TRUNCATE TABLE pulse_messages, pulse_conversations, audit_logs, fraud_alerts, credentialing_documents, credentialing_applications, documents, messages, eligibility_checks, invoices, fee_schedule_rates, fee_schedules, payment_batches, claim_service_lines, claims, contracts, provider_locations, providers, members, employer_users, employer_groups, admin_users CASCADE`;
@@ -15,8 +15,8 @@ async function main() {
   console.log('Creating admin users...');
   await prisma.adminUser.createMany({
     data: [
-      { email: 'admin@medcarehealthnetwork.com', passwordHash, name: 'System Admin', role: 'super_admin', status: 'active' },
-      { email: 'claims@medcarehealthnetwork.com', passwordHash, name: 'Claims Manager', role: 'claims_admin', status: 'active' },
+      { email: 'admin@truecarehealthnetwork.com', passwordHash, name: 'System Admin', role: 'super_admin', status: 'active' },
+      { email: 'claims@truecarehealthnetwork.com', passwordHash, name: 'Claims Manager', role: 'claims_admin', status: 'active' },
     ]
   });
 
@@ -163,7 +163,7 @@ Test credentials:
 Member:   john.smith@email.com / demo123
 Provider: dr.johnson@mainstreetmed.com / demo123
 Employer: hr@acmecorp.com / demo123
-Admin:    admin@medcarehealthnetwork.com / demo123
+Admin:    admin@truecarehealthnetwork.com / demo123
 `);
 }
 

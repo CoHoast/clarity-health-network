@@ -54,7 +54,7 @@ export default function ContactPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { icon: Phone, title: "Call Us", info: "1-800-MEDCARE", sub: "24/7 Member Support" },
-              { icon: Mail, title: "Email Us", info: "support@medcarehealth.com", sub: "Response within 24 hours" },
+              { icon: Mail, title: "Email Us", info: "support@truecarehealth.com", sub: "Response within 24 hours" },
               { icon: MapPin, title: "Visit Us", info: "Cleveland, OH", sub: "Serving all 50 states" },
             ].map((item, i) => (
               <motion.div

@@ -23,14 +23,14 @@ interface Role {
 }
 
 const users = [
-  { id: "USR-001", name: "Sarah Mitchell", email: "sarah.m@medcare.health", role: "Super Admin", department: "Administration", status: "active", lastLogin: "2024-03-12 09:15 AM", mfa: true },
-  { id: "USR-002", name: "James Wilson", email: "james.w@medcare.health", role: "Claims Manager", department: "Claims", status: "active", lastLogin: "2024-03-12 08:30 AM", mfa: true },
-  { id: "USR-003", name: "Emily Chen", email: "emily.c@medcare.health", role: "Provider Relations", department: "Network", status: "active", lastLogin: "2024-03-11 04:45 PM", mfa: true },
-  { id: "USR-004", name: "Michael Brown", email: "michael.b@medcare.health", role: "Analyst", department: "Analytics", status: "active", lastLogin: "2024-03-12 10:00 AM", mfa: false },
-  { id: "USR-005", name: "Lisa Rodriguez", email: "lisa.r@medcare.health", role: "Claims Processor", department: "Claims", status: "active", lastLogin: "2024-03-11 05:30 PM", mfa: true },
-  { id: "USR-006", name: "David Kim", email: "david.k@medcare.health", role: "Compliance Officer", department: "Compliance", status: "active", lastLogin: "2024-03-12 07:45 AM", mfa: true },
-  { id: "USR-007", name: "Jennifer Lee", email: "jennifer.l@medcare.health", role: "Member Services", department: "Member Services", status: "inactive", lastLogin: "2024-02-28 03:00 PM", mfa: false },
-  { id: "USR-008", name: "Robert Taylor", email: "robert.t@medcare.health", role: "Analyst", department: "Analytics", status: "pending", lastLogin: "Never", mfa: false },
+  { id: "USR-001", name: "Sarah Mitchell", email: "sarah.m@truecare.health", role: "Super Admin", department: "Administration", status: "active", lastLogin: "2024-03-12 09:15 AM", mfa: true },
+  { id: "USR-002", name: "James Wilson", email: "james.w@truecare.health", role: "Claims Manager", department: "Claims", status: "active", lastLogin: "2024-03-12 08:30 AM", mfa: true },
+  { id: "USR-003", name: "Emily Chen", email: "emily.c@truecare.health", role: "Provider Relations", department: "Network", status: "active", lastLogin: "2024-03-11 04:45 PM", mfa: true },
+  { id: "USR-004", name: "Michael Brown", email: "michael.b@truecare.health", role: "Analyst", department: "Analytics", status: "active", lastLogin: "2024-03-12 10:00 AM", mfa: false },
+  { id: "USR-005", name: "Lisa Rodriguez", email: "lisa.r@truecare.health", role: "Claims Processor", department: "Claims", status: "active", lastLogin: "2024-03-11 05:30 PM", mfa: true },
+  { id: "USR-006", name: "David Kim", email: "david.k@truecare.health", role: "Compliance Officer", department: "Compliance", status: "active", lastLogin: "2024-03-12 07:45 AM", mfa: true },
+  { id: "USR-007", name: "Jennifer Lee", email: "jennifer.l@truecare.health", role: "Member Services", department: "Member Services", status: "inactive", lastLogin: "2024-02-28 03:00 PM", mfa: false },
+  { id: "USR-008", name: "Robert Taylor", email: "robert.t@truecare.health", role: "Analyst", department: "Analytics", status: "pending", lastLogin: "Never", mfa: false },
 ];
 
 const modules = ["Dashboard", "Claims", "Members", "Providers", "Payments", "Reports", "Analytics", "Compliance", "Audit Logs", "Users", "Settings", "Workflows"];
@@ -446,7 +446,7 @@ export default function UsersPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                  <input type="email" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="john.d@medcare.health" />
+                  <input type="email" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="john.d@truecare.health" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>

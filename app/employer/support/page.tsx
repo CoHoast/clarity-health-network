@@ -45,7 +45,7 @@ export default function SupportPage() {
             <Mail className="w-6 h-6 text-blue-600" />
           </div>
           <h3 className="font-semibold text-gray-900">Email Support</h3>
-          <p className="text-blue-600 font-medium mt-1">employers@medcare.health</p>
+          <p className="text-blue-600 font-medium mt-1">employers@truecare.health</p>
           <p className="text-sm text-gray-500 mt-2">Response within 24 hours</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:border-teal-300 transition-colors">

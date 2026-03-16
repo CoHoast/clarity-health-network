@@ -36,7 +36,7 @@ const mockMember = {
   communications: [
     { date: "2024-03-10", type: "EOB", subject: "Explanation of Benefits - Claim CLM-001" },
     { date: "2024-02-20", type: "ID Card", subject: "ID Card Mailed" },
-    { date: "2024-01-01", type: "Welcome", subject: "Welcome to MedCare Health Network" },
+    { date: "2024-01-01", type: "Welcome", subject: "Welcome to TrueCare Health Network" },
   ],
 };
 

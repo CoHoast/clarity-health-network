@@ -271,7 +271,7 @@ export default function DocumentsPage() {
                   <div className="p-8 space-y-6">
                     <div className="text-center border-b border-gray-200 pb-6">
                       <h1 className="text-2xl font-bold text-gray-900">{selectedDocument.name}</h1>
-                      <p className="text-gray-500 mt-2">MedCare Health Network</p>
+                      <p className="text-gray-500 mt-2">TrueCare Health Network</p>
                       <p className="text-sm text-gray-400">Effective Date: January 1, 2026</p>
                     </div>
                     
@@ -286,9 +286,9 @@ export default function DocumentsPage() {
                       <h2 className="text-lg font-semibold text-gray-800 pt-4">Key Information</h2>
                       <ul className="list-disc list-inside text-gray-600 space-y-2">
                         <li>Plan Year: January 1, 2026 - December 31, 2026</li>
-                        <li>Network: MedCare Health PPO Network</li>
+                        <li>Network: TrueCare Health PPO Network</li>
                         <li>Member Services: 1-800-MEDCARE</li>
-                        <li>Website: members.medcarehealthnetwork.com</li>
+                        <li>Website: members.truecarehealthnetwork.com</li>
                       </ul>
                       
                       <h2 className="text-lg font-semibold text-gray-800 pt-4">Contact Information</h2>

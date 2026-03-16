@@ -126,11 +126,11 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Organization Name</label>
-                  <input type="text" defaultValue="MedCare Health Network" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
+                  <input type="text" defaultValue="TrueCare Health Network" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Legal Entity Name</label>
-                  <input type="text" defaultValue="MedCare Health Network, LLC" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
+                  <input type="text" defaultValue="TrueCare Health Network, LLC" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
@@ -153,7 +153,7 @@ export default function SettingsPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                    <input type="email" defaultValue="admin@medcarehealth.com" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
+                    <input type="email" defaultValue="admin@truecarehealth.com" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
                   </div>
                 </div>
               </div>

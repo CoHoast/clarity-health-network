@@ -18,14 +18,14 @@ export default function ContractPage() {
         <div className="bg-white rounded-lg shadow-lg p-8 print:shadow-none">
           <div className="text-center mb-8 border-b pb-6">
             <h1 className="text-2xl font-bold text-gray-800">Provider Participation Agreement</h1>
-            <p className="text-gray-500">MedCare Health Network</p>
+            <p className="text-gray-500">TrueCare Health Network</p>
             <p className="text-sm text-gray-400 mt-2">Contract #: CTR-2024-001234</p>
           </div>
 
           <div className="prose prose-sm max-w-none">
             <p className="text-gray-600 mb-6">
               This Provider Participation Agreement ("Agreement") is entered into as of <strong>January 1, 2024</strong>, 
-              by and between <strong>MedCare Health Network</strong> ("Network") and the healthcare provider identified below ("Provider").
+              by and between <strong>TrueCare Health Network</strong> ("Network") and the healthcare provider identified below ("Provider").
             </p>
 
             <div className="bg-gray-50 rounded-lg p-4 mb-6">

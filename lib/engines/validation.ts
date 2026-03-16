@@ -2,7 +2,7 @@
  * Claims Validation Engine
  * 
  * 5-level validation pipeline with auto-adjudication.
- * Adapted from DOKit Claims Intake module for MedCare Health Network.
+ * Adapted from DOKit Claims Intake module for TrueCare Health Network.
  * 
  * Levels:
  * 1. Syntax - Required fields, format validation

@@ -256,7 +256,7 @@ export default function HomePage() {
                 step: "02",
                 icon: CreditCard,
                 title: "Show Your ID Card",
-                description: "Present your MedCare Health Network ID card at your appointment to access network rates.",
+                description: "Present your TrueCare Health Network ID card at your appointment to access network rates.",
               },
               {
                 step: "03",
@@ -459,7 +459,7 @@ export default function HomePage() {
                 See How Much You Could Save
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                Use our calculator to estimate your potential savings with MedCare Health Network.
+                Use our calculator to estimate your potential savings with TrueCare Health Network.
               </p>
               <ul className="space-y-3">
                 {[
@@ -509,7 +509,7 @@ export default function HomePage() {
               </div>
 
               <div className="bg-gradient-to-r from-cyan-500 to-teal-600 rounded-xl p-4 text-white text-center mb-6">
-                <p className="text-sm opacity-80">With MedCare Health Network</p>
+                <p className="text-sm opacity-80">With TrueCare Health Network</p>
                 <p className="text-3xl font-bold">${(estimatorValue - estimatedSavings).toLocaleString()}</p>
                 <p className="text-sm opacity-80">per year</p>
               </div>
@@ -616,7 +616,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                quote: "MedCare Health Network saved me over $4,000 on my back surgery. The process was seamless.",
+                quote: "TrueCare Health Network saved me over $4,000 on my back surgery. The process was seamless.",
                 name: "Michael Thompson",
                 role: "Member since 2022",
                 savings: "$4,200",
@@ -691,7 +691,7 @@ export default function HomePage() {
                 a: "Use our Find a Provider tool on our website or mobile app. You can search by name, specialty, or location."
               },
               {
-                q: "How much will I save with MedCare Health Network?",
+                q: "How much will I save with TrueCare Health Network?",
                 a: "Members typically save 25-40% compared to out-of-network rates. Use our Cost Estimator for personalized estimates."
               },
               {
@@ -733,7 +733,7 @@ export default function HomePage() {
             Ready to Start Saving on Healthcare?
           </h2>
           <p className="text-xl text-teal-100 mb-10">
-            Join thousands of members who trust MedCare Health Network for quality, affordable care.
+            Join thousands of members who trust TrueCare Health Network for quality, affordable care.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link

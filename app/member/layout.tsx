@@ -1,7 +1,7 @@
 import MemberLayout from "@/components/member/MemberLayout";
 
 export const metadata = {
-  title: "Member Portal | MedCare Health Network",
+  title: "Member Portal | TrueCare Health Network",
   description: "Access your benefits, find providers, view claims, and manage your healthcare.",
 };
 

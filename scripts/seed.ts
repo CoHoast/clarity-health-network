@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Seeding MedCare Health database...');
+  console.log('🌱 Seeding TrueCare Health database...');
   
   const passwordHash = bcrypt.hashSync('demo123', 10);
 
@@ -14,9 +14,9 @@ async function main() {
   console.log('Creating admin users...');
   await prisma.adminUser.createMany({
     data: [
-      { email: 'admin@medcarehealthnetwork.com', passwordHash, name: 'System Admin', role: 'super_admin' },
-      { email: 'claims@medcarehealthnetwork.com', passwordHash, name: 'Claims Processor', role: 'claims_admin' },
-      { email: 'provider.relations@medcarehealthnetwork.com', passwordHash, name: 'Provider Relations', role: 'provider_admin' },
+      { email: 'admin@truecarehealthnetwork.com', passwordHash, name: 'System Admin', role: 'super_admin' },
+      { email: 'claims@truecarehealthnetwork.com', passwordHash, name: 'Claims Processor', role: 'claims_admin' },
+      { email: 'provider.relations@truecarehealthnetwork.com', passwordHash, name: 'Provider Relations', role: 'provider_admin' },
     ],
     skipDuplicates: true,
   });
@@ -176,7 +176,7 @@ async function main() {
         create: {
           npi,
           name: `${specialty} Associates ${i}`,
-          email: `provider${i}@medcare.demo`,
+          email: `provider${i}@truecare.demo`,
           passwordHash,
           type: i % 3 === 0 ? 'group' : 'individual',
           specialty,
@@ -235,7 +235,7 @@ async function main() {
     const firstName = firstNames[i % firstNames.length];
     const lastName = lastNames[Math.floor(i / 10) % lastNames.length];
     const memberNumber = `CLH-${(100001 + i).toString()}`;
-    const email = i === 0 ? 'john.smith@email.com' : `member${i}@medcare.demo`;
+    const email = i === 0 ? 'john.smith@email.com' : `member${i}@truecare.demo`;
     
     memberPromises.push(
       prisma.member.upsert({
@@ -423,7 +423,7 @@ async function main() {
   console.log('Member:   john.smith@email.com / demo123');
   console.log('Provider: dr.johnson@mainstreetmed.com / demo123');
   console.log('Employer: hr@acmecorp.com / demo123');
-  console.log('Admin:    admin@medcarehealthnetwork.com / demo123');
+  console.log('Admin:    admin@truecarehealthnetwork.com / demo123');
 }
 
 main()

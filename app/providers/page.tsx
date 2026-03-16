@@ -43,7 +43,7 @@ export default function ProvidersPage() {
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
                 Partner with
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-600">
-                  MedCare Health Network
+                  TrueCare Health Network
                 </span>
               </h1>
               <p className="text-xl text-gray-600 mb-8">
@@ -89,7 +89,7 @@ export default function ProvidersPage() {
               PROVIDER BENEFITS
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Why Providers Choose MedCare
+              Why Providers Choose TrueCare
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Fast payments, simple processes, dedicated support.
@@ -214,7 +214,7 @@ export default function ProvidersPage() {
                 Join Our Growing Network
               </h2>
               <p className="text-xl text-teal-100 mb-8">
-                Becoming a MedCare Health Network provider is simple. Our credentialing process is streamlined and efficient.
+                Becoming a TrueCare Health Network provider is simple. Our credentialing process is streamlined and efficient.
               </p>
               <ul className="space-y-4 mb-8">
                 {[
@@ -278,7 +278,7 @@ export default function ProvidersPage() {
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
               { icon: Phone, title: "Provider Hotline", desc: "1-800-MEDCARE x2", action: "Call Now" },
-              { icon: Mail, title: "Email Support", desc: "providers@medcarehealth.com", action: "Send Email" },
+              { icon: Mail, title: "Email Support", desc: "providers@truecarehealth.com", action: "Send Email" },
               { icon: FileText, title: "Help Center", desc: "Guides & Resources", action: "Browse" },
             ].map((item, i) => (
               <div key={i} className="bg-gray-50 rounded-2xl p-6 text-center">

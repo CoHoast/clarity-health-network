@@ -55,8 +55,8 @@ export default function AdminLoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <img 
-            src="/medcare-logo.png" 
-            alt="MedCare Health Network" 
+            src="/truecare-logo.png" 
+            alt="TrueCare Health Network" 
             className="h-14 w-auto mx-auto mb-4"
           />
           <div className="flex items-center justify-center gap-2 mt-4">
@@ -88,7 +88,7 @@ export default function AdminLoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@medcarehealthnetwork.com"
+                  placeholder="admin@truecarehealthnetwork.com"
                   required
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
@@ -140,7 +140,7 @@ export default function AdminLoginPage() {
 
           {/* Demo hint */}
           <div className="mt-6 p-3 bg-slate-50 rounded-lg text-xs text-slate-600">
-            <p className="font-medium">Demo: admin@medcarehealthnetwork.com / demo123</p>
+            <p className="font-medium">Demo: admin@truecarehealthnetwork.com / demo123</p>
           </div>
         </div>
 

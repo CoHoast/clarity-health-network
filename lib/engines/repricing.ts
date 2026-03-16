@@ -2,7 +2,7 @@
  * Claims Repricing Engine
  * 
  * Calculates allowed amounts based on provider contracts and fee schedules.
- * Adapted from DOKit Contract Management module for MedCare Health Network.
+ * Adapted from DOKit Contract Management module for TrueCare Health Network.
  * 
  * Supports:
  * - % of Medicare

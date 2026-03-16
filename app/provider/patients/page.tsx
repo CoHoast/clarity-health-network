@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, ChevronRight, Phone, Mail, Calendar, FileText, AlertCircle, X, CheckCircle, Clock, Shield, DollarSign, User } from "lucide-react";
 
 const patients = [
-  { id: "CHN-123456", name: "John Doe", dob: "03/15/1985", phone: "(216) 555-0123", email: "john.doe@email.com", lastVisit: "2024-02-28", nextAppt: "2024-03-15", status: "Active", balance: 0, alerts: [], plan: "MedCare Health PPO", group: "GRP-78901", deductible: { met: 325, total: 500 }, oopMax: { met: 980, total: 3500 } },
-  { id: "CHN-234567", name: "Sarah Johnson", dob: "07/22/1990", phone: "(216) 555-0456", email: "sarah.j@email.com", lastVisit: "2024-03-01", nextAppt: null, status: "Active", balance: 125.00, alerts: ["Balance due"], plan: "MedCare Health PPO", group: "GRP-45678", deductible: { met: 500, total: 500 }, oopMax: { met: 1200, total: 3500 } },
-  { id: "CHN-345678", name: "Michael Chen", dob: "11/08/1978", phone: "(216) 555-0789", email: "m.chen@email.com", lastVisit: "2024-02-15", nextAppt: "2024-03-20", status: "Active", balance: 0, alerts: ["Pre-auth required"], plan: "MedCare Health PPO", group: "GRP-12345", deductible: { met: 0, total: 1000 }, oopMax: { met: 0, total: 5000 } },
-  { id: "CHN-456789", name: "Emily Rodriguez", dob: "05/30/1995", phone: "(216) 555-0321", email: "emily.r@email.com", lastVisit: "2024-01-20", nextAppt: null, status: "Active", balance: 50.00, alerts: [], plan: "MedCare Health HMO", group: "GRP-99999", deductible: { met: 250, total: 250 }, oopMax: { met: 750, total: 2500 } },
-  { id: "CHN-567890", name: "Robert Williams", dob: "09/12/1965", phone: "(216) 555-0654", email: "r.williams@email.com", lastVisit: "2024-03-05", nextAppt: "2024-03-25", status: "Active", balance: 0, alerts: ["Chronic care management"], plan: "MedCare Health PPO", group: "GRP-78901", deductible: { met: 500, total: 500 }, oopMax: { met: 2100, total: 3500 } },
+  { id: "CHN-123456", name: "John Doe", dob: "03/15/1985", phone: "(216) 555-0123", email: "john.doe@email.com", lastVisit: "2024-02-28", nextAppt: "2024-03-15", status: "Active", balance: 0, alerts: [], plan: "TrueCare Health PPO", group: "GRP-78901", deductible: { met: 325, total: 500 }, oopMax: { met: 980, total: 3500 } },
+  { id: "CHN-234567", name: "Sarah Johnson", dob: "07/22/1990", phone: "(216) 555-0456", email: "sarah.j@email.com", lastVisit: "2024-03-01", nextAppt: null, status: "Active", balance: 125.00, alerts: ["Balance due"], plan: "TrueCare Health PPO", group: "GRP-45678", deductible: { met: 500, total: 500 }, oopMax: { met: 1200, total: 3500 } },
+  { id: "CHN-345678", name: "Michael Chen", dob: "11/08/1978", phone: "(216) 555-0789", email: "m.chen@email.com", lastVisit: "2024-02-15", nextAppt: "2024-03-20", status: "Active", balance: 0, alerts: ["Pre-auth required"], plan: "TrueCare Health PPO", group: "GRP-12345", deductible: { met: 0, total: 1000 }, oopMax: { met: 0, total: 5000 } },
+  { id: "CHN-456789", name: "Emily Rodriguez", dob: "05/30/1995", phone: "(216) 555-0321", email: "emily.r@email.com", lastVisit: "2024-01-20", nextAppt: null, status: "Active", balance: 50.00, alerts: [], plan: "TrueCare Health HMO", group: "GRP-99999", deductible: { met: 250, total: 250 }, oopMax: { met: 750, total: 2500 } },
+  { id: "CHN-567890", name: "Robert Williams", dob: "09/12/1965", phone: "(216) 555-0654", email: "r.williams@email.com", lastVisit: "2024-03-05", nextAppt: "2024-03-25", status: "Active", balance: 0, alerts: ["Chronic care management"], plan: "TrueCare Health PPO", group: "GRP-78901", deductible: { met: 500, total: 500 }, oopMax: { met: 2100, total: 3500 } },
 ];
 
 const visitHistory = [
@@ -43,7 +43,7 @@ export default function PatientsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Patients</h1>
-        <p className="text-gray-600">View and manage your MedCare Health Network patients</p>
+        <p className="text-gray-600">View and manage your TrueCare Health Network patients</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
