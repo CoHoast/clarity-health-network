@@ -236,12 +236,12 @@ export default function ProductDemoPage() {
               }}
             >
               {/* Screenshot with border */}
-              <div style={{ position: 'relative', height: 200, background: '#f1f5f9', borderBottom: '3px solid #0d9488' }}>
+              <div style={{ position: 'relative', height: 240, background: '#f1f5f9', borderBottom: '3px solid #0d9488' }}>
                 <Image
                   src={portal.image}
                   alt={portal.title}
                   fill
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: 'cover', objectPosition: 'top' }}
                 />
               </div>
               
@@ -311,12 +311,12 @@ export default function ProductDemoPage() {
             }}
           >
             {/* Screenshot */}
-            <div style={{ position: 'relative', height: 200, background: '#0f172a', borderBottom: '3px solid #2dd4bf' }}>
+            <div style={{ position: 'relative', height: 240, background: '#0f172a', borderBottom: '3px solid #2dd4bf' }}>
               <Image
                 src="/demo/bill-negotiator.jpg"
                 alt="AI Bill Negotiator Dashboard"
                 fill
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: 'cover', objectPosition: 'top' }}
               />
               <div style={{
                 position: 'absolute',
