@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X, Check, AlertTriangle } from "lucide-react";
+import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X, Check, AlertTriangle, User, Percent, FileText, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface DiscountSchedule {
@@ -12,6 +12,31 @@ interface DiscountSchedule {
   providersUsing: number;
   services: { service: string; rate: string }[];
   createdDate: string;
+  lastModified: string;
+}
+
+interface ProviderRate {
+  id: string;
+  providerId: string;
+  providerName: string;
+  practiceName: string;
+  npi: string;
+  rateType: "flat" | "custom";
+  flatRate?: string;
+  serviceRates?: {
+    professional?: string;
+    inpatient?: string;
+    outpatient?: string;
+    urgentCare?: string;
+    labServices?: string;
+    imaging?: string;
+    mentalHealth?: string;
+    physicalTherapy?: string;
+    dme?: string;
+  };
+  effectiveDate: string;
+  expirationDate?: string;
+  notes?: string;
   lastModified: string;
 }
 
@@ -113,16 +138,140 @@ const discountSchedules: DiscountSchedule[] = [
   },
 ];
 
+const providerRates: ProviderRate[] = [
+  {
+    id: "PR-001",
+    providerId: "P-1234",
+    providerName: "Dr. Sarah Johnson",
+    practiceName: "Main Street Medical Group",
+    npi: "1234567890",
+    rateType: "custom",
+    serviceRates: {
+      professional: "145% Medicare",
+      inpatient: "140% Medicare",
+      outpatient: "135% Medicare",
+      urgentCare: "150% Medicare",
+      labServices: "125% Medicare",
+      imaging: "130% Medicare",
+    },
+    effectiveDate: "2026-01-01",
+    notes: "Negotiated rates based on high volume referrals",
+    lastModified: "2026-02-15"
+  },
+  {
+    id: "PR-002",
+    providerId: "P-2345",
+    providerName: "Dr. Michael Chen",
+    practiceName: "Valley Orthopedics",
+    npi: "2345678901",
+    rateType: "flat",
+    flatRate: "130% Medicare",
+    effectiveDate: "2025-06-01",
+    expirationDate: "2027-05-31",
+    notes: "2-year contract",
+    lastModified: "2025-06-01"
+  },
+  {
+    id: "PR-003",
+    providerId: "P-3456",
+    providerName: "Cleveland Regional Hospital",
+    practiceName: "Cleveland Regional Hospital",
+    npi: "3456789012",
+    rateType: "custom",
+    serviceRates: {
+      professional: "150% Medicare",
+      inpatient: "155% Medicare",
+      outpatient: "140% Medicare",
+      urgentCare: "145% Medicare",
+      labServices: "120% Medicare",
+      imaging: "135% Medicare",
+    },
+    effectiveDate: "2026-01-01",
+    notes: "Major hospital facility - tiered rates",
+    lastModified: "2026-01-15"
+  },
+  {
+    id: "PR-004",
+    providerId: "P-4567",
+    providerName: "Dr. Emily Rodriguez",
+    practiceName: "Family Care Associates",
+    npi: "4567890123",
+    rateType: "custom",
+    serviceRates: {
+      professional: "135% Medicare",
+      labServices: "115% Medicare",
+      imaging: "120% Medicare",
+    },
+    effectiveDate: "2025-09-01",
+    lastModified: "2025-09-01"
+  },
+  {
+    id: "PR-005",
+    providerId: "P-5678",
+    providerName: "Lakeside Imaging Center",
+    practiceName: "Lakeside Imaging Center",
+    npi: "5678901234",
+    rateType: "flat",
+    flatRate: "125% Medicare",
+    effectiveDate: "2026-02-01",
+    notes: "Imaging-only facility",
+    lastModified: "2026-02-01"
+  },
+  {
+    id: "PR-006",
+    providerId: "P-6789",
+    providerName: "Urgent Care Plus",
+    practiceName: "Urgent Care Plus",
+    npi: "6789012345",
+    rateType: "custom",
+    serviceRates: {
+      professional: "140% Medicare",
+      urgentCare: "160% Medicare",
+      labServices: "110% Medicare",
+      imaging: "115% Medicare",
+    },
+    effectiveDate: "2026-01-15",
+    notes: "Extended hours premium",
+    lastModified: "2026-01-15"
+  },
+];
+
 const discountTypes = ["All Types", "% Off Billed", "% of Medicare", "Case Rate", "Flat Rate"];
 
+const serviceCategories = [
+  { key: "professional", label: "Professional Services", description: "Office visits, consults, procedures" },
+  { key: "inpatient", label: "Hospital Inpatient", description: "Inpatient stays, DRG-based" },
+  { key: "outpatient", label: "Hospital Outpatient", description: "Outpatient surgery, ER visits" },
+  { key: "urgentCare", label: "Urgent Care", description: "Walk-in urgent care visits" },
+  { key: "labServices", label: "Lab Services", description: "Lab tests, bloodwork, pathology" },
+  { key: "imaging", label: "Imaging", description: "X-ray, MRI, CT, ultrasound" },
+  { key: "mentalHealth", label: "Mental Health", description: "Therapy, psychiatry" },
+  { key: "physicalTherapy", label: "Physical Therapy", description: "PT, OT, rehab services" },
+  { key: "dme", label: "DME", description: "Durable medical equipment" },
+];
+
 export default function DiscountSchedulesPage() {
+  const [activeTab, setActiveTab] = useState<"schedules" | "providers">("schedules");
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("All Types");
+  const [rateTypeFilter, setRateTypeFilter] = useState<"all" | "flat" | "custom">("all");
   const [selectedSchedule, setSelectedSchedule] = useState<DiscountSchedule | null>(null);
+  const [selectedProviderRate, setSelectedProviderRate] = useState<ProviderRate | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showProviderRateModal, setShowProviderRateModal] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [serviceRows, setServiceRows] = useState([{ service: "", rate: "" }]);
+  
+  // Provider rate form state
+  const [newProviderRate, setNewProviderRate] = useState({
+    rateType: "flat" as "flat" | "custom",
+    flatRate: "",
+    serviceRates: {} as Record<string, string>,
+    effectiveDate: "",
+    expirationDate: "",
+    notes: ""
+  });
 
   const handleSave = () => {
     setSaving(true);
@@ -132,7 +281,16 @@ export default function DiscountSchedulesPage() {
       setTimeout(() => {
         setSaved(false);
         setShowCreateModal(false);
+        setShowProviderRateModal(false);
         setServiceRows([{ service: "", rate: "" }]);
+        setNewProviderRate({
+          rateType: "flat",
+          flatRate: "",
+          serviceRates: {},
+          effectiveDate: "",
+          expirationDate: "",
+          notes: ""
+        });
       }, 1500);
     }, 1000);
   };
@@ -153,6 +311,15 @@ export default function DiscountSchedulesPage() {
     return matchesSearch && matchesType;
   });
 
+  const filteredProviderRates = providerRates.filter(pr => {
+    const matchesSearch = 
+      pr.providerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pr.practiceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pr.npi.includes(searchQuery);
+    const matchesType = rateTypeFilter === "all" || pr.rateType === rateTypeFilter;
+    return matchesSearch && matchesType;
+  });
+
   const totalProviders = discountSchedules.reduce((sum, s) => sum + s.providersUsing, 0);
 
   return (
@@ -162,17 +329,48 @@ export default function DiscountSchedulesPage() {
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-3">
             <DollarSign className="w-7 h-7 text-green-500" />
-            Discount Schedules
+            Rates &amp; Discounts
           </h1>
-          <p className="text-slate-400 mt-1">{discountSchedules.length} schedules • {totalProviders.toLocaleString()} providers assigned</p>
+          <p className="text-slate-400 mt-1">
+            {activeTab === "schedules" 
+              ? `${discountSchedules.length} schedules • ${totalProviders.toLocaleString()} providers assigned`
+              : `${providerRates.length} custom provider rates`
+            }
+          </p>
         </div>
         <button
-          onClick={() => setShowCreateModal(true)}
+          onClick={() => activeTab === "schedules" ? setShowCreateModal(true) : setShowProviderRateModal(true)}
           className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 font-medium rounded-lg hover:bg-teal-700 transition-colors"
           style={{ color: 'white' }}
         >
           <Plus className="w-4 h-4" />
-          New Schedule
+          {activeTab === "schedules" ? "New Schedule" : "Add Provider Rate"}
+        </button>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 p-1 bg-slate-800 rounded-lg w-fit">
+        <button
+          onClick={() => setActiveTab("schedules")}
+          className={`px-4 py-2 rounded-md font-medium text-sm transition-colors flex items-center gap-2 ${
+            activeTab === "schedules"
+              ? "bg-teal-600 text-white"
+              : "text-slate-400 hover:text-white hover:bg-slate-700"
+          }`}
+        >
+          <FileText className="w-4 h-4" />
+          Discount Schedules
+        </button>
+        <button
+          onClick={() => setActiveTab("providers")}
+          className={`px-4 py-2 rounded-md font-medium text-sm transition-colors flex items-center gap-2 ${
+            activeTab === "providers"
+              ? "bg-teal-600 text-white"
+              : "text-slate-400 hover:text-white hover:bg-slate-700"
+          }`}
+        >
+          <User className="w-4 h-4" />
+          Provider Rates
         </button>
       </div>
 
@@ -182,77 +380,175 @@ export default function DiscountSchedulesPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input
             type="text"
-            placeholder="Search schedules..."
+            placeholder={activeTab === "schedules" ? "Search schedules..." : "Search by provider name, practice, or NPI..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
-        <select
-          value={typeFilter}
-          onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
-        >
-          {discountTypes.map((option) => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
+        {activeTab === "schedules" ? (
+          <select
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
+            className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+          >
+            {discountTypes.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+        ) : (
+          <select
+            value={rateTypeFilter}
+            onChange={(e) => setRateTypeFilter(e.target.value as "all" | "flat" | "custom")}
+            className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+          >
+            <option value="all">All Rate Types</option>
+            <option value="flat">Flat Rate</option>
+            <option value="custom">Custom by Service</option>
+          </select>
+        )}
         <button className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors">
           <Download className="w-4 h-4" />
-          Export All
+          Export
         </button>
       </div>
 
-      {/* Schedules Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredSchedules.map((schedule) => (
-          <div
-            key={schedule.id}
-            className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 hover:border-green-500/50 transition-colors cursor-pointer"
-            onClick={() => setSelectedSchedule(schedule)}
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                <DollarSign className="w-6 h-6 text-green-400" />
+      {/* Content based on active tab */}
+      {activeTab === "schedules" ? (
+        /* Schedules Grid */
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredSchedules.map((schedule) => (
+            <div
+              key={schedule.id}
+              className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 hover:border-green-500/50 transition-colors cursor-pointer"
+              onClick={() => setSelectedSchedule(schedule)}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
+                  <DollarSign className="w-6 h-6 text-green-400" />
+                </div>
+                <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs font-medium rounded-full">{schedule.type}</span>
               </div>
-              <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs font-medium rounded-full">{schedule.type}</span>
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-1">{schedule.name}</h3>
-            <p className="text-green-400 text-2xl font-bold mb-4">{schedule.defaultRate}</p>
-            
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Providers Using:</span>
-                <span className="text-cyan-400 font-medium">{schedule.providersUsing.toLocaleString()}</span>
+              <h3 className="text-lg font-semibold text-white mb-1">{schedule.name}</h3>
+              <p className="text-green-400 text-2xl font-bold mb-4">{schedule.defaultRate}</p>
+              
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">Providers Using:</span>
+                  <span className="text-cyan-400 font-medium">{schedule.providersUsing.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">Service Rates:</span>
+                  <span className="text-slate-300">{schedule.services.length} defined</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">Last Modified:</span>
+                  <span className="text-slate-300">{schedule.lastModified}</span>
+                </div>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Service Rates:</span>
-                <span className="text-slate-300">{schedule.services.length} defined</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Last Modified:</span>
-                <span className="text-slate-300">{schedule.lastModified}</span>
-              </div>
-            </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={(e) => { e.stopPropagation(); setSelectedSchedule(schedule); }}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
-              >
-                <Eye className="w-4 h-4" />
-                View Rates
-              </button>
-              <button 
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center justify-center gap-2 px-3 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
-              >
-                <Edit className="w-4 h-4" />
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={(e) => { e.stopPropagation(); setSelectedSchedule(schedule); }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                >
+                  <Eye className="w-4 h-4" />
+                  View Rates
+                </button>
+                <button 
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center justify-center gap-2 px-3 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        /* Provider Rates Table */
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-slate-700 bg-slate-800">
+                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Provider</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">NPI</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Rate Type</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Rates</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Effective</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-700">
+              {filteredProviderRates.map((pr) => (
+                <tr key={pr.id} className="hover:bg-slate-800/80">
+                  <td className="px-4 py-4">
+                    <div>
+                      <p className="text-white font-medium">{pr.providerName}</p>
+                      <p className="text-slate-500 text-sm">{pr.practiceName}</p>
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 text-slate-300 font-mono text-sm">{pr.npi}</td>
+                  <td className="px-4 py-4">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      pr.rateType === "flat" 
+                        ? "bg-blue-500/20 text-blue-400"
+                        : "bg-purple-500/20 text-purple-400"
+                    }`}>
+                      {pr.rateType === "flat" ? "Flat Rate" : "Custom by Service"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4">
+                    {pr.rateType === "flat" ? (
+                      <span className="text-green-400 font-semibold">{pr.flatRate}</span>
+                    ) : (
+                      <button
+                        onClick={() => setSelectedProviderRate(pr)}
+                        className="text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-1"
+                      >
+                        <Eye className="w-3 h-3" />
+                        {Object.keys(pr.serviceRates || {}).length} categories
+                      </button>
+                    )}
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="text-sm">
+                      <p className="text-slate-300">{pr.effectiveDate}</p>
+                      {pr.expirationDate && (
+                        <p className="text-slate-500">to {pr.expirationDate}</p>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => setSelectedProviderRate(pr)}
+                        className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          
+          {filteredProviderRates.length === 0 && (
+            <div className="p-8 text-center">
+              <User className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+              <p className="text-slate-400">No provider rates found</p>
+              <p className="text-slate-500 text-sm mt-1">Add custom rates for specific providers</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Schedule Detail Modal */}
       <AnimatePresence>
@@ -329,6 +625,108 @@ export default function DiscountSchedulesPage() {
                     Edit Schedule
                   </button>
                 </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Provider Rate Detail Modal */}
+      <AnimatePresence>
+        {selectedProviderRate && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProviderRate(null)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[80vh] overflow-auto border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">{selectedProviderRate.providerName}</h2>
+                  <p className="text-slate-400">{selectedProviderRate.practiceName} • NPI: {selectedProviderRate.npi}</p>
+                </div>
+                <button onClick={() => setSelectedProviderRate(null)} className="text-slate-400 hover:text-white">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              
+              <div className="p-6">
+                {/* Rate Type Badge */}
+                <div className="flex items-center gap-4 mb-6">
+                  <span className={`px-3 py-1.5 rounded-full text-sm font-medium ${
+                    selectedProviderRate.rateType === "flat" 
+                      ? "bg-blue-500/20 text-blue-400"
+                      : "bg-purple-500/20 text-purple-400"
+                  }`}>
+                    {selectedProviderRate.rateType === "flat" ? "Flat Rate" : "Custom by Service Category"}
+                  </span>
+                  <span className="text-slate-400 text-sm">
+                    Effective: {selectedProviderRate.effectiveDate}
+                    {selectedProviderRate.expirationDate && ` - ${selectedProviderRate.expirationDate}`}
+                  </span>
+                </div>
+
+                {selectedProviderRate.rateType === "flat" ? (
+                  <div className="bg-slate-700/50 rounded-xl p-8 text-center">
+                    <Percent className="w-12 h-12 text-green-400 mx-auto mb-3" />
+                    <p className="text-4xl font-bold text-green-400">{selectedProviderRate.flatRate}</p>
+                    <p className="text-slate-400 mt-2">Applied to all service categories</p>
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-white font-semibold mb-3">Service Category Rates</h3>
+                    <div className="bg-slate-900 rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-slate-700">
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Category</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Description</th>
+                            <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Rate</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-700">
+                          {serviceCategories.map((cat) => {
+                            const rate = selectedProviderRate.serviceRates?.[cat.key as keyof typeof selectedProviderRate.serviceRates];
+                            return (
+                              <tr key={cat.key} className={rate ? "hover:bg-slate-800/50" : "opacity-50"}>
+                                <td className="px-4 py-3 text-slate-300 font-medium">{cat.label}</td>
+                                <td className="px-4 py-3 text-slate-500 text-sm">{cat.description}</td>
+                                <td className="px-4 py-3 text-right">
+                                  {rate ? (
+                                    <span className="text-green-400 font-semibold">{rate}</span>
+                                  ) : (
+                                    <span className="text-slate-600">—</span>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {selectedProviderRate.notes && (
+                  <div className="mt-6 bg-slate-700/30 rounded-lg p-4">
+                    <p className="text-slate-400 text-sm">
+                      <span className="text-slate-300 font-medium">Notes:</span> {selectedProviderRate.notes}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+                <button className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors flex items-center gap-2">
+                  <Download className="w-4 h-4" />
+                  Export
+                </button>
+                <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                  <Edit className="w-4 h-4" />
+                  Edit Rates
+                </button>
               </div>
             </motion.div>
           </div>
@@ -516,6 +914,229 @@ export default function DiscountSchedulesPage() {
                   </motion.div>
                   <p className="text-white font-medium">Schedule Created!</p>
                   <p className="text-slate-400 text-sm mt-1">You can now assign providers to this schedule</p>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Add Provider Rate Modal */}
+      <AnimatePresence>
+        {showProviderRateModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => !saving && setShowProviderRateModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {!saving && !saved ? (
+                <>
+                  <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-white">Add Provider Discount Rate</h2>
+                      <p className="text-slate-400 text-sm">Set custom rates for a specific provider</p>
+                    </div>
+                    <button onClick={() => setShowProviderRateModal(false)} className="text-slate-400 hover:text-white p-2 hover:bg-slate-700 rounded-lg">
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  <div className="p-6 overflow-auto max-h-[70vh] space-y-5">
+                    {/* Provider Selection */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Select Provider *</label>
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input 
+                          type="text" 
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+                          placeholder="Search by provider name, practice, or NPI..."
+                        />
+                      </div>
+                    </div>
+
+                    {/* Rate Type Selection */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-3">Rate Type *</label>
+                      <div className="grid grid-cols-2 gap-4">
+                        <button
+                          type="button"
+                          onClick={() => setNewProviderRate({...newProviderRate, rateType: "flat"})}
+                          className={`p-4 rounded-xl border-2 text-left transition-all ${
+                            newProviderRate.rateType === "flat"
+                              ? "border-teal-500 bg-teal-500/10"
+                              : "border-slate-600 hover:border-slate-500"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                              newProviderRate.rateType === "flat" ? "bg-teal-500/20" : "bg-slate-700"
+                            }`}>
+                              <Percent className={`w-5 h-5 ${newProviderRate.rateType === "flat" ? "text-teal-400" : "text-slate-400"}`} />
+                            </div>
+                            <span className="text-white font-medium">Flat Rate</span>
+                          </div>
+                          <p className="text-slate-400 text-sm">Single rate applies to all service categories</p>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setNewProviderRate({...newProviderRate, rateType: "custom"})}
+                          className={`p-4 rounded-xl border-2 text-left transition-all ${
+                            newProviderRate.rateType === "custom"
+                              ? "border-teal-500 bg-teal-500/10"
+                              : "border-slate-600 hover:border-slate-500"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                              newProviderRate.rateType === "custom" ? "bg-teal-500/20" : "bg-slate-700"
+                            }`}>
+                              <Filter className={`w-5 h-5 ${newProviderRate.rateType === "custom" ? "text-teal-400" : "text-slate-400"}`} />
+                            </div>
+                            <span className="text-white font-medium">Custom by Service</span>
+                          </div>
+                          <p className="text-slate-400 text-sm">Different rates for each service category</p>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Flat Rate Input */}
+                    {newProviderRate.rateType === "flat" && (
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Rate (% of Medicare) *</label>
+                        <div className="relative w-64">
+                          <input 
+                            type="text" 
+                            className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+                            placeholder="e.g., 150"
+                            value={newProviderRate.flatRate}
+                            onChange={(e) => setNewProviderRate({...newProviderRate, flatRate: e.target.value})}
+                          />
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">% Medicare</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Custom Service Rates */}
+                    {newProviderRate.rateType === "custom" && (
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-3">Service Category Rates (% of Medicare)</label>
+                        <div className="bg-slate-900 rounded-lg overflow-hidden">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b border-slate-700">
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Category</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Description</th>
+                                <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase w-40">Rate</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-700">
+                              {serviceCategories.map((cat) => (
+                                <tr key={cat.key} className="hover:bg-slate-800/50">
+                                  <td className="px-4 py-3 text-slate-300 font-medium">{cat.label}</td>
+                                  <td className="px-4 py-3 text-slate-500 text-sm">{cat.description}</td>
+                                  <td className="px-4 py-3 text-right">
+                                    <div className="relative">
+                                      <input 
+                                        type="text" 
+                                        className="w-full px-3 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-white text-right placeholder:text-slate-500 focus:border-teal-500 text-sm"
+                                        placeholder="—"
+                                        value={newProviderRate.serviceRates[cat.key] || ""}
+                                        onChange={(e) => setNewProviderRate({
+                                          ...newProviderRate,
+                                          serviceRates: {
+                                            ...newProviderRate.serviceRates,
+                                            [cat.key]: e.target.value
+                                          }
+                                        })}
+                                      />
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-2">Leave blank to exclude category. Enter percentage value (e.g., "150" for 150% of Medicare)</p>
+                      </div>
+                    )}
+
+                    {/* Dates */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Effective Date *</label>
+                        <input 
+                          type="date" 
+                          className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                          value={newProviderRate.effectiveDate}
+                          onChange={(e) => setNewProviderRate({...newProviderRate, effectiveDate: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Expiration Date</label>
+                        <input 
+                          type="date" 
+                          className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                          value={newProviderRate.expirationDate}
+                          onChange={(e) => setNewProviderRate({...newProviderRate, expirationDate: e.target.value})}
+                        />
+                        <p className="text-xs text-slate-500 mt-1">Leave blank for no expiration</p>
+                      </div>
+                    </div>
+
+                    {/* Notes */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Notes</label>
+                      <textarea 
+                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 h-20 resize-none"
+                        placeholder="Contract details, negotiation notes, etc..."
+                        value={newProviderRate.notes}
+                        onChange={(e) => setNewProviderRate({...newProviderRate, notes: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 flex gap-3">
+                      <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                      <div className="text-sm">
+                        <p className="text-amber-300 font-medium">Provider Override</p>
+                        <p className="text-amber-200/70 mt-1">This custom rate will override any discount schedule assigned to the provider. Remove the custom rate to revert to schedule defaults.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 border-t border-slate-700 flex justify-end gap-3">
+                    <button
+                      onClick={() => setShowProviderRateModal(false)}
+                      className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={handleSave}
+                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Provider Rate
+                    </button>
+                  </div>
+                </>
+              ) : saving ? (
+                <div className="p-12 text-center">
+                  <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-white font-medium">Saving provider rate...</p>
+                </div>
+              ) : (
+                <div className="p-12 text-center">
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Check className="w-8 h-8 text-green-400" />
+                  </motion.div>
+                  <p className="text-white font-medium">Provider Rate Added!</p>
+                  <p className="text-slate-400 text-sm mt-1">Custom rates are now active for this provider</p>
                 </div>
               )}
             </motion.div>
