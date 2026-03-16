@@ -891,20 +891,6 @@ export default function ProductDemoPage() {
               </p>
             </div>
 
-            {/* Stats */}
-            <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0' }}>
-              {[
-                { label: 'Avg. Savings', value: '52%' },
-                { label: 'Success Rate', value: '89%' },
-                { label: 'Turnaround', value: '7 days' },
-              ].map((stat, i) => (
-                <div key={stat.label} style={{ flex: 1, padding: 20, textAlign: 'center', borderRight: i < 2 ? '1px solid #e2e8f0' : 'none' }}>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: '#0d9488' }}>{stat.value}</div>
-                  <div style={{ fontSize: 12, color: '#64748b' }}>{stat.label}</div>
-                </div>
-              ))}
-            </div>
-
             {/* Content */}
             <div style={{ padding: 24 }}>
               {/* Description */}
