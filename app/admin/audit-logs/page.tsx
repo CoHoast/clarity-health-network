@@ -118,11 +118,11 @@ export default function AuditLogsPage() {
       </div>
 
       {/* HIPAA Compliance Banner */}
-      <div className="bg-gradient-to-r from-green-900/50 to-emerald-900/50 border border-green-500/30 rounded-xl p-4 flex items-center gap-4">
-        <Shield className="w-8 h-8 text-green-400" />
+      <div className="bg-gradient-to-r from-emerald-600 to-green-600 rounded-xl p-4 flex items-center gap-4 shadow-lg">
+        <Shield className="w-8 h-8" style={{ color: 'white' }} />
         <div>
-          <p className="text-green-400 font-semibold">HIPAA Compliance Active</p>
-          <p className="text-green-300/70 text-sm">All user actions, PHI access, and system events are being logged and retained for 6 years per HIPAA requirements</p>
+          <p className="font-semibold" style={{ color: 'white' }}>HIPAA Compliance Active</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>All user actions, PHI access, and system events are being logged and retained for 6 years per HIPAA requirements</p>
         </div>
       </div>
 
