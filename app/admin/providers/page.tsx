@@ -19,6 +19,8 @@ interface Practice {
   country: string;
   phone: string;
   fax: string;
+  billingPhone: string;
+  billingFax: string;
   email: string;
   contactName: string;
   // Pay-To (inherited by all providers)
@@ -95,6 +97,8 @@ const practices: Practice[] = [
     country: "USA",
     phone: "(555) 123-4567",
     fax: "(555) 123-4568",
+    billingPhone: "(555) 123-4569",
+    billingFax: "(555) 123-4570",
     email: "info@clevelandfm.com",
     contactName: "Mary Johnson",
     payToNpi: "1234567890",
@@ -123,6 +127,8 @@ const practices: Practice[] = [
     country: "USA",
     phone: "(555) 456-7890",
     fax: "(555) 456-7891",
+    billingPhone: "(555) 456-7892",
+    billingFax: "(555) 456-7893",
     email: "contact@clevortho.com",
     contactName: "James Miller",
     payToNpi: "9999999991",
@@ -151,6 +157,8 @@ const practices: Practice[] = [
     country: "USA",
     phone: "(555) 345-6789",
     fax: "(555) 345-6780",
+    billingPhone: "(555) 345-6781",
+    billingFax: "(555) 345-6782",
     email: "scheduling@metroimaging.com",
     contactName: "Tom Richards",
     payToNpi: "3456789012",
@@ -179,6 +187,8 @@ const practices: Practice[] = [
     country: "USA",
     phone: "(555) 901-2345",
     fax: "(555) 901-2346",
+    billingPhone: "(555) 901-2347",
+    billingFax: "(555) 901-2348",
     email: "info@clevcardio.com",
     contactName: "Robert Thompson",
     payToNpi: "9012345678",
@@ -207,6 +217,8 @@ const practices: Practice[] = [
     country: "USA",
     phone: "(555) 678-9012",
     fax: "(555) 678-9013",
+    billingPhone: "(555) 678-9014",
+    billingFax: "(555) 678-9015",
     email: "info@westlakeuc.com",
     contactName: "Patricia Lee",
     payToNpi: "6789012345",
@@ -540,7 +552,7 @@ export default function ProvidersPage() {
               {/* Tab Content */}
               <div className="p-6">
                 {activeTab === "info" && (
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid md:grid-cols-3 gap-6">
                     {/* Location */}
                     <div className="bg-slate-700/30 rounded-lg p-4">
                       <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
@@ -552,16 +564,26 @@ export default function ProvidersPage() {
                       <p className="text-slate-400">{selectedPractice.country}</p>
                     </div>
 
-                    {/* Contact */}
+                    {/* Main Office Contact */}
                     <div className="bg-slate-700/30 rounded-lg p-4">
                       <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                         <Phone className="w-4 h-4 text-teal-400" />
-                        Contact
+                        Main Office
                       </h3>
                       <p className="text-slate-300">{selectedPractice.contactName}</p>
-                      <p className="text-slate-300">{selectedPractice.phone}</p>
+                      <p className="text-slate-300">Phone: {selectedPractice.phone}</p>
                       <p className="text-slate-300">Fax: {selectedPractice.fax}</p>
                       <p className="text-cyan-400">{selectedPractice.email}</p>
+                    </div>
+
+                    {/* Billing Department */}
+                    <div className="bg-slate-700/30 rounded-lg p-4">
+                      <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                        <CreditCard className="w-4 h-4 text-teal-400" />
+                        Billing Department
+                      </h3>
+                      <p className="text-slate-300">Phone: {selectedPractice.billingPhone}</p>
+                      <p className="text-slate-300">Fax: {selectedPractice.billingFax}</p>
                     </div>
                   </div>
                 )}
@@ -794,14 +816,23 @@ export default function ProvidersPage() {
                   </div>
                 </div>
                 
-                {/* Contact */}
+                {/* Main Office Contact */}
                 <div className="space-y-4">
-                  <h3 className="text-sm font-semibold text-white">Contact</h3>
+                  <h3 className="text-sm font-semibold text-white">Main Office Contact</h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <input type="text" placeholder="Contact Name *" value={newPractice.contactName || ""} onChange={(e) => setNewPractice({...newPractice, contactName: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                     <input type="email" placeholder="Email *" value={newPractice.email || ""} onChange={(e) => setNewPractice({...newPractice, email: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="tel" placeholder="Phone *" value={newPractice.phone || ""} onChange={(e) => setNewPractice({...newPractice, phone: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="tel" placeholder="Fax" value={newPractice.fax || ""} onChange={(e) => setNewPractice({...newPractice, fax: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="tel" placeholder="Main Office Phone *" value={newPractice.phone || ""} onChange={(e) => setNewPractice({...newPractice, phone: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="tel" placeholder="Main Office Fax" value={newPractice.fax || ""} onChange={(e) => setNewPractice({...newPractice, fax: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                  </div>
+                </div>
+
+                {/* Billing Department */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-white">Billing Department</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <input type="tel" placeholder="Billing Phone *" value={newPractice.billingPhone || ""} onChange={(e) => setNewPractice({...newPractice, billingPhone: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="tel" placeholder="Billing Fax" value={newPractice.billingFax || ""} onChange={(e) => setNewPractice({...newPractice, billingFax: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                   </div>
                 </div>
                 
