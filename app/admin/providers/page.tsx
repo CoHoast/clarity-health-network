@@ -23,6 +23,13 @@ interface Practice {
   billingFax: string;
   email: string;
   contactName: string;
+  // Correspondence Address (may differ from location)
+  correspondenceAddress: string;
+  correspondenceCity: string;
+  correspondenceState: string;
+  correspondenceZip: string;
+  correspondenceCountry: string;
+  correspondenceFax: string;
   // Pay-To (inherited by all providers)
   payToNpi: string;
   payToName: string;
@@ -101,6 +108,12 @@ const practices: Practice[] = [
     billingFax: "(555) 123-4570",
     email: "info@clevelandfm.com",
     contactName: "Mary Johnson",
+    correspondenceAddress: "P.O. Box 4567",
+    correspondenceCity: "Cleveland",
+    correspondenceState: "OH",
+    correspondenceZip: "44101",
+    correspondenceCountry: "USA",
+    correspondenceFax: "(555) 123-4571",
     payToNpi: "1234567890",
     payToName: "Cleveland Family Medicine LLC",
     payToTaxId: "34-1234567",
@@ -131,6 +144,12 @@ const practices: Practice[] = [
     billingFax: "(555) 456-7893",
     email: "contact@clevortho.com",
     contactName: "James Miller",
+    correspondenceAddress: "321 Bone & Joint Dr, Suite 100",
+    correspondenceCity: "Beachwood",
+    correspondenceState: "OH",
+    correspondenceZip: "44122",
+    correspondenceCountry: "USA",
+    correspondenceFax: "(555) 456-7894",
     payToNpi: "9999999991",
     payToName: "COA Billing Services LLC",
     payToTaxId: "34-9999991",
@@ -161,6 +180,12 @@ const practices: Practice[] = [
     billingFax: "(555) 345-6782",
     email: "scheduling@metroimaging.com",
     contactName: "Tom Richards",
+    correspondenceAddress: "789 Imaging Way",
+    correspondenceCity: "Cleveland",
+    correspondenceState: "OH",
+    correspondenceZip: "44102",
+    correspondenceCountry: "USA",
+    correspondenceFax: "(555) 345-6783",
     payToNpi: "3456789012",
     payToName: "Metro Imaging Center Inc",
     payToTaxId: "34-3456789",
@@ -191,6 +216,12 @@ const practices: Practice[] = [
     billingFax: "(555) 901-2348",
     email: "info@clevcardio.com",
     contactName: "Robert Thompson",
+    correspondenceAddress: "P.O. Box 9012",
+    correspondenceCity: "Cleveland",
+    correspondenceState: "OH",
+    correspondenceZip: "44104",
+    correspondenceCountry: "USA",
+    correspondenceFax: "(555) 901-2349",
     payToNpi: "9012345678",
     payToName: "CCA Management Group",
     payToTaxId: "34-9012000",
@@ -221,6 +252,12 @@ const practices: Practice[] = [
     billingFax: "(555) 678-9015",
     email: "info@westlakeuc.com",
     contactName: "Patricia Lee",
+    correspondenceAddress: "987 Quick Care Blvd",
+    correspondenceCity: "Westlake",
+    correspondenceState: "OH",
+    correspondenceZip: "44145",
+    correspondenceCountry: "USA",
+    correspondenceFax: "(555) 678-9016",
     payToNpi: "6789012345",
     payToName: "Westlake Urgent Care LLC",
     payToTaxId: "34-6789012",
@@ -552,16 +589,28 @@ export default function ProvidersPage() {
               {/* Tab Content */}
               <div className="p-6">
                 {activeTab === "info" && (
-                  <div className="grid md:grid-cols-3 gap-6">
+                  <div className="grid md:grid-cols-2 gap-6">
                     {/* Location */}
                     <div className="bg-slate-700/30 rounded-lg p-4">
                       <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-teal-400" />
-                        Location
+                        Location Address
                       </h3>
                       <p className="text-slate-300">{selectedPractice.address}</p>
                       <p className="text-slate-300">{selectedPractice.city}, {selectedPractice.state} {selectedPractice.zip}</p>
                       <p className="text-slate-400">{selectedPractice.country}</p>
+                    </div>
+
+                    {/* Correspondence Address */}
+                    <div className="bg-slate-700/30 rounded-lg p-4">
+                      <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                        <Mail className="w-4 h-4 text-teal-400" />
+                        Correspondence Address
+                      </h3>
+                      <p className="text-slate-300">{selectedPractice.correspondenceAddress}</p>
+                      <p className="text-slate-300">{selectedPractice.correspondenceCity}, {selectedPractice.correspondenceState} {selectedPractice.correspondenceZip}</p>
+                      <p className="text-slate-400">{selectedPractice.correspondenceCountry}</p>
+                      <p className="text-slate-300 mt-2">Fax: {selectedPractice.correspondenceFax}</p>
                     </div>
 
                     {/* Main Office Contact */}
@@ -816,6 +865,25 @@ export default function ProvidersPage() {
                   </div>
                 </div>
                 
+                {/* Correspondence Address */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-white">Correspondence Address</h3>
+                  <input
+                    type="text"
+                    placeholder="Correspondence Street Address"
+                    value={newPractice.correspondenceAddress || ""}
+                    onChange={(e) => setNewPractice({...newPractice, correspondenceAddress: e.target.value})}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                  <div className="grid grid-cols-4 gap-2">
+                    <input type="text" placeholder="City" value={newPractice.correspondenceCity || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceCity: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="State" value={newPractice.correspondenceState || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceState: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="Postal Code" value={newPractice.correspondenceZip || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceZip: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="Country" value={newPractice.correspondenceCountry || "USA"} onChange={(e) => setNewPractice({...newPractice, correspondenceCountry: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                  </div>
+                  <input type="tel" placeholder="Correspondence Fax" value={newPractice.correspondenceFax || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceFax: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                </div>
+
                 {/* Main Office Contact */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Main Office Contact</h3>
