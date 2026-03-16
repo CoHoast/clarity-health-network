@@ -70,6 +70,13 @@ const navigationGroups = [
     ],
   },
   {
+    label: "Communications",
+    items: [
+      { name: "Provider Messages", href: "/admin/communications", icon: Bell },
+      { name: "Outreach", href: "/admin/communications?tab=outreach", icon: Users },
+    ],
+  },
+  {
     label: "Reports",
     items: [
       { name: "Network Analytics", href: "/admin/analytics", icon: BarChart3 },

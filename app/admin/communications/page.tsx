@@ -1,331 +1,567 @@
 "use client";
 
 import { useState } from "react";
+import { Mail, Send, Users, UserPlus, Search, FileText, CheckCircle, Clock, Building2, Phone, Globe, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Bell, FileText, Send, Clock, CheckCircle, X, Plus, Eye, Users, Calendar, Phone, MessageSquare, ArrowRight } from "lucide-react";
 
-const templates = [
-  { id: "TPL-001", name: "EOB Statement", type: "EOB", lastUsed: "2024-03-12", sends: 1245, description: "Standard Explanation of Benefits statement sent after claim processing" },
-  { id: "TPL-002", name: "Welcome Letter", type: "Letter", lastUsed: "2024-03-11", sends: 89, description: "Welcome packet for newly enrolled members" },
-  { id: "TPL-003", name: "ID Card Mailed", type: "Notification", lastUsed: "2024-03-10", sends: 156, description: "Notification that member ID card has been mailed" },
-  { id: "TPL-004", name: "Premium Reminder", type: "Email", lastUsed: "2024-03-09", sends: 423, description: "Monthly premium payment reminder notice" },
-  { id: "TPL-005", name: "Claim Denied", type: "EOB", lastUsed: "2024-03-08", sends: 67, description: "Claim denial notification with appeal instructions" },
-  { id: "TPL-006", name: "Preventive Care Reminder", type: "Email", lastUsed: "2024-03-07", sends: 892, description: "Annual wellness visit and preventive care reminder" },
+// Existing network providers
+const networkProviders = [
+  { id: "PRV-001", name: "Cleveland Family Medicine", email: "info@clevelandfm.com", specialty: "Family Medicine", contact: "Mary Johnson", lastContact: "2026-03-10" },
+  { id: "PRV-002", name: "Dr. Sarah Chen, MD", email: "dr.chen@medical.com", specialty: "Internal Medicine", contact: "Dr. Sarah Chen", lastContact: "2026-03-05" },
+  { id: "PRV-003", name: "Metro Imaging Center", email: "scheduling@metroimaging.com", specialty: "Diagnostic Imaging", contact: "Tom Richards", lastContact: "2026-02-28" },
+  { id: "PRV-004", name: "Cleveland Orthopedic Associates", email: "contact@clevortho.com", specialty: "Orthopedics", contact: "James Miller", lastContact: "2026-03-12" },
+  { id: "PRV-006", name: "Westlake Urgent Care", email: "info@westlakeuc.com", specialty: "Urgent Care", contact: "Patricia Lee", lastContact: "2026-03-01" },
+  { id: "PRV-007", name: "Cleveland Cardiology Associates", email: "info@clevcardio.com", specialty: "Cardiology", contact: "Robert Thompson", lastContact: "2026-02-20" },
+  { id: "PRV-008", name: "Quest Diagnostics Cleveland", email: "clevelandlab@quest.com", specialty: "Laboratory", contact: "Lab Admin", lastContact: "2026-03-08" },
 ];
 
-const recentComms = [
-  { id: "COM-001", member: "John Smith", memberId: "CHN-123456", type: "EOB", method: "Email", sent: "2024-03-12 14:32", status: "delivered", subject: "Your Explanation of Benefits", preview: "This is your Explanation of Benefits for the claim processed on March 10, 2024. Service provided by Cleveland Family Medicine...", fullMessage: "Dear John Smith,\n\nThis is your Explanation of Benefits for the claim processed on March 10, 2024.\n\nService provided by: Cleveland Family Medicine\nDate of Service: March 10, 2024\nClaim Number: CLM-2024-8847\n\nSummary:\n- Billed Amount: $138.00\n- Plan Paid: $100.00\n- Your Responsibility: $25.00\n\nThis is not a bill. You may receive a separate bill from your provider for any amount you owe.\n\nIf you have questions about this EOB, please contact Member Services at 1-800-555-0123.\n\nThank you for being a TrueCare Health Network member.\n\nSincerely,\nTrueCare Health Network" },
-  { id: "COM-002", member: "Sarah Johnson", memberId: "CHN-234567", type: "Welcome", method: "Mail", sent: "2024-03-12 10:15", status: "sent", subject: "Welcome to TrueCare Health Network", preview: "Welcome to TrueCare Health Network! We're excited to have you as a member. Your ID card will arrive within 5-7 business days...", fullMessage: "Dear Sarah Johnson,\n\nWelcome to TrueCare Health Network! We're excited to have you as a member.\n\nYour Member ID: CHN-234567\nPlan: Silver PPO\nGroup: Acme Corp\nEffective Date: March 1, 2024\n\nWhat to expect:\n• Your ID card will arrive within 5-7 business days\n• You can access our member portal at member.truecarehealthnetwork.com\n• Your Primary Care Physician is Dr. James Wilson\n\nImportant Resources:\n• Member Services: 1-800-555-0123\n• Nurse Line (24/7): 1-800-555-0199\n• Find a Doctor: truecarehealthnetwork.com/find-care\n\nWe're here to help you on your health journey!\n\nSincerely,\nTrueCare Health Network Member Services" },
-  { id: "COM-003", member: "Michael Chen", memberId: "CHN-345678", type: "ID Card", method: "Email", sent: "2024-03-11 16:45", status: "delivered", subject: "Your ID Card Has Been Mailed", preview: "Your new TrueCare Health Network ID card has been mailed to your address on file...", fullMessage: "Dear Michael Chen,\n\nYour new TrueCare Health Network ID card has been mailed to your address on file.\n\nMailing Address: 789 Elm St, Beachwood, OH 44122\n\nExpected Delivery: 5-7 business days\n\nIn the meantime, you can:\n• Print a temporary ID card from the member portal\n• Access your digital ID card on the TrueCare Health mobile app\n• Provide your Member ID (CHN-345678) to healthcare providers\n\nIf you don't receive your card within 10 business days, please contact Member Services at 1-800-555-0123.\n\nThank you,\nTrueCare Health Network" },
-  { id: "COM-004", member: "Emily Rodriguez", memberId: "CHN-456789", type: "Premium", method: "SMS", sent: "2024-03-11 09:00", status: "delivered", subject: "Premium Payment Reminder", preview: "Reminder: Your monthly premium of $425.00 is due on March 15, 2024...", fullMessage: "TrueCare Health Network Reminder\n\nYour monthly premium of $425.00 is due on March 15, 2024.\n\nPay online: member.truecarehealthnetwork.com/pay\nPay by phone: 1-800-555-0123\n\nAuto-pay is available for convenient monthly payments.\n\nThank you for being a valued member." },
-  { id: "COM-005", member: "Robert Williams", memberId: "CHN-567890", type: "EOB", method: "Email", sent: "2024-03-10 11:20", status: "delivered", subject: "Your Explanation of Benefits", preview: "This is your Explanation of Benefits for services received at Quick Care Urgent on March 9, 2024...", fullMessage: "Dear Robert Williams,\n\nThis is your Explanation of Benefits for services received on March 9, 2024.\n\nService provided by: Quick Care Urgent\nDate of Service: March 9, 2024\nClaim Number: CLM-2024-8843\n\nSummary:\n- Billed Amount: $175.00\n- Plan Paid: $105.00\n- Your Responsibility: $45.00 (Copay)\n\nThis is not a bill. The provider may send you a bill for your copay amount.\n\nQuestions? Call 1-800-555-0123.\n\nThank you,\nTrueCare Health Network" },
-  { id: "COM-006", member: "Lisa Martinez", memberId: "CHN-678901", type: "Preventive", method: "Email", sent: "2024-03-09 08:00", status: "delivered", subject: "Time for Your Annual Wellness Visit", preview: "It's been a year since your last wellness visit. Schedule your annual checkup today to stay healthy...", fullMessage: "Dear Lisa Martinez,\n\nIt's been a year since your last wellness visit!\n\nAnnual wellness visits are covered at 100% with no copay when you see an in-network provider. These visits help you:\n• Track important health metrics\n• Update vaccinations\n• Screen for potential health concerns\n• Discuss any health questions with your doctor\n\nYour PCP: Dr. Michael Brown\nPhone: (555) 678-9012\n\nSchedule your appointment today!\n\nTo find other in-network providers, visit truecarehealthnetwork.com/find-care.\n\nYour health matters to us!\n\nTrueCare Health Network" },
-  { id: "COM-007", member: "David Kim", memberId: "CHN-789012", type: "Claim Denied", method: "Email", sent: "2024-03-08 14:00", status: "delivered", subject: "Important: Claim Denial Notice", preview: "We were unable to approve your claim for services received on March 6, 2024. Please review the attached EOB for details...", fullMessage: "Dear David Kim,\n\nWe were unable to approve your claim for services received on March 6, 2024.\n\nClaim Number: CLM-2024-8841\nProvider: Chiropractic Services\nDate of Service: March 6, 2024\n\nReason for Denial: Provider not in network\n\nAmount Billed: $95.00\nAmount Paid: $0.00\nYour Responsibility: $95.00\n\nYou may be responsible for the full amount billed.\n\nYour Options:\n1. Pay the provider directly\n2. Appeal this decision within 60 days\n3. Contact Member Services for assistance\n\nTo file an appeal, send a written request to:\nTrueCare Health Network Appeals\nPO Box 12345\nCleveland, OH 44101\n\nQuestions? Call 1-800-555-0123.\n\nTrueCare Health Network" },
-  { id: "COM-008", member: "Jennifer Lee", memberId: "CHN-890123", type: "Welcome", method: "Email", sent: "2024-03-10 09:30", status: "delivered", subject: "Welcome to TrueCare Health Network!", preview: "Congratulations on your new coverage! Your enrollment is being processed and you'll receive your ID card soon...", fullMessage: "Dear Jennifer Lee,\n\nCongratulations on your new coverage with TrueCare Health Network!\n\nYour enrollment is currently being processed.\n\nMember ID: CHN-890123 (pending activation)\nPlan: Silver PPO\nGroup: Tech Solutions\nEffective Date: March 10, 2024\n\nNext Steps:\n• Your ID card will be mailed within 5-7 business days\n• Set up your online account at member.truecarehealthnetwork.com\n• Select a Primary Care Physician from our network\n\nNeed help? Our Member Services team is ready to assist you:\nPhone: 1-800-555-0123\nHours: Mon-Fri 8am-8pm, Sat 9am-5pm\n\nWelcome aboard!\n\nTrueCare Health Network" },
+// Message history
+const messageHistory = [
+  { id: 1, provider: "Cleveland Family Medicine", subject: "Contract Renewal Reminder", date: "2026-03-10", status: "delivered" },
+  { id: 2, provider: "Metro Imaging Center", subject: "Updated Fee Schedule", date: "2026-02-28", status: "opened" },
+  { id: 3, provider: "Cleveland Cardiology Associates", subject: "Credentialing Documentation Request", date: "2026-02-20", status: "replied" },
+  { id: 4, provider: "Westlake Urgent Care", subject: "Network Policy Update", date: "2026-03-01", status: "delivered" },
+  { id: 5, provider: "Dr. Sarah Chen, MD", subject: "Welcome to TrueCare Network", date: "2026-03-05", status: "opened" },
+];
+
+// Outreach templates
+const outreachTemplates = [
+  { 
+    id: "TPL-001", 
+    name: "Initial Network Invitation", 
+    subject: "Join TrueCare Health Network - Invitation to Partner",
+    description: "First contact email inviting providers to join the network",
+    body: `Dear [PROVIDER_NAME],
+
+I hope this message finds you well. My name is [SENDER_NAME] from TrueCare Health Network, and I'm reaching out to invite [PRACTICE_NAME] to join our growing PPO network.
+
+TrueCare Health Network is expanding our provider network in the [LOCATION] area, and based on your excellent reputation in [SPECIALTY], we believe you would be a valuable addition to our network.
+
+Benefits of joining TrueCare Health Network:
+• Access to thousands of covered lives in your area
+• Competitive reimbursement rates
+• Streamlined credentialing process
+• Dedicated provider support team
+• No participation fees
+
+We would love the opportunity to discuss how a partnership could benefit your practice. Would you be available for a brief call this week to learn more?
+
+Please feel free to reach out to me directly at [PHONE] or reply to this email.
+
+Best regards,
+[SENDER_NAME]
+[SENDER_TITLE]
+TrueCare Health Network
+[PHONE]
+[EMAIL]`
+  },
+  { 
+    id: "TPL-002", 
+    name: "Follow-Up Invitation", 
+    subject: "Following Up - TrueCare Health Network Partnership",
+    description: "Second contact for providers who haven't responded",
+    body: `Dear [PROVIDER_NAME],
+
+I wanted to follow up on my previous email regarding the opportunity to join TrueCare Health Network.
+
+We're actively building our [SPECIALTY] provider network in [LOCATION], and [PRACTICE_NAME] would be an excellent fit for our members seeking quality care.
+
+If you have any questions about network participation, credentialing requirements, or reimbursement rates, I'd be happy to schedule a call at your convenience.
+
+You can also visit our provider information page at truecarehealth.com/providers to learn more.
+
+Looking forward to hearing from you.
+
+Best regards,
+[SENDER_NAME]
+[SENDER_TITLE]
+TrueCare Health Network`
+  },
+  { 
+    id: "TPL-003", 
+    name: "Specialty-Specific Outreach", 
+    subject: "TrueCare Seeking [SPECIALTY] Providers in [LOCATION]",
+    description: "Targeted outreach for specific specialty needs",
+    body: `Dear [PROVIDER_NAME],
+
+TrueCare Health Network is actively seeking [SPECIALTY] providers to meet the growing demand from our members in the [LOCATION] area.
+
+We've identified [PRACTICE_NAME] as a top-rated practice in your specialty, and we'd like to discuss a potential partnership.
+
+What we offer:
+• Competitive [SPECIALTY]-specific fee schedules
+• Growing patient referral volume
+• Simple online credentialing
+• Dedicated specialty liaison
+
+Our members are actively searching for [SPECIALTY] providers, and we'd love to include your practice in our network.
+
+Can we schedule a 15-minute call this week to discuss the details?
+
+Best regards,
+[SENDER_NAME]
+[SENDER_TITLE]
+TrueCare Health Network`
+  },
+];
+
+// Outreach history
+const outreachHistory = [
+  { id: 1, practice: "Lakewood Medical Group", email: "admin@lakewoodmed.com", template: "Initial Network Invitation", date: "2026-03-14", status: "sent" },
+  { id: 2, practice: "Dr. Michael Torres, MD", email: "mtorres@cleveclinic.com", template: "Specialty-Specific Outreach", date: "2026-03-12", status: "responded" },
+  { id: 3, practice: "North Coast Imaging", email: "info@ncimaging.com", template: "Initial Network Invitation", date: "2026-03-10", status: "opened" },
+  { id: 4, practice: "Riverside Family Practice", email: "office@riversidecare.com", template: "Follow-Up Invitation", date: "2026-03-08", status: "sent" },
 ];
 
 export default function CommunicationsPage() {
-  const [showNewModal, setShowNewModal] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
-  const [selectedComm, setSelectedComm] = useState<typeof recentComms[0] | null>(null);
-  const [messageSent, setMessageSent] = useState(false);
+  const [activeTab, setActiveTab] = useState<"messages" | "outreach">("messages");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showComposeModal, setShowComposeModal] = useState(false);
+  const [showOutreachModal, setShowOutreachModal] = useState(false);
+  const [selectedProvider, setSelectedProvider] = useState<typeof networkProviders[0] | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<typeof outreachTemplates[0] | null>(null);
+  const [messageSubject, setMessageSubject] = useState("");
+  const [messageBody, setMessageBody] = useState("");
+  const [sendSuccess, setSendSuccess] = useState(false);
 
-  const getMethodIcon = (method: string) => {
-    switch (method) {
-      case "Email": return <Mail className="w-4 h-4 text-blue-400" />;
-      case "Mail": return <FileText className="w-4 h-4 text-amber-400" />;
-      case "SMS": return <MessageSquare className="w-4 h-4 text-green-400" />;
-      default: return <Mail className="w-4 h-4" />;
-    }
+  // Outreach form state
+  const [outreachForm, setOutreachForm] = useState({
+    practiceName: "",
+    providerName: "",
+    email: "",
+    specialty: "",
+    location: "",
+    senderName: "Network Relations Team",
+    senderTitle: "Provider Relations",
+    phone: "1-800-555-0199",
+    senderEmail: "providers@truecarehealth.com",
+  });
+
+  const filteredProviders = networkProviders.filter(p =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.specialty.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const openComposeModal = (provider: typeof networkProviders[0]) => {
+    setSelectedProvider(provider);
+    setMessageSubject("");
+    setMessageBody("");
+    setSendSuccess(false);
+    setShowComposeModal(true);
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case "EOB": return "bg-cyan-600/20 text-cyan-500";
-      case "Welcome": return "bg-green-500/20 text-green-400";
-      case "ID Card": return "bg-blue-500/20 text-blue-400";
-      case "Premium": return "bg-amber-500/20 text-amber-400";
-      case "Preventive": return "bg-cyan-500/20 text-cyan-400";
-      case "Claim Denied": return "bg-red-500/20 text-red-400";
-      default: return "bg-slate-500/20 text-slate-400";
-    }
+  const openOutreachModal = (template: typeof outreachTemplates[0]) => {
+    setSelectedTemplate(template);
+    setOutreachForm({
+      ...outreachForm,
+      practiceName: "",
+      providerName: "",
+      email: "",
+      specialty: "",
+      location: "Cleveland, OH",
+    });
+    setSendSuccess(false);
+    setShowOutreachModal(true);
   };
 
-  const handleSend = () => {
-    setMessageSent(true);
+  const handleSendMessage = () => {
+    setSendSuccess(true);
     setTimeout(() => {
-      setShowNewModal(false);
-      setMessageSent(false);
-    }, 2000);
+      setShowComposeModal(false);
+      setSendSuccess(false);
+    }, 1500);
+  };
+
+  const handleSendOutreach = () => {
+    setSendSuccess(true);
+    setTimeout(() => {
+      setShowOutreachModal(false);
+      setSendSuccess(false);
+    }, 1500);
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "delivered": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-500/20 text-slate-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Delivered</span>;
+      case "opened": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-medium rounded-full"><Mail className="w-3 h-3" />Opened</span>;
+      case "replied": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Replied</span>;
+      case "sent": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Send className="w-3 h-3" />Sent</span>;
+      case "responded": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Responded</span>;
+      default: return null;
+    }
+  };
+
+  // Generate preview of outreach email with filled placeholders
+  const getOutreachPreview = () => {
+    if (!selectedTemplate) return "";
+    return selectedTemplate.body
+      .replace(/\[PROVIDER_NAME\]/g, outreachForm.providerName || "[Provider Name]")
+      .replace(/\[PRACTICE_NAME\]/g, outreachForm.practiceName || "[Practice Name]")
+      .replace(/\[SPECIALTY\]/g, outreachForm.specialty || "[Specialty]")
+      .replace(/\[LOCATION\]/g, outreachForm.location || "[Location]")
+      .replace(/\[SENDER_NAME\]/g, outreachForm.senderName)
+      .replace(/\[SENDER_TITLE\]/g, outreachForm.senderTitle)
+      .replace(/\[PHONE\]/g, outreachForm.phone)
+      .replace(/\[EMAIL\]/g, outreachForm.senderEmail);
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-            <Mail className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white">Member Communications</h1>
-            <p className="text-slate-400">EOB generation, notifications, and templates</p>
-          </div>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+            <Mail className="w-7 h-7 text-teal-500" />
+            Communications
+          </h1>
+          <p className="text-slate-400 mt-1">Message providers and recruit new network partners</p>
         </div>
-        <button onClick={() => setShowNewModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
-          <Send className="w-4 h-4" />Send Communication
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2 border-b border-slate-700 pb-2">
+        <button
+          onClick={() => setActiveTab("messages")}
+          className={`px-4 py-2 font-medium rounded-lg transition-colors flex items-center gap-2 ${
+            activeTab === "messages" ? "bg-teal-600 text-white" : "text-slate-400 hover:text-white hover:bg-slate-700"
+          }`}
+        >
+          <Users className="w-4 h-4" />
+          Network Providers
+        </button>
+        <button
+          onClick={() => setActiveTab("outreach")}
+          className={`px-4 py-2 font-medium rounded-lg transition-colors flex items-center gap-2 ${
+            activeTab === "outreach" ? "bg-teal-600 text-white" : "text-slate-400 hover:text-white hover:bg-slate-700"
+          }`}
+        >
+          <UserPlus className="w-4 h-4" />
+          Provider Outreach
         </button>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">2,456</p>
-          <p className="text-sm text-slate-400">Sent Today</p>
-        </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">98.2%</p>
-          <p className="text-sm text-slate-400">Delivery Rate</p>
-        </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-blue-400">1,245</p>
-          <p className="text-sm text-slate-400">EOBs Generated</p>
-        </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-cyan-500">12</p>
-          <p className="text-sm text-slate-400">Active Templates</p>
-        </div>
-      </div>
+      {activeTab === "messages" ? (
+        <>
+          {/* Provider Search */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search providers by name or specialty..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Templates */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">Communication Templates</h2>
-            <button className="text-cyan-500 text-sm hover:text-cyan-400">+ New Template</button>
-          </div>
-          <div className="divide-y divide-slate-700">
-            {templates.map((template) => (
-              <button key={template.id} onClick={() => setSelectedTemplate(template)} className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-800/80 text-left transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                    <FileText className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-white">{template.name}</p>
-                    <p className="text-sm text-slate-400">{template.type} • {template.sends} sends</p>
-                  </div>
-                </div>
-                <Eye className="w-4 h-4 text-slate-400" />
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Recent Communications */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-700">
-            <h2 className="text-lg font-semibold text-white">Recent Communications</h2>
-          </div>
-          <div className="divide-y divide-slate-700 max-h-[500px] overflow-y-auto">
-            {recentComms.map((comm) => (
-              <button 
-                key={comm.id} 
-                onClick={() => setSelectedComm(comm)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-800/80 text-left transition-colors"
-              >
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="font-medium text-white">{comm.member}</p>
-                    <span className={`px-2 py-0.5 text-xs rounded ${getTypeColor(comm.type)}`}>{comm.type}</span>
-                  </div>
-                  <p className="text-sm text-slate-400 truncate pr-4">{comm.subject}</p>
-                  <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
-                    {getMethodIcon(comm.method)}
-                    <span>{comm.method}</span>
-                    <span>•</span>
-                    <span>{comm.sent}</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className={`px-2 py-1 text-xs rounded-full ${comm.status === "delivered" ? "bg-green-500/20 text-green-400" : "bg-blue-500/20 text-blue-400"}`}>
-                    {comm.status}
-                  </span>
-                  <ArrowRight className="w-4 h-4 text-slate-500" />
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Send Communication Modal */}
-      <AnimatePresence>
-        {showNewModal && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => !messageSent && setShowNewModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
-              {messageSent ? (
-                <div className="p-8 text-center">
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Communication Sent!</h3>
-                  <p className="text-slate-400">Your message is being delivered.</p>
-                </div>
-              ) : (
-                <>
-                  <div className="p-4 border-b border-slate-700 flex items-center justify-between">
-                    <h3 className="font-semibold text-white">Send Communication</h3>
-                    <button onClick={() => setShowNewModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-                  </div>
-                  <div className="p-4 space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Template</label>
-                      <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                        {templates.map(t => <option key={t.id}>{t.name}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Recipients</label>
-                      <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                        <option>Select member(s)...</option>
-                        <option>All Members</option>
-                        <option>Members with Claims</option>
-                        <option>New Members (30 days)</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Delivery Method</label>
-                      <div className="flex gap-2">
-                        <label className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-700 rounded-lg cursor-pointer border-2 border-cyan-600">
-                          <input type="radio" name="method" defaultChecked className="hidden" />
-                          <Mail className="w-4 h-4 text-cyan-500" /><span className="text-white">Email</span>
-                        </label>
-                        <label className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-700 rounded-lg cursor-pointer border border-slate-600 hover:border-slate-500">
-                          <input type="radio" name="method" className="hidden" />
-                          <FileText className="w-4 h-4 text-slate-400" /><span className="text-slate-300">Mail</span>
-                        </label>
-                        <label className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-700 rounded-lg cursor-pointer border border-slate-600 hover:border-slate-500">
-                          <input type="radio" name="method" className="hidden" />
-                          <Bell className="w-4 h-4 text-slate-400" /><span className="text-slate-300">SMS</span>
-                        </label>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Provider List */}
+            <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+              <h2 className="text-lg font-semibold text-white mb-4">Network Providers</h2>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {filteredProviders.map((provider) => (
+                  <div key={provider.id} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg hover:bg-slate-700/50 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-teal-500/20 rounded-lg flex items-center justify-center">
+                        <Building2 className="w-5 h-5 text-teal-400" />
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">{provider.name}</p>
+                        <p className="text-slate-400 text-sm">{provider.specialty}</p>
                       </div>
                     </div>
+                    <button
+                      onClick={() => openComposeModal(provider)}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                    >
+                      <Mail className="w-4 h-4" />
+                      Message
+                    </button>
                   </div>
-                  <div className="flex gap-2 p-4 border-t border-slate-700">
-                    <button onClick={() => setShowNewModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSend} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Send</button>
-                  </div>
-                </>
-              )}
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                ))}
+              </div>
+            </div>
 
-      {/* Template Preview Modal */}
-      <AnimatePresence>
-        {selectedTemplate && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedTemplate(null)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
-              <div className="p-4 border-b border-slate-700 flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-white">{selectedTemplate.name}</h3>
-                  <p className="text-sm text-slate-400">{selectedTemplate.type} Template</p>
-                </div>
-                <button onClick={() => setSelectedTemplate(null)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-              </div>
-              <div className="p-4">
-                <div className="bg-slate-700/50 rounded-lg p-3 mb-4 text-sm text-slate-300">
-                  {selectedTemplate.description}
-                </div>
-                <div className="bg-white rounded-lg p-6 text-gray-900">
-                  <div className="text-center mb-4">
-                    <h4 className="text-xl font-bold">TrueCare Health Network</h4>
-                    <p className="text-sm text-gray-500">{selectedTemplate.name}</p>
-                  </div>
-                  <div className="border-t border-gray-200 pt-4 space-y-2 text-sm">
-                    <p><strong>Member:</strong> {"{{member_name}}"}</p>
-                    <p><strong>Member ID:</strong> {"{{member_id}}"}</p>
-                    {selectedTemplate.type === "EOB" && (
-                      <>
-                        <p><strong>Claim #:</strong> {"{{claim_id}}"}</p>
-                        <p><strong>Date of Service:</strong> {"{{dos}}"}</p>
-                        <p><strong>Provider:</strong> {"{{provider_name}}"}</p>
-                      </>
-                    )}
-                  </div>
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <p className="text-xs text-gray-400 text-center">This is a preview. Actual content will be populated with member data.</p>
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center justify-between text-sm text-slate-400">
-                  <span>Last used: {selectedTemplate.lastUsed}</span>
-                  <span>{selectedTemplate.sends.toLocaleString()} total sends</span>
-                </div>
-              </div>
-              <div className="flex gap-2 p-4 border-t border-slate-700">
-                <button onClick={() => setSelectedTemplate(null)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                <button className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Edit Template</button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Communication Detail Modal */}
-      <AnimatePresence>
-        {selectedComm && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedComm(null)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div className="p-4 border-b border-slate-700 flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-white">{selectedComm.subject}</h3>
-                  <p className="text-sm text-slate-400">Communication ID: {selectedComm.id}</p>
-                </div>
-                <button onClick={() => setSelectedComm(null)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-              </div>
-              <div className="p-4 overflow-y-auto max-h-[calc(90vh-160px)]">
-                {/* Meta info */}
-                <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                  <div className="bg-slate-700/50 rounded-lg p-4">
-                    <h4 className="font-medium text-white mb-2">Recipient</h4>
-                    <p className="text-slate-300">{selectedComm.member}</p>
-                    <p className="text-sm text-slate-400">{selectedComm.memberId}</p>
-                  </div>
-                  <div className="bg-slate-700/50 rounded-lg p-4">
-                    <h4 className="font-medium text-white mb-2">Delivery</h4>
-                    <div className="flex items-center gap-2 text-slate-300">
-                      {getMethodIcon(selectedComm.method)}
-                      <span>{selectedComm.method}</span>
-                      <span className={`ml-auto px-2 py-0.5 text-xs rounded-full ${selectedComm.status === "delivered" ? "bg-green-500/20 text-green-400" : "bg-blue-500/20 text-blue-400"}`}>
-                        {selectedComm.status}
-                      </span>
+            {/* Recent Messages */}
+            <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+              <h2 className="text-lg font-semibold text-white mb-4">Recent Messages</h2>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {messageHistory.map((msg) => (
+                  <div key={msg.id} className="p-3 bg-slate-700/30 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-white font-medium text-sm">{msg.provider}</p>
+                      {getStatusBadge(msg.status)}
                     </div>
-                    <p className="text-sm text-slate-400 mt-1">{selectedComm.sent}</p>
+                    <p className="text-slate-300 text-sm">{msg.subject}</p>
+                    <p className="text-slate-500 text-xs mt-1">{msg.date}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Outreach Templates */}
+          <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+            <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-cyan-400" />
+              Outreach Templates
+            </h2>
+            <p className="text-slate-400 text-sm mb-4">Select a template to reach out to potential network providers</p>
+            <div className="grid md:grid-cols-3 gap-4">
+              {outreachTemplates.map((template) => (
+                <div key={template.id} className="bg-slate-700/30 rounded-lg p-4 hover:bg-slate-700/50 transition-colors">
+                  <h3 className="text-white font-medium mb-2">{template.name}</h3>
+                  <p className="text-slate-400 text-sm mb-4">{template.description}</p>
+                  <button
+                    onClick={() => openOutreachModal(template)}
+                    className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                  >
+                    <Send className="w-4 h-4" />
+                    Use Template
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Outreach History */}
+          <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+            <h2 className="text-lg font-semibold text-white mb-4">Outreach History</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-700">
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Practice</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Email</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Template</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700">
+                  {outreachHistory.map((outreach) => (
+                    <tr key={outreach.id} className="hover:bg-slate-700/30">
+                      <td className="px-4 py-3 text-white">{outreach.practice}</td>
+                      <td className="px-4 py-3 text-slate-400 text-sm">{outreach.email}</td>
+                      <td className="px-4 py-3 text-slate-300 text-sm">{outreach.template}</td>
+                      <td className="px-4 py-3 text-slate-400 text-sm">{outreach.date}</td>
+                      <td className="px-4 py-3">{getStatusBadge(outreach.status)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Compose Message Modal */}
+      <AnimatePresence>
+        {showComposeModal && selectedProvider && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowComposeModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-2xl w-full border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">New Message</h2>
+                  <p className="text-slate-400">To: {selectedProvider.name}</p>
+                </div>
+                <button onClick={() => setShowComposeModal(false)} className="text-slate-400 hover:text-white">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">Recipient</label>
+                  <div className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg">
+                    <Building2 className="w-5 h-5 text-teal-400" />
+                    <div>
+                      <p className="text-white">{selectedProvider.contact}</p>
+                      <p className="text-slate-400 text-sm">{selectedProvider.email}</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">Subject</label>
+                  <input
+                    type="text"
+                    value={messageSubject}
+                    onChange={(e) => setMessageSubject(e.target.value)}
+                    placeholder="Enter subject..."
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">Message</label>
+                  <textarea
+                    value={messageBody}
+                    onChange={(e) => setMessageBody(e.target.value)}
+                    placeholder="Type your message..."
+                    rows={6}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+                  />
+                </div>
+              </div>
+              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowComposeModal(false)}
+                  className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSendMessage}
+                  disabled={!messageSubject || !messageBody}
+                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  {sendSuccess ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
+                  {sendSuccess ? "Sent!" : "Send Message"}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Outreach Modal */}
+      <AnimatePresence>
+        {showOutreachModal && selectedTemplate && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowOutreachModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-auto border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">{selectedTemplate.name}</h2>
+                  <p className="text-slate-400">Fill in the details to personalize your outreach</p>
+                </div>
+                <button onClick={() => setShowOutreachModal(false)} className="text-slate-400 hover:text-white">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="p-6 grid lg:grid-cols-2 gap-6">
+                {/* Form */}
+                <div className="space-y-4">
+                  <h3 className="text-white font-semibold">Provider Information</h3>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1">Practice Name *</label>
+                    <input
+                      type="text"
+                      value={outreachForm.practiceName}
+                      onChange={(e) => setOutreachForm({ ...outreachForm, practiceName: e.target.value })}
+                      placeholder="e.g., Lakewood Medical Group"
+                      className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1">Contact Name *</label>
+                    <input
+                      type="text"
+                      value={outreachForm.providerName}
+                      onChange={(e) => setOutreachForm({ ...outreachForm, providerName: e.target.value })}
+                      placeholder="e.g., Dr. John Smith"
+                      className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1">Email Address *</label>
+                    <input
+                      type="email"
+                      value={outreachForm.email}
+                      onChange={(e) => setOutreachForm({ ...outreachForm, email: e.target.value })}
+                      placeholder="e.g., contact@practice.com"
+                      className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-400 mb-1">Specialty</label>
+                      <input
+                        type="text"
+                        value={outreachForm.specialty}
+                        onChange={(e) => setOutreachForm({ ...outreachForm, specialty: e.target.value })}
+                        placeholder="e.g., Cardiology"
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-400 mb-1">Location</label>
+                      <input
+                        type="text"
+                        value={outreachForm.location}
+                        onChange={(e) => setOutreachForm({ ...outreachForm, location: e.target.value })}
+                        placeholder="e.g., Cleveland, OH"
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      />
+                    </div>
+                  </div>
+
+                  <h3 className="text-white font-semibold pt-4">Sender Information</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-400 mb-1">Your Name</label>
+                      <input
+                        type="text"
+                        value={outreachForm.senderName}
+                        onChange={(e) => setOutreachForm({ ...outreachForm, senderName: e.target.value })}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-400 mb-1">Your Title</label>
+                      <input
+                        type="text"
+                        value={outreachForm.senderTitle}
+                        onChange={(e) => setOutreachForm({ ...outreachForm, senderTitle: e.target.value })}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Message Content */}
-                <div className="bg-slate-700/50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className={`px-2 py-0.5 text-xs rounded ${getTypeColor(selectedComm.type)}`}>{selectedComm.type}</span>
-                  </div>
-                  <div className="bg-slate-800 rounded-lg p-4 font-mono text-sm text-slate-300 whitespace-pre-wrap">
-                    {selectedComm.fullMessage}
+                {/* Preview */}
+                <div>
+                  <h3 className="text-white font-semibold mb-3">Email Preview</h3>
+                  <div className="bg-white rounded-lg p-4 text-slate-800 text-sm max-h-96 overflow-y-auto">
+                    <div className="border-b border-slate-200 pb-3 mb-3">
+                      <p><strong>To:</strong> {outreachForm.email || "[email]"}</p>
+                      <p><strong>Subject:</strong> {selectedTemplate.subject.replace(/\[SPECIALTY\]/g, outreachForm.specialty || "[Specialty]").replace(/\[LOCATION\]/g, outreachForm.location || "[Location]")}</p>
+                    </div>
+                    <div className="whitespace-pre-line">
+                      {getOutreachPreview()}
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center justify-between p-4 border-t border-slate-700 bg-slate-800">
-                <button className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm inline-flex items-center gap-2">
-                  <Send className="w-4 h-4" />Resend
+              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowOutreachModal(false)}
+                  className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                >
+                  Cancel
                 </button>
-                <button onClick={() => setSelectedComm(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
+                <button
+                  onClick={handleSendOutreach}
+                  disabled={!outreachForm.practiceName || !outreachForm.providerName || !outreachForm.email}
+                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  {sendSuccess ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
+                  {sendSuccess ? "Sent!" : "Send Outreach Email"}
+                </button>
               </div>
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </div>
