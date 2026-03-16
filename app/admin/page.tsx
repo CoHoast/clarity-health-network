@@ -94,7 +94,7 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-5 border border-blue-800/50 shadow-lg"
+              className="bg-slate-900 rounded-xl p-5 border border-slate-700 shadow-lg"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-cyan-500/20 border border-cyan-500/30">
@@ -127,15 +127,15 @@ export default function AdminDashboard() {
             <Link
               key={action.label}
               href={action.href}
-              className="bg-gradient-to-br from-slate-800 to-slate-800/60 hover:from-blue-900/60 hover:to-slate-800 border border-slate-700 hover:border-blue-700/50 rounded-xl p-4 transition-all flex items-center gap-3"
+              className="bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all flex items-center gap-3 shadow-sm"
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-cyan-500/20 border border-cyan-500/30">
-                <Icon className="w-5 h-5 text-cyan-400" />
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-teal-500/10 border border-teal-500/20">
+                <Icon className="w-5 h-5 text-teal-600" />
               </div>
               <div>
-                <p className="font-medium text-white">{action.label}</p>
+                <p className="font-medium text-slate-900">{action.label}</p>
                 {action.count && (
-                  <p className="text-sm text-slate-400">{action.count} pending</p>
+                  <p className="text-sm text-slate-500">{action.count} pending</p>
                 )}
               </div>
             </Link>

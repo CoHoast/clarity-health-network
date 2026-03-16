@@ -86,7 +86,7 @@ export default function VerificationStatusPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-5 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-5 border border-slate-700 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
               <CheckCircle className="w-5 h-5 text-cyan-400" />
@@ -97,7 +97,7 @@ export default function VerificationStatusPage() {
             </div>
           </div>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-5 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-5 border border-slate-700 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
               <Clock className="w-5 h-5 text-cyan-400" />
@@ -108,7 +108,7 @@ export default function VerificationStatusPage() {
             </div>
           </div>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-5 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-5 border border-slate-700 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
               <XCircle className="w-5 h-5 text-cyan-400" />
@@ -119,7 +119,7 @@ export default function VerificationStatusPage() {
             </div>
           </div>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-5 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-5 border border-slate-700 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
               <AlertTriangle className="w-5 h-5 text-cyan-400" />

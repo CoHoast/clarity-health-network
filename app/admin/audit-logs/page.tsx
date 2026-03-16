@@ -128,35 +128,35 @@ export default function AuditLogsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4">
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">{stats.total.toLocaleString()}</p>
           <p className="text-sm text-slate-300">Total Events</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">{stats.info}</p>
           <p className="text-sm text-slate-300">Info</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">{stats.warning}</p>
           <p className="text-sm text-slate-300">Warnings</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">{stats.error + stats.critical}</p>
           <p className="text-sm text-slate-300">Errors</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">{stats.phiAccess}</p>
           <p className="text-sm text-slate-300">PHI Access</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">{stats.authEvents}</p>
           <p className="text-sm text-slate-300">Auth Events</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">{stats.failedLogins}</p>
           <p className="text-sm text-slate-300">Failed Logins</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-cyan-400">6 yrs</p>
           <p className="text-sm text-slate-300">Retention</p>
         </div>

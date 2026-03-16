@@ -179,19 +179,19 @@ export default function CredentialingPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">47</p>
           <p className="text-sm text-slate-300">Pending Applications</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">12</p>
           <p className="text-sm text-slate-300">Committee Review</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-white">18</p>
           <p className="text-sm text-slate-300">Expiring (30 days)</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-900/80 to-slate-800 rounded-xl p-4 border border-blue-800/50 shadow-lg">
+        <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
           <p className="text-2xl font-bold text-cyan-400">94%</p>
           <p className="text-sm text-slate-300">Approval Rate</p>
         </div>
