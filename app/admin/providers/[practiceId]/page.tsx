@@ -1,0 +1,968 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft, Building2, MapPin, Phone, Mail, FileText, DollarSign, Users, Edit, Save, X,
+  CheckCircle, Clock, AlertTriangle, Globe, CreditCard, Calendar, Percent, FileSignature
+} from "lucide-react";
+
+// Practice data (in real app, this would come from API)
+const practicesData: Record<string, any> = {
+  "PRC-001": {
+    id: "PRC-001",
+    name: "Cleveland Family Medicine",
+    type: "Group Practice",
+    specialty: "Family Medicine",
+    address: "123 Medical Center Dr",
+    address2: "Suite 200",
+    city: "Cleveland",
+    county: "Cuyahoga",
+    state: "OH",
+    zip: "44101",
+    country: "USA",
+    phone: "(555) 123-4567",
+    fax: "(555) 123-4568",
+    billingPhone: "(555) 123-4569",
+    billingFax: "(555) 123-4570",
+    email: "info@clevelandfm.com",
+    contactName: "Mary Johnson",
+    contactTitle: "Office Manager",
+    correspondenceAddress: "P.O. Box 4567",
+    correspondenceCity: "Cleveland",
+    correspondenceState: "OH",
+    correspondenceZip: "44101",
+    correspondenceCountry: "USA",
+    correspondenceFax: "(555) 123-4571",
+    payToNpi: "1234567890",
+    payToName: "Cleveland Family Medicine LLC",
+    payToTaxId: "34-1234567",
+    payToAddress: "P.O. Box 1234",
+    payToCity: "Cleveland",
+    payToState: "OH",
+    payToZip: "44101",
+    payToCountry: "USA",
+    status: "active",
+    contractStart: "2024-01-15",
+    contractEnd: "2027-01-14",
+    discountType: "% Off Billed",
+    discountRate: "35%",
+    networks: ["NET-001", "NET-002"],
+    providers: [
+      { id: "PRV-001", name: "Robert Smith", title: "MD", specialty: "Family Medicine", npi: "1111111111", status: "active" },
+      { id: "PRV-002", name: "Jennifer Adams", title: "MD", specialty: "Family Medicine", npi: "1111111112", status: "active" },
+      { id: "PRV-003", name: "Michael Chen", title: "DO", specialty: "Family Medicine", npi: "1111111113", status: "active" },
+      { id: "PRV-004", name: "Sarah Williams", title: "NP", specialty: "Family Medicine", npi: "1111111114", status: "active" },
+    ],
+  },
+  "PRC-002": {
+    id: "PRC-002",
+    name: "Cleveland Orthopedic Associates",
+    type: "Group Practice",
+    specialty: "Orthopedics",
+    address: "321 Bone & Joint Dr",
+    address2: "Building B, Suite 150",
+    city: "Beachwood",
+    county: "Cuyahoga",
+    state: "OH",
+    zip: "44122",
+    country: "USA",
+    phone: "(555) 456-7890",
+    fax: "(555) 456-7891",
+    billingPhone: "(555) 456-7892",
+    billingFax: "(555) 456-7893",
+    email: "contact@clevortho.com",
+    contactName: "James Miller",
+    contactTitle: "Practice Administrator",
+    correspondenceAddress: "321 Bone & Joint Dr",
+    correspondenceAddress2: "Suite 100",
+    correspondenceCity: "Beachwood",
+    correspondenceState: "OH",
+    correspondenceZip: "44122",
+    correspondenceCountry: "USA",
+    correspondenceFax: "(555) 456-7894",
+    payToNpi: "9999999991",
+    payToName: "COA Billing Services LLC",
+    payToTaxId: "34-9999991",
+    payToAddress: "P.O. Box 5678",
+    payToCity: "Beachwood",
+    payToState: "OH",
+    payToZip: "44122",
+    payToCountry: "USA",
+    status: "active",
+    contractStart: "2024-09-01",
+    contractEnd: "2027-08-31",
+    discountType: "% Off Billed",
+    discountRate: "40%",
+    networks: ["NET-001", "NET-003"],
+    providers: [
+      { id: "PRV-005", name: "James Miller", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444441", status: "active" },
+      { id: "PRV-006", name: "Lisa Thompson", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444442", status: "active" },
+      { id: "PRV-007", name: "David Park", title: "MD", specialty: "Orthopedic Surgery", npi: "4444444443", status: "active" },
+      { id: "PRV-008", name: "Amy Rodriguez", title: "PA", specialty: "Orthopedics", npi: "4444444444", status: "active" },
+    ],
+  },
+};
+
+const networkNames: Record<string, string> = {
+  "NET-001": "Ohio PPO Network",
+  "NET-002": "Cleveland Metro Network",
+  "NET-003": "Northeast Ohio Specialists",
+  "NET-004": "Ohio Hospital Alliance",
+  "NET-005": "Midwest Regional Network",
+  "NET-006": "TrueCare Value Network",
+};
+
+const serviceCategories = [
+  { key: "professional", label: "Professional Services" },
+  { key: "inpatient", label: "Inpatient" },
+  { key: "outpatient", label: "Outpatient" },
+  { key: "urgentCare", label: "Urgent Care" },
+  { key: "labServices", label: "Lab Services" },
+  { key: "imaging", label: "Imaging" },
+  { key: "mentalHealth", label: "Mental Health" },
+  { key: "physicalTherapy", label: "Physical Therapy" },
+  { key: "dme", label: "DME" },
+];
+
+export default function PracticeDetailPage() {
+  const params = useParams();
+  const practiceId = params.practiceId as string;
+  const practice = practicesData[practiceId] || practicesData["PRC-001"];
+
+  const [activeSection, setActiveSection] = useState("overview");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState(practice);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  // Discount rates state
+  const [rateType, setRateType] = useState<"flat" | "custom">("flat");
+  const [flatRate, setFlatRate] = useState("135");
+  const [serviceRates, setServiceRates] = useState<Record<string, string>>({
+    professional: "140",
+    inpatient: "125",
+    outpatient: "130",
+    urgentCare: "145",
+    labServices: "110",
+    imaging: "120",
+    mentalHealth: "135",
+    physicalTherapy: "130",
+    dme: "100",
+  });
+
+  const handleSave = () => {
+    setSaving(true);
+    setTimeout(() => {
+      setSaving(false);
+      setSaved(true);
+      setIsEditing(false);
+      setTimeout(() => setSaved(false), 2000);
+    }, 1000);
+  };
+
+  const sections = [
+    { id: "overview", label: "Overview", icon: Building2 },
+    { id: "contact", label: "Contact & Location", icon: MapPin },
+    { id: "billing", label: "Billing Info", icon: CreditCard },
+    { id: "contract", label: "Contract", icon: FileSignature },
+    { id: "rates", label: "Rates & Discounts", icon: DollarSign },
+    { id: "providers", label: "Providers", icon: Users },
+    { id: "networks", label: "Networks", icon: Globe },
+  ];
+
+  const statusColors = {
+    active: "bg-green-500/20 text-green-400 border-green-500/30",
+    pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+    inactive: "bg-slate-500/20 text-slate-400 border-slate-500/30",
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex items-start gap-4">
+          <Link
+            href="/admin/providers"
+            className="mt-1 p-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-slate-300" />
+          </Link>
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-white">{practice.name}</h1>
+              <span className={`px-3 py-1 rounded-full text-sm font-medium border ${statusColors[practice.status as keyof typeof statusColors]}`}>
+                {practice.status.charAt(0).toUpperCase() + practice.status.slice(1)}
+              </span>
+            </div>
+            <p className="text-slate-400 mt-1">{practice.type} • {practice.specialty}</p>
+            <p className="text-slate-500 text-sm mt-1">ID: {practice.id}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          {saved && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2 text-green-400"
+            >
+              <CheckCircle className="w-5 h-5" />
+              <span>Saved!</span>
+            </motion.div>
+          )}
+          {isEditing ? (
+            <>
+              <button
+                onClick={() => setIsEditing(false)}
+                className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-500 transition-colors disabled:opacity-50"
+              >
+                {saving ? (
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                Save Changes
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-600 transition-colors"
+            >
+              <Edit className="w-4 h-4" />
+              Edit Practice
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Navigation Tabs */}
+      <div className="flex gap-1 bg-slate-800/50 p-1 rounded-xl overflow-x-auto">
+        {sections.map((section) => (
+          <button
+            key={section.id}
+            onClick={() => setActiveSection(section.id)}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
+              activeSection === section.id
+                ? "bg-teal-600 text-white"
+                : "text-slate-400 hover:text-white hover:bg-slate-700"
+            }`}
+          >
+            <section.icon className="w-4 h-4" />
+            {section.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Content Sections */}
+      <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+        {/* Overview Section */}
+        {activeSection === "overview" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-teal-400" />
+              Practice Overview
+            </h2>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-slate-700/30 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Practice Name</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.name}
+                    onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  />
+                ) : (
+                  <p className="text-white font-medium">{practice.name}</p>
+                )}
+              </div>
+              <div className="bg-slate-700/30 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Practice Type</p>
+                {isEditing ? (
+                  <select
+                    value={editData.type}
+                    onChange={(e) => setEditData({ ...editData, type: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  >
+                    <option value="Group Practice">Group Practice</option>
+                    <option value="Facility">Facility</option>
+                    <option value="Individual">Individual</option>
+                  </select>
+                ) : (
+                  <p className="text-white">{practice.type}</p>
+                )}
+              </div>
+              <div className="bg-slate-700/30 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Primary Specialty</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.specialty}
+                    onChange={(e) => setEditData({ ...editData, specialty: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  />
+                ) : (
+                  <p className="text-white">{practice.specialty}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-4 gap-4 mt-6">
+              <div className="bg-slate-700/50 rounded-lg p-4 text-center">
+                <p className="text-3xl font-bold text-cyan-400">{practice.providers?.length || 0}</p>
+                <p className="text-sm text-slate-400">Providers</p>
+              </div>
+              <div className="bg-slate-700/50 rounded-lg p-4 text-center">
+                <p className="text-3xl font-bold text-teal-400">{practice.networks?.length || 0}</p>
+                <p className="text-sm text-slate-400">Networks</p>
+              </div>
+              <div className="bg-slate-700/50 rounded-lg p-4 text-center">
+                <p className="text-3xl font-bold text-purple-400">{practice.discountRate}</p>
+                <p className="text-sm text-slate-400">Discount Rate</p>
+              </div>
+              <div className="bg-slate-700/50 rounded-lg p-4 text-center">
+                <p className={`text-lg font-bold ${practice.status === "active" ? "text-green-400" : "text-amber-400"}`}>
+                  {practice.status === "active" ? "Active" : "Pending"}
+                </p>
+                <p className="text-sm text-slate-400">Status</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Contact & Location Section */}
+        {activeSection === "contact" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-teal-400" />
+              Contact & Location
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Physical Address */}
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Physical Address</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 1</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.address}
+                        onChange={(e) => setEditData({ ...editData, address: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.address}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 2 (Suite/Office)</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.address2 || ""}
+                        onChange={(e) => setEditData({ ...editData, address2: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        placeholder="Suite, Office, Building number"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.address2 || "—"}</p>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">City</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.city}
+                          onChange={(e) => setEditData({ ...editData, city: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.city}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">County</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.county}
+                          onChange={(e) => setEditData({ ...editData, county: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.county}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">State</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.state}
+                          onChange={(e) => setEditData({ ...editData, state: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.state}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">ZIP Code</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.zip}
+                          onChange={(e) => setEditData({ ...editData, zip: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.zip}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Information */}
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Contact Information</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Primary Contact</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.contactName}
+                        onChange={(e) => setEditData({ ...editData, contactName: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.contactName}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Title</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.contactTitle || ""}
+                        onChange={(e) => setEditData({ ...editData, contactTitle: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.contactTitle || "—"}</p>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Phone</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.phone}
+                          onChange={(e) => setEditData({ ...editData, phone: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.phone}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Fax</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.fax}
+                          onChange={(e) => setEditData({ ...editData, fax: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.fax}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Email</p>
+                    {isEditing ? (
+                      <input
+                        type="email"
+                        value={editData.email}
+                        onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-cyan-400">{practice.email}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Billing Section */}
+        {activeSection === "billing" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <CreditCard className="w-5 h-5 text-teal-400" />
+              Billing Information
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Billing Contact */}
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Billing Department</h3>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Billing Phone</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.billingPhone}
+                          onChange={(e) => setEditData({ ...editData, billingPhone: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.billingPhone}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Billing Fax</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.billingFax}
+                          onChange={(e) => setEditData({ ...editData, billingFax: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.billingFax}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Correspondence Address */}
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Correspondence Address</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 1</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.correspondenceAddress}
+                        onChange={(e) => setEditData({ ...editData, correspondenceAddress: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.correspondenceAddress}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 2</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.correspondenceAddress2 || ""}
+                        onChange={(e) => setEditData({ ...editData, correspondenceAddress2: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.correspondenceAddress2 || "—"}</p>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">City</p>
+                      <p className="text-white">{practice.correspondenceCity}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">State</p>
+                      <p className="text-white">{practice.correspondenceState}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">ZIP</p>
+                      <p className="text-white">{practice.correspondenceZip}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pay-To Information */}
+              <div className="bg-cyan-900/20 border border-cyan-500/30 rounded-lg p-6 md:col-span-2">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-4 flex items-center gap-2">
+                  <DollarSign className="w-4 h-4" />
+                  Pay-To Information (Remittance)
+                </h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Pay-To Name</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToName}
+                        onChange={(e) => setEditData({ ...editData, payToName: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white font-medium">{practice.payToName}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Pay-To NPI</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToNpi}
+                        onChange={(e) => setEditData({ ...editData, payToNpi: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono"
+                      />
+                    ) : (
+                      <p className="text-white font-mono">{practice.payToNpi}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Tax ID (EIN)</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToTaxId}
+                        onChange={(e) => setEditData({ ...editData, payToTaxId: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono"
+                      />
+                    ) : (
+                      <p className="text-white font-mono">{practice.payToTaxId}</p>
+                    )}
+                  </div>
+                  <div className="md:col-span-3">
+                    <p className="text-xs text-slate-500 mb-1">Pay-To Address</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToAddress}
+                        onChange={(e) => setEditData({ ...editData, payToAddress: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-cyan-300">
+                        {practice.payToAddress}, {practice.payToCity}, {practice.payToState} {practice.payToZip}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Contract Section */}
+        {activeSection === "contract" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <FileSignature className="w-5 h-5 text-teal-400" />
+              Contract Details
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Contract Period</h3>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Start Date</p>
+                      {isEditing ? (
+                        <input
+                          type="date"
+                          value={editData.contractStart}
+                          onChange={(e) => setEditData({ ...editData, contractStart: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.contractStart}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">End Date</p>
+                      {isEditing ? (
+                        <input
+                          type="date"
+                          value={editData.contractEnd}
+                          onChange={(e) => setEditData({ ...editData, contractEnd: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.contractEnd}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Status</p>
+                    {isEditing ? (
+                      <select
+                        value={editData.status}
+                        onChange={(e) => setEditData({ ...editData, status: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      >
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="inactive">Inactive</option>
+                      </select>
+                    ) : (
+                      <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${statusColors[practice.status as keyof typeof statusColors]}`}>
+                        {practice.status.charAt(0).toUpperCase() + practice.status.slice(1)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Default Discount Terms</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Discount Type</p>
+                    {isEditing ? (
+                      <select
+                        value={editData.discountType}
+                        onChange={(e) => setEditData({ ...editData, discountType: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      >
+                        <option value="% Off Billed">% Off Billed</option>
+                        <option value="% of Medicare">% of Medicare</option>
+                        <option value="Flat Rate">Flat Rate</option>
+                        <option value="Case Rate">Case Rate</option>
+                      </select>
+                    ) : (
+                      <p className="text-white">{practice.discountType}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Discount Rate</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.discountRate}
+                        onChange={(e) => setEditData({ ...editData, discountRate: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-2xl font-bold text-teal-400">{practice.discountRate}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Rates & Discounts Section */}
+        {activeSection === "rates" && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-teal-400" />
+                Provider Discount Rates
+              </h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setRateType("flat")}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    rateType === "flat" ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-400"
+                  }`}
+                >
+                  Flat Rate
+                </button>
+                <button
+                  onClick={() => setRateType("custom")}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    rateType === "custom" ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-400"
+                  }`}
+                >
+                  Custom by Category
+                </button>
+              </div>
+            </div>
+
+            {rateType === "flat" ? (
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-white mb-4">Flat % of Medicare</h3>
+                <p className="text-slate-400 text-sm mb-4">
+                  Single rate applied to all services for this provider.
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 max-w-xs">
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={flatRate}
+                        onChange={(e) => setFlatRate(e.target.value)}
+                        className="w-full px-4 py-3 pr-12 bg-slate-700 border border-slate-600 rounded-lg text-white text-2xl font-bold"
+                      />
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">%</span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-2">of Medicare rate</p>
+                  </div>
+                  <div className="bg-teal-500/20 border border-teal-500/30 rounded-lg p-4 flex-1">
+                    <p className="text-sm text-teal-400">Example: For a $100 Medicare allowable, you pay <strong>${parseFloat(flatRate) || 0}</strong></p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="bg-slate-700/30 rounded-lg p-6">
+                  <h3 className="text-sm font-semibold text-white mb-4">Rates by Service Category</h3>
+                  <p className="text-slate-400 text-sm mb-6">
+                    Set different discount rates for each service category.
+                  </p>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    {serviceCategories.map((cat) => (
+                      <div key={cat.key} className="bg-slate-700/50 rounded-lg p-4">
+                        <label className="block text-sm text-slate-400 mb-2">{cat.label}</label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            value={serviceRates[cat.key] || ""}
+                            onChange={(e) => setServiceRates({ ...serviceRates, [cat.key]: e.target.value })}
+                            className="w-full px-3 py-2 pr-10 bg-slate-600 border border-slate-500 rounded-lg text-white font-medium"
+                          />
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-end">
+              <button
+                onClick={handleSave}
+                className="flex items-center gap-2 px-6 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-500 transition-colors"
+              >
+                <Save className="w-4 h-4" />
+                Save Rates
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Providers Section */}
+        {activeSection === "providers" && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <Users className="w-5 h-5 text-teal-400" />
+                Affiliated Providers ({practice.providers?.length || 0})
+              </h2>
+              <button className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors">
+                <Users className="w-4 h-4" />
+                Add Provider
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {practice.providers?.map((provider: any) => (
+                <Link
+                  key={provider.id}
+                  href={`/admin/providers/${practice.id}/${provider.id}`}
+                  className="block bg-slate-700/30 rounded-xl p-4 hover:bg-slate-700/50 transition-colors border border-slate-600/50 hover:border-teal-500/50"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold">
+                        {provider.name.split(" ").map((n: string) => n[0]).join("")}
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">{provider.name}, {provider.title}</p>
+                        <p className="text-slate-400 text-sm">{provider.specialty}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <p className="text-slate-400 text-sm">NPI</p>
+                        <p className="text-white font-mono">{provider.npi}</p>
+                      </div>
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        provider.status === "active" 
+                          ? "bg-green-500/20 text-green-400"
+                          : "bg-slate-600 text-slate-400"
+                      }`}>
+                        {provider.status}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Networks Section */}
+        {activeSection === "networks" && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <Globe className="w-5 h-5 text-teal-400" />
+                Network Memberships ({practice.networks?.length || 0})
+              </h2>
+              <button className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors">
+                <Globe className="w-4 h-4" />
+                Add to Network
+              </button>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {practice.networks?.map((networkId: string) => (
+                <div key={networkId} className="bg-slate-700/30 rounded-xl p-4 border border-slate-600/50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                      <Globe className="w-5 h-5 text-purple-400" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-white font-medium">{networkNames[networkId] || networkId}</p>
+                      <p className="text-slate-400 text-sm">Active member</p>
+                    </div>
+                    <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full">
+                      Active
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {(!practice.networks || practice.networks.length === 0) && (
+              <div className="text-center py-12 bg-slate-700/20 rounded-xl border border-dashed border-slate-600">
+                <Globe className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                <p className="text-slate-400">Not assigned to any networks yet</p>
+                <button className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors text-sm">
+                  Add to Network
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

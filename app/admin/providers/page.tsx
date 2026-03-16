@@ -749,15 +749,15 @@ export default function ProvidersPage() {
               return (
                 <tr key={practice.id} className="hover:bg-slate-700/30 transition-colors">
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
+                    <Link href={`/admin/providers/${practice.id}`} className="flex items-center gap-3 group">
                       <div className="p-2 bg-cyan-500/20 rounded-lg">
                         <Building2 className="w-5 h-5 text-cyan-400" />
                       </div>
                       <div>
-                        <p className="font-medium text-white">{practice.name}</p>
+                        <p className="font-medium text-white group-hover:text-cyan-400 transition-colors">{practice.name}</p>
                         <p className="text-sm text-slate-400">{practice.specialty}</p>
                       </div>
-                    </div>
+                    </Link>
                   </td>
                   <td className="px-6 py-4">
                     <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">{practice.type}</span>
@@ -947,16 +947,16 @@ export default function ProvidersPage() {
                     {/* Provider Cards - More Readable Layout */}
                     <div className="space-y-3">
                       {getProvidersForPractice(selectedPractice.id).map(provider => (
-                        <div key={provider.id} className="bg-slate-700/30 rounded-xl p-4 hover:bg-slate-700/50 transition-colors border border-slate-600/50">
+                        <div key={provider.id} className="bg-slate-700/30 rounded-xl p-4 hover:bg-slate-700/50 transition-colors border border-slate-600/50 hover:border-cyan-500/50">
                           <div className="flex items-start justify-between">
                             {/* Provider Info */}
-                            <div className="flex items-start gap-4">
+                            <Link href={`/admin/providers/${selectedPractice.id}/${provider.id}`} className="flex items-start gap-4 group flex-1">
                               <div className={`p-3 rounded-xl ${provider.gender === "Female" ? "bg-pink-500/20" : "bg-blue-500/20"}`}>
                                 <User className={`w-6 h-6 ${provider.gender === "Female" ? "text-pink-400" : "text-blue-400"}`} />
                               </div>
                               <div className="space-y-2">
                                 <div>
-                                  <h4 className="text-lg font-semibold text-white">{provider.name}, {provider.credential}</h4>
+                                  <h4 className="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors">{provider.name}, {provider.credential}</h4>
                                   <p className="text-slate-400">{provider.specialty}</p>
                                 </div>
                                 
@@ -1004,7 +1004,7 @@ export default function ProvidersPage() {
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </Link>
 
                             {/* Right Side - Status & Actions */}
                             <div className="flex flex-col items-end gap-3">
