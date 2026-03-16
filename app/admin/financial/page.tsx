@@ -59,25 +59,25 @@ export default function FinancialPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 text-white">
-          <p className="text-green-100 text-sm mb-1">Total Revenue YTD</p>
-          <p className="text-3xl font-bold">${(totalRevenue / 1000000).toFixed(2)}M</p>
-          <p className="text-green-200 text-sm flex items-center gap-1 mt-1"><TrendingUp className="w-3 h-3" />+8.5%</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-5 shadow-lg">
+          <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>Total Revenue YTD</p>
+          <p className="text-3xl font-bold" style={{ color: 'white' }}>${(totalRevenue / 1000000).toFixed(2)}M</p>
+          <p className="text-sm flex items-center gap-1 mt-1" style={{ color: 'rgba(255,255,255,0.8)' }}><TrendingUp className="w-3 h-3" />+8.5%</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-5">
-          <p className="text-slate-400 text-sm mb-1">Total Expenses YTD</p>
-          <p className="text-3xl font-bold text-white">${(totalExpenses / 1000000).toFixed(2)}M</p>
-          <p className="text-red-400 text-sm flex items-center gap-1 mt-1"><TrendingUp className="w-3 h-3" />+5.2%</p>
+        <div className="bg-gradient-to-br from-red-500 to-rose-600 rounded-xl p-5 shadow-lg">
+          <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>Total Expenses YTD</p>
+          <p className="text-3xl font-bold" style={{ color: 'white' }}>${(totalExpenses / 1000000).toFixed(2)}M</p>
+          <p className="text-sm flex items-center gap-1 mt-1" style={{ color: 'rgba(255,255,255,0.8)' }}><TrendingUp className="w-3 h-3" />+5.2%</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-5">
-          <p className="text-slate-400 text-sm mb-1">Net Income YTD</p>
-          <p className="text-3xl font-bold text-green-400">${(netIncome / 1000000).toFixed(2)}M</p>
-          <p className="text-green-400 text-sm flex items-center gap-1 mt-1"><TrendingUp className="w-3 h-3" />+15.3%</p>
+        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-5 shadow-lg">
+          <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>Net Income YTD</p>
+          <p className="text-3xl font-bold" style={{ color: 'white' }}>${(netIncome / 1000000).toFixed(2)}M</p>
+          <p className="text-sm flex items-center gap-1 mt-1" style={{ color: 'rgba(255,255,255,0.8)' }}><TrendingUp className="w-3 h-3" />+15.3%</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-5">
-          <p className="text-slate-400 text-sm mb-1">Loss Ratio</p>
-          <p className="text-3xl font-bold text-white">78.2%</p>
-          <p className="text-green-400 text-sm flex items-center gap-1 mt-1"><TrendingDown className="w-3 h-3" />-2.1%</p>
+        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 shadow-lg">
+          <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>Loss Ratio</p>
+          <p className="text-3xl font-bold" style={{ color: 'white' }}>78.2%</p>
+          <p className="text-sm flex items-center gap-1 mt-1" style={{ color: 'rgba(255,255,255,0.8)' }}><TrendingDown className="w-3 h-3" />-2.1%</p>
         </div>
       </div>
 

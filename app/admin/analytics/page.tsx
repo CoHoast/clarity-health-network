@@ -292,16 +292,16 @@ export default function AnalyticsPage() {
           <button
             key={kpi.label}
             onClick={() => setSelectedDrilldown(kpi.drilldown)}
-            className="bg-slate-800/50 rounded-xl border border-slate-700 p-4 text-left hover:border-cyan-600 hover:bg-slate-800 transition-all group"
+            className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl p-4 text-left hover:from-teal-600 hover:to-cyan-600 transition-all group shadow-lg"
           >
-            <p className="text-sm text-slate-400 mb-1">{kpi.label}</p>
-            <p className="text-2xl font-bold text-white group-hover:text-cyan-500 transition-colors">{kpi.value}</p>
+            <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.7)' }}>{kpi.label}</p>
+            <p className="text-2xl font-bold transition-colors" style={{ color: 'white' }}>{kpi.value}</p>
             <p className={`text-sm flex items-center gap-1 mt-1 ${kpi.color}`}>
               {kpi.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
               {kpi.change}
             </p>
             <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-xs text-cyan-500 flex items-center gap-1">
+              <span className="text-xs flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.8)' }}>
                 Click for details <ArrowUpRight className="w-3 h-3" />
               </span>
             </div>
@@ -383,25 +383,25 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {activeTab === "overview" && (
           <>
-            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 text-white cursor-pointer hover:scale-[1.02] transition-transform" onClick={() => setSelectedDrilldown("claims")}>
-              <DollarSign className="w-8 h-8 text-green-200 mb-3" />
-              <p className="text-3xl font-bold">$18.2M</p>
-              <p className="text-green-100">YTD Paid Claims</p>
+            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("claims")}>
+              <DollarSign className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
+              <p className="text-3xl font-bold" style={{ color: 'white' }}>$18.2M</p>
+              <p style={{ color: 'rgba(255,255,255,0.8)' }}>YTD Paid Claims</p>
             </div>
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-5 text-white cursor-pointer hover:scale-[1.02] transition-transform" onClick={() => setSelectedDrilldown("members")}>
-              <Users className="w-8 h-8 text-blue-200 mb-3" />
-              <p className="text-3xl font-bold">98.2%</p>
-              <p className="text-blue-100">Member Retention</p>
+            <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("members")}>
+              <Users className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
+              <p className="text-3xl font-bold" style={{ color: 'white' }}>98.2%</p>
+              <p style={{ color: 'rgba(255,255,255,0.8)' }}>Member Retention</p>
             </div>
-            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 text-white cursor-pointer hover:scale-[1.02] transition-transform" onClick={() => setSelectedDrilldown("processing")}>
-              <FileText className="w-8 h-8 text-cyan-200 mb-3" />
-              <p className="text-3xl font-bold">47,234</p>
-              <p className="text-cyan-100">Claims Processed</p>
+            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg" onClick={() => setSelectedDrilldown("processing")}>
+              <FileText className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
+              <p className="text-3xl font-bold" style={{ color: 'white' }}>47,234</p>
+              <p style={{ color: 'rgba(255,255,255,0.8)' }}>Claims Processed</p>
             </div>
-            <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl p-5 text-white cursor-pointer hover:scale-[1.02] transition-transform">
-              <Activity className="w-8 h-8 text-amber-200 mb-3" />
-              <p className="text-3xl font-bold">99.9%</p>
-              <p className="text-amber-100">System Uptime</p>
+            <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg">
+              <Activity className="w-8 h-8 mb-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
+              <p className="text-3xl font-bold" style={{ color: 'white' }}>99.9%</p>
+              <p style={{ color: 'rgba(255,255,255,0.8)' }}>System Uptime</p>
             </div>
           </>
         )}

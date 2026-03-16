@@ -82,50 +82,50 @@ export default function BillReviewPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">1,892</p>
-          <p className="text-sm text-slate-400">Bills Reviewed Today</p>
+        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>1,892</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Bills Reviewed Today</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">${totalSavings.toLocaleString()}</p>
-          <p className="text-sm text-slate-400">Savings Found</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>${totalSavings.toLocaleString()}</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Savings Found</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-blue-400">{avgReduction}%</p>
-          <p className="text-sm text-slate-400">Avg Reduction</p>
+        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>{avgReduction}%</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Avg Reduction</p>
         </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-amber-400">34</p>
-          <p className="text-sm text-slate-400">Needs Review</p>
+        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
+          <p className="text-2xl font-bold" style={{ color: 'white' }}>34</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Needs Review</p>
         </div>
       </div>
 
       {/* AI Engine Status Card */}
-      <div className="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 rounded-xl border border-blue-800/50 p-6">
+      <div className="bg-gradient-to-br from-teal-700 to-cyan-700 rounded-xl p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <Brain className="w-6 h-6 text-blue-400"/>
-            <h2 className="text-lg font-semibold text-white">AI Review Engine Status</h2>
+            <Brain className="w-6 h-6" style={{ color: 'white' }}/>
+            <h2 className="text-lg font-semibold" style={{ color: 'white' }}>AI Review Engine Status</h2>
           </div>
-          <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">Processing</span>
+          <span className="px-2 py-1 bg-white/20 text-xs rounded-full" style={{ color: 'white' }}>Processing</span>
         </div>
-        <p className="text-blue-200 mb-4">Analyzing bills using 120+ pricing rules and Medicare benchmarks</p>
+        <p className="mb-4" style={{ color: 'rgba(255,255,255,0.8)' }}>Analyzing bills using 120+ pricing rules and Medicare benchmarks</p>
         <div className="grid grid-cols-4 gap-4 text-center">
-          <div className="bg-white/5 rounded-lg p-4">
-            <p className="text-2xl font-bold text-white">98.5%</p>
-            <p className="text-xs text-blue-300">Accuracy</p>
+          <div className="bg-white/10 rounded-lg p-4">
+            <p className="text-2xl font-bold" style={{ color: 'white' }}>98.5%</p>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>Accuracy</p>
           </div>
-          <div className="bg-white/5 rounded-lg p-4">
-            <p className="text-2xl font-bold text-white">&lt;5s</p>
-            <p className="text-xs text-blue-300">Avg Review Time</p>
+          <div className="bg-white/10 rounded-lg p-4">
+            <p className="text-2xl font-bold" style={{ color: 'white' }}>&lt;5s</p>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>Avg Review Time</p>
           </div>
-          <div className="bg-white/5 rounded-lg p-4">
-            <p className="text-2xl font-bold text-white">$2.1M</p>
-            <p className="text-xs text-blue-300">YTD Savings</p>
+          <div className="bg-white/10 rounded-lg p-4">
+            <p className="text-2xl font-bold" style={{ color: 'white' }}>$2.1M</p>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>YTD Savings</p>
           </div>
-          <div className="bg-white/5 rounded-lg p-4">
-            <p className="text-2xl font-bold text-white">47K</p>
-            <p className="text-xs text-blue-300">Bills Processed YTD</p>
+          <div className="bg-white/10 rounded-lg p-4">
+            <p className="text-2xl font-bold" style={{ color: 'white' }}>47K</p>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>Bills Processed YTD</p>
           </div>
         </div>
       </div>

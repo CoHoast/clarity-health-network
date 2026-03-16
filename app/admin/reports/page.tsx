@@ -120,15 +120,15 @@ export default function ReportsPage() {
             <button
               key={report.id}
               onClick={() => { setSelectedTemplate(report); setShowGenerateModal(true); }}
-              className="flex items-start gap-3 p-4 bg-slate-700/50 border border-slate-600 rounded-xl hover:border-cyan-600 hover:bg-slate-700 text-left transition-all group"
+              className="flex items-start gap-3 p-4 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl hover:from-teal-600 hover:to-cyan-600 text-left transition-all group shadow-lg"
             >
-              <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-cyan-600/30">
-                <report.icon className="w-5 h-5 text-cyan-500" />
+              <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-white/20">
+                <report.icon className="w-5 h-5" style={{ color: 'rgba(255,255,255,0.9)' }} />
               </div>
               <div>
-                <p className="font-medium text-white group-hover:text-cyan-400">{report.name}</p>
-                <p className="text-sm text-slate-400 mt-0.5">{report.description}</p>
-                <span className="inline-block mt-2 px-2 py-0.5 bg-slate-600 text-slate-300 text-xs rounded">{report.category}</span>
+                <p className="font-medium group-hover:text-white" style={{ color: 'white' }}>{report.name}</p>
+                <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.7)' }}>{report.description}</p>
+                <span className="inline-block mt-2 px-2 py-0.5 bg-white/20 text-xs rounded" style={{ color: 'white' }}>{report.category}</span>
               </div>
             </button>
           ))}
