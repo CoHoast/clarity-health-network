@@ -13,7 +13,6 @@ import {
   ArrowRight,
   BarChart3,
   Users,
-  MapPin,
   Calendar,
   Plus,
 } from "lucide-react";
@@ -243,67 +242,76 @@ export default function AdminDashboard() {
 
       {/* Bottom Row */}
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Network Coverage Map */}
+        {/* Credentialing Queue */}
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-teal-400" />
-              Network Coverage - Ohio
+              <Users className="w-5 h-5 text-teal-400" />
+              Credentialing Queue
             </h2>
-            <Link href="/admin/network-map" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
-              Full Map <ArrowRight className="w-4 h-4" />
+            <Link href="/admin/credentialing" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+              View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="relative h-64 bg-gradient-to-br from-cyan-900/30 to-teal-900/40 rounded-lg overflow-hidden">
-            {/* Simple Ohio Map SVG */}
-            <svg viewBox="0 0 400 350" className="w-full h-full">
-              {/* Ohio state outline - brighter */}
-              <path
-                d="M50,50 L350,30 L370,120 L360,180 L340,220 L280,280 L200,320 L120,300 L60,250 L40,180 L50,100 Z"
-                fill="#134e4a"
-                stroke="#5eead4"
-                strokeWidth="2"
-              />
-              {/* Region highlights - brighter */}
-              <ellipse cx="280" cy="100" rx="50" ry="40" fill="#2dd4bf" fillOpacity="0.4" />
-              <ellipse cx="180" cy="180" rx="60" ry="50" fill="#2dd4bf" fillOpacity="0.3" />
-              <ellipse cx="120" cy="260" rx="40" ry="30" fill="#2dd4bf" fillOpacity="0.25" />
-              
-              {/* Provider location pins */}
-              {[
-                { x: 290, y: 90, count: 892, city: "Cleveland" },
-                { x: 250, y: 110, count: 234, city: "Akron" },
-                { x: 200, y: 150, count: 156, city: "Columbus" },
-                { x: 130, y: 180, count: 89, city: "Dayton" },
-                { x: 100, y: 250, count: 67, city: "Cincinnati" },
-                { x: 320, y: 140, count: 45, city: "Youngstown" },
-                { x: 80, y: 120, count: 112, city: "Toledo" },
-              ].map((loc, i) => (
-                <g key={i} className="cursor-pointer hover:opacity-80 transition-opacity">
-                  <circle cx={loc.x} cy={loc.y} r={Math.min(20, 8 + loc.count / 50)} fill="#14b8a6" fillOpacity="0.9" />
-                  <circle cx={loc.x} cy={loc.y} r={4} fill="#5eead4" />
-                  <text x={loc.x} y={loc.y + 30} textAnchor="middle" fill="#f0fdfa" fontSize="10" fontWeight="600">
-                    {loc.city}
-                  </text>
-                </g>
-              ))}
-            </svg>
-            
-            {/* Legend */}
-            <div className="absolute bottom-3 left-3 bg-teal-900/80 rounded-lg p-2 text-xs border border-teal-700/50">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-teal-400"></div>
-                <span className="text-teal-100">Provider Concentration</span>
+          
+          {/* Queue Stats */}
+          <div className="grid grid-cols-4 gap-3 mb-5">
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-center">
+              <p className="text-2xl font-bold text-amber-400">12</p>
+              <p className="text-xs text-amber-300/70">New Apps</p>
+            </div>
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-center">
+              <p className="text-2xl font-bold text-blue-400">8</p>
+              <p className="text-xs text-blue-300/70">In Review</p>
+            </div>
+            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 text-center">
+              <p className="text-2xl font-bold text-purple-400">5</p>
+              <p className="text-xs text-purple-300/70">Pending Docs</p>
+            </div>
+            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-center">
+              <p className="text-2xl font-bold text-green-400">23</p>
+              <p className="text-xs text-green-300/70">This Week</p>
+            </div>
+          </div>
+          
+          {/* Recent Applications */}
+          <div className="space-y-3">
+            {[
+              { name: "Dr. Michael Torres", specialty: "Cardiology", submitted: "2 hours ago", status: "new" },
+              { name: "Eastside Family Practice", specialty: "Primary Care", submitted: "5 hours ago", status: "review" },
+              { name: "Dr. Jennifer Walsh", specialty: "Orthopedics", submitted: "1 day ago", status: "docs" },
+              { name: "Metro Imaging Center", specialty: "Radiology", submitted: "2 days ago", status: "review" },
+            ].map((app, i) => (
+              <div key={i} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg hover:bg-slate-700/50 transition-colors cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    app.status === "new" ? "bg-amber-500/20" :
+                    app.status === "review" ? "bg-blue-500/20" :
+                    "bg-purple-500/20"
+                  }`}>
+                    <Building2 className={`w-5 h-5 ${
+                      app.status === "new" ? "text-amber-400" :
+                      app.status === "review" ? "text-blue-400" :
+                      "text-purple-400"
+                    }`} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">{app.name}</p>
+                    <p className="text-xs text-slate-400">{app.specialty}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    app.status === "new" ? "bg-amber-500/20 text-amber-400" :
+                    app.status === "review" ? "bg-blue-500/20 text-blue-400" :
+                    "bg-purple-500/20 text-purple-400"
+                  }`}>
+                    {app.status === "new" ? "New" : app.status === "review" ? "In Review" : "Pending Docs"}
+                  </span>
+                  <p className="text-xs text-slate-500 mt-1">{app.submitted}</p>
+                </div>
               </div>
-              <div className="text-teal-300/80">Circle size = provider count</div>
-            </div>
-            
-            {/* Stats overlay */}
-            <div className="absolute top-3 right-3 bg-teal-900/80 rounded-lg p-3 text-right border border-teal-700/50">
-              <p className="text-2xl font-bold text-teal-100">2,847</p>
-              <p className="text-xs text-teal-300/80">Total Providers</p>
-              <p className="text-xs text-teal-400 mt-1">7 major metro areas</p>
-            </div>
+            ))}
           </div>
         </div>
 
