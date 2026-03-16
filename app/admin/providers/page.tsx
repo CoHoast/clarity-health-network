@@ -327,7 +327,7 @@ export default function ProvidersPage() {
   const [typeFilter, setTypeFilter] = useState("All Types");
   const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
-  const [activeTab, setActiveTab] = useState<"info" | "providers" | "payto" | "contract">("info");
+  const [activeTab, setActiveTab] = useState<"info" | "providers" | "billing" | "payto" | "contract">("info");
   const [showAddPractice, setShowAddPractice] = useState(false);
   const [showAddProvider, setShowAddProvider] = useState(false);
   const [isEditingPractice, setIsEditingPractice] = useState(false);
@@ -588,10 +588,11 @@ export default function ProvidersPage() {
               </div>
 
               {/* Tabs */}
-              <div className="px-6 pt-4 flex gap-2 border-b border-slate-700">
+              <div className="px-6 pt-4 flex gap-2 border-b border-slate-700 overflow-x-auto">
                 {[
                   { id: "info", label: "Practice Info", icon: Building2 },
                   { id: "providers", label: `Providers (${getProvidersForPractice(selectedPractice.id).length})`, icon: Users },
+                  { id: "billing", label: "Billing", icon: DollarSign },
                   { id: "payto", label: "Pay-To Info", icon: CreditCard },
                   { id: "contract", label: "Contract", icon: FileText },
                 ].map(tab => (
@@ -626,18 +627,6 @@ export default function ProvidersPage() {
                       <p className="text-slate-400">{selectedPractice.country}</p>
                     </div>
 
-                    {/* Correspondence Address */}
-                    <div className="bg-slate-700/30 rounded-lg p-4">
-                      <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                        <Mail className="w-4 h-4 text-teal-400" />
-                        Correspondence Address
-                      </h3>
-                      <p className="text-slate-300">{selectedPractice.correspondenceAddress}</p>
-                      <p className="text-slate-300">{selectedPractice.correspondenceCity}, {selectedPractice.correspondenceState} {selectedPractice.correspondenceZip}</p>
-                      <p className="text-slate-400">{selectedPractice.correspondenceCountry}</p>
-                      <p className="text-slate-300 mt-2">Fax: {selectedPractice.correspondenceFax}</p>
-                    </div>
-
                     {/* Main Office Contact */}
                     <div className="bg-slate-700/30 rounded-lg p-4">
                       <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
@@ -649,15 +638,49 @@ export default function ProvidersPage() {
                       <p className="text-slate-300">Fax: {selectedPractice.fax}</p>
                       <p className="text-cyan-400">{selectedPractice.email}</p>
                     </div>
+                  </div>
+                )}
 
-                    {/* Billing Department */}
-                    <div className="bg-slate-700/30 rounded-lg p-4">
-                      <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                        <CreditCard className="w-4 h-4 text-teal-400" />
-                        Billing Department
-                      </h3>
-                      <p className="text-slate-300">Phone: {selectedPractice.billingPhone}</p>
-                      <p className="text-slate-300">Fax: {selectedPractice.billingFax}</p>
+                {activeTab === "billing" && (
+                  <div className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* Billing Department Contact */}
+                      <div className="bg-slate-700/30 rounded-lg p-6">
+                        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                          <Phone className="w-5 h-5 text-cyan-400" />
+                          Billing Department Contact
+                        </h3>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Billing Phone</p>
+                            <p className="text-lg text-white">{selectedPractice.billingPhone}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 mb-1">Billing Fax</p>
+                            <p className="text-lg text-white">{selectedPractice.billingFax}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Correspondence for Billing */}
+                      <div className="bg-slate-700/30 rounded-lg p-6">
+                        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                          <Mail className="w-5 h-5 text-cyan-400" />
+                          Billing Correspondence
+                        </h3>
+                        <div className="space-y-2">
+                          <p className="text-slate-300">{selectedPractice.correspondenceAddress}</p>
+                          <p className="text-slate-300">{selectedPractice.correspondenceCity}, {selectedPractice.correspondenceState} {selectedPractice.correspondenceZip}</p>
+                          <p className="text-slate-400">{selectedPractice.correspondenceCountry}</p>
+                          <p className="text-slate-300 mt-2">Fax: {selectedPractice.correspondenceFax}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                      <p className="text-sm text-amber-300">
+                        <strong>Note:</strong> For payment remittance details, see the Pay-To Info tab.
+                      </p>
                     </div>
                   </div>
                 )}
