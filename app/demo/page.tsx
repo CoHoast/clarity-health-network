@@ -286,8 +286,8 @@ export default function ProductDemoPage() {
           ))}
           
           {/* Bill Negotiator Teaser Card */}
-          <button
-            onClick={() => setShowBillNegotiator(true)}
+          <a
+            href="/demo/bill-negotiator"
             style={{ 
               textDecoration: 'none',
               background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
@@ -380,10 +380,10 @@ export default function ProductDemoPage() {
                 fontWeight: 600,
                 fontSize: 14,
               }}>
-                Learn More →
+                View Walkthrough →
               </div>
             </div>
-          </button>
+          </a>
         </div>
       </section>
 
