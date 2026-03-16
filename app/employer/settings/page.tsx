@@ -24,14 +24,14 @@ export default function SettingsPage() {
           {/* Company Information */}
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
             <div className="p-4 border-b border-gray-100 flex items-center gap-3">
-              <Building2 className="w-5 h-5 text-amber-600" />
+              <Building2 className="w-5 h-5 text-teal-600" />
               <h2 className="font-semibold text-gray-900">Company Information</h2>
             </div>
             <div className="p-4 space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
-                  <input type="text" defaultValue="Acme Corporation" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
+                  <input type="text" defaultValue="Acme Corporation" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Group Number</label>
@@ -41,19 +41,19 @@ export default function SettingsPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Primary Contact Email</label>
-                  <input type="email" defaultValue="hr@acmecorp.com" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
+                  <input type="email" defaultValue="hr@acmecorp.com" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                  <input type="tel" defaultValue="(555) 123-4567" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
+                  <input type="tel" defaultValue="(555) 123-4567" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                <input type="text" defaultValue="123 Business Ave, Suite 400, Chicago, IL 60601" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
+                <input type="text" defaultValue="123 Business Ave, Suite 400, Chicago, IL 60601" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
               </div>
               <div className="pt-2">
-                <button className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 font-medium">
+                <button className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 font-medium">
                   Save Changes
                 </button>
               </div>
@@ -64,10 +64,10 @@ export default function SettingsPage() {
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Users className="w-5 h-5 text-amber-600" />
+                <Users className="w-5 h-5 text-teal-600" />
                 <h2 className="font-semibold text-gray-900">Team Members</h2>
               </div>
-              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 text-sm font-medium">
+              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-500 text-white rounded-lg hover:bg-teal-600 text-sm font-medium">
                 <Plus className="w-4 h-4" />
                 Invite
               </button>
@@ -76,8 +76,8 @@ export default function SettingsPage() {
               {teamMembers.map((member) => (
                 <div key={member.email} className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                      <span className="font-medium text-amber-600">{member.name.split(' ').map(n => n[0]).join('')}</span>
+                    <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
+                      <span className="font-medium text-teal-600">{member.name.split(' ').map(n => n[0]).join('')}</span>
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">{member.name}</p>
@@ -87,10 +87,10 @@ export default function SettingsPage() {
                   <div className="flex items-center gap-4">
                     <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">{member.role}</span>
                     {member.status === "invited" && (
-                      <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">Pending</span>
+                      <span className="px-2 py-1 bg-teal-100 text-teal-700 text-xs rounded">Pending</span>
                     )}
                     <div className="flex items-center gap-1">
-                      <button className="p-1.5 text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded">
+                      <button className="p-1.5 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded">
                         <Edit className="w-4 h-4" />
                       </button>
                       <button className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded">
@@ -106,7 +106,7 @@ export default function SettingsPage() {
           {/* Notifications */}
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
             <div className="p-4 border-b border-gray-100 flex items-center gap-3">
-              <Bell className="w-5 h-5 text-amber-600" />
+              <Bell className="w-5 h-5 text-teal-600" />
               <h2 className="font-semibold text-gray-900">Notifications</h2>
             </div>
             <div className="p-4 space-y-4">
@@ -123,7 +123,7 @@ export default function SettingsPage() {
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" defaultChecked />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-500"></div>
                   </label>
                 </div>
               ))}
@@ -144,7 +144,7 @@ export default function SettingsPage() {
                 { label: "API Access", icon: Globe, href: "#" },
                 { label: "Change Password", icon: Lock, href: "#" },
               ].map((link) => (
-                <a key={link.label} href={link.href} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg text-gray-700 hover:text-amber-600 transition-colors">
+                <a key={link.label} href={link.href} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg text-gray-700 hover:text-teal-600 transition-colors">
                   <link.icon className="w-4 h-4" />
                   <span className="text-sm">{link.label}</span>
                 </a>

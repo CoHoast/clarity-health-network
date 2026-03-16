@@ -32,7 +32,7 @@ export default function ReportsPage() {
           <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
           <p className="text-gray-500">Generate, schedule, and download reports</p>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 font-medium">
+        <button className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 font-medium">
           <Plus className="w-4 h-4" />
           Schedule Report
         </button>
@@ -46,9 +46,9 @@ export default function ReportsPage() {
         </div>
         <div className="p-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {reportTemplates.map((report) => (
-            <button key={report.name} className="flex items-start gap-3 p-4 border border-gray-200 rounded-xl hover:border-amber-300 hover:bg-amber-50 text-left transition-colors">
-              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <report.icon className="w-5 h-5 text-amber-600" />
+            <button key={report.name} className="flex items-start gap-3 p-4 border border-gray-200 rounded-xl hover:border-teal-300 hover:bg-teal-50 text-left transition-colors">
+              <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <report.icon className="w-5 h-5 text-teal-600" />
               </div>
               <div>
                 <p className="font-medium text-gray-900">{report.name}</p>
@@ -116,7 +116,7 @@ export default function ReportsPage() {
                     <p className="text-xs text-gray-500">{report.generated} • {report.size}</p>
                   </div>
                 </div>
-                <button className="p-2 text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg">
+                <button className="p-2 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded-lg">
                   <Download className="w-5 h-5" />
                 </button>
               </div>
@@ -132,7 +132,7 @@ export default function ReportsPage() {
             <h3 className="text-lg font-semibold">Need a Custom Report?</h3>
             <p className="text-gray-300 mt-1">Our team can create custom analytics tailored to your needs.</p>
           </div>
-          <button className="px-6 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 font-medium">
+          <button className="px-6 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 font-medium">
             Contact Support
           </button>
         </div>

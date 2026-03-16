@@ -33,7 +33,7 @@ export default function BillingPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "paid": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Paid</span>;
-      case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
+      case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-teal-100 text-teal-700 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
       case "overdue": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-full"><AlertTriangle className="w-3 h-3" />Overdue</span>;
       default: return null;
     }
@@ -65,12 +65,12 @@ export default function BillingPage() {
       </div>
 
       {/* Current Invoice */}
-      <div className="bg-gradient-to-r from-orange-600 to-amber-500 rounded-xl p-6 text-white">
+      <div className="bg-gradient-to-r from-teal-600 to-teal-500 rounded-xl p-6 text-white">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <p className="text-orange-100 text-sm">Current Invoice</p>
+            <p className="text-teal-100 text-sm">Current Invoice</p>
             <p className="text-3xl font-bold mt-1">${currentInvoice.amount.toLocaleString()}</p>
-            <p className="text-orange-100 mt-2">Invoice #{currentInvoice.id} • Due {currentInvoice.dueDate}</p>
+            <p className="text-teal-100 mt-2">Invoice #{currentInvoice.id} • Due {currentInvoice.dueDate}</p>
           </div>
           <div className="flex gap-3">
             <button 
@@ -81,7 +81,7 @@ export default function BillingPage() {
             </button>
             <button 
               onClick={() => setShowPaymentModal(true)}
-              className="px-6 py-2 bg-white text-orange-600 rounded-lg hover:bg-orange-50 font-medium"
+              className="px-6 py-2 bg-white text-teal-600 rounded-lg hover:bg-teal-50 font-medium"
             >
               Pay Now
             </button>
@@ -94,7 +94,7 @@ export default function BillingPage() {
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm">
           <div className="p-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Invoice Breakdown - {currentInvoice.id}</h2>
-            <button className="text-sm text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1">
+            <button className="text-sm text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1">
               <Download className="w-4 h-4" />
               Download PDF
             </button>
@@ -120,7 +120,7 @@ export default function BillingPage() {
             <hr className="border-gray-200" />
             <div className="flex items-center justify-between py-2">
               <p className="font-semibold text-gray-900">Total Due</p>
-              <p className="text-xl font-bold text-orange-600">${currentInvoice.amount.toLocaleString()}</p>
+              <p className="text-xl font-bold text-teal-600">${currentInvoice.amount.toLocaleString()}</p>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default function BillingPage() {
                 <p className="font-medium text-gray-900">Bank Account (ACH)</p>
                 <p className="text-sm text-gray-500">••••4521</p>
               </div>
-              <span className="text-xs text-orange-600 font-medium">Change</span>
+              <span className="text-xs text-teal-600 font-medium">Change</span>
             </button>
           </div>
 
@@ -154,7 +154,7 @@ export default function BillingPage() {
               <button
                 onClick={() => setAutoPayEnabled(!autoPayEnabled)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  autoPayEnabled ? "bg-orange-500" : "bg-gray-200"
+                  autoPayEnabled ? "bg-teal-500" : "bg-gray-200"
                 }`}
               >
                 <span
@@ -214,7 +214,7 @@ export default function BillingPage() {
                   <td className="px-4 py-3">
                     <button 
                       onClick={() => setShowInvoiceModal(inv.id)}
-                      className="font-medium text-gray-900 hover:text-orange-600"
+                      className="font-medium text-gray-900 hover:text-teal-600"
                     >
                       {inv.id}
                     </button>
@@ -227,13 +227,13 @@ export default function BillingPage() {
                     <div className="flex items-center justify-end gap-2">
                       <button 
                         onClick={() => setShowInvoiceModal(inv.id)}
-                        className="p-1.5 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded"
+                        className="p-1.5 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded"
                         title="View"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
                       <button 
-                        className="p-1.5 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded"
+                        className="p-1.5 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded"
                         title="Download"
                       >
                         <Download className="w-4 h-4" />
@@ -307,7 +307,7 @@ export default function BillingPage() {
                               type="radio" 
                               name="paymentMethod" 
                               defaultChecked={method.isPrimary}
-                              className="text-orange-600 focus:ring-orange-500" 
+                              className="text-teal-600 focus:ring-teal-500" 
                             />
                             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                               <Building2 className="w-5 h-5 text-blue-600" />
@@ -317,7 +317,7 @@ export default function BillingPage() {
                               <p className="text-sm text-gray-500">{method.bank} ••••{method.last4}</p>
                             </div>
                             {method.isPrimary && (
-                              <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded">Primary</span>
+                              <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Primary</span>
                             )}
                           </label>
                         ))}
@@ -338,7 +338,7 @@ export default function BillingPage() {
                     </button>
                     <button 
                       onClick={handlePayNow}
-                      className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                      className="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
                     >
                       Pay ${currentInvoice.amount.toLocaleString()}
                     </button>
@@ -439,7 +439,7 @@ export default function BillingPage() {
                           <tfoot className="bg-gray-50">
                             <tr>
                               <td colSpan={3} className="px-4 py-3 text-right font-semibold text-gray-900">Total</td>
-                              <td className="px-4 py-3 text-right text-xl font-bold text-orange-600">${invoice.amount.toLocaleString()}</td>
+                              <td className="px-4 py-3 text-right text-xl font-bold text-teal-600">${invoice.amount.toLocaleString()}</td>
                             </tr>
                           </tfoot>
                         </table>
@@ -457,18 +457,18 @@ export default function BillingPage() {
                           </div>
                         </div>
                       ) : (
-                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                        <div className="bg-teal-50 border border-teal-200 rounded-xl p-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <Clock className="w-6 h-6 text-amber-600" />
+                              <Clock className="w-6 h-6 text-teal-600" />
                               <div>
-                                <p className="font-medium text-amber-800">Payment Due</p>
-                                <p className="text-sm text-amber-600">Due on {invoice.dueDate}</p>
+                                <p className="font-medium text-teal-800">Payment Due</p>
+                                <p className="text-sm text-teal-600">Due on {invoice.dueDate}</p>
                               </div>
                             </div>
                             <button 
                               onClick={() => { setShowInvoiceModal(null); setShowPaymentModal(true); }}
-                              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                              className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
                             >
                               Pay Now
                             </button>
@@ -530,7 +530,7 @@ export default function BillingPage() {
                       <p className="text-sm text-gray-500">{method.bank} ••••{method.last4}</p>
                     </div>
                     {method.isPrimary && (
-                      <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded">Primary</span>
+                      <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Primary</span>
                     )}
                     <button className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded">
                       <Trash2 className="w-4 h-4" />
@@ -541,7 +541,7 @@ export default function BillingPage() {
               <div className="p-6 border-t border-gray-100">
                 <button 
                   onClick={() => { setShowPaymentMethodsModal(false); setShowAddMethodModal(true); }}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 text-gray-600 rounded-lg hover:border-orange-300 hover:text-orange-600 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 text-gray-600 rounded-lg hover:border-teal-300 hover:text-teal-600 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   Add Payment Method
@@ -578,7 +578,7 @@ export default function BillingPage() {
               <div className="p-6 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Account Type</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                     <option>ACH / Bank Account</option>
                     <option>Wire Transfer</option>
                   </select>
@@ -588,7 +588,7 @@ export default function BillingPage() {
                   <input 
                     type="text" 
                     placeholder="e.g., Business Checking"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
                   />
                 </div>
                 <div>
@@ -596,7 +596,7 @@ export default function BillingPage() {
                   <input 
                     type="text" 
                     placeholder="e.g., Chase Bank"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
                   />
                 </div>
                 <div>
@@ -604,7 +604,7 @@ export default function BillingPage() {
                   <input 
                     type="text" 
                     placeholder="9 digits"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
                   />
                 </div>
                 <div>
@@ -612,11 +612,11 @@ export default function BillingPage() {
                   <input 
                     type="text" 
                     placeholder="Account number"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
                   />
                 </div>
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" className="rounded text-orange-600 focus:ring-orange-500" />
+                  <input type="checkbox" className="rounded text-teal-600 focus:ring-teal-500" />
                   <span className="text-sm text-gray-700">Set as primary payment method</span>
                 </label>
               </div>
@@ -629,7 +629,7 @@ export default function BillingPage() {
                 </button>
                 <button 
                   onClick={() => setShowAddMethodModal(false)}
-                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                  className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
                 >
                   Add Method
                 </button>

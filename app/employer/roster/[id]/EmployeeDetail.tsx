@@ -50,7 +50,7 @@ export default function EmployeeDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-white">Employee Information</h2>
-              <button onClick={() => setShowEditModal(true)} className="text-orange-400 hover:text-orange-300 text-sm flex items-center gap-1"><Edit className="w-4 h-4" />Edit</button>
+              <button onClick={() => setShowEditModal(true)} className="text-teal-400 hover:text-teal-300 text-sm flex items-center gap-1"><Edit className="w-4 h-4" />Edit</button>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg"><Mail className="w-5 h-5 text-slate-400" /><div><p className="text-xs text-slate-400">Email</p><p className="text-white">{mockEmployee.email}</p></div></div>
@@ -65,13 +65,13 @@ export default function EmployeeDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white">Dependents</h2>
-              <button className="text-orange-400 hover:text-orange-300 text-sm">+ Add Dependent</button>
+              <button className="text-teal-400 hover:text-teal-300 text-sm">+ Add Dependent</button>
             </div>
             <div className="divide-y divide-slate-700">
               {mockEmployee.dependents.map((dep, i) => (
                 <div key={i} className="px-6 py-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center"><User className="w-5 h-5 text-orange-400" /></div>
+                    <div className="w-10 h-10 bg-teal-500/20 rounded-full flex items-center justify-center"><User className="w-5 h-5 text-teal-400" /></div>
                     <div><p className="font-medium text-white">{dep.name}</p><p className="text-sm text-slate-400">{dep.relationship} • DOB: {dep.dob}</p></div>
                   </div>
                   <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">{dep.status}</span>
@@ -97,7 +97,7 @@ export default function EmployeeDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
             <h3 className="font-semibold text-white mb-4">Quick Actions</h3>
             <div className="space-y-2">
-              <button onClick={() => setShowEditModal(true)} className="w-full px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">Edit Employee</button>
+              <button onClick={() => setShowEditModal(true)} className="w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Edit Employee</button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">View ID Card</button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Download Summary</button>
               <button onClick={() => setShowTerminateModal(true)} className="w-full px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30">Terminate Coverage</button>
@@ -125,7 +125,7 @@ export default function EmployeeDetail({ id }: { id: string }) {
                 <div><label className="block text-sm font-medium text-slate-300 mb-1">Phone</label><input type="tel" defaultValue={mockEmployee.phone} className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" /></div>
                 <div><label className="block text-sm font-medium text-slate-300 mb-1">Department</label><input type="text" defaultValue={mockEmployee.department} className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" /></div>
               </div>
-              <div className="flex gap-2 p-4 border-t border-slate-700"><button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button><button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">Save Changes</button></div>
+              <div className="flex gap-2 p-4 border-t border-slate-700"><button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button><button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button></div>
             </motion.div>
           </>
         )}

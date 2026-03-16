@@ -17,8 +17,8 @@ const monthlyData = [
 ];
 
 const claimsByCategory = [
-  { category: "Outpatient", amount: 245000, percentage: 35, color: "bg-amber-500", claims: 987, avgClaim: 248 },
-  { category: "Inpatient", amount: 189000, percentage: 27, color: "bg-orange-500", claims: 42, avgClaim: 4500 },
+  { category: "Outpatient", amount: 245000, percentage: 35, color: "bg-teal-500", claims: 987, avgClaim: 248 },
+  { category: "Inpatient", amount: 189000, percentage: 27, color: "bg-teal-500", claims: 42, avgClaim: 4500 },
   { category: "Pharmacy", amount: 147000, percentage: 21, color: "bg-yellow-500", claims: 1245, avgClaim: 118 },
   { category: "Preventive", amount: 70000, percentage: 10, color: "bg-green-500", claims: 423, avgClaim: 165 },
   { category: "Other", amount: 49000, percentage: 7, color: "bg-gray-400", claims: 150, avgClaim: 327 },
@@ -62,7 +62,7 @@ export default function AnalyticsPage() {
           <select 
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-teal-500"
           >
             <option>Last 6 Months</option>
             <option>Last 12 Months</option>
@@ -83,11 +83,11 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <button 
           onClick={() => setShowKPIModal("spend")}
-          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-orange-300 hover:shadow-md transition-all"
+          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-teal-300 hover:shadow-md transition-all"
         >
           <div className="flex items-center justify-between mb-3">
-            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-              <DollarSign className="w-5 h-5 text-orange-600" />
+            <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+              <DollarSign className="w-5 h-5 text-teal-600" />
             </div>
             <span className="flex items-center text-sm font-medium text-green-600">
               -3.2% <TrendingDown className="w-4 h-4 ml-1" />
@@ -98,7 +98,7 @@ export default function AnalyticsPage() {
         </button>
         <button 
           onClick={() => setShowKPIModal("claims")}
-          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-orange-300 hover:shadow-md transition-all"
+          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-teal-300 hover:shadow-md transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -113,7 +113,7 @@ export default function AnalyticsPage() {
         </button>
         <button 
           onClick={() => setShowKPIModal("pmpm")}
-          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-orange-300 hover:shadow-md transition-all"
+          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-teal-300 hover:shadow-md transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
@@ -125,7 +125,7 @@ export default function AnalyticsPage() {
         </button>
         <button 
           onClick={() => setShowKPIModal("loss")}
-          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-orange-300 hover:shadow-md transition-all"
+          className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-teal-300 hover:shadow-md transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -153,7 +153,7 @@ export default function AnalyticsPage() {
                 >
                   <div className="relative w-full">
                     <div 
-                      className="w-full bg-gradient-to-t from-orange-500 to-amber-400 rounded-t group-hover:from-orange-600 group-hover:to-amber-500 transition-colors cursor-pointer"
+                      className="w-full bg-gradient-to-t from-teal-500 to-teal-400 rounded-t group-hover:from-teal-600 group-hover:to-teal-500 transition-colors cursor-pointer"
                       style={{ height: `${(d.spend / maxSpend) * 180}px` }}
                     />
                     <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
@@ -196,7 +196,7 @@ export default function AnalyticsPage() {
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
         <div className="p-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="font-semibold text-gray-900">Top Conditions by Spend</h2>
-          <button className="text-sm text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1">
+          <button className="text-sm text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1">
             View All <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -220,7 +220,7 @@ export default function AnalyticsPage() {
                 >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <span className="w-6 h-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-xs font-medium">{i + 1}</span>
+                      <span className="w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-xs font-medium">{i + 1}</span>
                       <span className="font-medium text-gray-900">{cond.condition}</span>
                     </div>
                   </td>
@@ -254,8 +254,8 @@ export default function AnalyticsPage() {
             <p className="text-sm text-gray-600 mt-1">vs. Industry Average</p>
             <p className="text-xs text-gray-400">Per Member Per Month</p>
           </div>
-          <div className="text-center p-4 bg-amber-50 rounded-xl">
-            <p className="text-3xl font-bold text-amber-600">+5%</p>
+          <div className="text-center p-4 bg-teal-50 rounded-xl">
+            <p className="text-3xl font-bold text-teal-600">+5%</p>
             <p className="text-sm text-gray-600 mt-1">Preventive Care Usage</p>
             <p className="text-xs text-gray-400">vs. Similar Employers</p>
           </div>
@@ -291,9 +291,9 @@ export default function AnalyticsPage() {
                 </button>
               </div>
               <div className="p-6 space-y-4">
-                <div className="text-center py-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl text-white">
+                <div className="text-center py-4 bg-gradient-to-r from-teal-500 to-teal-500 rounded-xl text-white">
                   <p className="text-3xl font-bold">${selectedMonth.spend.toLocaleString()}</p>
-                  <p className="text-orange-100">Total Spend</p>
+                  <p className="text-teal-100">Total Spend</p>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-gray-50 rounded-xl p-4 text-center">
@@ -330,7 +330,7 @@ export default function AnalyticsPage() {
                 >
                   Close
                 </button>
-                <button className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium flex items-center gap-2">
+                <button className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium flex items-center gap-2">
                   <Download className="w-4 h-4" />
                   Export Month
                 </button>
@@ -383,7 +383,7 @@ export default function AnalyticsPage() {
                 <div className="bg-gray-50 rounded-xl p-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">% of Total Spend</span>
-                    <span className="text-xl font-bold text-orange-600">{selectedCategory.percentage}%</span>
+                    <span className="text-xl font-bold text-teal-600">{selectedCategory.percentage}%</span>
                   </div>
                   <div className="mt-2 h-3 bg-gray-200 rounded-full overflow-hidden">
                     <div className={`h-full ${selectedCategory.color} rounded-full`} style={{ width: `${selectedCategory.percentage}%` }} />
@@ -397,7 +397,7 @@ export default function AnalyticsPage() {
                 >
                   Close
                 </button>
-                <button className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium">
+                <button className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium">
                   View Claims
                 </button>
               </div>
@@ -464,7 +464,7 @@ export default function AnalyticsPage() {
                 >
                   Close
                 </button>
-                <button className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium">
+                <button className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium">
                   View Claims
                 </button>
               </div>
@@ -509,7 +509,7 @@ export default function AnalyticsPage() {
                   <div className="p-6 space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Report Type</label>
-                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                         <option>Full Analytics Report</option>
                         <option>Claims Summary</option>
                         <option>Spend Trend</option>
@@ -518,7 +518,7 @@ export default function AnalyticsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
-                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                         <option>{dateRange}</option>
                         <option>Custom Range</option>
                       </select>
@@ -527,15 +527,15 @@ export default function AnalyticsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Format</label>
                       <div className="flex gap-4">
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="pdf" defaultChecked className="text-orange-600 focus:ring-orange-500" />
+                          <input type="radio" name="format" value="pdf" defaultChecked className="text-teal-600 focus:ring-teal-500" />
                           <span className="text-sm text-gray-700">PDF</span>
                         </label>
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="excel" className="text-orange-600 focus:ring-orange-500" />
+                          <input type="radio" name="format" value="excel" className="text-teal-600 focus:ring-teal-500" />
                           <span className="text-sm text-gray-700">Excel</span>
                         </label>
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="csv" className="text-orange-600 focus:ring-orange-500" />
+                          <input type="radio" name="format" value="csv" className="text-teal-600 focus:ring-teal-500" />
                           <span className="text-sm text-gray-700">CSV</span>
                         </label>
                       </div>
@@ -550,7 +550,7 @@ export default function AnalyticsPage() {
                     </button>
                     <button 
                       onClick={handleExport}
-                      className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium flex items-center gap-2"
+                      className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium flex items-center gap-2"
                     >
                       <Download className="w-4 h-4" />
                       Export
@@ -594,7 +594,7 @@ export default function AnalyticsPage() {
               <div className="p-6 space-y-4">
                 {showKPIModal === "spend" && (
                   <>
-                    <div className="text-center py-4 bg-orange-50 rounded-xl">
+                    <div className="text-center py-4 bg-teal-50 rounded-xl">
                       <p className="text-4xl font-bold text-gray-900">$1.24M</p>
                       <p className="text-green-600 font-medium">-3.2% vs last year</p>
                     </div>
@@ -629,8 +629,8 @@ export default function AnalyticsPage() {
                         <p className="text-lg font-bold text-green-600">2,456</p>
                         <p className="text-xs text-gray-500">Approved</p>
                       </div>
-                      <div className="bg-amber-50 rounded-xl p-3 text-center">
-                        <p className="text-lg font-bold text-amber-600">245</p>
+                      <div className="bg-teal-50 rounded-xl p-3 text-center">
+                        <p className="text-lg font-bold text-teal-600">245</p>
                         <p className="text-xs text-gray-500">Pending</p>
                       </div>
                       <div className="bg-red-50 rounded-xl p-3 text-center">
@@ -676,7 +676,7 @@ export default function AnalyticsPage() {
               <div className="p-6 border-t border-gray-100 flex justify-end">
                 <button 
                   onClick={() => setShowKPIModal(null)}
-                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                  className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
                 >
                   Close
                 </button>

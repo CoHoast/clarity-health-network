@@ -211,7 +211,7 @@ export default function DocumentsPage() {
           ].map((item, i) => (
             <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full ${item.status === "complete" ? "bg-green-500" : "bg-amber-500"}`} />
+                <div className={`w-2 h-2 rounded-full ${item.status === "complete" ? "bg-green-500" : "bg-teal-500"}`} />
                 <span className="text-sm text-gray-700">{item.notice}</span>
               </div>
               <div className="flex items-center gap-3">

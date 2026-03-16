@@ -23,7 +23,7 @@ export default function StopLossPage() {
     switch (status) {
       case "exceeded": return <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">Exceeded</span>;
       case "alert": return <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-full">Alert</span>;
-      case "monitor": return <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">Monitor</span>;
+      case "monitor": return <span className="px-2 py-1 bg-teal-100 text-teal-700 text-xs font-medium rounded-full">Monitor</span>;
       default: return <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">Normal</span>;
     }
   };
@@ -48,7 +48,7 @@ export default function StopLossPage() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
           <div className="p-4 border-b border-gray-100">
             <div className="flex items-center gap-2">
-              <User className="w-5 h-5 text-amber-600" />
+              <User className="w-5 h-5 text-teal-600" />
               <h2 className="font-semibold text-gray-900">Individual Stop-Loss (ISL)</h2>
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function StopLossPage() {
                 <p className="text-xs text-gray-500">Exceeded</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-amber-600">2</p>
+                <p className="text-2xl font-bold text-teal-600">2</p>
                 <p className="text-xs text-gray-500">Monitor (&gt;80%)</p>
               </div>
               <div className="text-center">
@@ -82,7 +82,7 @@ export default function StopLossPage() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
           <div className="p-4 border-b border-gray-100">
             <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-amber-600" />
+              <Shield className="w-5 h-5 text-teal-600" />
               <h2 className="font-semibold text-gray-900">Aggregate Stop-Loss (ASL)</h2>
             </div>
           </div>
@@ -94,11 +94,11 @@ export default function StopLossPage() {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-gray-500">YTD Claims vs. Attachment</span>
-                <span className="text-sm font-medium text-amber-600">{aslSummary.percentage}%</span>
+                <span className="text-sm font-medium text-teal-600">{aslSummary.percentage}%</span>
               </div>
               <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full"
+                  className="h-full bg-gradient-to-r from-teal-500 to-teal-500 rounded-full"
                   style={{ width: `${Math.min(aslSummary.percentage, 100)}%` }}
                 />
               </div>
@@ -153,7 +153,7 @@ export default function StopLossPage() {
                           className={`h-full rounded-full ${
                             claim.percentage >= 100 ? "bg-purple-500" :
                             claim.percentage >= 90 ? "bg-red-500" :
-                            claim.percentage >= 80 ? "bg-amber-500" : "bg-green-500"
+                            claim.percentage >= 80 ? "bg-teal-500" : "bg-green-500"
                           }`}
                           style={{ width: `${Math.min(claim.percentage, 100)}%` }}
                         />
@@ -187,7 +187,7 @@ export default function StopLossPage() {
           </div>
           <div>
             <p className="text-sm text-gray-500">Contact</p>
-            <p className="font-medium text-amber-600">jennifer.walsh@bhspec.com</p>
+            <p className="font-medium text-teal-600">jennifer.walsh@bhspec.com</p>
           </div>
         </div>
       </div>

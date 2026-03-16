@@ -40,28 +40,28 @@ export default function EnrollmentPage() {
           <h1 className="text-2xl font-bold text-gray-900">Open Enrollment</h1>
           <p className="text-gray-500">Manage enrollment periods and employee elections</p>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 font-medium">
+        <button className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 font-medium">
           <Calendar className="w-4 h-4" />
           Configure Enrollment
         </button>
       </div>
 
       {/* Enrollment Period Status */}
-      <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-6 text-white">
+      <div className="bg-gradient-to-r from-teal-500 to-teal-500 rounded-xl p-6 text-white">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="px-2 py-1 bg-white/20 rounded text-sm font-medium">Upcoming</span>
             </div>
             <h2 className="text-2xl font-bold">2027 Open Enrollment</h2>
-            <p className="text-amber-100 mt-2">
+            <p className="text-teal-100 mt-2">
               {enrollmentPeriod.startDate} — {enrollmentPeriod.endDate}
             </p>
-            <p className="text-amber-100">Coverage effective: {enrollmentPeriod.effectiveDate}</p>
+            <p className="text-teal-100">Coverage effective: {enrollmentPeriod.effectiveDate}</p>
           </div>
           <div className="bg-white/10 rounded-xl p-4 text-center">
             <p className="text-4xl font-bold">{enrollmentPeriod.daysUntilStart}</p>
-            <p className="text-amber-100">days until enrollment opens</p>
+            <p className="text-teal-100">days until enrollment opens</p>
           </div>
         </div>
       </div>
@@ -88,8 +88,8 @@ export default function EnrollmentPage() {
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-              <Clock className="w-5 h-5 text-amber-600" />
+            <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+              <Clock className="w-5 h-5 text-teal-600" />
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-900">12</p>
@@ -116,7 +116,7 @@ export default function EnrollmentPage() {
             {recentEnrollments.map((item, i) => (
               <div key={i} className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`w-2 h-2 rounded-full ${item.status === "complete" ? "bg-green-500" : "bg-amber-500"}`} />
+                  <div className={`w-2 h-2 rounded-full ${item.status === "complete" ? "bg-green-500" : "bg-teal-500"}`} />
                   <div>
                     <p className="font-medium text-gray-900">{item.employee}</p>
                     <p className="text-sm text-gray-500">{item.action}</p>
@@ -127,7 +127,7 @@ export default function EnrollmentPage() {
             ))}
           </div>
           <div className="p-4 border-t border-gray-100">
-            <button className="text-amber-600 hover:text-amber-700 text-sm font-medium flex items-center gap-1">
+            <button className="text-teal-600 hover:text-teal-700 text-sm font-medium flex items-center gap-1">
               View all activity <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -142,7 +142,7 @@ export default function EnrollmentPage() {
             {tasks.map((item, i) => (
               <div key={i} className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <input type="checkbox" className="w-4 h-4 text-amber-500 focus:ring-amber-500 rounded" />
+                  <input type="checkbox" className="w-4 h-4 text-teal-500 focus:ring-teal-500 rounded" />
                   <div>
                     <p className="font-medium text-gray-900">{item.task}</p>
                     <p className="text-sm text-gray-500">Due: {item.dueDate}</p>
@@ -159,22 +159,22 @@ export default function EnrollmentPage() {
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
         <h2 className="font-semibold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid sm:grid-cols-3 gap-3">
-          <button className="flex items-center gap-3 p-4 bg-gray-50 hover:bg-amber-50 rounded-lg text-left transition-colors">
-            <FileText className="w-5 h-5 text-amber-600" />
+          <button className="flex items-center gap-3 p-4 bg-gray-50 hover:bg-teal-50 rounded-lg text-left transition-colors">
+            <FileText className="w-5 h-5 text-teal-600" />
             <div>
               <p className="font-medium text-gray-900">Download Forms</p>
               <p className="text-sm text-gray-500">Enrollment forms & waivers</p>
             </div>
           </button>
-          <button className="flex items-center gap-3 p-4 bg-gray-50 hover:bg-amber-50 rounded-lg text-left transition-colors">
-            <Mail className="w-5 h-5 text-amber-600" />
+          <button className="flex items-center gap-3 p-4 bg-gray-50 hover:bg-teal-50 rounded-lg text-left transition-colors">
+            <Mail className="w-5 h-5 text-teal-600" />
             <div>
               <p className="font-medium text-gray-900">Send Reminders</p>
               <p className="text-sm text-gray-500">Email pending employees</p>
             </div>
           </button>
-          <button className="flex items-center gap-3 p-4 bg-gray-50 hover:bg-amber-50 rounded-lg text-left transition-colors">
-            <Calendar className="w-5 h-5 text-amber-600" />
+          <button className="flex items-center gap-3 p-4 bg-gray-50 hover:bg-teal-50 rounded-lg text-left transition-colors">
+            <Calendar className="w-5 h-5 text-teal-600" />
             <div>
               <p className="font-medium text-gray-900">Schedule Event</p>
               <p className="text-sm text-gray-500">Benefits fair or webinar</p>

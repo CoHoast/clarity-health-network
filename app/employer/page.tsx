@@ -108,7 +108,7 @@ export default function EmployerDashboard() {
           </button>
           <button 
             onClick={() => setShowAddEmployee(true)}
-            className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+            className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
           >
             Add Employee
           </button>
@@ -121,11 +121,11 @@ export default function EmployerDashboard() {
           <button 
             key={stat.label} 
             onClick={() => setShowStatModal(stat.detail)}
-            className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-orange-300 hover:shadow-md transition-all"
+            className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm text-left hover:border-teal-300 hover:shadow-md transition-all"
           >
             <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                <stat.icon className="w-5 h-5 text-orange-600" />
+              <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                <stat.icon className="w-5 h-5 text-teal-600" />
               </div>
               <span className={`flex items-center text-sm font-medium ${stat.trend === "up" ? "text-green-600" : "text-red-600"}`}>
                 {stat.change}
@@ -146,14 +146,14 @@ export default function EmployerDashboard() {
           </div>
           <div className="p-4 space-y-3">
             {alerts.map((alert) => (
-              <div key={alert.id} className={`flex items-center justify-between p-3 rounded-lg ${alert.type === "warning" ? "bg-amber-50" : "bg-blue-50"}`}>
+              <div key={alert.id} className={`flex items-center justify-between p-3 rounded-lg ${alert.type === "warning" ? "bg-teal-50" : "bg-blue-50"}`}>
                 <div className="flex items-center gap-3">
-                  <AlertTriangle className={`w-5 h-5 ${alert.type === "warning" ? "text-amber-500" : "text-blue-500"}`} />
+                  <AlertTriangle className={`w-5 h-5 ${alert.type === "warning" ? "text-teal-500" : "text-blue-500"}`} />
                   <span className="text-sm text-gray-700">{alert.message}</span>
                 </div>
                 <button 
                   onClick={() => handleAlertAction(alert.actionType)}
-                  className={`text-sm font-medium ${alert.type === "warning" ? "text-amber-600 hover:text-amber-700" : "text-blue-600 hover:text-blue-700"}`}
+                  className={`text-sm font-medium ${alert.type === "warning" ? "text-teal-600 hover:text-teal-700" : "text-blue-600 hover:text-blue-700"}`}
                 >
                   {alert.action}
                 </button>
@@ -195,14 +195,14 @@ export default function EmployerDashboard() {
             <h2 className="font-semibold text-gray-900">Claims by Category (MTD)</h2>
             <button 
               onClick={() => router.push('/employer/analytics')}
-              className="text-sm text-orange-600 hover:text-orange-700 font-medium"
+              className="text-sm text-teal-600 hover:text-teal-700 font-medium"
             >
               View All
             </button>
           </div>
           <div className="p-4 space-y-4">
             {[
-              { category: "Medical", amount: "$87,450", percentage: 70, color: "from-orange-500 to-amber-500" },
+              { category: "Medical", amount: "$87,450", percentage: 70, color: "from-teal-500 to-teal-500" },
               { category: "Pharmacy", amount: "$24,830", percentage: 20, color: "from-blue-500 to-cyan-500" },
               { category: "Dental", amount: "$8,150", percentage: 6, color: "from-emerald-500 to-green-500" },
               { category: "Vision", amount: "$5,000", percentage: 4, color: "from-purple-500 to-pink-500" },
@@ -239,7 +239,7 @@ export default function EmployerDashboard() {
                   <div className={`w-2 h-2 rounded-full ${
                     item.type === "enrollment" ? "bg-green-500" :
                     item.type === "claim" ? "bg-blue-500" :
-                    item.type === "payment" ? "bg-amber-500" : "bg-gray-400"
+                    item.type === "payment" ? "bg-teal-500" : "bg-gray-400"
                   }`} />
                   <span className="text-sm text-gray-700">{item.action}</span>
                 </div>
@@ -265,7 +265,7 @@ export default function EmployerDashboard() {
               <a
                 key={action.label}
                 href={action.href}
-                className="px-4 py-3 bg-gray-50 hover:bg-orange-50 text-gray-700 hover:text-orange-700 rounded-lg text-sm font-medium text-center transition-colors"
+                className="px-4 py-3 bg-gray-50 hover:bg-teal-50 text-gray-700 hover:text-teal-700 rounded-lg text-sm font-medium text-center transition-colors"
               >
                 {action.label}
               </a>
@@ -275,8 +275,8 @@ export default function EmployerDashboard() {
                 onClick={action.onClick}
                 className={`px-4 py-3 rounded-lg text-sm font-medium text-center transition-colors ${
                   action.pulse 
-                    ? "bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700"
-                    : "bg-gray-50 hover:bg-orange-50 text-gray-700 hover:text-orange-700"
+                    ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700"
+                    : "bg-gray-50 hover:bg-teal-50 text-gray-700 hover:text-teal-700"
                 }`}
               >
                 {action.pulse && <Zap className="w-4 h-4 inline mr-1" />}
@@ -314,20 +314,20 @@ export default function EmployerDashboard() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
+                  <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                     <option>Engineering</option>
                     <option>Marketing</option>
                     <option>Sales</option>
@@ -337,11 +337,11 @@ export default function EmployerDashboard() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-                  <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
+                  <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Coverage Tier</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                     <option>Employee Only</option>
                     <option>Employee + Spouse</option>
                     <option>Employee + Children</option>
@@ -358,7 +358,7 @@ export default function EmployerDashboard() {
                 </button>
                 <button 
                   onClick={() => router.push('/employer/roster/add')}
-                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                  className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
                 >
                   Continue to Full Form
                 </button>
@@ -404,7 +404,7 @@ export default function EmployerDashboard() {
                   <div className="p-6 space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Report Type</label>
-                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                         <option>Monthly Utilization Summary</option>
                         <option>Claims Detail Report</option>
                         <option>Employee Census</option>
@@ -415,26 +415,26 @@ export default function EmployerDashboard() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-                        <input type="date" defaultValue="2026-02-01" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
+                        <input type="date" defaultValue="2026-02-01" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-                        <input type="date" defaultValue="2026-02-28" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
+                        <input type="date" defaultValue="2026-02-28" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Format</label>
                       <div className="flex gap-4">
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="pdf" defaultChecked className="text-orange-600 focus:ring-orange-500" />
+                          <input type="radio" name="format" value="pdf" defaultChecked className="text-teal-600 focus:ring-teal-500" />
                           <span className="text-sm text-gray-700">PDF</span>
                         </label>
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="excel" className="text-orange-600 focus:ring-orange-500" />
+                          <input type="radio" name="format" value="excel" className="text-teal-600 focus:ring-teal-500" />
                           <span className="text-sm text-gray-700">Excel</span>
                         </label>
                         <label className="flex items-center gap-2">
-                          <input type="radio" name="format" value="csv" className="text-orange-600 focus:ring-orange-500" />
+                          <input type="radio" name="format" value="csv" className="text-teal-600 focus:ring-teal-500" />
                           <span className="text-sm text-gray-700">CSV</span>
                         </label>
                       </div>
@@ -449,7 +449,7 @@ export default function EmployerDashboard() {
                     </button>
                     <button 
                       onClick={handleDownloadReport}
-                      className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium flex items-center gap-2"
+                      className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium flex items-center gap-2"
                     >
                       <Download className="w-4 h-4" />
                       Download
@@ -486,12 +486,12 @@ export default function EmployerDashboard() {
                 </button>
               </div>
               <div className="p-6">
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+                <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 mb-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <Clock className="w-5 h-5 text-amber-600" />
-                    <span className="font-semibold text-amber-800">14 Days Remaining</span>
+                    <Clock className="w-5 h-5 text-teal-600" />
+                    <span className="font-semibold text-teal-800">14 Days Remaining</span>
                   </div>
-                  <p className="text-sm text-amber-700">Open enrollment closes on March 26, 2026 at 11:59 PM</p>
+                  <p className="text-sm text-teal-700">Open enrollment closes on March 26, 2026 at 11:59 PM</p>
                 </div>
 
                 <div className="space-y-4">
@@ -505,7 +505,7 @@ export default function EmployerDashboard() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Pending</span>
-                    <span className="font-semibold text-amber-600">35 (4.1%)</span>
+                    <span className="font-semibold text-teal-600">35 (4.1%)</span>
                   </div>
                   <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div className="h-full w-[95.9%] bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" />
@@ -521,7 +521,7 @@ export default function EmployerDashboard() {
                 </button>
                 <button 
                   onClick={() => { setShowEnrollmentModal(false); router.push('/employer/enrollment'); }}
-                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium flex items-center gap-2"
+                  className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium flex items-center gap-2"
                 >
                   <Mail className="w-4 h-4" />
                   Send Reminder
@@ -573,14 +573,14 @@ export default function EmployerDashboard() {
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-500">Due Date</span>
-                        <span className="text-amber-600 font-medium">Mar 19, 2026 (7 days)</span>
+                        <span className="text-teal-600 font-medium">Mar 19, 2026 (7 days)</span>
                       </div>
                     </div>
 
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
-                        <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                        <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                           <option>ACH - ****4521 (Primary)</option>
                           <option>Wire Transfer</option>
                           <option>Check</option>
@@ -601,7 +601,7 @@ export default function EmployerDashboard() {
                     </button>
                     <button 
                       onClick={handlePayInvoice}
-                      className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                      className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
                     >
                       Pay $142,850.00
                     </button>
@@ -640,15 +640,15 @@ export default function EmployerDashboard() {
                 {pendingEmployees.map((emp) => (
                   <div key={emp.id} className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                        <User className="w-5 h-5 text-orange-600" />
+                      <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
+                        <User className="w-5 h-5 text-teal-600" />
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">{emp.name}</p>
                         <p className="text-sm text-gray-500">{emp.department} • Starts {emp.startDate}</p>
                       </div>
                     </div>
-                    <button className="text-sm text-orange-600 hover:text-orange-700 font-medium">
+                    <button className="text-sm text-teal-600 hover:text-teal-700 font-medium">
                       Complete
                     </button>
                   </div>
@@ -663,7 +663,7 @@ export default function EmployerDashboard() {
                 </button>
                 <button 
                   onClick={() => { setShowPendingModal(false); router.push('/employer/roster'); }}
-                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                  className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
                 >
                   View All Roster
                 </button>
@@ -703,8 +703,8 @@ export default function EmployerDashboard() {
                     </div>
                     <div className="p-6 space-y-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-                          <Calendar className="w-6 h-6 text-orange-600" />
+                        <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center">
+                          <Calendar className="w-6 h-6 text-teal-600" />
                         </div>
                         <div>
                           <h4 className="font-semibold text-gray-900">{event.event}</h4>
@@ -731,7 +731,7 @@ export default function EmployerDashboard() {
                       >
                         Close
                       </button>
-                      <button className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium">
+                      <button className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium">
                         Add to Calendar
                       </button>
                     </div>
@@ -776,11 +776,11 @@ export default function EmployerDashboard() {
                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
                           activity.type === "enrollment" ? "bg-green-100" :
                           activity.type === "claim" ? "bg-blue-100" :
-                          activity.type === "payment" ? "bg-amber-100" : "bg-gray-100"
+                          activity.type === "payment" ? "bg-teal-100" : "bg-gray-100"
                         }`}>
                           {activity.type === "enrollment" && <Users className="w-6 h-6 text-green-600" />}
                           {activity.type === "claim" && <FileText className="w-6 h-6 text-blue-600" />}
-                          {activity.type === "payment" && <CreditCard className="w-6 h-6 text-amber-600" />}
+                          {activity.type === "payment" && <CreditCard className="w-6 h-6 text-teal-600" />}
                           {activity.type === "update" && <User className="w-6 h-6 text-gray-600" />}
                         </div>
                         <div>
@@ -813,7 +813,7 @@ export default function EmployerDashboard() {
                             router.push('/employer/billing');
                           }
                         }}
-                        className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium flex items-center gap-2"
+                        className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium flex items-center gap-2"
                       >
                         View Details
                         <ExternalLink className="w-4 h-4" />
@@ -885,8 +885,8 @@ export default function EmployerDashboard() {
                         <div className="text-lg font-bold text-green-600">198</div>
                         <div className="text-xs text-gray-500">Approved</div>
                       </div>
-                      <div className="bg-amber-50 rounded-xl p-3 text-center">
-                        <div className="text-lg font-bold text-amber-600">24</div>
+                      <div className="bg-teal-50 rounded-xl p-3 text-center">
+                        <div className="text-lg font-bold text-teal-600">24</div>
                         <div className="text-xs text-gray-500">Pending</div>
                       </div>
                       <div className="bg-red-50 rounded-xl p-3 text-center">
@@ -926,7 +926,7 @@ export default function EmployerDashboard() {
                   <div className="space-y-4">
                     <div className="text-center py-4">
                       <div className="text-4xl font-bold text-gray-900 mb-1">$1.24M</div>
-                      <div className="text-amber-600 text-sm font-medium">+2% vs last year</div>
+                      <div className="text-teal-600 text-sm font-medium">+2% vs last year</div>
                     </div>
                     <div className="bg-gray-50 rounded-xl p-4">
                       <div className="flex justify-between text-sm mb-2">
@@ -934,7 +934,7 @@ export default function EmployerDashboard() {
                         <span className="text-gray-900 font-medium">$5.2M</span>
                       </div>
                       <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div className="h-full w-[24%] bg-gradient-to-r from-orange-500 to-amber-500 rounded-full" />
+                        <div className="h-full w-[24%] bg-gradient-to-r from-teal-500 to-teal-500 rounded-full" />
                       </div>
                       <div className="text-xs text-gray-500 mt-1">24% of annual budget utilized</div>
                     </div>
@@ -950,7 +950,7 @@ export default function EmployerDashboard() {
                 </button>
                 <button 
                   onClick={() => { setShowStatModal(null); router.push('/employer/analytics'); }}
-                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                  className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium"
                 >
                   View Full Report
                 </button>

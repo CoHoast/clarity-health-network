@@ -67,7 +67,7 @@ export default function RosterPage() {
     switch (status) {
       case "active": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full"><UserCheck className="w-3 h-3" />Active</span>;
       case "termed": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-full"><UserX className="w-3 h-3" />Termed</span>;
-      case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
+      case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-teal-100 text-teal-700 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
       case "cobra": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">COBRA</span>;
       default: return null;
     }
@@ -149,7 +149,7 @@ export default function RosterPage() {
           <p className="text-sm text-gray-500">Active Employees</p>
         </button>
         <button onClick={() => setStatusFilter("Pending")} className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:border-teal-300 transition-colors text-left">
-          <p className="text-2xl font-bold text-amber-600">12</p>
+          <p className="text-2xl font-bold text-teal-600">12</p>
           <p className="text-sm text-gray-500">Pending Enrollment</p>
         </button>
         <button onClick={() => setStatusFilter("COBRA")} className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:border-teal-300 transition-colors text-left">
@@ -337,7 +337,7 @@ export default function RosterPage() {
                 {/* Status & Plan */}
                 <div className="flex items-center gap-4">
                   {getStatusBadge(selectedEmployee.status)}
-                  <span className="px-3 py-1 bg-teal-100 text-orange-700 text-sm font-medium rounded-full">
+                  <span className="px-3 py-1 bg-teal-100 text-teal-700 text-sm font-medium rounded-full">
                     {selectedEmployee.plan}
                   </span>
                 </div>
