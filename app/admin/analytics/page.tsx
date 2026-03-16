@@ -259,18 +259,18 @@ export default function AnalyticsPage() {
             onClick={() => setSelectedDrilldown(kpi.drilldown)}
             className={`rounded-xl p-4 text-left transition-all group shadow-lg ${
               isDark 
-                ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20 hover:from-cyan-800/40 hover:to-teal-800/40'
+                ? 'bg-slate-950 border border-slate-800 hover:bg-slate-900'
                 : 'bg-gradient-to-br from-cyan-600 to-teal-600 border border-cyan-500/50 hover:from-cyan-500 hover:to-teal-500'
             }`}
           >
-            <p className={`text-sm mb-1 ${isDark ? 'text-slate-300' : 'text-cyan-100'}`}>{kpi.label}</p>
-            <p className={`text-2xl font-bold transition-colors ${isDark ? 'text-cyan-400' : 'text-white'}`}>{kpi.value}</p>
+            <p className={`text-sm mb-1 ${isDark ? 'text-slate-400' : 'text-cyan-100'}`}>{kpi.label}</p>
+            <p className={`text-2xl font-bold transition-colors ${isDark ? 'text-white' : 'text-white'}`}>{kpi.value}</p>
             <p className={`text-sm flex items-center gap-1 mt-1 ${isDark ? kpi.color : 'text-green-200'}`}>
               {kpi.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
               {kpi.change}
             </p>
             <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className={`text-xs flex items-center gap-1 ${isDark ? 'text-cyan-300' : 'text-white/80'}`}>
+              <span className={`text-xs flex items-center gap-1 ${isDark ? 'text-cyan-400' : 'text-white/80'}`}>
                 Click for details <ArrowUpRight className="w-3 h-3" />
               </span>
             </div>
@@ -387,7 +387,7 @@ export default function AnalyticsPage() {
                 key={stat.label}
                 className={`rounded-xl p-5 cursor-pointer transition-all shadow-lg ${
                   isDark 
-                    ? 'bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-500/20 hover:from-cyan-800/40 hover:to-teal-800/40'
+                    ? 'bg-slate-950 border border-slate-800 hover:bg-slate-900'
                     : 'bg-gradient-to-br from-cyan-600 to-teal-600 border border-cyan-500/50 hover:from-cyan-500 hover:to-teal-500'
                 }`} 
                 onClick={() => setSelectedDrilldown(stat.drilldown)}
@@ -399,8 +399,8 @@ export default function AnalyticsPage() {
                 }`}>
                   <Icon className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-white'}`} />
                 </div>
-                <p className={`text-3xl font-bold ${isDark ? 'text-cyan-400' : 'text-white'}`}>{stat.value}</p>
-                <p className={isDark ? 'text-slate-300' : 'text-cyan-100'}>{stat.label}</p>
+                <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-white'}`}>{stat.value}</p>
+                <p className={isDark ? 'text-slate-400' : 'text-cyan-100'}>{stat.label}</p>
               </div>
             );
           })}
