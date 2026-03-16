@@ -1077,16 +1077,16 @@ export default function ProductDemoPage() {
                 )}
               </div>
               
-              <p style={{ fontSize: 13, color: '#64748b', marginBottom: 24, fontStyle: 'italic' }}>
-                {docTab === 'email' 
-                  ? "The email includes pricing benchmarks showing the provider's charges are 32.6x the Medicare-allowed amount, with Accept/Counter buttons for easy response."
-                  : "The PDF attachment includes full CPT code breakdown comparing Medicare rates, regional hospital rates, and billed amounts for complete transparency."
-                }
-              </p>
+            </div>
 
-              {/* Key Features */}
-              <h5 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 16 }}>Key Features</h5>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 24 }}>
+            {/* Key Features - Dark Section */}
+            <div style={{ 
+              padding: 24, 
+              background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+              borderRadius: '0 0 20px 20px',
+            }}>
+              <h5 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: 'white' }}>Key Features</h5>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
                 {[
                   'Automatic bill intake via SFTP, email, or fax',
                   'AI-powered data extraction (99%+ accuracy)',
@@ -1098,14 +1098,13 @@ export default function ProductDemoPage() {
                   'HIPAA-compliant processing',
                 ].map((feature, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2">
                       <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span style={{ fontSize: 13, color: '#475569' }}>{feature}</span>
+                    <span style={{ fontSize: 13, color: '#94a3b8' }}>{feature}</span>
                   </div>
                 ))}
               </div>
-
             </div>
           </div>
         </div>
