@@ -25,15 +25,13 @@ export default function MarketingHeader() {
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              1-800-MEDCARE
+              1-800-555-0199
             </span>
             <span className="hidden sm:inline text-slate-400">|</span>
-            <span className="hidden sm:inline">24/7 Member Support</span>
+            <span className="hidden sm:inline">Provider Network Support</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/login" className="hover:text-teal-400 transition-colors">Member Login</Link>
-            <span className="text-slate-400">|</span>
-            <Link href="/login?type=provider" className="hover:text-teal-400 transition-colors">Provider Portal</Link>
+            <Link href="/admin-login" className="hover:text-teal-400 transition-colors">Admin Portal</Link>
           </div>
         </div>
       </div>

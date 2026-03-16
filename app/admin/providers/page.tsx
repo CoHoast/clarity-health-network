@@ -1,30 +1,45 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, Calendar, X, Shield, DollarSign, Send, Edit } from "lucide-react";
+import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, Calendar, X, DollarSign, Edit, User, CreditCard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
-const providers = [
-  { id: "PRV-001", name: "Cleveland Family Medicine", npi: "1234567890", taxId: "34-1234567", type: "Group Practice", specialty: "Family Medicine", location: "Cleveland, OH", address: "123 Medical Center Dr, Cleveland, OH 44101", phone: "(555) 123-4567", email: "info@clevelandfm.com", status: "active", contracted: "2022-01-15", claimsMtd: 234, feeSchedule: "120% Medicare" },
-  { id: "PRV-002", name: "Dr. Sarah Chen, MD", npi: "2345678901", taxId: "34-2345678", type: "Individual", specialty: "Internal Medicine", location: "Lakewood, OH", address: "456 Health Blvd, Lakewood, OH 44107", phone: "(555) 234-5678", email: "dr.chen@medical.com", status: "active", contracted: "2023-03-01", claimsMtd: 156, feeSchedule: "115% Medicare" },
-  { id: "PRV-003", name: "Metro Imaging Center", npi: "3456789012", taxId: "34-3456789", type: "Facility", specialty: "Diagnostic Imaging", location: "Cleveland, OH", address: "789 Imaging Way, Cleveland, OH 44102", phone: "(555) 345-6789", email: "scheduling@metroimaging.com", status: "active", contracted: "2021-06-15", claimsMtd: 89, feeSchedule: "Case Rate" },
-  { id: "PRV-004", name: "Cleveland Orthopedic", npi: "4567890123", taxId: "34-4567890", type: "Group Practice", specialty: "Orthopedics", location: "Beachwood, OH", address: "321 Bone & Joint Dr, Beachwood, OH 44122", phone: "(555) 456-7890", email: "contact@clevortho.com", status: "active", contracted: "2020-09-01", claimsMtd: 312, feeSchedule: "125% Medicare" },
-  { id: "PRV-005", name: "Dr. James Wilson, DO", npi: "5678901234", taxId: "34-5678901", type: "Individual", specialty: "Family Medicine", location: "Mentor, OH", address: "654 Wellness Ave, Mentor, OH 44060", phone: "(555) 567-8901", email: "jwilson@healthcare.com", status: "pending", contracted: "Pending", claimsMtd: 0, feeSchedule: "TBD" },
-  { id: "PRV-006", name: "Westlake Urgent Care", npi: "6789012345", taxId: "34-6789012", type: "Facility", specialty: "Urgent Care", location: "Westlake, OH", address: "987 Quick Care Blvd, Westlake, OH 44145", phone: "(555) 678-9012", email: "info@westlakeuc.com", status: "active", contracted: "2023-01-01", claimsMtd: 445, feeSchedule: "110% Medicare" },
-  { id: "PRV-007", name: "Dr. Amy Foster, MD", npi: "7890123456", taxId: "34-7890123", type: "Individual", specialty: "Pediatrics", location: "Shaker Heights, OH", address: "147 Kids Care Lane, Shaker Heights, OH 44120", phone: "(555) 789-0123", email: "dr.foster@kidscare.com", status: "active", contracted: "2022-08-15", claimsMtd: 78, feeSchedule: "120% Medicare" },
-  { id: "PRV-008", name: "Quest Diagnostics Cleveland", npi: "8901234567", taxId: "34-8901234", type: "Facility", specialty: "Laboratory", location: "Cleveland, OH", address: "258 Lab Services Rd, Cleveland, OH 44103", phone: "(555) 890-1234", email: "clevelandlab@quest.com", status: "active", contracted: "2019-01-01", claimsMtd: 892, feeSchedule: "65% Medicare" },
-  { id: "PRV-009", name: "Cleveland Cardiology Associates", npi: "9012345678", taxId: "34-9012345", type: "Group Practice", specialty: "Cardiology", location: "Cleveland, OH", address: "369 Heart Center Dr, Cleveland, OH 44104", phone: "(555) 901-2345", email: "info@clevcardio.com", status: "active", contracted: "2020-03-15", claimsMtd: 267, feeSchedule: "130% Medicare" },
-  { id: "PRV-010", name: "Women's Health Center", npi: "0123456789", taxId: "34-0123456", type: "Facility", specialty: "OB/GYN", location: "Parma, OH", address: "741 Women's Way, Parma, OH 44129", phone: "(555) 012-3456", email: "appointments@whcenter.com", status: "active", contracted: "2021-11-01", claimsMtd: 198, feeSchedule: "115% Medicare" },
-  { id: "PRV-011", name: "Physical Therapy Plus", npi: "1122334455", taxId: "34-1122334", type: "Group Practice", specialty: "Physical Therapy", location: "Brooklyn, OH", address: "852 Rehab Road, Brooklyn, OH 44144", phone: "(555) 112-2334", email: "schedule@ptplus.com", status: "active", contracted: "2022-05-01", claimsMtd: 156, feeSchedule: "100% Medicare" },
-  { id: "PRV-012", name: "Westlake Dermatology", npi: "2233445566", taxId: "34-2233445", type: "Group Practice", specialty: "Dermatology", location: "Westlake, OH", address: "963 Skin Care Blvd, Westlake, OH 44145", phone: "(555) 223-3445", email: "info@westlakederm.com", status: "active", contracted: "2023-02-15", claimsMtd: 134, feeSchedule: "120% Medicare" },
-  { id: "PRV-013", name: "Cleveland ENT Associates", npi: "3344556677", taxId: "34-3344556", type: "Group Practice", specialty: "Otolaryngology", location: "Independence, OH", address: "147 Hearing Way, Independence, OH 44131", phone: "(555) 334-4556", email: "appointments@clevent.com", status: "active", contracted: "2021-07-01", claimsMtd: 89, feeSchedule: "125% Medicare" },
-  { id: "PRV-014", name: "Sleep Center of Ohio", npi: "4455667788", taxId: "34-4455667", type: "Facility", specialty: "Sleep Medicine", location: "Strongsville, OH", address: "258 Rest Drive, Strongsville, OH 44136", phone: "(555) 445-5667", email: "info@sleepcenteroh.com", status: "active", contracted: "2022-09-01", claimsMtd: 45, feeSchedule: "Case Rate" },
-  { id: "PRV-015", name: "PharmaCare Specialty", npi: "5566778899", taxId: "34-5566778", type: "Facility", specialty: "Specialty Pharmacy", location: "Cleveland, OH", address: "369 Rx Center Dr, Cleveland, OH 44105", phone: "(555) 556-6778", email: "specialty@pharmacare.com", status: "active", contracted: "2020-06-01", claimsMtd: 234, feeSchedule: "AWP minus 15%" },
-  { id: "PRV-016", name: "Dr. Robert Kim, MD", npi: "6677889900", taxId: "34-6677889", type: "Individual", specialty: "Gastroenterology", location: "Solon, OH", address: "741 GI Center Lane, Solon, OH 44139", phone: "(555) 667-7889", email: "dr.kim@gicare.com", status: "active", contracted: "2021-04-15", claimsMtd: 112, feeSchedule: "125% Medicare" },
-  { id: "PRV-017", name: "Dr. Lisa Martinez, MD", npi: "7788990011", taxId: "34-7788990", type: "Individual", specialty: "Neurology", location: "Mayfield, OH", address: "852 Brain Health Ave, Mayfield, OH 44143", phone: "(555) 778-8990", email: "dr.martinez@neurocare.com", status: "active", contracted: "2022-02-01", claimsMtd: 78, feeSchedule: "130% Medicare" },
-  { id: "PRV-018", name: "Dr. Michael Brown, MD", npi: "8899001122", taxId: "34-8899001", type: "Individual", specialty: "Pulmonology", location: "Twinsburg, OH", address: "963 Lung Care Rd, Twinsburg, OH 44087", phone: "(555) 889-9001", email: "dr.brown@pulmocare.com", status: "pending", contracted: "Pending", claimsMtd: 0, feeSchedule: "TBD" },
-  { id: "PRV-019", name: "Inactive Provider LLC", npi: "9900112233", taxId: "34-9900112", type: "Group Practice", specialty: "General Surgery", location: "Akron, OH", address: "147 Old Surgery Ln, Akron, OH 44301", phone: "(555) 990-0112", email: "contact@inactive.com", status: "inactive", contracted: "2019-01-01", claimsMtd: 0, feeSchedule: "Terminated" },
-  { id: "PRV-020", name: "Cleveland Mental Health", npi: "0011223344", taxId: "34-0011223", type: "Group Practice", specialty: "Psychiatry", location: "Cleveland, OH", address: "258 Mind Wellness Dr, Cleveland, OH 44106", phone: "(555) 001-1223", email: "intake@clevmh.com", status: "active", contracted: "2023-06-01", claimsMtd: 167, feeSchedule: "110% Medicare" },
+interface Provider {
+  id: string;
+  practiceName: string;
+  orgNpi: string;
+  servicingNpi: string;
+  payToNpi: string;
+  taxId: string;
+  type: string;
+  specialty: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
+  email: string;
+  contactName: string;
+  status: string;
+  contractStart: string;
+  contractEnd: string;
+  discountType: string;
+  discountRate: string;
+  serviceOverrides?: { service: string; rate: string }[];
+}
+
+const providers: Provider[] = [
+  { id: "PRV-001", practiceName: "Cleveland Family Medicine", orgNpi: "1234567890", servicingNpi: "1111111111", payToNpi: "1234567890", taxId: "34-1234567", type: "Group Practice", specialty: "Family Medicine", address: "123 Medical Center Dr", city: "Cleveland", state: "OH", zip: "44101", phone: "(555) 123-4567", email: "info@clevelandfm.com", contactName: "Mary Johnson", status: "active", contractStart: "2024-01-15", contractEnd: "2027-01-14", discountType: "% Off Billed", discountRate: "35%", serviceOverrides: [{ service: "Office Visit", rate: "40%" }] },
+  { id: "PRV-002", practiceName: "Dr. Sarah Chen, MD", orgNpi: "2345678901", servicingNpi: "2345678901", payToNpi: "2345678901", taxId: "34-2345678", type: "Individual", specialty: "Internal Medicine", address: "456 Health Blvd", city: "Lakewood", state: "OH", zip: "44107", phone: "(555) 234-5678", email: "dr.chen@medical.com", contactName: "Dr. Sarah Chen", status: "active", contractStart: "2025-03-01", contractEnd: "2028-02-28", discountType: "% of Medicare", discountRate: "115%", },
+  { id: "PRV-003", practiceName: "Metro Imaging Center", orgNpi: "3456789012", servicingNpi: "3333333333", payToNpi: "3456789012", taxId: "34-3456789", type: "Facility", specialty: "Diagnostic Imaging", address: "789 Imaging Way", city: "Cleveland", state: "OH", zip: "44102", phone: "(555) 345-6789", email: "scheduling@metroimaging.com", contactName: "Tom Richards", status: "active", contractStart: "2023-06-15", contractEnd: "2026-06-14", discountType: "Case Rate", discountRate: "See Schedule", },
+  { id: "PRV-004", practiceName: "Cleveland Orthopedic Associates", orgNpi: "4567890123", servicingNpi: "4444444444", payToNpi: "9999999991", taxId: "34-4567890", type: "Group Practice", specialty: "Orthopedics", address: "321 Bone & Joint Dr", city: "Beachwood", state: "OH", zip: "44122", phone: "(555) 456-7890", email: "contact@clevortho.com", contactName: "James Miller", status: "active", contractStart: "2024-09-01", contractEnd: "2027-08-31", discountType: "% Off Billed", discountRate: "40%", },
+  { id: "PRV-005", practiceName: "Dr. James Wilson, DO", orgNpi: "5678901234", servicingNpi: "5678901234", payToNpi: "5678901234", taxId: "34-5678901", type: "Individual", specialty: "Family Medicine", address: "654 Wellness Ave", city: "Mentor", state: "OH", zip: "44060", phone: "(555) 567-8901", email: "jwilson@healthcare.com", contactName: "Dr. James Wilson", status: "pending", contractStart: "Pending", contractEnd: "Pending", discountType: "TBD", discountRate: "TBD", },
+  { id: "PRV-006", practiceName: "Westlake Urgent Care", orgNpi: "6789012345", servicingNpi: "6666666666", payToNpi: "6789012345", taxId: "34-6789012", type: "Facility", specialty: "Urgent Care", address: "987 Quick Care Blvd", city: "Westlake", state: "OH", zip: "44145", phone: "(555) 678-9012", email: "info@westlakeuc.com", contactName: "Patricia Lee", status: "active", contractStart: "2025-01-01", contractEnd: "2028-12-31", discountType: "% Off Billed", discountRate: "30%", },
+  { id: "PRV-007", practiceName: "Cleveland Cardiology Associates", orgNpi: "9012345678", servicingNpi: "9999999999", payToNpi: "9012345678", taxId: "34-9012345", type: "Group Practice", specialty: "Cardiology", address: "369 Heart Center Dr", city: "Cleveland", state: "OH", zip: "44104", phone: "(555) 901-2345", email: "info@clevcardio.com", contactName: "Robert Thompson", status: "active", contractStart: "2024-03-15", contractEnd: "2027-03-14", discountType: "% of Medicare", discountRate: "130%", },
+  { id: "PRV-008", practiceName: "Quest Diagnostics Cleveland", orgNpi: "8901234567", servicingNpi: "8888888888", payToNpi: "8901234567", taxId: "34-8901234", type: "Facility", specialty: "Laboratory", address: "258 Lab Services Rd", city: "Cleveland", state: "OH", zip: "44103", phone: "(555) 890-1234", email: "clevelandlab@quest.com", contactName: "Lab Admin", status: "active", contractStart: "2023-01-01", contractEnd: "2026-12-31", discountType: "% Off Billed", discountRate: "45%", },
+  { id: "PRV-009", practiceName: "Physical Therapy Plus", orgNpi: "1122334455", servicingNpi: "1122334455", payToNpi: "1122334455", taxId: "34-1122334", type: "Group Practice", specialty: "Physical Therapy", address: "852 Rehab Road", city: "Brooklyn", state: "OH", zip: "44144", phone: "(555) 112-2334", email: "schedule@ptplus.com", contactName: "Linda White", status: "active", contractStart: "2024-05-01", contractEnd: "2027-04-30", discountType: "% of Medicare", discountRate: "100%", },
+  { id: "PRV-010", practiceName: "Inactive Provider LLC", orgNpi: "9900112233", servicingNpi: "9900112233", payToNpi: "9900112233", taxId: "34-9900112", type: "Group Practice", specialty: "General Surgery", address: "147 Old Surgery Ln", city: "Akron", state: "OH", zip: "44301", phone: "(555) 990-0112", email: "contact@inactive.com", contactName: "N/A", status: "inactive", contractStart: "2019-01-01", contractEnd: "2022-12-31", discountType: "Terminated", discountRate: "N/A", },
 ];
 
 const statusOptions = ["All", "Active", "Pending", "Inactive"];
@@ -34,19 +49,12 @@ export default function ProvidersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All Types");
-  const [selectedProvider, setSelectedProvider] = useState<typeof providers[0] | null>(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showMessageModal, setShowMessageModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [messageProvider, setMessageProvider] = useState<typeof providers[0] | null>(null);
-  const [editProvider, setEditProvider] = useState<typeof providers[0] | null>(null);
-  const [messageSubject, setMessageSubject] = useState("");
-  const [messageBody, setMessageBody] = useState("");
-  const [actionSuccess, setActionSuccess] = useState(false);
+  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
 
   const filteredProviders = providers.filter((provider) => {
-    const matchesSearch = provider.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      provider.npi.includes(searchQuery) ||
+    const matchesSearch = provider.practiceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      provider.orgNpi.includes(searchQuery) ||
+      provider.servicingNpi.includes(searchQuery) ||
       provider.specialty.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === "All" || provider.status.toLowerCase() === statusFilter.toLowerCase();
     const matchesType = typeFilter === "All Types" || provider.type === typeFilter;
@@ -62,44 +70,8 @@ export default function ProvidersPage() {
     }
   };
 
-  const getTypeBadge = (type: string) => {
-    const colors: Record<string, string> = {
-      "Individual": "bg-blue-500/20 text-blue-400",
-      "Group Practice": "bg-cyan-600/20 text-cyan-500",
-      "Facility": "bg-teal-500/20 text-teal-400",
-    };
-    return <span className={`px-2 py-1 text-xs font-medium rounded ${colors[type] || "bg-slate-600 text-slate-300"}`}>{type}</span>;
-  };
-
-  const openMessageModal = (provider: typeof providers[0]) => {
-    setMessageProvider(provider);
-    setMessageSubject("");
-    setMessageBody("");
-    setActionSuccess(false);
-    setShowMessageModal(true);
-  };
-
-  const openEditModal = (provider: typeof providers[0]) => {
-    setEditProvider({...provider});
-    setActionSuccess(false);
-    setShowEditModal(true);
-  };
-
-  const handleSendMessage = () => {
-    setActionSuccess(true);
-    setTimeout(() => {
-      setShowMessageModal(false);
-      setActionSuccess(false);
-    }, 2000);
-  };
-
-  const handleSaveEdit = () => {
-    setActionSuccess(true);
-    setTimeout(() => {
-      setShowEditModal(false);
-      setActionSuccess(false);
-    }, 2000);
-  };
+  const activeCount = providers.filter(p => p.status === "active").length;
+  const pendingCount = providers.filter(p => p.status === "pending").length;
 
   return (
     <div className="space-y-6">
@@ -107,94 +79,113 @@ export default function ProvidersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white">Provider Network</h1>
-          <p className="text-slate-400">Manage providers, credentials, and contracts</p>
+          <p className="text-slate-400 mt-1">{activeCount} active providers • {pendingCount} pending applications</p>
         </div>
-        <div className="flex gap-3">
-          <a href="/docs/provider-network-report.pdf" download className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 border border-slate-600">
-            <Download className="w-4 h-4" />
-            Export
-          </a>
-          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
-            <Plus className="w-4 h-4" />
-            Add Provider
-          </button>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>2,847</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Total Providers</p>
-        </div>
-        <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>2,789</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Credentialed</p>
-        </div>
-        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>34</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending Review</p>
-        </div>
-        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
-          <p className="text-2xl font-bold" style={{ color: 'white' }}>156</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Locations</p>
-        </div>
+        <Link
+          href="/admin/providers/new"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 font-medium rounded-lg hover:bg-teal-700 transition-colors"
+          style={{ color: 'white' }}
+        >
+          <Plus className="w-4 h-4" />
+          Add Provider
+        </Link>
       </div>
 
       {/* Filters */}
-      <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-            <input
-              type="text"
-              placeholder="Search by name, NPI, or specialty..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
-            />
-          </div>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white">
-            {statusOptions.map(s => <option key={s}>{s}</option>)}
-          </select>
-          <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white">
-            {typeOptions.map(t => <option key={t}>{t}</option>)}
-          </select>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search by name, NPI, or specialty..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
         </div>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+        >
+          {statusOptions.map((option) => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+        >
+          {typeOptions.map((option) => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+        <button className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors">
+          <Download className="w-4 h-4" />
+          Export
+        </button>
       </div>
 
       {/* Providers Table */}
       <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-800 border-b border-slate-700">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Provider</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Specialty</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Location</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Status</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold text-slate-400 uppercase">Claims MTD</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Actions</th>
+            <thead>
+              <tr className="border-b border-slate-700">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Provider</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">NPIs</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Specialty</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Contract</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Discount</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-700">
               {filteredProviders.map((provider) => (
-                <tr key={provider.id} className="hover:bg-slate-700/50 transition-colors">
-                  <td className="px-4 py-3">
+                <tr key={provider.id} className="hover:bg-slate-700/30 transition-colors">
+                  <td className="px-6 py-4">
                     <div>
-                      <p className="font-medium text-white">{provider.name}</p>
-                      <p className="text-xs text-slate-500">NPI: {provider.npi}</p>
+                      <p className="text-white font-medium">{provider.practiceName}</p>
+                      <p className="text-slate-400 text-sm">{provider.city}, {provider.state}</p>
                     </div>
                   </td>
-                  <td className="px-4 py-3">{getTypeBadge(provider.type)}</td>
-                  <td className="px-4 py-3 text-slate-300">{provider.specialty}</td>
-                  <td className="px-4 py-3 text-slate-400 text-sm">{provider.location}</td>
-                  <td className="px-4 py-3">{getStatusBadge(provider.status)}</td>
-                  <td className="px-4 py-3 text-center text-slate-300">{provider.claimsMtd}</td>
-                  <td className="px-4 py-3 text-right">
-                    <button onClick={() => setSelectedProvider(provider)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
+                  <td className="px-6 py-4">
+                    <div className="text-xs font-mono space-y-1">
+                      <div><span className="text-slate-500">Org:</span> <span className="text-slate-300">{provider.orgNpi}</span></div>
+                      <div><span className="text-slate-500">Svc:</span> <span className="text-slate-300">{provider.servicingNpi}</span></div>
+                      <div><span className="text-slate-500">Pay:</span> <span className="text-cyan-400">{provider.payToNpi}</span></div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-slate-300">{provider.specialty}</span>
+                    <p className="text-slate-500 text-xs">{provider.type}</p>
+                  </td>
+                  <td className="px-6 py-4">
+                    {provider.contractEnd !== "Pending" ? (
+                      <div className="text-sm">
+                        <p className="text-slate-300">{provider.contractStart}</p>
+                        <p className="text-slate-500">to {provider.contractEnd}</p>
+                      </div>
+                    ) : (
+                      <span className="text-amber-400 text-sm">Pending</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div>
+                      <p className="text-green-400 font-medium">{provider.discountRate}</p>
+                      <p className="text-slate-500 text-xs">{provider.discountType}</p>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">{getStatusBadge(provider.status)}</td>
+                  <td className="px-6 py-4 text-right">
+                    <button
+                      onClick={() => setSelectedProvider(provider)}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                    >
                       <Eye className="w-4 h-4" />
+                      View
                     </button>
                   </td>
                 </tr>
@@ -207,381 +198,140 @@ export default function ProvidersPage() {
       {/* Provider Detail Modal */}
       <AnimatePresence>
         {selectedProvider && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedProvider(null)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-cyan-600/20 rounded-lg flex items-center justify-center">
-                    <Building2 className="w-6 h-6 text-cyan-500" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-white">{selectedProvider.name}</h2>
-                    <p className="text-sm text-slate-400">{selectedProvider.specialty} • NPI: {selectedProvider.npi}</p>
-                  </div>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProvider(null)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-auto border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="p-6 border-b border-slate-700 flex items-start justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">{selectedProvider.practiceName}</h2>
+                  <p className="text-slate-400">{selectedProvider.specialty} • {selectedProvider.type}</p>
                 </div>
-                <button onClick={() => setSelectedProvider(null)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="p-4 overflow-y-auto max-h-[calc(90vh-140px)]">
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="space-y-4">
-                    <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-blue-400" />Contact Info</h3>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2 text-slate-300"><Phone className="w-4 h-4 text-slate-500" />{selectedProvider.phone}</div>
-                        <div className="flex items-center gap-2 text-slate-300"><Mail className="w-4 h-4 text-slate-500" />{selectedProvider.email}</div>
-                        <div className="flex items-center gap-2 text-slate-300"><MapPin className="w-4 h-4 text-slate-500" />{selectedProvider.address}</div>
-                      </div>
-                    </div>
-                    <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" />Status</h3>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between"><span className="text-slate-400">Network Status</span>{getStatusBadge(selectedProvider.status)}</div>
-                        <div className="flex justify-between"><span className="text-slate-400">Provider Type</span>{getTypeBadge(selectedProvider.type)}</div>
-                        <div className="flex justify-between"><span className="text-slate-400">Contracted</span><span className="text-white">{selectedProvider.contracted}</span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><DollarSign className="w-4 h-4 text-amber-400" />Fee Schedule</h3>
-                      <p className="text-2xl font-bold text-white">{selectedProvider.feeSchedule}</p>
-                      <p className="text-sm text-slate-400 mt-1">Current reimbursement rate</p>
-                      <a href="/docs/contract" target="_blank" className="inline-flex items-center gap-1 text-cyan-500 hover:text-cyan-400 text-sm mt-3">
-                        <FileText className="w-4 h-4" />View Contract
-                      </a>
-                    </div>
-                    <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3">Claims This Month</h3>
-                      <p className="text-3xl font-bold text-white">{selectedProvider.claimsMtd}</p>
-                      <p className="text-sm text-slate-400">Total claims submitted</p>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Calendar className="w-4 h-4 text-cyan-500" />Credentials</h3>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between"><span className="text-slate-400">License</span><span className="text-green-400">Valid</span></div>
-                        <div className="flex justify-between"><span className="text-slate-400">DEA</span><span className="text-green-400">Valid</span></div>
-                        <div className="flex justify-between"><span className="text-slate-400">Malpractice</span><span className="text-green-400">Current</span></div>
-                        <div className="flex justify-between"><span className="text-slate-400">Board Cert</span><span className="text-green-400">Valid</span></div>
-                      </div>
-                    </div>
-                    <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3">Quick Actions</h3>
-                      <div className="space-y-2">
-                        <a href="/docs/contract" target="_blank" className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"><FileText className="w-4 h-4" />View Contract</a>
-                        <button 
-                          onClick={() => { setSelectedProvider(null); openMessageModal(selectedProvider); }}
-                          className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"
-                        >
-                          <Mail className="w-4 h-4" />Send Message
-                        </button>
-                        <a href="/admin/credentialing" className="flex items-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg text-sm text-white w-full"><Shield className="w-4 h-4" />View Credentials</a>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-3">
+                  {getStatusBadge(selectedProvider.status)}
+                  <button onClick={() => setSelectedProvider(null)} className="text-slate-400 hover:text-white">
+                    <X className="w-6 h-6" />
+                  </button>
                 </div>
               </div>
-              <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700 bg-slate-800">
-                <button 
-                  onClick={() => { setSelectedProvider(null); openEditModal(selectedProvider); }}
-                  className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm inline-flex items-center gap-2"
+
+              {/* Modal Content */}
+              <div className="p-6 space-y-6">
+                {/* NPI Section */}
+                <div className="bg-slate-700/30 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-teal-400" />
+                    NPI Numbers
+                  </h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Organization NPI (Type 2)</p>
+                      <p className="text-white font-mono text-lg">{selectedProvider.orgNpi}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Servicing Provider NPI (Type 1)</p>
+                      <p className="text-white font-mono text-lg">{selectedProvider.servicingNpi}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">Pay-To NPI</p>
+                      <p className="text-cyan-400 font-mono text-lg">{selectedProvider.payToNpi}</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-600">
+                    <p className="text-xs text-slate-500 mb-1">Tax ID / EIN</p>
+                    <p className="text-white font-mono">{selectedProvider.taxId}</p>
+                  </div>
+                </div>
+
+                {/* Contact & Location */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-slate-700/30 rounded-lg p-4">
+                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-teal-400" />
+                      Location
+                    </h3>
+                    <p className="text-slate-300">{selectedProvider.address}</p>
+                    <p className="text-slate-300">{selectedProvider.city}, {selectedProvider.state} {selectedProvider.zip}</p>
+                  </div>
+                  <div className="bg-slate-700/30 rounded-lg p-4">
+                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                      <User className="w-4 h-4 text-teal-400" />
+                      Contact
+                    </h3>
+                    <p className="text-slate-300">{selectedProvider.contactName}</p>
+                    <p className="text-slate-400 text-sm">{selectedProvider.phone}</p>
+                    <p className="text-slate-400 text-sm">{selectedProvider.email}</p>
+                  </div>
+                </div>
+
+                {/* Contract & Discount */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-slate-700/30 rounded-lg p-4">
+                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-teal-400" />
+                      Contract
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Start Date</span>
+                        <span className="text-white">{selectedProvider.contractStart}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">End Date</span>
+                        <span className="text-white">{selectedProvider.contractEnd}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-slate-700/30 rounded-lg p-4">
+                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-teal-400" />
+                      Discount Terms
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Type</span>
+                        <span className="text-white">{selectedProvider.discountType}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Rate</span>
+                        <span className="text-green-400 font-semibold">{selectedProvider.discountRate}</span>
+                      </div>
+                    </div>
+                    {selectedProvider.serviceOverrides && (
+                      <div className="mt-3 pt-3 border-t border-slate-600">
+                        <p className="text-xs text-slate-500 mb-2">Service-Specific Overrides</p>
+                        {selectedProvider.serviceOverrides.map((override, i) => (
+                          <div key={i} className="flex justify-between text-sm">
+                            <span className="text-slate-400">{override.service}</span>
+                            <span className="text-amber-400">{override.rate}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+                <button
+                  onClick={() => setSelectedProvider(null)}
+                  className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
                 >
-                  <Edit className="w-4 h-4" />Edit Provider
+                  Close
                 </button>
-                <button onClick={() => setSelectedProvider(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
+                <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                  <Edit className="w-4 h-4" />
+                  Edit Provider
+                </button>
               </div>
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Send Message Modal */}
-      <AnimatePresence>
-        {showMessageModal && messageProvider && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => !actionSuccess && setShowMessageModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
-              {actionSuccess ? (
-                <div className="p-8 text-center">
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
-                  <p className="text-slate-400">Your message has been sent to {messageProvider.name}.</p>
-                </div>
-              ) : (
-                <>
-                  <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
-                        <Mail className="w-5 h-5 text-blue-400" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-white">Send Message</h3>
-                        <p className="text-sm text-slate-400">to {messageProvider.name}</p>
-                      </div>
-                    </div>
-                    <button onClick={() => setShowMessageModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-                  </div>
-                  <div className="p-4 space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">To</label>
-                      <input 
-                        type="text" 
-                        value={messageProvider.email}
-                        readOnly
-                        className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-400 cursor-not-allowed" 
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Subject</label>
-                      <input 
-                        type="text" 
-                        value={messageSubject}
-                        onChange={(e) => setMessageSubject(e.target.value)}
-                        placeholder="Enter subject..."
-                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500" 
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Message</label>
-                      <textarea 
-                        value={messageBody}
-                        onChange={(e) => setMessageBody(e.target.value)}
-                        placeholder="Type your message..."
-                        rows={6}
-                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 resize-none" 
-                      />
-                    </div>
-                  </div>
-                  <div className="flex gap-2 p-4 border-t border-slate-700">
-                    <button onClick={() => setShowMessageModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSendMessage} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 inline-flex items-center justify-center gap-2">
-                      <Send className="w-4 h-4" />Send Message
-                    </button>
-                  </div>
-                </>
-              )}
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Edit Provider Modal */}
-      <AnimatePresence>
-        {showEditModal && editProvider && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => !actionSuccess && setShowEditModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              {actionSuccess ? (
-                <div className="p-8 text-center">
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Provider Updated!</h3>
-                  <p className="text-slate-400">Changes have been saved successfully.</p>
-                </div>
-              ) : (
-                <>
-                  <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
-                        <Edit className="w-5 h-5 text-cyan-500" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-white">Edit Provider</h3>
-                        <p className="text-sm text-slate-400">{editProvider.id}</p>
-                      </div>
-                    </div>
-                    <button onClick={() => setShowEditModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-                  </div>
-                  <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(90vh-160px)]">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Provider/Practice Name</label>
-                      <input 
-                        type="text" 
-                        value={editProvider.name}
-                        onChange={(e) => setEditProvider({...editProvider, name: e.target.value})}
-                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                      />
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">NPI</label>
-                        <input 
-                          type="text" 
-                          value={editProvider.npi}
-                          onChange={(e) => setEditProvider({...editProvider, npi: e.target.value})}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Tax ID</label>
-                        <input 
-                          type="text" 
-                          value={editProvider.taxId}
-                          onChange={(e) => setEditProvider({...editProvider, taxId: e.target.value})}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                        />
-                      </div>
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Type</label>
-                        <select 
-                          value={editProvider.type}
-                          onChange={(e) => setEditProvider({...editProvider, type: e.target.value})}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
-                        >
-                          <option>Individual</option>
-                          <option>Group Practice</option>
-                          <option>Facility</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Specialty</label>
-                        <input 
-                          type="text" 
-                          value={editProvider.specialty}
-                          onChange={(e) => setEditProvider({...editProvider, specialty: e.target.value})}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Address</label>
-                      <input 
-                        type="text" 
-                        value={editProvider.address}
-                        onChange={(e) => setEditProvider({...editProvider, address: e.target.value})}
-                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                      />
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Phone</label>
-                        <input 
-                          type="tel" 
-                          value={editProvider.phone}
-                          onChange={(e) => setEditProvider({...editProvider, phone: e.target.value})}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                        <input 
-                          type="email" 
-                          value={editProvider.email}
-                          onChange={(e) => setEditProvider({...editProvider, email: e.target.value})}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                        />
-                      </div>
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Status</label>
-                        <select 
-                          value={editProvider.status}
-                          onChange={(e) => setEditProvider({...editProvider, status: e.target.value})}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
-                        >
-                          <option value="active">Active</option>
-                          <option value="pending">Pending</option>
-                          <option value="inactive">Inactive</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Fee Schedule</label>
-                        <input 
-                          type="text" 
-                          value={editProvider.feeSchedule}
-                          onChange={(e) => setEditProvider({...editProvider, feeSchedule: e.target.value})}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 p-4 border-t border-slate-700">
-                    <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSaveEdit} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button>
-                  </div>
-                </>
-              )}
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Add Provider Modal */}
-      <AnimatePresence>
-        {showAddModal && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowAddModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold text-white">Add New Provider</h2>
-                <button onClick={() => setShowAddModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-              </div>
-              <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Provider/Practice Name</label>
-                  <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="Cleveland Family Medicine" />
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">NPI</label>
-                    <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="1234567890" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Tax ID</label>
-                    <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="XX-XXXXXXX" />
-                  </div>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Type</label>
-                    <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                      <option>Individual</option>
-                      <option>Group Practice</option>
-                      <option>Facility</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Specialty</label>
-                    <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                      <option>Family Medicine</option>
-                      <option>Internal Medicine</option>
-                      <option>Pediatrics</option>
-                      <option>Cardiology</option>
-                      <option>Orthopedics</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Address</label>
-                  <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="123 Medical Center Dr, Cleveland, OH 44101" />
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Phone</label>
-                    <input type="tel" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="(555) 123-4567" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                    <input type="email" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="contact@provider.com" />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700 bg-slate-800">
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">Cancel</button>
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Add Provider</button>
-              </div>
-            </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </div>

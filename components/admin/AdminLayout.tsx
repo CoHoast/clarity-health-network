@@ -40,52 +40,49 @@ const navigationGroups = [
     ],
   },
   {
-    label: "Operations",
+    label: "Providers",
     items: [
-      { name: "Claims", href: "/admin/claims", icon: FileText },
-      { name: "Claims Intake", href: "/admin/claims-intake", icon: FileText },
-      { name: "Members", href: "/admin/members", icon: Users },
-      { name: "Providers", href: "/admin/providers", icon: Building2 },
-      { name: "Payments", href: "/admin/payments", icon: DollarSign },
-      { name: "Communications", href: "/admin/communications", icon: Bell },
-    ],
-  },
-  {
-    label: "Network",
-    items: [
-      { name: "Credentialing", href: "/admin/credentialing", icon: BadgeCheck },
-      { name: "Contracts", href: "/admin/contracts", icon: FileSignature },
-      { name: "Fee Schedules", href: "/admin/fee-schedules", icon: Calculator },
+      { name: "All Providers", href: "/admin/providers", icon: Building2 },
+      { name: "Add Provider", href: "/admin/providers/new", icon: Users },
       { name: "Network Map", href: "/admin/network-map", icon: Globe },
     ],
   },
   {
-    label: "AI Engines",
+    label: "Contracts",
     items: [
-      { name: "FraudShield", href: "/admin/fraud-shield", icon: Shield },
-      { name: "BillReviewAI", href: "/admin/bill-review", icon: Brain },
-      { name: "Eligibility", href: "/admin/eligibility", icon: UserCheck },
-      { name: "NSA Compliance", href: "/admin/nsa-compliance", icon: AlertTriangle },
-      { name: "Pulse AI Config", href: "/admin/pulse-config", icon: Zap },
+      { name: "Active Contracts", href: "/admin/contracts", icon: FileSignature },
+      { name: "Expiring Soon", href: "/admin/contracts/expiring", icon: AlertTriangle },
+      { name: "Contract Templates", href: "/admin/contracts/templates", icon: FileText },
     ],
   },
   {
-    label: "Analytics",
+    label: "Rates & Discounts",
     items: [
-      { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-      { name: "Financial", href: "/admin/financial", icon: DollarSign },
-      { name: "Reports", href: "/admin/reports", icon: BarChart3 },
-      { name: "Compliance", href: "/admin/compliance", icon: AlertTriangle },
+      { name: "Discount Schedules", href: "/admin/discounts", icon: DollarSign },
+      { name: "Service Rate Matrix", href: "/admin/fee-schedules", icon: Calculator },
     ],
   },
   {
-    label: "System",
+    label: "Credentialing",
     items: [
-      { name: "Workflows", href: "/admin/workflows", icon: Settings },
-      { name: "Reference Data", href: "/admin/reference", icon: FileText },
-      { name: "Audit Logs", href: "/admin/audit-logs", icon: Lock },
-      { name: "Users", href: "/admin/users", icon: Lock },
-      { name: "Settings", href: "/admin/settings", icon: Settings },
+      { name: "Applications", href: "/admin/credentialing", icon: BadgeCheck },
+      { name: "Verification Status", href: "/admin/credentialing/verification", icon: UserCheck },
+    ],
+  },
+  {
+    label: "Reports",
+    items: [
+      { name: "Network Analytics", href: "/admin/analytics", icon: BarChart3 },
+      { name: "Export Data", href: "/admin/reports", icon: FileText },
+    ],
+  },
+  {
+    label: "Settings",
+    items: [
+      { name: "Organization", href: "/admin/settings", icon: Settings },
+      { name: "Team & Permissions", href: "/admin/users", icon: Users },
+      { name: "Notifications", href: "/admin/notifications", icon: Bell },
+      { name: "Audit Log", href: "/admin/audit-logs", icon: Lock },
     ],
   },
 ];

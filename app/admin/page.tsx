@@ -3,56 +3,58 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  FileText,
-  Users,
   Building2,
+  FileSignature,
   DollarSign,
   TrendingUp,
-  TrendingDown,
   AlertTriangle,
   CheckCircle,
   Clock,
-  Activity,
   ArrowRight,
-  Shield,
-  Brain,
   BarChart3,
-  Zap,
-  ChevronRight,
+  Users,
+  MapPin,
+  Calendar,
+  Plus,
 } from "lucide-react";
 
 const stats = [
-  { label: "Total Claims", value: "12,847", change: "+12%", trend: "up", icon: FileText, gradient: "from-cyan-600 to-teal-600" },
-  { label: "Active Members", value: "45,230", change: "+3.2%", trend: "up", icon: Users, gradient: "from-amber-500 to-orange-500" },
-  { label: "Network Providers", value: "2,847", change: "+24", trend: "up", icon: Building2, gradient: "from-green-500 to-emerald-600" },
-  { label: "Monthly Volume", value: "$4.2M", change: "+8.5%", trend: "up", icon: DollarSign, gradient: "from-teal-500 to-green-500" },
+  { label: "Total Providers", value: "2,847", change: "+24 this month", trend: "up", icon: Building2, gradient: "from-cyan-600 to-teal-600" },
+  { label: "Active Contracts", value: "2,634", change: "93% of network", trend: "up", icon: FileSignature, gradient: "from-green-500 to-emerald-600" },
+  { label: "Expiring Soon", value: "47", change: "Next 30 days", trend: "warning", icon: AlertTriangle, gradient: "from-amber-500 to-orange-500" },
+  { label: "Avg. Discount", value: "34%", change: "+2.1% vs last year", trend: "up", icon: DollarSign, gradient: "from-teal-500 to-green-500" },
 ];
 
-const claimsPipeline = [
-  { status: "Received", count: 234, color: "bg-slate-500" },
-  { status: "Processing", count: 156, color: "bg-cyan-500" },
-  { status: "Review", count: 89, color: "bg-teal-500" },
-  { status: "Approved", count: 612, color: "bg-teal-600" },
-  { status: "Denied", count: 23, color: "bg-slate-400" },
+const expiringContracts = [
+  { provider: "Midwest Regional Medical", npi: "1234567890", expires: "Mar 28, 2026", discount: "35%", status: "Renewal Sent" },
+  { provider: "Summit Health Specialists", npi: "2345678901", expires: "Apr 2, 2026", discount: "30%", status: "Pending Review" },
+  { provider: "Valley Care Associates", npi: "3456789012", expires: "Apr 5, 2026", discount: "40%", status: "Not Started" },
+  { provider: "Premier Orthopedics", npi: "4567890123", expires: "Apr 12, 2026", discount: "28%", status: "Renewal Sent" },
+  { provider: "Citywide Imaging Center", npi: "5678901234", expires: "Apr 15, 2026", discount: "45%", status: "Not Started" },
 ];
 
-const recentAlerts = [
-  { type: "fraud", title: "High-Risk Provider Flagged", message: "NPI 1234567890 - unusual billing pattern", time: "12m ago", severity: "high" },
-  { type: "compliance", title: "NSA Deadline Approaching", message: "3 claims require NSA disclosure", time: "1h ago", severity: "medium" },
-  { type: "system", title: "Batch Processing Complete", message: "847 claims processed successfully", time: "2h ago", severity: "low" },
+const recentActivity = [
+  { type: "provider", title: "New Provider Added", message: "Dr. Sarah Chen - Cardiology", time: "15m ago" },
+  { type: "contract", title: "Contract Renewed", message: "Lakeside Medical Group - 3 year term", time: "1h ago" },
+  { type: "discount", title: "Rate Updated", message: "Regional Hospital - 38% → 42%", time: "2h ago" },
+  { type: "credentialing", title: "Credentialing Complete", message: "5 providers verified", time: "3h ago" },
+  { type: "provider", title: "Provider Updated", message: "NPI 9876543210 - address change", time: "4h ago" },
 ];
 
-const aiEngineStatus = [
-  { name: "FraudShield", status: "Active", scanned: "2,341", flagged: 12, icon: Shield },
-  { name: "BillReviewAI", status: "Active", scanned: "1,892", flagged: 34, icon: Brain },
-  { name: "EligibilityCheck", status: "Active", scanned: "3,456", flagged: 8, icon: CheckCircle },
+const providersBySpecialty = [
+  { specialty: "Primary Care", count: 892, percentage: 31 },
+  { specialty: "Specialists", count: 756, percentage: 27 },
+  { specialty: "Hospitals", count: 234, percentage: 8 },
+  { specialty: "Urgent Care", count: 189, percentage: 7 },
+  { specialty: "Imaging", count: 312, percentage: 11 },
+  { specialty: "Labs", count: 464, percentage: 16 },
 ];
 
 const quickActions = [
-  { label: "Review Pending Claims", href: "/admin/claims?status=pending", icon: FileText, count: 89 },
-  { label: "Fraud Alerts", href: "/admin/fraud-shield", icon: Shield, count: 3 },
-  { label: "Credentialing Queue", href: "/admin/providers?tab=credentialing", icon: Building2, count: 12 },
-  { label: "Generate Reports", href: "/admin/reports", icon: BarChart3 },
+  { label: "Add New Provider", href: "/admin/providers/new", icon: Plus, color: "bg-teal-600 hover:bg-teal-700" },
+  { label: "Expiring Contracts", href: "/admin/contracts/expiring", icon: AlertTriangle, count: 47, color: "bg-amber-600 hover:bg-amber-700" },
+  { label: "Pending Credentialing", href: "/admin/credentialing", icon: Clock, count: 12, color: "bg-slate-600 hover:bg-slate-700" },
+  { label: "Network Analytics", href: "/admin/analytics", icon: BarChart3, color: "bg-slate-600 hover:bg-slate-700" },
 ];
 
 export default function AdminDashboard() {
@@ -61,8 +63,8 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Admin Dashboard</h1>
-          <p className="text-slate-400 mt-1">Welcome back! Here's what's happening today.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">PPO Network Dashboard</h1>
+          <p className="text-slate-400 mt-1">Manage your provider network, contracts, and rates.</p>
         </div>
         <div className="flex gap-3">
           <Link
@@ -73,12 +75,12 @@ export default function AdminDashboard() {
             Reports
           </Link>
           <Link
-            href="/admin/claims"
+            href="/admin/providers/new"
             className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 font-medium rounded-lg hover:bg-teal-700 transition-colors"
             style={{ color: 'white' }}
           >
-            <FileText className="w-4 h-4" />
-            Review Claims
+            <Plus className="w-4 h-4" />
+            Add Provider
           </Link>
         </div>
       </div>
@@ -100,12 +102,11 @@ export default function AdminDashboard() {
                   <Icon className="w-5 h-5" style={{ color: 'white' }} />
                 </div>
                 <span 
-                  className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 ${
-                    stat.trend === "up" ? "bg-white/20" : "bg-red-500/30"
-                  }`}
+                  className="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-white/20"
                   style={{ color: 'white' }}
                 >
-                  {stat.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                  {stat.trend === "up" && <TrendingUp className="w-3 h-3" />}
+                  {stat.trend === "warning" && <AlertTriangle className="w-3 h-3" />}
                   {stat.change}
                 </span>
               </div>
@@ -116,181 +117,183 @@ export default function AdminDashboard() {
         })}
       </div>
 
-      {/* Claims Pipeline & Quick Actions */}
+      {/* Quick Actions */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {quickActions.map((action) => {
+          const Icon = action.icon;
+          return (
+            <Link
+              key={action.label}
+              href={action.href}
+              className={`${action.color} rounded-xl p-4 transition-colors flex items-center gap-3`}
+            >
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/20">
+                <Icon className="w-5 h-5" style={{ color: 'white' }} />
+              </div>
+              <div>
+                <p className="font-medium" style={{ color: 'white' }}>{action.label}</p>
+                {action.count && (
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>{action.count} pending</p>
+                )}
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Main Content Grid */}
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Claims Pipeline */}
-        <div className="lg:col-span-2 bg-slate-800/50 rounded-xl border border-slate-700 p-6 ">
+        {/* Expiring Contracts */}
+        <div className="lg:col-span-2 bg-slate-800/50 rounded-xl border border-slate-700 p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-white">Claims Pipeline</h2>
-            <Link href="/admin/claims" className="text-sm text-cyan-500 hover:text-cyan-500 flex items-center gap-1">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-500" />
+              Contracts Expiring Soon
+            </h2>
+            <Link href="/admin/contracts/expiring" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
               View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="space-y-4">
-            {claimsPipeline.map((stage) => (
-              <div key={stage.status} className="flex items-center gap-4">
-                <span className="w-24 text-sm text-slate-400">{stage.status}</span>
-                <div className="flex-1 h-8 bg-slate-700 rounded-lg overflow-hidden">
-                  <div
-                    className={`h-full ${stage.color} rounded-lg flex items-center justify-end pr-3 transition-all`}
-                    style={{ width: `${Math.min((stage.count / 700) * 100, 100)}%` }}
-                  >
-                    <span className="text-white text-sm font-medium">{stage.count}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-slate-400">
-              <Activity className="w-4 h-4" />
-              <span className="text-sm">Total: 1,114 claims today</span>
-            </div>
-            <div className="flex items-center gap-2 text-green-400">
-              <CheckCircle className="w-4 h-4" />
-              <span className="text-sm">92% auto-adjudicated</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 ">
-          <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
-          <div className="space-y-3">
-            {quickActions.map((action) => {
-              const Icon = action.icon;
-              return (
-                <Link
-                  key={action.label}
-                  href={action.href}
-                  className="flex items-center justify-between p-3 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-slate-800/50 rounded-lg flex items-center justify-center  group-hover:bg-teal-600 transition-colors">
-                      <Icon className="w-4 h-4 text-slate-400 group-hover:text-white" />
-                    </div>
-                    <span className="text-sm font-medium text-slate-300">{action.label}</span>
-                  </div>
-                  {action.count && (
-                    <span className="px-2 py-1 bg-cyan-600/20 text-cyan-500 text-xs font-medium rounded-full">
-                      {action.count}
-                    </span>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* AI Engines & Alerts */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* AI Engine Status */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 ">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-cyan-500" />
-              <h2 className="text-lg font-semibold text-white">AI Engines</h2>
-            </div>
-            <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full">
-              All Systems Active
-            </span>
-          </div>
-          <div className="space-y-4">
-            {aiEngineStatus.map((engine) => {
-              const Icon = engine.icon;
-              return (
-                <div key={engine.name} className="flex items-center justify-between p-4 bg-slate-800 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-cyan-500" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-white">{engine.name}</p>
-                      <p className="text-xs text-slate-400">{engine.scanned} scanned today</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-amber-400 font-medium">{engine.flagged}</p>
-                    <p className="text-xs text-slate-400">Flagged</p>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-left text-sm text-slate-400 border-b border-slate-700">
+                  <th className="pb-3 font-medium">Provider</th>
+                  <th className="pb-3 font-medium">NPI</th>
+                  <th className="pb-3 font-medium">Expires</th>
+                  <th className="pb-3 font-medium">Discount</th>
+                  <th className="pb-3 font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {expiringContracts.map((contract, i) => (
+                  <tr key={i} className="border-b border-slate-700/50 text-sm">
+                    <td className="py-3 text-white font-medium">{contract.provider}</td>
+                    <td className="py-3 text-slate-400 font-mono text-xs">{contract.npi}</td>
+                    <td className="py-3 text-amber-400">{contract.expires}</td>
+                    <td className="py-3 text-green-400">{contract.discount}</td>
+                    <td className="py-3">
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        contract.status === "Renewal Sent" ? "bg-cyan-500/20 text-cyan-400" :
+                        contract.status === "Pending Review" ? "bg-amber-500/20 text-amber-400" :
+                        "bg-slate-500/20 text-slate-400"
+                      }`}>
+                        {contract.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Recent Alerts */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 ">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-white">Recent Alerts</h2>
-            <Link href="/admin/compliance" className="text-sm text-cyan-500 hover:text-cyan-500">
-              View All
-            </Link>
-          </div>
+        {/* Recent Activity */}
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+          <h2 className="text-lg font-semibold text-white mb-6">Recent Activity</h2>
           <div className="space-y-4">
-            {recentAlerts.map((alert, i) => (
-              <div key={i} className="flex items-start gap-3 p-3 bg-slate-800 rounded-lg">
+            {recentActivity.map((activity, i) => (
+              <div key={i} className="flex items-start gap-3">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                  alert.severity === "high" ? "bg-red-500/20" :
-                  alert.severity === "medium" ? "bg-amber-500/20" : "bg-blue-500/20"
+                  activity.type === "provider" ? "bg-cyan-500/20" :
+                  activity.type === "contract" ? "bg-green-500/20" :
+                  activity.type === "discount" ? "bg-amber-500/20" :
+                  "bg-teal-500/20"
                 }`}>
-                  <AlertTriangle className={`w-4 h-4 ${
-                    alert.severity === "high" ? "text-red-600" :
-                    alert.severity === "medium" ? "text-amber-400" : "text-blue-400"
-                  }`} />
+                  {activity.type === "provider" && <Building2 className="w-4 h-4 text-cyan-400" />}
+                  {activity.type === "contract" && <FileSignature className="w-4 h-4 text-green-400" />}
+                  {activity.type === "discount" && <DollarSign className="w-4 h-4 text-amber-400" />}
+                  {activity.type === "credentialing" && <CheckCircle className="w-4 h-4 text-teal-400" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-white text-sm">{alert.title}</p>
-                  <p className="text-xs text-slate-400 truncate">{alert.message}</p>
+                  <p className="text-sm font-medium text-white">{activity.title}</p>
+                  <p className="text-xs text-slate-400 truncate">{activity.message}</p>
                 </div>
-                <span className="text-xs text-slate-500 flex-shrink-0">{alert.time}</span>
+                <span className="text-xs text-slate-500 whitespace-nowrap">{activity.time}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Network Health */}
-      <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-2xl p-6 lg:p-8">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Activity className="w-5 h-5 text-white" />
-              <h3 className="text-lg font-semibold text-white">Network Health Score</h3>
+      {/* Providers by Specialty */}
+      <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-semibold text-white">Network by Specialty</h2>
+          <Link href="/admin/analytics" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+            Full Analytics <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {providersBySpecialty.map((item) => (
+            <div key={item.specialty} className="bg-slate-700/50 rounded-lg p-4 text-center">
+              <p className="text-2xl font-bold text-white">{item.count}</p>
+              <p className="text-sm text-slate-400 mt-1">{item.specialty}</p>
+              <div className="mt-2 h-1.5 bg-slate-600 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full"
+                  style={{ width: `${item.percentage}%` }}
+                />
+              </div>
+              <p className="text-xs text-slate-500 mt-1">{item.percentage}%</p>
             </div>
-            <p className="text-white/80 text-sm mb-4">
-              Your PPO network is performing well across all metrics.
-            </p>
-            <div className="flex items-center gap-6">
-              <div>
-                <p className="text-4xl font-bold text-white">94<span className="text-xl text-white/70">/100</span></p>
-                <p className="text-sm text-white/80">Overall Score</p>
-              </div>
-              <div className="h-16 w-px bg-white/30" />
-              <div className="grid grid-cols-3 gap-6">
-                <div>
-                  <p className="text-lg font-semibold text-white">98%</p>
-                  <p className="text-xs text-white/80">Claim Accuracy</p>
-                </div>
-                <div>
-                  <p className="text-lg font-semibold text-white">2.1 days</p>
-                  <p className="text-xs text-white/80">Avg Process Time</p>
-                </div>
-                <div>
-                  <p className="text-lg font-semibold text-white">99.2%</p>
-                  <p className="text-xs text-white/80">Uptime</p>
-                </div>
-              </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Row */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Network Coverage Map Placeholder */}
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-teal-400" />
+              Network Coverage
+            </h2>
+            <Link href="/admin/network-map" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+              View Map <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="h-48 bg-slate-700/30 rounded-lg flex items-center justify-center border border-slate-600">
+            <div className="text-center">
+              <MapPin className="w-12 h-12 text-slate-500 mx-auto mb-2" />
+              <p className="text-slate-400">Interactive map available</p>
+              <Link href="/admin/network-map" className="text-sm text-cyan-400 hover:underline mt-2 inline-block">
+                Open Network Map →
+              </Link>
             </div>
           </div>
-          <Link
-            href="/admin/reports"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-xl hover:bg-white/30 transition-colors shrink-0"
-          >
-            <BarChart3 className="w-5 h-5" />
-            View Full Report
-          </Link>
+        </div>
+
+        {/* Upcoming Tasks */}
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+          <h2 className="text-lg font-semibold text-white flex items-center gap-2 mb-4">
+            <Calendar className="w-5 h-5 text-teal-400" />
+            Upcoming Tasks
+          </h2>
+          <div className="space-y-3">
+            {[
+              { task: "Review 12 credentialing applications", due: "Today", priority: "high" },
+              { task: "Send renewal notices (47 contracts)", due: "This week", priority: "high" },
+              { task: "Update fee schedules for Q2", due: "Mar 31", priority: "medium" },
+              { task: "Quarterly network report", due: "Apr 1", priority: "medium" },
+              { task: "Provider satisfaction survey", due: "Apr 15", priority: "low" },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className={`w-2 h-2 rounded-full ${
+                    item.priority === "high" ? "bg-red-500" :
+                    item.priority === "medium" ? "bg-amber-500" :
+                    "bg-slate-400"
+                  }`} />
+                  <span className="text-sm text-slate-300">{item.task}</span>
+                </div>
+                <span className={`text-xs ${
+                  item.due === "Today" ? "text-red-400" : "text-slate-500"
+                }`}>{item.due}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

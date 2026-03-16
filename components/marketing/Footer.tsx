@@ -32,10 +32,10 @@ export default function MarketingFooter() {
             <ul className="space-y-3">
               {[
                 { name: "Find a Provider", href: "/find-provider" },
-                { name: "Member Portal", href: "/member" },
-                { name: "Provider Portal", href: "/provider" },
+                { name: "Join Our Network", href: "/providers" },
                 { name: "How It Works", href: "/how-it-works" },
                 { name: "About Us", href: "/about" },
+                { name: "Admin Portal", href: "/admin-login" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="text-sky-300 hover:text-teal-400 transition-colors">
@@ -73,8 +73,8 @@ export default function MarketingFooter() {
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-white font-medium">1-800-MEDCARE</p>
-                  <p className="text-sm text-sky-300">24/7 Support</p>
+                  <p className="text-white font-medium">1-800-555-0199</p>
+                  <p className="text-sm text-sky-300">Network Support</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
