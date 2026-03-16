@@ -310,40 +310,27 @@ export default function ProductDemoPage() {
               e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
             }}
           >
-            {/* Teaser Image Area */}
-            <div style={{ 
-              height: 200, 
-              background: 'linear-gradient(135deg, #0d9488 0%, #0891b2 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              gap: 12,
-              borderBottom: '3px solid #2dd4bf',
-            }}>
+            {/* Screenshot */}
+            <div style={{ position: 'relative', height: 200, background: '#0f172a', borderBottom: '3px solid #2dd4bf' }}>
+              <Image
+                src="/demo/bill-negotiator.jpg"
+                alt="AI Bill Negotiator Dashboard"
+                fill
+                style={{ objectFit: 'cover' }}
+              />
               <div style={{
-                width: 64,
-                height: 64,
-                borderRadius: 16,
-                background: 'rgba(255,255,255,0.2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span style={{ 
-                background: 'rgba(255,255,255,0.2)', 
-                padding: '6px 16px', 
-                borderRadius: 20, 
-                fontSize: 12, 
+                position: 'absolute',
+                top: 12,
+                right: 12,
+                background: 'rgba(13,148,136,0.9)',
+                padding: '6px 12px',
+                borderRadius: 20,
+                fontSize: 11,
                 fontWeight: 600,
                 color: 'white',
               }}>
                 COMING SOON
-              </span>
+              </div>
             </div>
             
             {/* Content */}
