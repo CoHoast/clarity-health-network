@@ -827,7 +827,7 @@ export default function ProvidersPage() {
                                   <span className="text-xs text-slate-500">Languages:</span>
                                   <div className="flex flex-wrap gap-1">
                                     {provider.languages.map(lang => (
-                                      <span key={lang} className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-xs rounded-full">
+                                      <span key={lang} className="px-2 py-0.5 bg-teal-600 text-xs rounded-full" style={{ color: 'white' }}>
                                         {languageNames[lang] || lang}
                                       </span>
                                     ))}
@@ -1230,8 +1230,8 @@ export default function ProvidersPage() {
                         }}
                         className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                           (newProvider.languages || []).includes(code)
-                            ? "bg-cyan-600 text-white"
-                            : "bg-slate-700 text-slate-400 hover:bg-slate-600"
+                            ? "bg-teal-600 text-white"
+                            : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
                         }`}
                       >
                         {name} ({code.toUpperCase()})
@@ -1625,7 +1625,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {provider.languages.map(lang => (
-                  <span key={lang} className="px-3 py-1.5 bg-cyan-500/20 text-cyan-400 rounded-full text-sm">
+                  <span key={lang} className="px-3 py-1.5 bg-teal-600 rounded-full text-sm font-medium" style={{ color: 'white' }}>
                     {languageNames[lang] || lang} ({lang.toUpperCase()})
                   </span>
                 ))}
