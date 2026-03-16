@@ -133,11 +133,11 @@ export default function ReportsPage() {
               className="flex items-start gap-3 p-4 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl hover:from-teal-600 hover:to-cyan-600 text-left transition-all group shadow-lg"
             >
               <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-white/20">
-                <report.icon className="w-5 h-5" style={{ color: 'rgba(255,255,255,0.9)' }} />
+                <report.icon className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="font-medium group-hover:text-white" style={{ color: 'white' }}>{report.name}</p>
-                <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.7)' }}>{report.description}</p>
+                <p className="font-medium text-white" style={{ color: '#ffffff' }}>{report.name}</p>
+                <p className="text-sm mt-0.5 text-slate-200" style={{ color: '#e2e8f0' }}>{report.description}</p>
                 <span className={`inline-block mt-2 px-2 py-0.5 text-xs rounded ${categoryColors[report.category] || "bg-slate-600 text-slate-300"}`}>{report.category}</span>
               </div>
             </button>
