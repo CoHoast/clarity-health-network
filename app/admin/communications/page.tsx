@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Mail, Send, Users, UserPlus, Search, FileText, CheckCircle, Clock, Building2, Phone, Globe, X } from "lucide-react";
+import { Mail, Send, Users, UserPlus, Search, FileText, CheckCircle, Building2, X, Plus, Edit, Trash2, Copy, Check, Eye, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Existing network providers
@@ -25,13 +25,27 @@ const messageHistory = [
   { id: 5, provider: "Dr. Sarah Chen, MD", subject: "Welcome to TrueCare Network", date: "2026-03-05", status: "opened" },
 ];
 
+interface OutreachTemplate {
+  id: string;
+  name: string;
+  subject: string;
+  description: string;
+  category: string;
+  body: string;
+  lastModified: string;
+  timesUsed: number;
+}
+
 // Outreach templates
-const outreachTemplates = [
+const initialTemplates: OutreachTemplate[] = [
   { 
     id: "TPL-001", 
     name: "Initial Network Invitation", 
     subject: "Join TrueCare Health Network - Invitation to Partner",
     description: "First contact email inviting providers to join the network",
+    category: "Initial Outreach",
+    lastModified: "2026-02-15",
+    timesUsed: 145,
     body: `Dear [PROVIDER_NAME],
 
 I hope this message finds you well. My name is [SENDER_NAME] from TrueCare Health Network, and I'm reaching out to invite [PRACTICE_NAME] to join our growing PPO network.
@@ -61,6 +75,9 @@ TrueCare Health Network
     name: "Follow-Up Invitation", 
     subject: "Following Up - TrueCare Health Network Partnership",
     description: "Second contact for providers who haven't responded",
+    category: "Follow-Up",
+    lastModified: "2026-02-10",
+    timesUsed: 89,
     body: `Dear [PROVIDER_NAME],
 
 I wanted to follow up on my previous email regarding the opportunity to join TrueCare Health Network.
@@ -83,6 +100,9 @@ TrueCare Health Network`
     name: "Specialty-Specific Outreach", 
     subject: "TrueCare Seeking [SPECIALTY] Providers in [LOCATION]",
     description: "Targeted outreach for specific specialty needs",
+    category: "Specialty",
+    lastModified: "2026-02-20",
+    timesUsed: 67,
     body: `Dear [PROVIDER_NAME],
 
 TrueCare Health Network is actively seeking [SPECIALTY] providers to meet the growing demand from our members in the [LOCATION] area.
@@ -104,6 +124,63 @@ Best regards,
 [SENDER_TITLE]
 TrueCare Health Network`
   },
+  { 
+    id: "TPL-004", 
+    name: "Contract Renewal Outreach", 
+    subject: "Your TrueCare Network Contract Renewal",
+    description: "Reminder for expiring contracts and renewal invitation",
+    category: "Renewal",
+    lastModified: "2026-03-01",
+    timesUsed: 34,
+    body: `Dear [PROVIDER_NAME],
+
+I hope this email finds you well. I'm reaching out regarding your upcoming contract renewal with TrueCare Health Network.
+
+Your current agreement with [PRACTICE_NAME] is set to expire on [EXPIRATION_DATE], and we'd love to continue our partnership.
+
+During your time in our network, you've been an invaluable resource for our members. We've seen [STATS] visits to your practice from TrueCare members.
+
+To ensure uninterrupted participation in our network, please review the attached renewal documents and return them by [DEADLINE].
+
+If you have any questions about the renewal terms or would like to discuss any changes, please don't hesitate to reach out.
+
+Thank you for your continued partnership.
+
+Best regards,
+[SENDER_NAME]
+[SENDER_TITLE]
+TrueCare Health Network
+[PHONE]`
+  },
+  { 
+    id: "TPL-005", 
+    name: "Final Follow-Up", 
+    subject: "Final Notice - TrueCare Network Invitation",
+    description: "Last attempt to reach non-responsive providers",
+    category: "Follow-Up",
+    lastModified: "2026-01-25",
+    timesUsed: 23,
+    body: `Dear [PROVIDER_NAME],
+
+I've reached out a couple of times regarding the opportunity for [PRACTICE_NAME] to join TrueCare Health Network, and I wanted to make one final attempt to connect.
+
+We understand you're busy, and if now isn't the right time, we completely understand. However, if you're interested in learning more about:
+
+• Our competitive reimbursement rates for [SPECIALTY]
+• Access to our growing member base in [LOCATION]
+• Our streamlined credentialing process
+
+Please reply to this email or call me directly at [PHONE].
+
+If we don't hear back, we'll assume the timing isn't right and won't reach out again. However, our door is always open should you wish to explore this opportunity in the future.
+
+Wishing you continued success.
+
+Best regards,
+[SENDER_NAME]
+[SENDER_TITLE]
+TrueCare Health Network`
+  },
 ];
 
 // Outreach history
@@ -118,23 +195,39 @@ export default function CommunicationsPage() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
   const [activeTab, setActiveTab] = useState<"messages" | "outreach">("messages");
+  const [outreachSubTab, setOutreachSubTab] = useState<"send" | "templates">("send");
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Set tab from URL param on mount
-  useEffect(() => {
-    if (tabParam === "outreach") {
-      setActiveTab("outreach");
-    } else {
-      setActiveTab("messages");
-    }
-  }, [tabParam]);
   const [showComposeModal, setShowComposeModal] = useState(false);
   const [showOutreachModal, setShowOutreachModal] = useState(false);
+  const [showEditTemplateModal, setShowEditTemplateModal] = useState(false);
+  const [showNewTemplateModal, setShowNewTemplateModal] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<typeof networkProviders[0] | null>(null);
-  const [selectedTemplate, setSelectedTemplate] = useState<typeof outreachTemplates[0] | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<OutreachTemplate | null>(null);
+  const [templates, setTemplates] = useState<OutreachTemplate[]>(initialTemplates);
   const [messageSubject, setMessageSubject] = useState("");
   const [messageBody, setMessageBody] = useState("");
   const [sendSuccess, setSendSuccess] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  // Edit template form state
+  const [editForm, setEditForm] = useState({
+    name: "",
+    subject: "",
+    description: "",
+    category: "",
+    body: "",
+  });
+
+  // New template form state
+  const [newTemplateForm, setNewTemplateForm] = useState({
+    name: "",
+    subject: "",
+    description: "",
+    category: "Initial Outreach",
+    body: "",
+  });
 
   // Outreach form state
   const [outreachForm, setOutreachForm] = useState({
@@ -149,6 +242,15 @@ export default function CommunicationsPage() {
     senderEmail: "providers@truecarehealth.com",
   });
 
+  // Set tab from URL param on mount
+  useEffect(() => {
+    if (tabParam === "outreach") {
+      setActiveTab("outreach");
+    } else {
+      setActiveTab("messages");
+    }
+  }, [tabParam]);
+
   const filteredProviders = networkProviders.filter(p =>
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.specialty.toLowerCase().includes(searchQuery.toLowerCase())
@@ -162,7 +264,7 @@ export default function CommunicationsPage() {
     setShowComposeModal(true);
   };
 
-  const openOutreachModal = (template: typeof outreachTemplates[0]) => {
+  const openOutreachModal = (template: OutreachTemplate) => {
     setSelectedTemplate(template);
     setOutreachForm({
       ...outreachForm,
@@ -174,6 +276,23 @@ export default function CommunicationsPage() {
     });
     setSendSuccess(false);
     setShowOutreachModal(true);
+  };
+
+  const openEditTemplateModal = (template: OutreachTemplate) => {
+    setSelectedTemplate(template);
+    setEditForm({
+      name: template.name,
+      subject: template.subject,
+      description: template.description,
+      category: template.category,
+      body: template.body,
+    });
+    setShowEditTemplateModal(true);
+  };
+
+  const openPreviewModal = (template: OutreachTemplate) => {
+    setSelectedTemplate(template);
+    setShowPreviewModal(true);
   };
 
   const handleSendMessage = () => {
@@ -192,6 +311,64 @@ export default function CommunicationsPage() {
     }, 1500);
   };
 
+  const handleSaveTemplate = () => {
+    setSaving(true);
+    setTimeout(() => {
+      setSaving(false);
+      setSaved(true);
+      // Update template in list
+      if (selectedTemplate) {
+        setTemplates(templates.map(t => 
+          t.id === selectedTemplate.id 
+            ? { ...t, ...editForm, lastModified: new Date().toISOString().split('T')[0] }
+            : t
+        ));
+      }
+      setTimeout(() => {
+        setSaved(false);
+        setShowEditTemplateModal(false);
+      }, 1500);
+    }, 1000);
+  };
+
+  const handleCreateTemplate = () => {
+    setSaving(true);
+    setTimeout(() => {
+      setSaving(false);
+      setSaved(true);
+      // Add new template
+      const newTemplate: OutreachTemplate = {
+        id: `TPL-${String(templates.length + 1).padStart(3, '0')}`,
+        ...newTemplateForm,
+        lastModified: new Date().toISOString().split('T')[0],
+        timesUsed: 0,
+      };
+      setTemplates([...templates, newTemplate]);
+      setTimeout(() => {
+        setSaved(false);
+        setShowNewTemplateModal(false);
+        setNewTemplateForm({
+          name: "",
+          subject: "",
+          description: "",
+          category: "Initial Outreach",
+          body: "",
+        });
+      }, 1500);
+    }, 1000);
+  };
+
+  const handleDuplicateTemplate = (template: OutreachTemplate) => {
+    const newTemplate: OutreachTemplate = {
+      ...template,
+      id: `TPL-${String(templates.length + 1).padStart(3, '0')}`,
+      name: `${template.name} (Copy)`,
+      lastModified: new Date().toISOString().split('T')[0],
+      timesUsed: 0,
+    };
+    setTemplates([...templates, newTemplate]);
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "delivered": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-500/20 text-slate-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Delivered</span>;
@@ -200,6 +377,16 @@ export default function CommunicationsPage() {
       case "sent": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Send className="w-3 h-3" />Sent</span>;
       case "responded": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Responded</span>;
       default: return null;
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case "Initial Outreach": return "bg-cyan-500/20 text-cyan-400";
+      case "Follow-Up": return "bg-amber-500/20 text-amber-400";
+      case "Specialty": return "bg-purple-500/20 text-purple-400";
+      case "Renewal": return "bg-green-500/20 text-green-400";
+      default: return "bg-slate-500/20 text-slate-400";
     }
   };
 
@@ -214,7 +401,10 @@ export default function CommunicationsPage() {
       .replace(/\[SENDER_NAME\]/g, outreachForm.senderName)
       .replace(/\[SENDER_TITLE\]/g, outreachForm.senderTitle)
       .replace(/\[PHONE\]/g, outreachForm.phone)
-      .replace(/\[EMAIL\]/g, outreachForm.senderEmail);
+      .replace(/\[EMAIL\]/g, outreachForm.senderEmail)
+      .replace(/\[EXPIRATION_DATE\]/g, "[Expiration Date]")
+      .replace(/\[DEADLINE\]/g, "[Deadline]")
+      .replace(/\[STATS\]/g, "[Statistics]");
   };
 
   return (
@@ -230,7 +420,7 @@ export default function CommunicationsPage() {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Main Tabs */}
       <div className="flex gap-2 border-b border-slate-700 pb-2">
         <button
           onClick={() => setActiveTab("messages")}
@@ -314,58 +504,189 @@ export default function CommunicationsPage() {
         </>
       ) : (
         <>
-          {/* Outreach Templates */}
-          <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-            <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <FileText className="w-5 h-5 text-cyan-400" />
-              Outreach Templates
-            </h2>
-            <p className="text-slate-400 text-sm mb-4">Select a template to reach out to potential network providers</p>
-            <div className="grid md:grid-cols-3 gap-4">
-              {outreachTemplates.map((template) => (
-                <div key={template.id} className="bg-slate-700/30 rounded-lg p-4 hover:bg-slate-700/50 transition-colors">
-                  <h3 className="text-white font-medium mb-2">{template.name}</h3>
-                  <p className="text-slate-400 text-sm mb-4">{template.description}</p>
-                  <button
-                    onClick={() => openOutreachModal(template)}
-                    className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
-                  >
-                    <Send className="w-4 h-4" />
-                    Use Template
-                  </button>
-                </div>
-              ))}
-            </div>
+          {/* Outreach Sub-Tabs */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => setOutreachSubTab("send")}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                outreachSubTab === "send" ? "bg-slate-700 text-white" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Send className="w-4 h-4 inline mr-2" />
+              Send Outreach
+            </button>
+            <button
+              onClick={() => setOutreachSubTab("templates")}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                outreachSubTab === "templates" ? "bg-slate-700 text-white" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Settings className="w-4 h-4 inline mr-2" />
+              Manage Templates
+            </button>
           </div>
 
-          {/* Outreach History */}
-          <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-            <h2 className="text-lg font-semibold text-white mb-4">Outreach History</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-slate-700">
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Practice</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Email</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Template</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Date</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-700">
-                  {outreachHistory.map((outreach) => (
-                    <tr key={outreach.id} className="hover:bg-slate-700/30">
-                      <td className="px-4 py-3 text-white">{outreach.practice}</td>
-                      <td className="px-4 py-3 text-slate-400 text-sm">{outreach.email}</td>
-                      <td className="px-4 py-3 text-slate-300 text-sm">{outreach.template}</td>
-                      <td className="px-4 py-3 text-slate-400 text-sm">{outreach.date}</td>
-                      <td className="px-4 py-3">{getStatusBadge(outreach.status)}</td>
-                    </tr>
+          {outreachSubTab === "send" ? (
+            <>
+              {/* Quick Send Section */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Send className="w-5 h-5 text-cyan-400" />
+                  Send Outreach Email
+                </h2>
+                <p className="text-slate-400 text-sm mb-4">Select a template to send to a potential network provider</p>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {templates.map((template) => (
+                    <div key={template.id} className="bg-slate-700/30 rounded-lg p-4 hover:bg-slate-700/50 transition-colors">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="text-white font-medium">{template.name}</h3>
+                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getCategoryColor(template.category)}`}>
+                          {template.category}
+                        </span>
+                      </div>
+                      <p className="text-slate-400 text-sm mb-4">{template.description}</p>
+                      <button
+                        onClick={() => openOutreachModal(template)}
+                        className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                      >
+                        <Send className="w-4 h-4" />
+                        Use This Template
+                      </button>
+                    </div>
                   ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                </div>
+              </div>
+
+              {/* Outreach History */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <h2 className="text-lg font-semibold text-white mb-4">Outreach History</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-slate-700">
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Practice</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Email</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Template</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Date</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-700">
+                      {outreachHistory.map((outreach) => (
+                        <tr key={outreach.id} className="hover:bg-slate-700/30">
+                          <td className="px-4 py-3 text-white">{outreach.practice}</td>
+                          <td className="px-4 py-3 text-slate-400 text-sm">{outreach.email}</td>
+                          <td className="px-4 py-3 text-slate-300 text-sm">{outreach.template}</td>
+                          <td className="px-4 py-3 text-slate-400 text-sm">{outreach.date}</td>
+                          <td className="px-4 py-3">{getStatusBadge(outreach.status)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Template Management */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <FileText className="w-5 h-5 text-cyan-400" />
+                      Email Templates
+                    </h2>
+                    <p className="text-slate-400 text-sm mt-1">Create and customize outreach email templates</p>
+                  </div>
+                  <button
+                    onClick={() => setShowNewTemplateModal(true)}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    New Template
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {templates.map((template) => (
+                    <div key={template.id} className="bg-slate-700/30 rounded-lg p-4 hover:bg-slate-700/50 transition-colors">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-white font-semibold">{template.name}</h3>
+                            <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getCategoryColor(template.category)}`}>
+                              {template.category}
+                            </span>
+                          </div>
+                          <p className="text-slate-400 text-sm mb-2">{template.description}</p>
+                          <div className="flex items-center gap-4 text-xs text-slate-500">
+                            <span>Subject: {template.subject}</span>
+                          </div>
+                          <div className="flex items-center gap-4 text-xs text-slate-500 mt-1">
+                            <span>Last modified: {template.lastModified}</span>
+                            <span>•</span>
+                            <span>Used {template.timesUsed} times</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => openPreviewModal(template)}
+                            className="p-2 text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors"
+                            title="Preview"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => openEditTemplateModal(template)}
+                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-600 rounded-lg transition-colors"
+                            title="Edit"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDuplicateTemplate(template)}
+                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-600 rounded-lg transition-colors"
+                            title="Duplicate"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </button>
+                          <button
+                            className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Available Placeholders */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <h3 className="text-white font-semibold mb-4">Available Placeholders</h3>
+                <p className="text-slate-400 text-sm mb-4">Use these placeholders in your templates. They will be replaced with actual values when sending.</p>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {[
+                    { tag: "[PROVIDER_NAME]", desc: "Contact person's name" },
+                    { tag: "[PRACTICE_NAME]", desc: "Practice/organization name" },
+                    { tag: "[SPECIALTY]", desc: "Medical specialty" },
+                    { tag: "[LOCATION]", desc: "City/region" },
+                    { tag: "[SENDER_NAME]", desc: "Your name" },
+                    { tag: "[SENDER_TITLE]", desc: "Your job title" },
+                    { tag: "[PHONE]", desc: "Contact phone" },
+                    { tag: "[EMAIL]", desc: "Contact email" },
+                  ].map((placeholder) => (
+                    <div key={placeholder.tag} className="bg-slate-700/50 rounded-lg p-3">
+                      <code className="text-cyan-400 text-sm">{placeholder.tag}</code>
+                      <p className="text-slate-400 text-xs mt-1">{placeholder.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
 
@@ -570,6 +891,302 @@ export default function CommunicationsPage() {
                 >
                   {sendSuccess ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
                   {sendSuccess ? "Sent!" : "Send Outreach Email"}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Template Modal */}
+      <AnimatePresence>
+        {showEditTemplateModal && selectedTemplate && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => !saving && setShowEditTemplateModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {!saving && !saved ? (
+                <>
+                  <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-white">Edit Template</h2>
+                      <p className="text-slate-400 text-sm">Customize your outreach email template</p>
+                    </div>
+                    <button onClick={() => setShowEditTemplateModal(false)} className="text-slate-400 hover:text-white p-2 hover:bg-slate-700 rounded-lg">
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  <div className="p-6 overflow-auto max-h-[60vh] space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Template Name *</label>
+                        <input
+                          type="text"
+                          value={editForm.name}
+                          onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Category *</label>
+                        <select
+                          value={editForm.category}
+                          onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        >
+                          <option>Initial Outreach</option>
+                          <option>Follow-Up</option>
+                          <option>Specialty</option>
+                          <option>Renewal</option>
+                          <option>Other</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                      <input
+                        type="text"
+                        value={editForm.description}
+                        onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        placeholder="Brief description of when to use this template"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Email Subject *</label>
+                      <input
+                        type="text"
+                        value={editForm.subject}
+                        onChange={(e) => setEditForm({ ...editForm, subject: e.target.value })}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Email Body *</label>
+                      <textarea
+                        value={editForm.body}
+                        onChange={(e) => setEditForm({ ...editForm, body: e.target.value })}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500 h-64 resize-none font-mono text-sm"
+                      />
+                    </div>
+                    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
+                      <p className="text-blue-300 text-sm">
+                        <strong>Tip:</strong> Use placeholders like [PROVIDER_NAME], [PRACTICE_NAME], [SPECIALTY], [LOCATION] to personalize emails.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 border-t border-slate-700 flex justify-end gap-3">
+                    <button
+                      onClick={() => setShowEditTemplateModal(false)}
+                      className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSaveTemplate}
+                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                    >
+                      <Check className="w-4 h-4" />
+                      Save Changes
+                    </button>
+                  </div>
+                </>
+              ) : saving ? (
+                <div className="p-12 text-center">
+                  <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-white font-medium">Saving template...</p>
+                </div>
+              ) : (
+                <div className="p-12 text-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Check className="w-8 h-8 text-green-400" />
+                  </motion.div>
+                  <p className="text-white font-medium">Template Saved!</p>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* New Template Modal */}
+      <AnimatePresence>
+        {showNewTemplateModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => !saving && setShowNewTemplateModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {!saving && !saved ? (
+                <>
+                  <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-white">Create New Template</h2>
+                      <p className="text-slate-400 text-sm">Build a custom outreach email template</p>
+                    </div>
+                    <button onClick={() => setShowNewTemplateModal(false)} className="text-slate-400 hover:text-white p-2 hover:bg-slate-700 rounded-lg">
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  <div className="p-6 overflow-auto max-h-[60vh] space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Template Name *</label>
+                        <input
+                          type="text"
+                          value={newTemplateForm.name}
+                          onChange={(e) => setNewTemplateForm({ ...newTemplateForm, name: e.target.value })}
+                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                          placeholder="e.g., Welcome Email"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Category *</label>
+                        <select
+                          value={newTemplateForm.category}
+                          onChange={(e) => setNewTemplateForm({ ...newTemplateForm, category: e.target.value })}
+                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        >
+                          <option>Initial Outreach</option>
+                          <option>Follow-Up</option>
+                          <option>Specialty</option>
+                          <option>Renewal</option>
+                          <option>Other</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                      <input
+                        type="text"
+                        value={newTemplateForm.description}
+                        onChange={(e) => setNewTemplateForm({ ...newTemplateForm, description: e.target.value })}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        placeholder="Brief description of when to use this template"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Email Subject *</label>
+                      <input
+                        type="text"
+                        value={newTemplateForm.subject}
+                        onChange={(e) => setNewTemplateForm({ ...newTemplateForm, subject: e.target.value })}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        placeholder="e.g., Join TrueCare Health Network"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Email Body *</label>
+                      <textarea
+                        value={newTemplateForm.body}
+                        onChange={(e) => setNewTemplateForm({ ...newTemplateForm, body: e.target.value })}
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500 h-64 resize-none font-mono text-sm"
+                        placeholder="Dear [PROVIDER_NAME],&#10;&#10;Write your email content here...&#10;&#10;Best regards,&#10;[SENDER_NAME]"
+                      />
+                    </div>
+                    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
+                      <p className="text-blue-300 text-sm">
+                        <strong>Available placeholders:</strong> [PROVIDER_NAME], [PRACTICE_NAME], [SPECIALTY], [LOCATION], [SENDER_NAME], [SENDER_TITLE], [PHONE], [EMAIL]
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 border-t border-slate-700 flex justify-end gap-3">
+                    <button
+                      onClick={() => setShowNewTemplateModal(false)}
+                      className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleCreateTemplate}
+                      disabled={!newTemplateForm.name || !newTemplateForm.subject || !newTemplateForm.body}
+                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Create Template
+                    </button>
+                  </div>
+                </>
+              ) : saving ? (
+                <div className="p-12 text-center">
+                  <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-white font-medium">Creating template...</p>
+                </div>
+              ) : (
+                <div className="p-12 text-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Check className="w-8 h-8 text-green-400" />
+                  </motion.div>
+                  <p className="text-white font-medium">Template Created!</p>
+                  <p className="text-slate-400 text-sm mt-1">You can now use this template for outreach</p>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Preview Template Modal */}
+      <AnimatePresence>
+        {showPreviewModal && selectedTemplate && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowPreviewModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-xl max-w-2xl w-full max-h-[85vh] overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">{selectedTemplate.name}</h2>
+                  <span className={`inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full ${getCategoryColor(selectedTemplate.category)}`}>
+                    {selectedTemplate.category}
+                  </span>
+                </div>
+                <button onClick={() => setShowPreviewModal(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-200 rounded-lg">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="p-6 overflow-auto max-h-[60vh] bg-white">
+                <div className="border-b border-gray-200 pb-4 mb-4">
+                  <p className="text-gray-600 text-sm"><strong>Subject:</strong> {selectedTemplate.subject}</p>
+                </div>
+                <div className="whitespace-pre-line text-gray-700 text-sm leading-relaxed">
+                  {selectedTemplate.body}
+                </div>
+              </div>
+              <div className="p-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50">
+                <button
+                  onClick={() => setShowPreviewModal(false)}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => {
+                    setShowPreviewModal(false);
+                    openEditTemplateModal(selectedTemplate);
+                  }}
+                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                >
+                  <Edit className="w-4 h-4" />
+                  Edit Template
                 </button>
               </div>
             </motion.div>
