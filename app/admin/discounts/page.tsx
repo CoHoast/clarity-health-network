@@ -15,6 +15,12 @@ interface DiscountSchedule {
   lastModified: string;
 }
 
+interface CptRate {
+  cpt: string;
+  description: string;
+  rate: string;
+}
+
 interface ProviderRate {
   id: string;
   providerId: string;
@@ -34,6 +40,7 @@ interface ProviderRate {
     physicalTherapy?: string;
     dme?: string;
   };
+  cptRates?: CptRate[];
   effectiveDate: string;
   expirationDate?: string;
   notes?: string;
@@ -154,8 +161,13 @@ const providerRates: ProviderRate[] = [
       labServices: "125% Medicare",
       imaging: "130% Medicare",
     },
+    cptRates: [
+      { cpt: "99213", description: "Office Visit - Established, Low", rate: "$85" },
+      { cpt: "99214", description: "Office Visit - Established, Moderate", rate: "$125" },
+      { cpt: "99215", description: "Office Visit - Established, High", rate: "$175" },
+    ],
     effectiveDate: "2026-01-01",
-    notes: "Negotiated rates based on high volume referrals",
+    notes: "Negotiated rates based on high volume referrals. CPT flat rates for common office visits.",
     lastModified: "2026-02-15"
   },
   {
@@ -166,9 +178,15 @@ const providerRates: ProviderRate[] = [
     npi: "2345678901",
     rateType: "flat",
     flatRate: "130% Medicare",
+    cptRates: [
+      { cpt: "27447", description: "Total Knee Arthroplasty", rate: "$4,500" },
+      { cpt: "27130", description: "Total Hip Arthroplasty", rate: "$5,200" },
+      { cpt: "29881", description: "Knee Arthroscopy w/ Meniscectomy", rate: "$1,800" },
+      { cpt: "20610", description: "Joint Injection - Major", rate: "$150" },
+    ],
     effectiveDate: "2025-06-01",
     expirationDate: "2027-05-31",
-    notes: "2-year contract",
+    notes: "2-year contract with flat rates for major orthopedic procedures",
     lastModified: "2025-06-01"
   },
   {
@@ -186,8 +204,15 @@ const providerRates: ProviderRate[] = [
       labServices: "120% Medicare",
       imaging: "135% Medicare",
     },
+    cptRates: [
+      { cpt: "99283", description: "ER Visit - Moderate", rate: "$350" },
+      { cpt: "99284", description: "ER Visit - High", rate: "$550" },
+      { cpt: "99285", description: "ER Visit - Severe", rate: "$850" },
+      { cpt: "70553", description: "MRI Brain w/ & w/o Contrast", rate: "$650" },
+      { cpt: "74177", description: "CT Abdomen/Pelvis w/ Contrast", rate: "$475" },
+    ],
     effectiveDate: "2026-01-01",
-    notes: "Major hospital facility - tiered rates",
+    notes: "Major hospital facility - tiered rates with CPT overrides for ER and imaging",
     lastModified: "2026-01-15"
   },
   {
@@ -262,12 +287,14 @@ export default function DiscountSchedulesPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [serviceRows, setServiceRows] = useState([{ service: "", rate: "" }]);
+  const [cptRows, setCptRows] = useState([{ cpt: "", description: "", rate: "" }]);
   
   // Provider rate form state
   const [newProviderRate, setNewProviderRate] = useState({
     rateType: "flat" as "flat" | "custom",
     flatRate: "",
     serviceRates: {} as Record<string, string>,
+    cptRates: [] as { cpt: string; description: string; rate: string }[],
     effectiveDate: "",
     expirationDate: "",
     notes: ""
@@ -283,16 +310,30 @@ export default function DiscountSchedulesPage() {
         setShowCreateModal(false);
         setShowProviderRateModal(false);
         setServiceRows([{ service: "", rate: "" }]);
+        setCptRows([{ cpt: "", description: "", rate: "" }]);
         setNewProviderRate({
           rateType: "flat",
           flatRate: "",
           serviceRates: {},
+          cptRates: [],
           effectiveDate: "",
           expirationDate: "",
           notes: ""
         });
       }, 1500);
     }, 1000);
+  };
+
+  const addCptRow = () => {
+    setCptRows([...cptRows, { cpt: "", description: "", rate: "" }]);
+  };
+
+  const removeCptRow = (index: number) => {
+    if (cptRows.length > 1) {
+      setCptRows(cptRows.filter((_, i) => i !== index));
+    } else {
+      setCptRows([{ cpt: "", description: "", rate: "" }]);
+    }
   };
 
   const addServiceRow = () => {
@@ -499,17 +540,22 @@ export default function DiscountSchedulesPage() {
                     </span>
                   </td>
                   <td className="px-4 py-4">
-                    {pr.rateType === "flat" ? (
-                      <span className="text-green-400 font-semibold">{pr.flatRate}</span>
-                    ) : (
-                      <button
-                        onClick={() => setSelectedProviderRate(pr)}
-                        className="text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-1"
-                      >
-                        <Eye className="w-3 h-3" />
-                        {Object.keys(pr.serviceRates || {}).length} categories
-                      </button>
-                    )}
+                    <div className="space-y-1">
+                      {pr.rateType === "flat" ? (
+                        <span className="text-green-400 font-semibold">{pr.flatRate}</span>
+                      ) : (
+                        <button
+                          onClick={() => setSelectedProviderRate(pr)}
+                          className="text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-1"
+                        >
+                          <Eye className="w-3 h-3" />
+                          {Object.keys(pr.serviceRates || {}).length} categories
+                        </button>
+                      )}
+                      {pr.cptRates && pr.cptRates.length > 0 && (
+                        <p className="text-xs text-amber-400">+ {pr.cptRates.length} CPT overrides</p>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-4">
                     <div className="text-sm">
@@ -706,6 +752,38 @@ export default function DiscountSchedulesPage() {
                         </tbody>
                       </table>
                     </div>
+                  </div>
+                )}
+
+                {/* CPT-Specific Rates */}
+                {selectedProviderRate.cptRates && selectedProviderRate.cptRates.length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-amber-400" />
+                      CPT-Specific Flat Rates
+                      <span className="text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">Override</span>
+                    </h3>
+                    <div className="bg-slate-900 rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-slate-700">
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">CPT Code</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Description</th>
+                            <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Flat Rate</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-700">
+                          {selectedProviderRate.cptRates.map((cpt, i) => (
+                            <tr key={i} className="hover:bg-slate-800/50">
+                              <td className="px-4 py-3 font-mono text-amber-400 font-medium">{cpt.cpt}</td>
+                              <td className="px-4 py-3 text-slate-300">{cpt.description}</td>
+                              <td className="px-4 py-3 text-right text-green-400 font-semibold">{cpt.rate}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-2">CPT-specific rates override service category rates for these procedures</p>
                   </div>
                 )}
 
@@ -1062,6 +1140,72 @@ export default function DiscountSchedulesPage() {
                         <p className="text-xs text-slate-500 mt-2">Leave blank to exclude category. Enter percentage value (e.g., "150" for 150% of Medicare)</p>
                       </div>
                     )}
+
+                    {/* CPT-Specific Flat Rates */}
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="text-sm font-medium text-slate-300 flex items-center gap-2">
+                          <FileText className="w-4 h-4 text-amber-400" />
+                          CPT-Specific Flat Rates
+                          <span className="text-xs text-slate-500 font-normal">(Optional)</span>
+                        </label>
+                        <button 
+                          type="button"
+                          onClick={addCptRow}
+                          className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Add CPT Rate
+                        </button>
+                      </div>
+                      <div className="bg-slate-900 rounded-lg p-4 space-y-3">
+                        <p className="text-xs text-slate-500 mb-3">CPT flat rates override category rates for specific procedure codes</p>
+                        {cptRows.map((row, index) => (
+                          <div key={index} className="flex gap-2">
+                            <input 
+                              type="text" 
+                              className="w-28 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-amber-500 text-sm font-mono"
+                              placeholder="CPT Code"
+                              value={row.cpt}
+                              onChange={(e) => {
+                                const newRows = [...cptRows];
+                                newRows[index].cpt = e.target.value;
+                                setCptRows(newRows);
+                              }}
+                            />
+                            <input 
+                              type="text" 
+                              className="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-amber-500 text-sm"
+                              placeholder="Description (e.g., Office Visit - Established)"
+                              value={row.description}
+                              onChange={(e) => {
+                                const newRows = [...cptRows];
+                                newRows[index].description = e.target.value;
+                                setCptRows(newRows);
+                              }}
+                            />
+                            <input 
+                              type="text" 
+                              className="w-28 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-amber-500 text-sm text-right"
+                              placeholder="$0.00"
+                              value={row.rate}
+                              onChange={(e) => {
+                                const newRows = [...cptRows];
+                                newRows[index].rate = e.target.value;
+                                setCptRows(newRows);
+                              }}
+                            />
+                            <button 
+                              type="button"
+                              onClick={() => removeCptRow(index)}
+                              className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
                     {/* Dates */}
                     <div className="grid grid-cols-2 gap-4">
