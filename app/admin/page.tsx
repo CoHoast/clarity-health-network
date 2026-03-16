@@ -243,24 +243,66 @@ export default function AdminDashboard() {
 
       {/* Bottom Row */}
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Network Coverage Map Placeholder */}
+        {/* Network Coverage Map */}
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
               <MapPin className="w-5 h-5 text-teal-400" />
-              Network Coverage
+              Network Coverage - Ohio
             </h2>
             <Link href="/admin/network-map" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
-              View Map <ArrowRight className="w-4 h-4" />
+              Full Map <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="h-48 bg-slate-700/30 rounded-lg flex items-center justify-center border border-slate-600">
-            <div className="text-center">
-              <MapPin className="w-12 h-12 text-slate-500 mx-auto mb-2" />
-              <p className="text-slate-400">Interactive map available</p>
-              <Link href="/admin/network-map" className="text-sm text-cyan-400 hover:underline mt-2 inline-block">
-                Open Network Map →
-              </Link>
+          <div className="relative h-64 bg-slate-900/50 rounded-lg overflow-hidden">
+            {/* Simple Ohio Map SVG */}
+            <svg viewBox="0 0 400 350" className="w-full h-full">
+              {/* Ohio state outline */}
+              <path
+                d="M50,50 L350,30 L370,120 L360,180 L340,220 L280,280 L200,320 L120,300 L60,250 L40,180 L50,100 Z"
+                fill="#1e293b"
+                stroke="#334155"
+                strokeWidth="2"
+              />
+              {/* Region highlights */}
+              <ellipse cx="280" cy="100" rx="50" ry="40" fill="#0d9488" fillOpacity="0.3" />
+              <ellipse cx="180" cy="180" rx="60" ry="50" fill="#0d9488" fillOpacity="0.2" />
+              <ellipse cx="120" cy="260" rx="40" ry="30" fill="#0d9488" fillOpacity="0.15" />
+              
+              {/* Provider location pins */}
+              {[
+                { x: 290, y: 90, count: 892, city: "Cleveland" },
+                { x: 250, y: 110, count: 234, city: "Akron" },
+                { x: 200, y: 150, count: 156, city: "Columbus" },
+                { x: 130, y: 180, count: 89, city: "Dayton" },
+                { x: 100, y: 250, count: 67, city: "Cincinnati" },
+                { x: 320, y: 140, count: 45, city: "Youngstown" },
+                { x: 80, y: 120, count: 112, city: "Toledo" },
+              ].map((loc, i) => (
+                <g key={i} className="cursor-pointer hover:opacity-80 transition-opacity">
+                  <circle cx={loc.x} cy={loc.y} r={Math.min(20, 8 + loc.count / 50)} fill="#0d9488" fillOpacity="0.8" />
+                  <circle cx={loc.x} cy={loc.y} r={4} fill="#2dd4bf" />
+                  <text x={loc.x} y={loc.y + 30} textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="500">
+                    {loc.city}
+                  </text>
+                </g>
+              ))}
+            </svg>
+            
+            {/* Legend */}
+            <div className="absolute bottom-3 left-3 bg-slate-800/90 rounded-lg p-2 text-xs">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-3 h-3 rounded-full bg-teal-500"></div>
+                <span className="text-slate-300">Provider Concentration</span>
+              </div>
+              <div className="text-slate-400">Circle size = provider count</div>
+            </div>
+            
+            {/* Stats overlay */}
+            <div className="absolute top-3 right-3 bg-slate-800/90 rounded-lg p-3 text-right">
+              <p className="text-2xl font-bold text-white">2,847</p>
+              <p className="text-xs text-slate-400">Total Providers</p>
+              <p className="text-xs text-teal-400 mt-1">7 major metro areas</p>
             </div>
           </div>
         </div>
