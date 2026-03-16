@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, X, DollarSign, Edit, User, CreditCard, Save, Users, ChevronRight, Trash2 } from "lucide-react";
+import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, X, DollarSign, Edit, User, CreditCard, Save, Users, ChevronRight, Trash2, Upload, FileSpreadsheet, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -295,23 +295,23 @@ const providers: Provider[] = [
   { id: "PRV-002", practiceId: "PRC-001", name: "Jennifer Adams", credential: "MD", npi: "1111111112", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "207QA0505X", secondaryTaxonomyDesc: "Adult Medicine", licenseState: "OH", licenseNumber: "MD-35-123457", acceptingNewPatients: true, languages: ["eng", "spa"], clinicHours: { monday: "9:00 AM - 6:00 PM", tuesday: "9:00 AM - 6:00 PM", wednesday: "Closed", thursday: "9:00 AM - 6:00 PM", friday: "9:00 AM - 6:00 PM", saturday: "9:00 AM - 12:00 PM", sunday: "Closed" } },
   { id: "PRV-003", practiceId: "PRC-001", name: "Michael Chen", credential: "DO", npi: "1111111113", gender: "Male", specialty: "Family Medicine", primaryTaxonomy: "207Q00000X", primaryTaxonomyDesc: "Family Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-123458", acceptingNewPatients: false, languages: ["eng", "cmn", "yue"], clinicHours: { monday: "7:00 AM - 4:00 PM", tuesday: "7:00 AM - 4:00 PM", wednesday: "7:00 AM - 4:00 PM", thursday: "7:00 AM - 4:00 PM", friday: "7:00 AM - 12:00 PM", saturday: "Closed", sunday: "Closed" } },
   { id: "PRV-004", practiceId: "PRC-001", name: "Sarah Williams", credential: "NP", npi: "1111111114", gender: "Female", specialty: "Family Medicine", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-123459", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 5:00 PM", saturday: "Closed", sunday: "Closed" } },
-  
+
   // Cleveland Orthopedic Associates providers
   { id: "PRV-005", practiceId: "PRC-002", name: "James Miller", credential: "MD", npi: "4444444441", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XS0114X", secondaryTaxonomyDesc: "Sports Medicine", licenseState: "OH", licenseNumber: "MD-35-456789", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "8:00 AM - 4:00 PM", tuesday: "Surgery Day", wednesday: "8:00 AM - 4:00 PM", thursday: "Surgery Day", friday: "8:00 AM - 12:00 PM", saturday: "Closed", sunday: "Closed" } },
   { id: "PRV-006", practiceId: "PRC-002", name: "Lisa Thompson", credential: "MD", npi: "4444444442", gender: "Female", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XP3100X", secondaryTaxonomyDesc: "Pediatric Orthopedics", licenseState: "OH", licenseNumber: "MD-35-456790", acceptingNewPatients: true, languages: ["eng", "fra"], clinicHours: { monday: "9:00 AM - 5:00 PM", tuesday: "9:00 AM - 5:00 PM", wednesday: "Surgery Day", thursday: "9:00 AM - 5:00 PM", friday: "9:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
   { id: "PRV-007", practiceId: "PRC-002", name: "David Park", credential: "MD", npi: "4444444443", gender: "Male", specialty: "Orthopedic Surgery", primaryTaxonomy: "207X00000X", primaryTaxonomyDesc: "Orthopedic Surgery", secondaryTaxonomy: "207XX0004X", secondaryTaxonomyDesc: "Spine Surgery", licenseState: "OH", licenseNumber: "MD-35-456791", acceptingNewPatients: false, languages: ["eng", "kor"], clinicHours: { monday: "Surgery Day", tuesday: "8:00 AM - 4:00 PM", wednesday: "Surgery Day", thursday: "8:00 AM - 4:00 PM", friday: "8:00 AM - 12:00 PM", saturday: "Closed", sunday: "Closed" } },
   { id: "PRV-008", practiceId: "PRC-002", name: "Amy Rodriguez", credential: "PA", npi: "4444444444", gender: "Female", specialty: "Orthopedics", primaryTaxonomy: "363A00000X", primaryTaxonomyDesc: "Physician Assistant", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "PA-35-456792", acceptingNewPatients: true, languages: ["eng", "spa"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 5:00 PM", saturday: "Closed", sunday: "Closed" } },
-  
+
   // Metro Imaging Center providers
   { id: "PRV-009", practiceId: "PRC-003", name: "Thomas Richards", credential: "MD", npi: "3333333331", gender: "Male", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-345678", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "7:00 AM - 3:00 PM", tuesday: "7:00 AM - 3:00 PM", wednesday: "7:00 AM - 3:00 PM", thursday: "7:00 AM - 3:00 PM", friday: "7:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
   { id: "PRV-010", practiceId: "PRC-003", name: "Karen Lee", credential: "MD", npi: "3333333332", gender: "Female", specialty: "Radiology", primaryTaxonomy: "2085R0202X", primaryTaxonomyDesc: "Diagnostic Radiology", secondaryTaxonomy: "2085N0700X", secondaryTaxonomyDesc: "Neuroradiology", licenseState: "OH", licenseNumber: "MD-35-345679", acceptingNewPatients: true, languages: ["eng", "kor", "jpn"], clinicHours: { monday: "10:00 AM - 6:00 PM", tuesday: "10:00 AM - 6:00 PM", wednesday: "10:00 AM - 6:00 PM", thursday: "10:00 AM - 6:00 PM", friday: "10:00 AM - 6:00 PM", saturday: "8:00 AM - 12:00 PM", sunday: "Closed" } },
-  
+
   // Cleveland Cardiology Associates providers
   { id: "PRV-011", practiceId: "PRC-004", name: "Robert Thompson", credential: "MD", npi: "9999999991", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RI0011X", secondaryTaxonomyDesc: "Interventional Cardiology", licenseState: "OH", licenseNumber: "MD-35-901234", acceptingNewPatients: false, languages: ["eng"], clinicHours: { monday: "8:00 AM - 4:00 PM", tuesday: "Cath Lab", wednesday: "8:00 AM - 4:00 PM", thursday: "Cath Lab", friday: "8:00 AM - 12:00 PM", saturday: "Closed", sunday: "Closed" } },
   { id: "PRV-012", practiceId: "PRC-004", name: "Michelle Wang", credential: "MD", npi: "9999999992", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "207RE0101X", secondaryTaxonomyDesc: "Electrophysiology", licenseState: "OH", licenseNumber: "MD-35-901235", acceptingNewPatients: true, languages: ["eng", "cmn"], clinicHours: { monday: "9:00 AM - 5:00 PM", tuesday: "9:00 AM - 5:00 PM", wednesday: "EP Lab", thursday: "9:00 AM - 5:00 PM", friday: "9:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
   { id: "PRV-013", practiceId: "PRC-004", name: "Daniel Kim", credential: "MD", npi: "9999999993", gender: "Male", specialty: "Cardiology", primaryTaxonomy: "207RC0000X", primaryTaxonomyDesc: "Cardiovascular Disease", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-901236", acceptingNewPatients: true, languages: ["eng", "kor"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 5:00 PM", saturday: "Closed", sunday: "Closed" } },
   { id: "PRV-014", practiceId: "PRC-004", name: "Emily Foster", credential: "NP", npi: "9999999994", gender: "Female", specialty: "Cardiology", primaryTaxonomy: "363L00000X", primaryTaxonomyDesc: "Nurse Practitioner", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "NP-35-901237", acceptingNewPatients: true, languages: ["eng", "spa"], clinicHours: { monday: "8:00 AM - 5:00 PM", tuesday: "8:00 AM - 5:00 PM", wednesday: "8:00 AM - 5:00 PM", thursday: "8:00 AM - 5:00 PM", friday: "8:00 AM - 3:00 PM", saturday: "Closed", sunday: "Closed" } },
-  
+
   // Westlake Urgent Care providers
   { id: "PRV-015", practiceId: "PRC-005", name: "Patricia Lee", credential: "MD", npi: "6666666661", gender: "Female", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "MD-35-678901", acceptingNewPatients: true, languages: ["eng", "vie"], clinicHours: { monday: "8:00 AM - 8:00 PM", tuesday: "8:00 AM - 8:00 PM", wednesday: "Closed", thursday: "8:00 AM - 8:00 PM", friday: "8:00 AM - 8:00 PM", saturday: "9:00 AM - 5:00 PM", sunday: "9:00 AM - 5:00 PM" } },
   { id: "PRV-016", practiceId: "PRC-005", name: "Mark Johnson", credential: "DO", npi: "6666666662", gender: "Male", specialty: "Emergency Medicine", primaryTaxonomy: "207P00000X", primaryTaxonomyDesc: "Emergency Medicine", secondaryTaxonomy: "", secondaryTaxonomyDesc: "", licenseState: "OH", licenseNumber: "DO-35-678902", acceptingNewPatients: true, languages: ["eng"], clinicHours: { monday: "Closed", tuesday: "8:00 AM - 8:00 PM", wednesday: "8:00 AM - 8:00 PM", thursday: "8:00 AM - 8:00 PM", friday: "8:00 AM - 8:00 PM", saturday: "9:00 AM - 5:00 PM", sunday: "Closed" } },
@@ -330,6 +330,9 @@ export default function ProvidersPage() {
   const [activeTab, setActiveTab] = useState<"info" | "providers" | "billing" | "payto" | "contract">("info");
   const [showAddPractice, setShowAddPractice] = useState(false);
   const [showAddProvider, setShowAddProvider] = useState(false);
+  const [showCsvUpload, setShowCsvUpload] = useState(false);
+  const [csvData, setCsvData] = useState<Partial<Provider>[]>([]);
+  const [csvErrors, setCsvErrors] = useState<string[]>([]);
   const [isEditingPractice, setIsEditingPractice] = useState(false);
   const [isEditingProvider, setIsEditingProvider] = useState(false);
 
@@ -360,6 +363,70 @@ export default function ProvidersPage() {
 
   const getProvidersForPractice = (practiceId: string) => {
     return providers.filter(p => p.practiceId === practiceId);
+  };
+
+  const handleCsvUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target?.result as string;
+      const lines = text.split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, '_'));
+
+      const errors: string[] = [];
+      const parsed: Partial<Provider>[] = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+
+        const values = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        const row: any = {};
+
+        headers.forEach((header, index) => {
+          row[header] = values[index] || '';
+        });
+
+        // Map CSV columns to Provider fields
+        const provider: Partial<Provider> = {
+          name: row.name || row.provider_name || row.full_name || '',
+          credential: row.credential || row.credentials || 'MD',
+          npi: row.npi || row.provider_npi || '',
+          gender: row.gender || '',
+          specialty: row.specialty || row.speciality || '',
+          primaryTaxonomy: row.primary_taxonomy || row.taxonomy_code || '',
+          primaryTaxonomyDesc: row.primary_taxonomy_desc || row.taxonomy_description || '',
+          secondaryTaxonomy: row.secondary_taxonomy || '',
+          secondaryTaxonomyDesc: row.secondary_taxonomy_desc || '',
+          licenseState: row.license_state || row.state_license || '',
+          licenseNumber: row.license_number || row.license_no || '',
+          acceptingNewPatients: row.accepting_new_patients?.toLowerCase() === 'yes' || row.accepting_new_patients?.toLowerCase() === 'true',
+          languages: row.languages ? row.languages.split(';').map((l: string) => l.trim()) : ['eng'],
+          clinicHours: {
+            monday: row.monday || row.mon || '8:00 AM - 5:00 PM',
+            tuesday: row.tuesday || row.tue || '8:00 AM - 5:00 PM',
+            wednesday: row.wednesday || row.wed || '8:00 AM - 5:00 PM',
+            thursday: row.thursday || row.thu || '8:00 AM - 5:00 PM',
+            friday: row.friday || row.fri || '8:00 AM - 5:00 PM',
+            saturday: row.saturday || row.sat || 'Closed',
+            sunday: row.sunday || row.sun || 'Closed',
+          },
+        };
+
+        // Validate required fields
+        if (!provider.name) errors.push(`Row ${i}: Missing provider name`);
+        if (!provider.npi) errors.push(`Row ${i}: Missing NPI`);
+
+        if (provider.name && provider.npi) {
+          parsed.push(provider);
+        }
+      }
+
+      setCsvData(parsed);
+      setCsvErrors(errors);
+    };
+    reader.readAsText(file);
   };
 
   const filteredPractices = practices.filter(practice => {
@@ -397,7 +464,14 @@ export default function ProvidersPage() {
             <Download className="w-4 h-4" />
             Export
           </button>
-          <button
+          <button 
+            onClick={() => setShowCsvUpload(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-colors"
+          >
+            <Upload className="w-4 h-4" />
+            Import CSV
+          </button>
+          <button 
             onClick={() => setShowAddPractice(true)}
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-lg hover:from-cyan-500 hover:to-teal-500 transition-colors"
           >
@@ -1151,6 +1225,160 @@ export default function ProvidersPage() {
                   <Save className="w-4 h-4" />
                   Add Provider
                 </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* CSV Upload Modal */}
+      <AnimatePresence>
+        {showCsvUpload && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => { setShowCsvUpload(false); setCsvData([]); setCsvErrors([]); }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-auto border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-slate-700">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <FileSpreadsheet className="w-6 h-6 text-cyan-400" />
+                  Import Providers from CSV
+                </h2>
+                <p className="text-slate-400 mt-1">Upload a CSV file to bulk import providers</p>
+              </div>
+              
+              <div className="p-6 space-y-6">
+                {/* Upload Area */}
+                {csvData.length === 0 && (
+                  <div className="border-2 border-dashed border-slate-600 rounded-xl p-8 text-center">
+                    <Upload className="w-12 h-12 text-slate-500 mx-auto mb-4" />
+                    <p className="text-white font-medium mb-2">Drop CSV file here or click to browse</p>
+                    <p className="text-slate-400 text-sm mb-4">Supports .csv files with provider data</p>
+                    <input
+                      type="file"
+                      accept=".csv"
+                      onChange={handleCsvUpload}
+                      className="hidden"
+                      id="csv-upload"
+                    />
+                    <label
+                      htmlFor="csv-upload"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 cursor-pointer transition-colors"
+                    >
+                      <Upload className="w-4 h-4" />
+                      Select CSV File
+                    </label>
+                  </div>
+                )}
+
+                {/* CSV Template Info */}
+                {csvData.length === 0 && (
+                  <div className="bg-slate-700/30 rounded-lg p-4">
+                    <h3 className="text-sm font-semibold text-white mb-3">Expected CSV Columns</h3>
+                    <div className="grid grid-cols-3 gap-2 text-sm">
+                      <div className="text-cyan-400">name *</div>
+                      <div className="text-cyan-400">npi *</div>
+                      <div className="text-slate-400">credential</div>
+                      <div className="text-slate-400">gender</div>
+                      <div className="text-slate-400">specialty</div>
+                      <div className="text-slate-400">primary_taxonomy</div>
+                      <div className="text-slate-400">primary_taxonomy_desc</div>
+                      <div className="text-slate-400">license_state</div>
+                      <div className="text-slate-400">license_number</div>
+                      <div className="text-slate-400">accepting_new_patients</div>
+                      <div className="text-slate-400">languages (semicolon sep)</div>
+                      <div className="text-slate-400">monday, tuesday, etc.</div>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-3">* Required fields. Column names are case-insensitive.</p>
+                  </div>
+                )}
+
+                {/* Errors */}
+                {csvErrors.length > 0 && (
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                    <h3 className="text-sm font-semibold text-red-400 mb-2 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4" />
+                      Import Warnings ({csvErrors.length})
+                    </h3>
+                    <div className="max-h-32 overflow-auto text-sm text-red-300 space-y-1">
+                      {csvErrors.map((err, i) => (
+                        <p key={i}>{err}</p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Preview Table */}
+                {csvData.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-white mb-3">Preview ({csvData.length} providers)</h3>
+                    <div className="bg-slate-700/30 rounded-lg overflow-hidden max-h-96 overflow-auto">
+                      <table className="w-full text-sm">
+                        <thead className="bg-slate-900/50 sticky top-0">
+                          <tr>
+                            <th className="text-left px-3 py-2 text-slate-400">Name</th>
+                            <th className="text-left px-3 py-2 text-slate-400">Credential</th>
+                            <th className="text-left px-3 py-2 text-slate-400">NPI</th>
+                            <th className="text-left px-3 py-2 text-slate-400">Specialty</th>
+                            <th className="text-left px-3 py-2 text-slate-400">License</th>
+                            <th className="text-left px-3 py-2 text-slate-400">Languages</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-700/50">
+                          {csvData.map((provider, i) => (
+                            <tr key={i} className="hover:bg-slate-700/20">
+                              <td className="px-3 py-2 text-white">{provider.name}</td>
+                              <td className="px-3 py-2 text-slate-300">{provider.credential}</td>
+                              <td className="px-3 py-2 text-slate-300 font-mono">{provider.npi}</td>
+                              <td className="px-3 py-2 text-slate-300">{provider.specialty}</td>
+                              <td className="px-3 py-2 text-slate-300">{provider.licenseState} {provider.licenseNumber}</td>
+                              <td className="px-3 py-2 text-slate-300">{provider.languages?.join(', ')}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Practice Selection */}
+                {csvData.length > 0 && (
+                  <div className="bg-slate-700/30 rounded-lg p-4">
+                    <h3 className="text-sm font-semibold text-white mb-3">Assign to Practice</h3>
+                    <select className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                      <option value="">Select a practice...</option>
+                      {practices.map(p => (
+                        <option key={p.id} value={p.id}>{p.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+              
+              <div className="p-6 border-t border-slate-700 flex justify-between">
+                <button 
+                  onClick={() => { setCsvData([]); setCsvErrors([]); }}
+                  className={`px-4 py-2 text-slate-400 hover:text-white transition-colors ${csvData.length === 0 ? 'invisible' : ''}`}
+                >
+                  Clear & Upload New
+                </button>
+                <div className="flex gap-3">
+                  <button onClick={() => { setShowCsvUpload(false); setCsvData([]); setCsvErrors([]); }} className="px-4 py-2 text-slate-400 hover:text-white transition-colors">Cancel</button>
+                  <button 
+                    disabled={csvData.length === 0}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      csvData.length > 0 
+                        ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white hover:from-cyan-500 hover:to-teal-500' 
+                        : 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                    }`}
+                  >
+                    <Save className="w-4 h-4" />
+                    Import {csvData.length} Providers
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>
