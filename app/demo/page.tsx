@@ -3,6 +3,33 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
+const billNegotiatorInfo = {
+  title: 'AI Bill Negotiator',
+  subtitle: 'Automated Medical Bill Negotiation',
+  description: 'Our AI-powered bill negotiation system automatically analyzes medical bills, calculates fair prices using Medicare rates, and negotiates with providers to achieve significant savings for your members.',
+  stats: [
+    { label: 'Avg. Savings', value: '52%' },
+    { label: 'Success Rate', value: '89%' },
+    { label: 'Turnaround', value: '7 days' },
+  ],
+  features: [
+    'Automatic bill intake via fax, email, or portal upload',
+    'AI-powered data extraction and validation',
+    'Fair price calculation using CMS Medicare rates',
+    'Automated offer letter generation and delivery',
+    'Counter-offer handling and escalation workflows',
+    'Real-time tracking and status updates',
+    'Detailed savings reports and analytics',
+    'HIPAA-compliant document handling',
+  ],
+  benefits: [
+    { title: 'Reduce Member Costs', desc: 'Members save an average of 52% on out-of-network medical bills' },
+    { title: 'Automate Negotiations', desc: 'AI handles 90% of negotiations without human intervention' },
+    { title: 'Scale Operations', desc: 'Process thousands of bills monthly with minimal staff' },
+    { title: 'Improve Satisfaction', desc: 'Members appreciate transparent, fair pricing advocacy' },
+  ],
+};
+
 const portals = [
   {
     id: 'marketing',
@@ -131,6 +158,7 @@ const aiEngines = [
 
 export default function ProductDemoPage() {
   const [selectedEngine, setSelectedEngine] = useState<typeof aiEngines[0] | null>(null);
+  const [showBillNegotiator, setShowBillNegotiator] = useState(false);
 
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)' }}>
@@ -164,7 +192,7 @@ export default function ProductDemoPage() {
           {/* Stats */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap' }}>
             {[
-              { value: '5', label: 'Portals' },
+              { value: '6', label: 'Portals' },
               { value: '5', label: 'AI Engines' },
               { value: '50+', label: 'Features' },
               { value: '100%', label: 'Interactive' },
@@ -256,6 +284,106 @@ export default function ProductDemoPage() {
               </div>
             </a>
           ))}
+          
+          {/* Bill Negotiator Teaser Card */}
+          <button
+            onClick={() => setShowBillNegotiator(true)}
+            style={{ 
+              textDecoration: 'none',
+              background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+              borderRadius: 16,
+              overflow: 'hidden',
+              boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              display: 'block',
+              border: '2px solid #0d9488',
+              cursor: 'pointer',
+              textAlign: 'left',
+              width: '100%',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(13,148,136,0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+            }}
+          >
+            {/* Teaser Image Area */}
+            <div style={{ 
+              height: 200, 
+              background: 'linear-gradient(135deg, #0d9488 0%, #0891b2 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              gap: 12,
+              borderBottom: '3px solid #2dd4bf',
+            }}>
+              <div style={{
+                width: 64,
+                height: 64,
+                borderRadius: 16,
+                background: 'rgba(255,255,255,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <span style={{ 
+                background: 'rgba(255,255,255,0.2)', 
+                padding: '6px 16px', 
+                borderRadius: 20, 
+                fontSize: 12, 
+                fontWeight: 600,
+                color: 'white',
+              }}>
+                COMING SOON
+              </span>
+            </div>
+            
+            {/* Content */}
+            <div style={{ padding: 20 }}>
+              <h4 style={{ fontSize: 18, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>
+                AI Bill Negotiator
+              </h4>
+              <p style={{ fontSize: 14, color: '#94a3b8', marginBottom: 16, lineHeight: 1.5 }}>
+                Automated medical bill negotiation powered by AI. Reduce member costs by 50%+ on out-of-network bills.
+              </p>
+              
+              {/* Tags */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+                {['Auto-Negotiation', 'Medicare Rates', '52% Avg Savings'].map((tag) => (
+                  <span key={tag} style={{ 
+                    fontSize: 12, 
+                    padding: '4px 10px', 
+                    background: 'rgba(13,148,136,0.2)', 
+                    borderRadius: 20,
+                    color: '#2dd4bf',
+                    fontWeight: 500,
+                  }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              
+              {/* Button */}
+              <div style={{ 
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                color: '#2dd4bf',
+                fontWeight: 600,
+                fontSize: 14,
+              }}>
+                Learn More →
+              </div>
+            </div>
+          </button>
         </div>
       </section>
 
@@ -413,6 +541,134 @@ export default function ProductDemoPage() {
 
               <h5 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 8 }}>Business Impact</h5>
               <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6 }}>{selectedEngine.benefits}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bill Negotiator Modal */}
+      {showBillNegotiator && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: 24,
+          }}
+          onClick={() => setShowBillNegotiator(false)}
+        >
+          <div 
+            style={{
+              background: 'white',
+              borderRadius: 20,
+              maxWidth: 700,
+              width: '100%',
+              maxHeight: '90vh',
+              overflow: 'auto',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div style={{ 
+              padding: 24, 
+              background: 'linear-gradient(135deg, #0d9488 0%, #0891b2 100%)',
+              borderRadius: '20px 20px 0 0',
+              position: 'relative',
+            }}>
+              <button
+                onClick={() => setShowBillNegotiator(false)}
+                style={{
+                  position: 'absolute',
+                  top: 16,
+                  right: 16,
+                  background: 'rgba(255,255,255,0.2)',
+                  border: 'none',
+                  borderRadius: 8,
+                  width: 32,
+                  height: 32,
+                  cursor: 'pointer',
+                  color: 'white',
+                  fontSize: 18,
+                }}
+              >
+                ✕
+              </button>
+              <div style={{ 
+                width: 64, 
+                height: 64, 
+                borderRadius: 16, 
+                background: 'rgba(255,255,255,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 16,
+              }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+                <h4 style={{ fontSize: 24, fontWeight: 700, color: 'white' }}>{billNegotiatorInfo.title}</h4>
+                <span style={{ 
+                  background: 'rgba(255,255,255,0.2)', 
+                  padding: '4px 12px', 
+                  borderRadius: 20, 
+                  fontSize: 11, 
+                  fontWeight: 600,
+                  color: 'white',
+                }}>
+                  COMING SOON
+                </span>
+              </div>
+              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.9)' }}>{billNegotiatorInfo.subtitle}</p>
+            </div>
+
+            {/* Stats */}
+            <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0' }}>
+              {billNegotiatorInfo.stats.map((stat, i) => (
+                <div key={stat.label} style={{ flex: 1, padding: 20, textAlign: 'center', borderRight: i < 2 ? '1px solid #e2e8f0' : 'none' }}>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: '#0d9488' }}>{stat.value}</div>
+                  <div style={{ fontSize: 12, color: '#64748b' }}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Content */}
+            <div style={{ padding: 24 }}>
+              <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, marginBottom: 24 }}>
+                {billNegotiatorInfo.description}
+              </p>
+
+              <h5 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 12 }}>Key Features</h5>
+              <ul style={{ margin: 0, paddingLeft: 20, marginBottom: 24 }}>
+                {billNegotiatorInfo.features.map((feature, i) => (
+                  <li key={i} style={{ fontSize: 14, color: '#475569', marginBottom: 8 }}>{feature}</li>
+                ))}
+              </ul>
+
+              <h5 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 12 }}>Benefits</h5>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+                {billNegotiatorInfo.benefits.map((benefit, i) => (
+                  <div key={i} style={{ background: '#f8fafc', borderRadius: 12, padding: 16 }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>{benefit.title}</div>
+                    <div style={{ fontSize: 13, color: '#64748b' }}>{benefit.desc}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div style={{ marginTop: 24, padding: 20, background: 'linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%)', borderRadius: 12, textAlign: 'center' }}>
+                <p style={{ fontSize: 14, color: '#0f172a', marginBottom: 8 }}>
+                  Interested in the AI Bill Negotiator for your network?
+                </p>
+                <p style={{ fontSize: 13, color: '#64748b' }}>
+                  Contact us to learn more about early access and pricing.
+                </p>
+              </div>
             </div>
           </div>
         </div>
