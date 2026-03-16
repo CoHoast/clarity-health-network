@@ -13,6 +13,7 @@ interface Practice {
   specialty: string;
   // Location
   address: string;
+  address2?: string; // Suite, Office, Building number
   city: string;
   county: string;
   state: string;
@@ -26,6 +27,7 @@ interface Practice {
   contactName: string;
   // Correspondence Address (may differ from location)
   correspondenceAddress: string;
+  correspondenceAddress2?: string; // Suite, Office, Building number
   correspondenceCity: string;
   correspondenceState: string;
   correspondenceZip: string;
@@ -36,6 +38,7 @@ interface Practice {
   payToName: string;
   payToTaxId: string;
   payToAddress: string;
+  payToAddress2?: string; // Suite, Office, Building number
   payToCity: string;
   payToState: string;
   payToZip: string;
@@ -163,6 +166,7 @@ const practices: Practice[] = [
     type: "Group Practice",
     specialty: "Family Medicine",
     address: "123 Medical Center Dr",
+    address2: "Suite 200",
     city: "Cleveland",
     county: "Cuyahoga",
     state: "OH",
@@ -200,6 +204,7 @@ const practices: Practice[] = [
     type: "Group Practice",
     specialty: "Orthopedics",
     address: "321 Bone & Joint Dr",
+    address2: "Building B, Suite 150",
     city: "Beachwood",
     county: "Cuyahoga",
     state: "OH",
@@ -861,6 +866,7 @@ export default function ProvidersPage() {
                         Location Address
                       </h3>
                       <p className="text-slate-300">{selectedPractice.address}</p>
+                      {selectedPractice.address2 && <p className="text-slate-300">{selectedPractice.address2}</p>}
                       <p className="text-slate-300">{selectedPractice.city}, {selectedPractice.county} County</p>
                       <p className="text-slate-300">{selectedPractice.state} {selectedPractice.zip}</p>
                       <p className="text-slate-400">{selectedPractice.country}</p>
@@ -909,6 +915,7 @@ export default function ProvidersPage() {
                         </h3>
                         <div className="space-y-2">
                           <p className="text-slate-300">{selectedPractice.correspondenceAddress}</p>
+                          {selectedPractice.correspondenceAddress2 && <p className="text-slate-300">{selectedPractice.correspondenceAddress2}</p>}
                           <p className="text-slate-300">{selectedPractice.correspondenceCity}, {selectedPractice.correspondenceState} {selectedPractice.correspondenceZip}</p>
                           <p className="text-slate-400">{selectedPractice.correspondenceCountry}</p>
                           <p className="text-slate-300 mt-2">Fax: {selectedPractice.correspondenceFax}</p>
@@ -1081,6 +1088,7 @@ export default function ProvidersPage() {
                         <div className="space-y-2">
                           <p className="text-lg text-white font-medium">{selectedPractice.payToName}</p>
                           <p className="text-lg text-cyan-300">{selectedPractice.payToAddress}</p>
+                          {selectedPractice.payToAddress2 && <p className="text-lg text-cyan-300">{selectedPractice.payToAddress2}</p>}
                           <p className="text-lg text-cyan-300">{selectedPractice.payToCity}, {selectedPractice.payToState} {selectedPractice.payToZip}</p>
                           <p className="text-cyan-400">{selectedPractice.payToCountry}</p>
                         </div>

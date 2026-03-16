@@ -21,6 +21,17 @@ const discountTypes = [
   "Custom Schedule"
 ];
 
+const networkOptions = [
+  { id: "NET-001", name: "Ohio PPO Network" },
+  { id: "NET-002", name: "Cleveland Metro Network" },
+  { id: "NET-003", name: "Northeast Ohio Specialists" },
+  { id: "NET-004", name: "Ohio Hospital Alliance" },
+  { id: "NET-005", name: "Midwest Regional Network" },
+  { id: "NET-006", name: "TrueCare Value Network" },
+  { id: "NET-007", name: "Pennsylvania PPO" },
+  { id: "NET-008", name: "Urgent Care Express" },
+];
+
 export default function AddProviderPage() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -53,11 +64,22 @@ export default function AddProviderPage() {
     discountRate: "",
     // Service Overrides
     serviceOverrides: [] as { service: string; rate: string }[],
+    // Networks
+    networks: [] as string[],
   });
   const [showSuccess, setShowSuccess] = useState(false);
 
   const updateField = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const toggleNetwork = (networkId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      networks: prev.networks.includes(networkId)
+        ? prev.networks.filter(id => id !== networkId)
+        : [...prev.networks, networkId]
+    }));
   };
 
   const addServiceOverride = () => {
@@ -180,6 +202,36 @@ export default function AddProviderPage() {
                   <option value="">Select a specialty...</option>
                   {specialties.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
+              </div>
+
+              {/* Network Assignment */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-slate-400 mb-2">Network Assignment</label>
+                <p className="text-xs text-slate-500 mb-3">Select one or more networks to add this provider to.</p>
+                <div className="flex flex-wrap gap-2">
+                  {networkOptions.map(network => (
+                    <button
+                      key={network.id}
+                      type="button"
+                      onClick={() => toggleNetwork(network.id)}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        formData.networks.includes(network.id)
+                          ? "bg-purple-600 text-white"
+                          : "bg-slate-700 text-slate-400 hover:bg-slate-600"
+                      }`}
+                    >
+                      {formData.networks.includes(network.id) && (
+                        <CheckCircle className="w-4 h-4 inline mr-1.5" />
+                      )}
+                      {network.name}
+                    </button>
+                  ))}
+                </div>
+                {formData.networks.length > 0 && (
+                  <p className="text-xs text-teal-400 mt-2">
+                    {formData.networks.length} network{formData.networks.length !== 1 ? 's' : ''} selected
+                  </p>
+                )}
               </div>
             </div>
           </motion.div>
