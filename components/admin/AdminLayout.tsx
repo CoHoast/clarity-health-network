@@ -143,11 +143,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push("/admin-login");
   };
 
-  // Check if a nav item is active - exact match only, no startsWith for sibling routes
+  // Check if a nav item is active
+  // Get all nav hrefs to check if current path is a nav item itself
+  const allNavHrefs = [...navigationGroups, settingsGroup].flatMap(g => g.items.map(i => i.href));
+  
   const isNavActive = (itemHref: string): boolean => {
     if (!pathname) return false;
+    // Exact match always wins
     if (pathname === itemHref) return true;
-    // Only match children if the path continues with /
+    // If current path is itself a nav item, only exact matches count (no parent highlighting)
+    if (allNavHrefs.includes(pathname)) return false;
+    // For child pages not in nav (e.g. /providers/PRC-001), highlight the parent nav item
     if (itemHref !== "/admin" && pathname.startsWith(itemHref + "/")) return true;
     return false;
   };
@@ -265,9 +271,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Main navigation groups */}
           {navigationGroups.map((group, groupIndex) => {
             const isExpanded = group.label ? expandedSections.includes(group.label) : true;
-            const hasActiveChild = group.items.some(item => 
-              pathname === item.href || (item.href !== "/admin" && pathname?.startsWith(item.href.split("?")[0]))
-            );
+            const hasActiveChild = group.items.some(item => isNavActive(item.href));
             const GroupIcon = group.icon;
             
             return (
@@ -314,8 +318,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         className={`space-y-1 overflow-hidden ${group.collapsible ? "ml-4 mt-1" : ""}`}
                       >
                         {group.items.map((item) => {
-                          const isActive = pathname === item.href || 
-                            (item.href !== "/admin" && pathname?.startsWith(item.href.split("?")[0]));
+                          const isActive = isNavActive(item.href);
                           return (
                             <Link
                               key={item.name}
@@ -349,9 +352,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="mt-2">
             {(() => {
               const isExpanded = expandedSections.includes(settingsGroup.label!);
-              const hasActiveChild = settingsGroup.items.some(item => 
-                pathname === item.href || (item.href !== "/admin" && pathname?.startsWith(item.href.split("?")[0]))
-              );
+              const hasActiveChild = settingsGroup.items.some(item => isNavActive(item.href));
               const GroupIcon = settingsGroup.icon;
               
               return (
@@ -386,8 +387,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         className="space-y-1 overflow-hidden ml-4 mt-1"
                       >
                         {settingsGroup.items.map((item) => {
-                          const isActive = pathname === item.href || 
-                            (item.href !== "/admin" && pathname?.startsWith(item.href.split("?")[0]));
+                          const isActive = isNavActive(item.href);
                           return (
                             <Link
                               key={item.name}

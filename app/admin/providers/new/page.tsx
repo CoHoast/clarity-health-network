@@ -198,48 +198,48 @@ export default function AddProviderPage() {
             </div>
 
             {/* Individual Provider Info (always shown) */}
-            <div className="bg-[#0f2744] border border-[#1e3a5f] rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-white mb-4">Individual Provider Information</h3>
+            <div className="bg-white border border-slate-200 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-slate-900 mb-4">Individual Provider Information</h3>
               <div className="grid md:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">First Name *</label>
+                  <label className="block text-xs text-slate-500 mb-1">First Name *</label>
                   <input
                     type="text"
                     value={formData.providerFirstName}
                     onChange={(e) => updateField("providerFirstName", e.target.value)}
                     placeholder="Robert"
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Last Name *</label>
+                  <label className="block text-xs text-slate-500 mb-1">Last Name *</label>
                   <input
                     type="text"
                     value={formData.providerLastName}
                     onChange={(e) => updateField("providerLastName", e.target.value)}
                     placeholder="Smith"
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Title *</label>
+                  <label className="block text-xs text-slate-500 mb-1">Title *</label>
                   <select
                     value={formData.providerTitle}
                     onChange={(e) => updateField("providerTitle", e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-teal-500"
                   >
                     {titleOptions.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Provider NPI *</label>
+                  <label className="block text-xs text-slate-500 mb-1">Provider NPI *</label>
                   <input
                     type="text"
                     value={formData.providerNpi}
                     onChange={(e) => updateField("providerNpi", e.target.value)}
                     placeholder="10-digit NPI"
                     maxLength={10}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono placeholder:text-slate-500 focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
               </div>
