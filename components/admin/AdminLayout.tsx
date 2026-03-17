@@ -194,7 +194,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     textMuted: isDark ? "text-slate-400" : "text-gray-500",
     textSubtle: isDark ? "text-slate-500" : "text-gray-400",
     navActive: isDark ? "bg-teal-600/20 text-cyan-500" : "bg-teal-50 text-teal-700",
-    navInactive: isDark ? "text-slate-400 hover:bg-[#2d4a6f] hover:text-white" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+    navInactive: isDark ? "text-slate-400 hover:bg-[#1e3a5f] hover:text-white" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
     navIcon: isDark ? "text-slate-500" : "text-gray-400",
     navIconActive: isDark ? "text-cyan-500" : "text-teal-600",
     card: isDark ? "bg-slate-800/50 border-slate-700" : "bg-white border-gray-200 shadow-sm",
@@ -221,12 +221,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar - always dark */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-[#1e3a5f] border-r border-[#2d4a6f] transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-[#0f2744] border-r border-[#1e3a5f] transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Logo */}
-        <div className="h-20 flex items-center justify-between px-4 border-b border-[#2d4a6f] bg-[#1e3a5f]">
+        <div className="h-20 flex items-center justify-between px-4 border-b border-[#1e3a5f] bg-[#0f2744]">
           <Link href="/admin" className="flex items-center hover:opacity-80 transition-opacity">
             <img src="/truecare-logo-dark.png" alt="TrueCare Health Network" className="h-12 w-auto" />
           </Link>
@@ -278,7 +278,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                         hasActiveChild 
                           ? "text-cyan-400" 
-                          : "text-slate-400 hover:bg-[#2d4a6f] hover:text-white"
+                          : "text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -315,7 +315,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                 isActive
                                   ? "bg-teal-600/20 text-cyan-500"
-                                  : "text-slate-400 hover:bg-[#2d4a6f] hover:text-white"
+                                  : "text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
                               }`}
                             >
                               <item.icon className={`w-4 h-4 ${isActive ? "text-cyan-500" : "text-slate-500"}`} />
@@ -352,7 +352,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       hasActiveChild 
                         ? "text-cyan-400" 
-                        : "text-slate-400 hover:bg-[#2d4a6f] hover:text-white"
+                        : "text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -387,7 +387,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                 isActive
                                   ? "bg-teal-600/20 text-cyan-500"
-                                  : "text-slate-400 hover:bg-[#2d4a6f] hover:text-white"
+                                  : "text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
                               }`}
                             >
                               <item.icon className={`w-4 h-4 ${isActive ? "text-cyan-500" : "text-slate-500"}`} />
@@ -405,10 +405,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* Bottom section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-[#2d4a6f] bg-[#1e3a5f]">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-[#1e3a5f] bg-[#0f2744]">
           <button
             onClick={() => setShowPulse(true)}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-[#2d4a6f] hover:text-white mb-2"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-[#1e3a5f] hover:text-white mb-2"
           >
             <div className="w-5 h-5 bg-gradient-to-br from-cyan-600 to-teal-600 rounded flex items-center justify-center">
               <Zap className="w-3 h-3 text-white" />
@@ -417,7 +417,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </button>
           <button 
             onClick={handleSignOut}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-[#2d4a6f] hover:text-white"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
           >
             <LogOut className="w-5 h-5 text-slate-500" />
             Sign Out
