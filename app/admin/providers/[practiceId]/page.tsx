@@ -411,7 +411,7 @@ export default function PracticeDetailPage() {
                       <p className="text-white">{practice.address2 || "—"}</p>
                     )}
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     <div>
                       <p className="text-xs text-slate-500 mb-1">City</p>
                       {isEditing ? (
@@ -425,21 +425,6 @@ export default function PracticeDetailPage() {
                         <p className="text-white">{practice.city}</p>
                       )}
                     </div>
-                    <div>
-                      <p className="text-xs text-slate-500 mb-1">County</p>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          value={editData.county}
-                          onChange={(e) => setEditData({ ...editData, county: e.target.value })}
-                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
-                        />
-                      ) : (
-                        <p className="text-white">{practice.county}</p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-slate-500 mb-1">State</p>
                       {isEditing ? (
@@ -466,6 +451,19 @@ export default function PracticeDetailPage() {
                         <p className="text-white">{practice.zip}</p>
                       )}
                     </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">County</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.county}
+                        onChange={(e) => setEditData({ ...editData, county: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.county}</p>
+                    )}
                   </div>
                 </div>
               </div>
