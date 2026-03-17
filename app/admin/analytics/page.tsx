@@ -1,36 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { BarChart3, TrendingUp, TrendingDown, DollarSign, Building2, FileText, Download, Calendar, X, PieChart, ArrowUpRight, MapPin, CheckCircle, Clock, AlertTriangle, Users, Shield } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { BarChart3, TrendingUp, TrendingDown, Building2, FileText, Download, Calendar, PieChart, MapPin, CheckCircle, Clock, AlertTriangle, Users, FileSignature, Globe, Activity } from "lucide-react";
+import { motion } from "framer-motion";
 import { useTheme } from "@/components/admin/ThemeContext";
+import { Card, CardHeader } from "@/components/admin/ui/Card";
+import { StatCard } from "@/components/admin/ui/StatCard";
+import { Badge } from "@/components/admin/ui/Badge";
+import { Button } from "@/components/admin/ui/Button";
+import { PageHeader, Tabs } from "@/components/admin/ui/PageHeader";
+import { cn } from "@/lib/utils";
 
-type DateRange = "This Month" | "Last Month" | "This Quarter" | "This Year";
+type DateRange = "month" | "quarter" | "year";
 
-interface KPI {
-  label: string;
-  value: string;
-  change: string;
-  trend: "up" | "down";
-  color: string;
-  drilldown: string;
-}
+const dateRangeTabs = [
+  { label: "This Month", value: "month" },
+  { label: "This Quarter", value: "quarter" },
+  { label: "This Year", value: "year" },
+];
 
-interface MonthlyData {
-  month: string;
-  providers: number;
-  contracts: number;
-}
-
-const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }> = {
-  "This Month": {
-    kpis: [
-      { label: "Total Providers", value: "2,891", change: "+23", trend: "up", color: "text-green-400", drilldown: "providers" },
-      { label: "Active Contracts", value: "2,654", change: "+18", trend: "up", color: "text-green-400", drilldown: "contracts" },
-      { label: "Avg Discount Rate", value: "32.4%", change: "+1.2%", trend: "up", color: "text-green-400", drilldown: "discounts" },
-      { label: "Network Coverage", value: "94%", change: "+2%", trend: "up", color: "text-green-400", drilldown: "coverage" },
-      { label: "Pending Credentials", value: "47", change: "-12", trend: "down", color: "text-green-400", drilldown: "credentials" },
-      { label: "Expiring (30 days)", value: "23", change: "-5", trend: "down", color: "text-amber-400", drilldown: "expiring" },
+const dataByRange: Record<DateRange, { stats: Array<{ label: string; value: string; change: string; trend: "up" | "down" | "warning" }>; monthlyData: Array<{ month: string; providers: number; contracts: number }> }> = {
+  month: {
+    stats: [
+      { label: "Total Providers", value: "2,891", change: "+23", trend: "up" },
+      { label: "Active Contracts", value: "2,654", change: "+18", trend: "up" },
+      { label: "Avg Discount Rate", value: "32.4%", change: "+1.2%", trend: "up" },
+      { label: "Pending Credentials", value: "47", change: "-12", trend: "up" },
     ],
     monthlyData: [
       { month: "Oct", providers: 2720, contracts: 2490 },
@@ -41,32 +36,12 @@ const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }
       { month: "Mar", providers: 2891, contracts: 2654 },
     ],
   },
-  "Last Month": {
-    kpis: [
-      { label: "Total Providers", value: "2,868", change: "+18", trend: "up", color: "text-green-400", drilldown: "providers" },
-      { label: "Active Contracts", value: "2,636", change: "+14", trend: "up", color: "text-green-400", drilldown: "contracts" },
-      { label: "Avg Discount Rate", value: "31.2%", change: "+0.8%", trend: "up", color: "text-green-400", drilldown: "discounts" },
-      { label: "Network Coverage", value: "92%", change: "+1%", trend: "up", color: "text-green-400", drilldown: "coverage" },
-      { label: "Pending Credentials", value: "59", change: "-8", trend: "down", color: "text-green-400", drilldown: "credentials" },
-      { label: "Expiring (30 days)", value: "28", change: "+3", trend: "up", color: "text-amber-400", drilldown: "expiring" },
-    ],
-    monthlyData: [
-      { month: "Sep", providers: 2680, contracts: 2450 },
-      { month: "Oct", providers: 2720, contracts: 2490 },
-      { month: "Nov", providers: 2780, contracts: 2540 },
-      { month: "Dec", providers: 2810, contracts: 2580 },
-      { month: "Jan", providers: 2845, contracts: 2610 },
-      { month: "Feb", providers: 2868, contracts: 2636 },
-    ],
-  },
-  "This Quarter": {
-    kpis: [
-      { label: "Total Providers", value: "2,891", change: "+81", trend: "up", color: "text-green-400", drilldown: "providers" },
-      { label: "Active Contracts", value: "2,654", change: "+74", trend: "up", color: "text-green-400", drilldown: "contracts" },
-      { label: "Avg Discount Rate", value: "32.4%", change: "+2.8%", trend: "up", color: "text-green-400", drilldown: "discounts" },
-      { label: "Network Coverage", value: "94%", change: "+4%", trend: "up", color: "text-green-400", drilldown: "coverage" },
-      { label: "New Providers", value: "81", change: "+15%", trend: "up", color: "text-cyan-400", drilldown: "newproviders" },
-      { label: "Contracts Renewed", value: "156", change: "+22%", trend: "up", color: "text-green-400", drilldown: "renewals" },
+  quarter: {
+    stats: [
+      { label: "Total Providers", value: "2,891", change: "+81", trend: "up" },
+      { label: "Active Contracts", value: "2,654", change: "+74", trend: "up" },
+      { label: "Avg Discount Rate", value: "32.4%", change: "+2.8%", trend: "up" },
+      { label: "Contracts Renewed", value: "156", change: "+22%", trend: "up" },
     ],
     monthlyData: [
       { month: "Jan", providers: 2845, contracts: 2610 },
@@ -74,518 +49,332 @@ const dataByRange: Record<DateRange, { kpis: KPI[]; monthlyData: MonthlyData[] }
       { month: "Mar", providers: 2891, contracts: 2654 },
     ],
   },
-  "This Year": {
-    kpis: [
-      { label: "Total Providers", value: "2,891", change: "+312", trend: "up", color: "text-green-400", drilldown: "providers" },
-      { label: "Active Contracts", value: "2,654", change: "+285", trend: "up", color: "text-green-400", drilldown: "contracts" },
-      { label: "Avg Discount Rate", value: "32.4%", change: "+5.2%", trend: "up", color: "text-green-400", drilldown: "discounts" },
-      { label: "Network Coverage", value: "94%", change: "+12%", trend: "up", color: "text-green-400", drilldown: "coverage" },
-      { label: "New Providers YTD", value: "312", change: "+28%", trend: "up", color: "text-cyan-400", drilldown: "newproviders" },
-      { label: "Contracts Renewed YTD", value: "489", change: "+35%", trend: "up", color: "text-green-400", drilldown: "renewals" },
+  year: {
+    stats: [
+      { label: "Total Providers", value: "2,891", change: "+312", trend: "up" },
+      { label: "Active Contracts", value: "2,654", change: "+285", trend: "up" },
+      { label: "Network Savings", value: "$4.2M", change: "+18%", trend: "up" },
+      { label: "Avg Discount Rate", value: "32.4%", change: "+5.6%", trend: "up" },
     ],
     monthlyData: [
-      { month: "Jan", providers: 2580, contracts: 2370 },
-      { month: "Feb", providers: 2620, contracts: 2400 },
-      { month: "Mar", providers: 2680, contracts: 2450 },
-      { month: "Apr", providers: 2710, contracts: 2480 },
-      { month: "May", providers: 2740, contracts: 2510 },
-      { month: "Jun", providers: 2770, contracts: 2540 },
-      { month: "Jul", providers: 2795, contracts: 2565 },
-      { month: "Aug", providers: 2820, contracts: 2590 },
-      { month: "Sep", providers: 2845, contracts: 2610 },
-      { month: "Oct", providers: 2860, contracts: 2625 },
-      { month: "Nov", providers: 2875, contracts: 2640 },
-      { month: "Dec", providers: 2891, contracts: 2654 },
+      { month: "Apr '25", providers: 2579, contracts: 2369 },
+      { month: "Jul '25", providers: 2690, contracts: 2470 },
+      { month: "Oct '25", providers: 2780, contracts: 2540 },
+      { month: "Jan '26", providers: 2845, contracts: 2610 },
+      { month: "Mar '26", providers: 2891, contracts: 2654 },
     ],
   },
 };
 
-const specialtyBreakdown = [
-  { name: "Primary Care", count: 892, percentage: 31, color: "bg-cyan-500" },
-  { name: "Specialists", count: 756, percentage: 26, color: "bg-blue-500" },
-  { name: "Hospitals/Facilities", count: 234, percentage: 8, color: "bg-purple-500" },
-  { name: "Urgent Care", count: 345, percentage: 12, color: "bg-amber-500" },
-  { name: "Mental Health", count: 289, percentage: 10, color: "bg-green-500" },
-  { name: "Ancillary/Labs", count: 375, percentage: 13, color: "bg-pink-500" },
+const providersBySpecialty = [
+  { specialty: "Primary Care", count: 892, percentage: 31, color: "bg-cyan-500" },
+  { specialty: "Specialists", count: 756, percentage: 27, color: "bg-teal-500" },
+  { specialty: "Hospitals", count: 234, percentage: 8, color: "bg-emerald-500" },
+  { specialty: "Urgent Care", count: 189, percentage: 7, color: "bg-blue-500" },
+  { specialty: "Imaging", count: 312, percentage: 11, color: "bg-purple-500" },
+  { specialty: "Labs", count: 464, percentage: 16, color: "bg-amber-500" },
 ];
 
 const topProviders = [
-  { name: "Cleveland Clinic", specialty: "Multi-Specialty", locations: 45, discount: "38%", status: "active" },
-  { name: "Metro Health System", specialty: "Hospital System", locations: 23, discount: "35%", status: "active" },
-  { name: "University Hospitals", specialty: "Academic Medical", locations: 18, discount: "32%", status: "active" },
-  { name: "Summa Health", specialty: "Regional System", locations: 12, discount: "30%", status: "active" },
-  { name: "Mercy Health", specialty: "Faith-Based System", locations: 15, discount: "33%", status: "active" },
+  { name: "Cleveland Clinic", contracts: 45, discount: "38%", status: "active" },
+  { name: "Metro Health System", contracts: 32, discount: "35%", status: "active" },
+  { name: "University Hospitals", contracts: 28, discount: "40%", status: "active" },
+  { name: "Southwest General", contracts: 22, discount: "32%", status: "active" },
+  { name: "Fairview Hospital", contracts: 18, discount: "36%", status: "expiring" },
 ];
 
-const drilldownData: Record<string, { title: string; subtitle: string; items: { label: string; value: string; detail?: string }[] }> = {
-  providers: {
-    title: "Provider Breakdown",
-    subtitle: "By provider type",
-    items: [
-      { label: "Physicians", value: "1,892", detail: "65% of network" },
-      { label: "NPs/PAs", value: "456", detail: "16% of network" },
-      { label: "Facilities", value: "234", detail: "8% of network" },
-      { label: "Ancillary", value: "309", detail: "11% of network" },
-    ],
-  },
-  contracts: {
-    title: "Contract Status",
-    subtitle: "Active contract breakdown",
-    items: [
-      { label: "Full Network", value: "1,890", detail: "71% of contracts" },
-      { label: "Specialty Only", value: "456", detail: "17% of contracts" },
-      { label: "Single Location", value: "308", detail: "12% of contracts" },
-    ],
-  },
-  discounts: {
-    title: "Discount Analysis",
-    subtitle: "Average by specialty",
-    items: [
-      { label: "Hospital Inpatient", value: "45%", detail: "vs. billed charges" },
-      { label: "Hospital Outpatient", value: "38%", detail: "vs. billed charges" },
-      { label: "Professional Services", value: "28%", detail: "vs. Medicare" },
-      { label: "Labs/Imaging", value: "52%", detail: "vs. billed charges" },
-    ],
-  },
-  coverage: {
-    title: "Network Coverage",
-    subtitle: "By Ohio region",
-    items: [
-      { label: "Northeast Ohio", value: "98%", detail: "Cleveland metro" },
-      { label: "Central Ohio", value: "94%", detail: "Columbus metro" },
-      { label: "Southwest Ohio", value: "91%", detail: "Cincinnati metro" },
-      { label: "Rural Ohio", value: "78%", detail: "Non-metro counties" },
-    ],
-  },
-  credentials: {
-    title: "Credentialing Queue",
-    subtitle: "Pending verification",
-    items: [
-      { label: "Initial Applications", value: "23", detail: "New providers" },
-      { label: "Re-credentialing", value: "18", detail: "Renewals due" },
-      { label: "Document Updates", value: "6", detail: "Missing docs" },
-    ],
-  },
-  expiring: {
-    title: "Expiring Contracts",
-    subtitle: "Next 30 days",
-    items: [
-      { label: "Primary Care", value: "8", detail: "Action needed" },
-      { label: "Specialists", value: "6", detail: "Renewal pending" },
-      { label: "Facilities", value: "5", detail: "Under negotiation" },
-      { label: "Ancillary", value: "4", detail: "Auto-renew eligible" },
-    ],
-  },
-  newproviders: {
-    title: "New Provider Additions",
-    subtitle: "Recent onboarding",
-    items: [
-      { label: "Primary Care", value: "28", detail: "This quarter" },
-      { label: "Specialists", value: "32", detail: "This quarter" },
-      { label: "Urgent Care", value: "12", detail: "This quarter" },
-      { label: "Mental Health", value: "9", detail: "This quarter" },
-    ],
-  },
-  renewals: {
-    title: "Contract Renewals",
-    subtitle: "Completed this period",
-    items: [
-      { label: "Auto-Renewed", value: "89", detail: "Same terms" },
-      { label: "Renegotiated", value: "45", detail: "Improved terms" },
-      { label: "Extended", value: "22", detail: "1-year extension" },
-    ],
-  },
-};
+const regionData = [
+  { region: "Cleveland Metro", providers: 1245, percentage: 43 },
+  { region: "Northeast Ohio", providers: 687, percentage: 24 },
+  { region: "Akron/Canton", providers: 456, percentage: 16 },
+  { region: "Columbus", providers: 312, percentage: 11 },
+  { region: "Other", providers: 191, percentage: 6 },
+];
 
 export default function AnalyticsPage() {
   const { isDark } = useTheme();
-  const [dateRange, setDateRange] = useState<DateRange>("This Month");
-  const [selectedDrilldown, setSelectedDrilldown] = useState<string | null>(null);
-  const [showExportModal, setShowExportModal] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange>("month");
 
   const currentData = dataByRange[dateRange];
-  const maxProviders = Math.max(...currentData.monthlyData.map(d => d.providers));
-
-  const handleExport = (format: string) => {
-    setShowExportModal(false);
-    const link = document.createElement("a");
-    link.href = `/reports/provider-roster.csv`;
-    link.download = `network-analytics-${dateRange.toLowerCase().replace(" ", "-")}.${format}`;
-    link.click();
-  };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center">
-            <BarChart3 className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Network Analytics</h1>
-            <p className={isDark ? 'text-slate-400' : 'text-slate-600'}>Provider network performance and insights</p>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <select 
-            value={dateRange} 
-            onChange={(e) => setDateRange(e.target.value as DateRange)} 
-            className={`px-4 py-2 border rounded-lg cursor-pointer ${
-              isDark 
-                ? 'bg-slate-700 border-slate-600 text-white'
-                : 'bg-white border-slate-300 text-slate-900'
-            }`}
-          >
-            <option>This Month</option>
-            <option>Last Month</option>
-            <option>This Quarter</option>
-            <option>This Year</option>
-          </select>
-          <button 
-            onClick={() => setShowExportModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
-          >
-            <Download className="w-4 h-4" />Export
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        title="Network Analytics"
+        subtitle="Monitor network performance, growth trends, and key metrics"
+        actions={
+          <>
+            <Button variant="outline" icon={<Download className="w-4 h-4" />}>
+              Export Report
+            </Button>
+            <Tabs
+              tabs={dateRangeTabs}
+              value={dateRange}
+              onChange={(v) => setDateRange(v as DateRange)}
+            />
+          </>
+        }
+      />
 
-      {/* KPI Cards - Theme Aware */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        {currentData.kpis.map((kpi) => (
-          <button
-            key={kpi.label}
-            onClick={() => setSelectedDrilldown(kpi.drilldown)}
-            className={`rounded-xl p-4 text-left transition-all group shadow-lg ${
-              isDark 
-                ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30 hover:from-cyan-900/40 hover:to-teal-900/40" 
-                : "bg-slate-900 border border-slate-700 hover:bg-slate-800"
-            }`}
-          >
-            <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.7)' }}>{kpi.label}</p>
-            <p className="text-2xl font-bold transition-colors" style={{ color: 'white' }}>{kpi.value}</p>
-            <p className={`text-sm flex items-center gap-1 mt-1 ${isDark ? kpi.color : 'text-white/90'}`}>
-              {kpi.trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-              {kpi.change}
-            </p>
-            <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className={`text-xs flex items-center gap-1 ${isDark ? 'text-cyan-400' : 'text-white/80'}`}>
-                Click for details <ArrowUpRight className="w-3 h-3" />
-              </span>
-            </div>
-          </button>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        {currentData.stats.map((stat, i) => (
+          <StatCard
+            key={stat.label}
+            label={stat.label}
+            value={stat.value}
+            change={stat.change}
+            trend={stat.trend}
+            icon={
+              stat.label.includes("Provider") ? <Building2 className="w-5 h-5" /> :
+              stat.label.includes("Contract") ? <FileSignature className="w-5 h-5" /> :
+              stat.label.includes("Discount") ? <TrendingUp className="w-5 h-5" /> :
+              <Activity className="w-5 h-5" />
+            }
+            delay={i}
+          />
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Provider Growth Chart */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">Network Growth</h2>
-            <div className="flex items-center gap-2 text-sm text-slate-400">
-              <Calendar className="w-4 h-4" />
-              {dateRange}
-            </div>
-          </div>
-          <div className="flex items-end justify-between h-48 gap-1">
-            {currentData.monthlyData.map((d, i) => (
-              <div key={d.month} className="flex-1 flex flex-col items-center group cursor-pointer">
-                <div className="relative w-full">
-                  <motion.div 
-                    initial={{ height: 0 }}
-                    animate={{ height: `${(d.providers / maxProviders) * 180}px` }}
-                    transition={{ delay: i * 0.05, duration: 0.3 }}
-                    className="w-full bg-gradient-to-t from-teal-600 to-cyan-500 rounded-t group-hover:from-cyan-600 group-hover:to-cyan-400 transition-colors"
-                  />
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-700 px-2 py-1 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                    {d.providers.toLocaleString()} providers
+      {/* Main Content */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Growth Chart - 2 columns */}
+        <Card className="lg:col-span-2">
+          <CardHeader
+            title="Network Growth"
+            icon={<BarChart3 className="w-5 h-5 text-cyan-500" />}
+            action={
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-cyan-500" />
+                  <span className={isDark ? "text-slate-400" : "text-slate-500"}>Providers</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-teal-500" />
+                  <span className={isDark ? "text-slate-400" : "text-slate-500"}>Contracts</span>
+                </div>
+              </div>
+            }
+          />
+          
+          {/* Simple Bar Chart */}
+          <div className="mt-6 space-y-4">
+            {currentData.monthlyData.map((data, i) => {
+              const maxProviders = Math.max(...currentData.monthlyData.map(d => d.providers));
+              const providerWidth = (data.providers / maxProviders) * 100;
+              const contractWidth = (data.contracts / maxProviders) * 100;
+              
+              return (
+                <motion.div
+                  key={data.month}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="flex items-center gap-4"
+                >
+                  <span className={cn(
+                    "w-16 text-sm font-medium",
+                    isDark ? "text-slate-400" : "text-slate-500"
+                  )}>
+                    {data.month}
+                  </span>
+                  <div className="flex-1 space-y-1.5">
+                    <div className={cn(
+                      "h-4 rounded-full overflow-hidden",
+                      isDark ? "bg-slate-700" : "bg-slate-200"
+                    )}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${providerWidth}%` }}
+                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                        className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400 rounded-full"
+                      />
+                    </div>
+                    <div className={cn(
+                      "h-4 rounded-full overflow-hidden",
+                      isDark ? "bg-slate-700" : "bg-slate-200"
+                    )}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${contractWidth}%` }}
+                        transition={{ duration: 0.5, delay: i * 0.1 + 0.1 }}
+                        className="h-full bg-gradient-to-r from-teal-500 to-teal-400 rounded-full"
+                      />
+                    </div>
                   </div>
-                </div>
-                <p className="text-xs text-slate-500 mt-2">{d.month}</p>
-              </div>
-            ))}
+                  <div className="w-24 text-right">
+                    <p className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
+                      {data.providers.toLocaleString()}
+                    </p>
+                    <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                      {data.contracts.toLocaleString()}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
-          <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-slate-700">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-gradient-to-t from-teal-600 to-cyan-500 rounded"></div>
-              <span className="text-xs text-slate-400">Total Providers</span>
-            </div>
-          </div>
-        </div>
+        </Card>
 
-        {/* Specialty Distribution */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">Specialty Distribution</h2>
-            <PieChart className="w-5 h-5 text-slate-400" />
-          </div>
-          <div className="p-6 space-y-4">
-            {specialtyBreakdown.map((specialty) => (
-              <div key={specialty.name} className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-white">{specialty.name}</span>
-                  <span className="text-slate-400">{specialty.count} ({specialty.percentage}%)</span>
-                </div>
-                <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${specialty.percentage}%` }}
-                    transition={{ duration: 0.5 }}
-                    className={`h-full ${specialty.color} rounded-full`}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Top Health Systems */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">Top Health Systems</h2>
-            <button className="text-sm text-cyan-500 hover:text-cyan-400">View All</button>
-          </div>
-          <div className="divide-y divide-slate-700">
-            {topProviders.map((provider, i) => (
-              <motion.div 
-                key={provider.name} 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+        {/* Specialty Breakdown - 1 column */}
+        <Card>
+          <CardHeader
+            title="By Specialty"
+            icon={<PieChart className="w-5 h-5 text-teal-500" />}
+          />
+          <div className="space-y-4">
+            {providersBySpecialty.map((item, i) => (
+              <motion.div
+                key={item.specialty}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="px-6 py-4 flex items-center justify-between hover:bg-slate-700/50 cursor-pointer transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 bg-cyan-600/20 text-cyan-500 rounded-full flex items-center justify-center text-xs font-medium">{i + 1}</span>
-                  <div>
-                    <p className="font-medium text-white">{provider.name}</p>
-                    <p className="text-sm text-slate-400">{provider.specialty}</p>
-                  </div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    {item.specialty}
+                  </span>
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {item.count}
+                  </span>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-white">{provider.locations} locations</p>
-                  <p className="text-sm text-green-400">{provider.discount} discount</p>
+                <div className={cn(
+                  "h-2 rounded-full overflow-hidden",
+                  isDark ? "bg-slate-700" : "bg-slate-200"
+                )}>
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${item.percentage}%` }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className={cn("h-full rounded-full", item.color)}
+                  />
                 </div>
               </motion.div>
             ))}
           </div>
-        </div>
-
-        {/* Quick Stats - Theme Aware */}
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            { icon: Building2, value: "2,891", label: "Total Providers", drilldown: "providers", highlight: false },
-            { icon: DollarSign, value: "32.4%", label: "Avg Discount Rate", drilldown: "discounts", highlight: false },
-            { icon: MapPin, value: "88", label: "Counties Covered", drilldown: "coverage", highlight: false },
-            { icon: Shield, value: "98.2%", label: "Credentialed", drilldown: "credentials", highlight: true },
-          ].map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <div 
-                key={stat.label}
-                className="rounded-xl p-5 cursor-pointer transition-all shadow-lg bg-slate-950 border border-slate-800 hover:bg-slate-900"
-                onClick={() => setSelectedDrilldown(stat.drilldown)}
-              >
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 bg-cyan-500/20 border border-cyan-500/30">
-                  <Icon className="w-5 h-5 text-cyan-400" />
-                </div>
-                <p className="text-3xl font-bold text-white">{stat.value}</p>
-                <p className="text-slate-400">{stat.label}</p>
-              </div>
-            );
-          })}
-        </div>
+        </Card>
       </div>
 
-      {/* Contract & Credentialing Status */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-          <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-cyan-400" />
-            Contract Status
-          </h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Active</span>
-              <span className="font-semibold text-green-400">2,654</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Pending Renewal</span>
-              <span className="font-semibold text-amber-400">89</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">In Negotiation</span>
-              <span className="font-semibold text-blue-400">45</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Terminated</span>
-              <span className="font-semibold text-red-400">12</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-          <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-            <Shield className="w-5 h-5 text-green-400" />
-            Credentialing Status
-          </h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Fully Credentialed</span>
-              <span className="font-semibold text-green-400">2,756</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">In Process</span>
-              <span className="font-semibold text-amber-400">47</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Expiring Soon</span>
-              <span className="font-semibold text-orange-400">56</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Action Required</span>
-              <span className="font-semibold text-red-400">32</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-          <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-amber-400" />
-            Upcoming Expirations
-          </h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Next 30 days</span>
-              <span className="font-semibold text-red-400">23</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">31-60 days</span>
-              <span className="font-semibold text-amber-400">45</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">61-90 days</span>
-              <span className="font-semibold text-yellow-400">67</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">90+ days</span>
-              <span className="font-semibold text-green-400">2,519</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Drilldown Modal */}
-      <AnimatePresence>
-        {selectedDrilldown && drilldownData[selectedDrilldown] && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }} 
-              onClick={() => setSelectedDrilldown(null)} 
-              className="fixed inset-0 bg-black/60 z-50" 
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }} 
-              animate={{ opacity: 1, scale: 1 }} 
-              exit={{ opacity: 0, scale: 0.95 }} 
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden"
-            >
-              <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <div>
-                  <h2 className="text-lg font-semibold text-white">{drilldownData[selectedDrilldown].title}</h2>
-                  <p className="text-sm text-slate-400">{drilldownData[selectedDrilldown].subtitle}</p>
-                </div>
-                <button onClick={() => setSelectedDrilldown(null)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="p-4 space-y-3">
-                {drilldownData[selectedDrilldown].items.map((item, i) => (
-                  <motion.div 
-                    key={item.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg"
-                  >
-                    <div>
-                      <p className="font-medium text-white">{item.label}</p>
-                      {item.detail && <p className="text-sm text-slate-400">{item.detail}</p>}
-                    </div>
-                    <p className="text-lg font-bold text-cyan-500">{item.value}</p>
-                  </motion.div>
+      {/* Bottom Row */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Top Providers */}
+        <Card>
+          <CardHeader
+            title="Top Provider Groups"
+            icon={<Building2 className="w-5 h-5 text-cyan-500" />}
+          />
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className={cn(
+                  "text-left text-xs font-medium uppercase tracking-wider",
+                  isDark ? "text-slate-400" : "text-slate-500"
+                )}>
+                  <th className="pb-3">Provider</th>
+                  <th className="pb-3 text-center">Contracts</th>
+                  <th className="pb-3 text-center">Avg Discount</th>
+                  <th className="pb-3 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody className={cn("divide-y", isDark ? "divide-slate-700/50" : "divide-slate-100")}>
+                {topProviders.map((provider, i) => (
+                  <tr key={i}>
+                    <td className={cn("py-3", isDark ? "text-white" : "text-slate-900")}>
+                      {provider.name}
+                    </td>
+                    <td className={cn("py-3 text-center", isDark ? "text-slate-300" : "text-slate-600")}>
+                      {provider.contracts}
+                    </td>
+                    <td className="py-3 text-center">
+                      <Badge variant="success">{provider.discount}</Badge>
+                    </td>
+                    <td className="py-3 text-right">
+                      <Badge variant={provider.status === "active" ? "success" : "warning"} dot>
+                        {provider.status === "active" ? "Active" : "Expiring"}
+                      </Badge>
+                    </td>
+                  </tr>
                 ))}
-              </div>
-              <div className="p-4 border-t border-slate-700 flex justify-end">
-                <button 
-                  onClick={() => setSelectedDrilldown(null)} 
-                  className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
-                >
-                  Close
-                </button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+              </tbody>
+            </table>
+          </div>
+        </Card>
 
-      {/* Export Modal */}
-      <AnimatePresence>
-        {showExportModal && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }} 
-              onClick={() => setShowExportModal(false)} 
-              className="fixed inset-0 bg-black/60 z-50" 
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }} 
-              animate={{ opacity: 1, scale: 1 }} 
-              exit={{ opacity: 0, scale: 0.95 }} 
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden"
-            >
-              <div className="p-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold text-white">Export Analytics</h2>
-                <p className="text-sm text-slate-400">Choose export format</p>
-              </div>
-              <div className="p-4 space-y-2">
-                <button onClick={() => handleExport("csv")} className="w-full flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <FileText className="w-5 h-5 text-green-400" />
-                  <div className="text-left">
-                    <p className="font-medium text-white">CSV</p>
-                    <p className="text-sm text-slate-400">Spreadsheet format</p>
+        {/* Regional Distribution */}
+        <Card>
+          <CardHeader
+            title="Regional Coverage"
+            icon={<MapPin className="w-5 h-5 text-emerald-500" />}
+          />
+          <div className="space-y-4">
+            {regionData.map((region, i) => (
+              <motion.div
+                key={region.region}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className={cn(
+                  "flex items-center justify-between p-3 rounded-xl",
+                  isDark ? "bg-slate-700/30 border border-slate-700/50" : "bg-slate-50 border border-slate-100"
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "w-10 h-10 rounded-lg flex items-center justify-center",
+                    isDark ? "bg-emerald-500/20" : "bg-emerald-50"
+                  )}>
+                    <MapPin className="w-5 h-5 text-emerald-500" />
                   </div>
-                </button>
-                <button onClick={() => handleExport("pdf")} className="w-full flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <FileText className="w-5 h-5 text-red-400" />
-                  <div className="text-left">
-                    <p className="font-medium text-white">PDF</p>
-                    <p className="text-sm text-slate-400">Print-ready report</p>
+                  <div>
+                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                      {region.region}
+                    </p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                      {region.providers.toLocaleString()} providers
+                    </p>
                   </div>
-                </button>
-                <button onClick={() => handleExport("xlsx")} className="w-full flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <FileText className="w-5 h-5 text-blue-400" />
-                  <div className="text-left">
-                    <p className="font-medium text-white">Excel</p>
-                    <p className="text-sm text-slate-400">Full workbook with charts</p>
-                  </div>
-                </button>
-              </div>
-              <div className="p-4 border-t border-slate-700">
-                <button onClick={() => setShowExportModal(false)} className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
-                  Cancel
-                </button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                </div>
+                <div className="text-right">
+                  <p className={cn("text-lg font-bold", isDark ? "text-white" : "text-slate-900")}>
+                    {region.percentage}%
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Card>
+      </div>
+
+      {/* Quick Stats Footer */}
+      <div className={cn(
+        "grid grid-cols-2 md:grid-cols-4 gap-4 p-6 rounded-2xl",
+        isDark ? "bg-slate-800/50 border border-slate-700/50" : "bg-slate-100/50 border border-slate-200"
+      )}>
+        {[
+          { label: "Network Coverage", value: "94%", icon: <Globe className="w-5 h-5" /> },
+          { label: "Renewal Rate", value: "98%", icon: <CheckCircle className="w-5 h-5" /> },
+          { label: "Avg Processing Time", value: "12 days", icon: <Clock className="w-5 h-5" /> },
+          { label: "Active Alerts", value: "23", icon: <AlertTriangle className="w-5 h-5" /> },
+        ].map((item, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div className={cn(
+              "w-10 h-10 rounded-lg flex items-center justify-center",
+              isDark ? "bg-slate-700" : "bg-white"
+            )}>
+              <div className="text-cyan-500">{item.icon}</div>
+            </div>
+            <div>
+              <p className={cn("text-lg font-bold", isDark ? "text-white" : "text-slate-900")}>
+                {item.value}
+              </p>
+              <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                {item.label}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
