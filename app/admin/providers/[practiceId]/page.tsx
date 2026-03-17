@@ -692,9 +692,46 @@ export default function PracticeDetailPage() {
                         className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
                       />
                     ) : (
-                      <p className="text-cyan-300">
-                        {practice.payToAddress}, {practice.payToCity}, {practice.payToState} {practice.payToZip}
-                      </p>
+                      <p className="text-white">{practice.payToAddress}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">City</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToCity}
+                        onChange={(e) => setEditData({ ...editData, payToCity: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.payToCity}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">State</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToState}
+                        onChange={(e) => setEditData({ ...editData, payToState: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.payToState}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">ZIP Code</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToZip}
+                        onChange={(e) => setEditData({ ...editData, payToZip: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.payToZip}</p>
                     )}
                   </div>
                 </div>
