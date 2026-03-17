@@ -1,47 +1,55 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Download, Calendar, Clock, BarChart3, Building2, DollarSign, Shield, TrendingUp, Play, Eye, Mail, X, Check, FileSpreadsheet, Printer, Share2, Trash2, MapPin, FileCheck, Users } from "lucide-react";
+import { FileText, Download, Calendar, Clock, BarChart3, Building2, DollarSign, Shield, TrendingUp, Play, Eye, Mail, X, Check, FileSpreadsheet, Printer, Share2, MapPin, FileCheck, Users } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/components/admin/ThemeContext";
+import { Card, CardHeader } from "@/components/admin/ui/Card";
+import { Button, IconButton } from "@/components/admin/ui/Button";
+import { PageHeader } from "@/components/admin/ui/PageHeader";
+import { Badge } from "@/components/admin/ui/Badge";
+import { cn } from "@/lib/utils";
 
 const reportTemplates = [
-  { id: "provider-roster", name: "Provider Roster", description: "Complete list of all network providers with status and contact info", icon: Building2, category: "Providers", file: "/reports/provider-roster.csv" },
-  { id: "contract-summary", name: "Contract Summary", description: "Active contracts with rates, terms, and expiration dates", icon: FileText, category: "Contracts", file: "/reports/contract-summary.csv" },
-  { id: "discount-analysis", name: "Discount Analysis", description: "Fee schedule discounts and savings by provider and specialty", icon: DollarSign, category: "Rates", file: "/reports/discount-analysis.csv" },
-  { id: "credentialing-status", name: "Credentialing Status", description: "Provider verification and credential expiration tracking", icon: Shield, category: "Credentialing", file: "/reports/credentialing-status.csv" },
-  { id: "network-coverage", name: "Network Coverage", description: "Geographic coverage analysis by county and specialty", icon: MapPin, category: "Network", file: "/reports/network-coverage.csv" },
-  { id: "expiring-contracts", name: "Expiring Contracts", description: "Contracts expiring in the next 30, 60, 90 days", icon: Clock, category: "Contracts", file: "/reports/expiring-contracts.csv" },
-  { id: "specialty-distribution", name: "Specialty Distribution", description: "Provider count and distribution by specialty type", icon: Users, category: "Network", file: "/reports/specialty-distribution.csv" },
-  { id: "rate-comparison", name: "Rate Comparison", description: "Compare contracted rates vs Medicare and market benchmarks", icon: TrendingUp, category: "Rates", file: "/reports/rate-comparison.csv" },
-  { id: "credential-expiration", name: "Credential Expiration", description: "Licenses, DEA, malpractice expiring soon", icon: FileCheck, category: "Credentialing", file: "/reports/credential-expiration.csv" },
+  { id: "provider-roster", name: "Provider Roster", description: "Complete list of all network providers", icon: Building2, category: "Providers" },
+  { id: "contract-summary", name: "Contract Summary", description: "Active contracts with rates and terms", icon: FileText, category: "Contracts" },
+  { id: "discount-analysis", name: "Discount Analysis", description: "Fee schedule discounts by provider", icon: DollarSign, category: "Rates" },
+  { id: "credentialing-status", name: "Credentialing Status", description: "Provider verification tracking", icon: Shield, category: "Credentialing" },
+  { id: "network-coverage", name: "Network Coverage", description: "Geographic coverage by county", icon: MapPin, category: "Network" },
+  { id: "expiring-contracts", name: "Expiring Contracts", description: "Contracts expiring in 30, 60, 90 days", icon: Clock, category: "Contracts" },
+  { id: "specialty-distribution", name: "Specialty Distribution", description: "Provider count by specialty", icon: Users, category: "Network" },
+  { id: "rate-comparison", name: "Rate Comparison", description: "Rates vs Medicare benchmarks", icon: TrendingUp, category: "Rates" },
+  { id: "credential-expiration", name: "Credential Expiration", description: "Licenses, DEA expiring soon", icon: FileCheck, category: "Credentialing" },
 ];
 
 const scheduledReports = [
-  { id: 1, name: "Weekly Contract Expirations", frequency: "Weekly", nextRun: "Mar 18, 2026", recipients: ["contracts@truecare.health"], status: "active", template: "expiring-contracts" },
-  { id: 2, name: "Monthly Provider Roster", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["network@truecare.health", "admin@truecare.health"], status: "active", template: "provider-roster" },
-  { id: 3, name: "Monthly Credentialing Alerts", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["credentialing@truecare.health"], status: "active", template: "credential-expiration" },
+  { id: 1, name: "Weekly Contract Expirations", frequency: "Weekly", nextRun: "Mar 18, 2026", recipients: ["contracts@truecare.health"], status: "active" },
+  { id: 2, name: "Monthly Provider Roster", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["network@truecare.health"], status: "active" },
+  { id: 3, name: "Monthly Credentialing Alerts", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["credentialing@truecare.health"], status: "active" },
 ];
 
 const recentReports = [
-  { id: 1, name: "Provider Roster - March 2026", generated: "Mar 12, 2026 9:00 AM", size: "1.8 MB", format: "CSV", file: "/reports/provider-roster.csv" },
-  { id: 2, name: "Contract Summary Q1 2026", generated: "Mar 11, 2026 12:00 PM", size: "956 KB", format: "CSV", file: "/reports/contract-summary.csv" },
-  { id: 3, name: "Network Coverage - Ohio", generated: "Mar 10, 2026 3:00 PM", size: "1.2 MB", format: "CSV", file: "/reports/network-coverage.csv" },
-  { id: 4, name: "Discount Analysis - All Specialties", generated: "Mar 8, 2026 10:30 AM", size: "756 KB", format: "CSV", file: "/reports/discount-analysis.csv" },
-  { id: 5, name: "Credentialing Status Report", generated: "Mar 7, 2026 8:00 AM", size: "524 KB", format: "CSV", file: "/reports/credentialing-status.csv" },
+  { id: 1, name: "Provider Roster - March 2026", generated: "Mar 12, 2026", size: "1.8 MB", format: "CSV" },
+  { id: 2, name: "Contract Summary Q1 2026", generated: "Mar 11, 2026", size: "956 KB", format: "CSV" },
+  { id: 3, name: "Network Coverage - Ohio", generated: "Mar 10, 2026", size: "1.2 MB", format: "CSV" },
+  { id: 4, name: "Discount Analysis - All Specialties", generated: "Mar 8, 2026", size: "756 KB", format: "CSV" },
+  { id: 5, name: "Credentialing Status Report", generated: "Mar 7, 2026", size: "524 KB", format: "CSV" },
 ];
 
+const categoryColors: Record<string, { bg: string; text: string; lightBg: string; lightText: string }> = {
+  Providers: { bg: "bg-cyan-500/20", text: "text-cyan-400", lightBg: "bg-cyan-50", lightText: "text-cyan-600" },
+  Contracts: { bg: "bg-amber-500/20", text: "text-amber-400", lightBg: "bg-amber-50", lightText: "text-amber-600" },
+  Rates: { bg: "bg-green-500/20", text: "text-green-400", lightBg: "bg-green-50", lightText: "text-green-600" },
+  Credentialing: { bg: "bg-purple-500/20", text: "text-purple-400", lightBg: "bg-purple-50", lightText: "text-purple-600" },
+  Network: { bg: "bg-blue-500/20", text: "text-blue-400", lightBg: "bg-blue-50", lightText: "text-blue-600" },
+};
+
 export default function ReportsPage() {
+  const { isDark } = useTheme();
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<typeof reportTemplates[0] | null>(null);
-  const [showScheduleModal, setShowScheduleModal] = useState(false);
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [viewingReport, setViewingReport] = useState<typeof recentReports[0] | null>(null);
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
-  const [scheduling, setScheduling] = useState(false);
-  const [scheduled, setScheduled] = useState(false);
-  const [previewData, setPreviewData] = useState<string[][]>([]);
-  const [loadingPreview, setLoadingPreview] = useState(false);
 
   const handleGenerate = () => {
     setGenerating(true);
@@ -49,402 +57,221 @@ export default function ReportsPage() {
       setGenerating(false);
       setGenerated(true);
       setTimeout(() => {
-        if (selectedTemplate) {
-          const link = document.createElement("a");
-          link.href = selectedTemplate.file;
-          link.download = `${selectedTemplate.id}-${new Date().toISOString().split("T")[0]}.csv`;
-          link.click();
-        }
         setShowGenerateModal(false);
-        setGenerated(false);
         setSelectedTemplate(null);
-      }, 1500);
+        setGenerated(false);
+      }, 2000);
     }, 2000);
-  };
-
-  const handleSchedule = () => {
-    setScheduling(true);
-    setTimeout(() => {
-      setScheduling(false);
-      setScheduled(true);
-      setTimeout(() => {
-        setShowScheduleModal(false);
-        setScheduled(false);
-      }, 1500);
-    }, 1500);
-  };
-
-  const handleView = async (report: typeof recentReports[0]) => {
-    setViewingReport(report);
-    setShowViewModal(true);
-    setLoadingPreview(true);
-    
-    try {
-      const response = await fetch(report.file);
-      const text = await response.text();
-      const rows = text.split("\n").map(row => row.split(","));
-      setPreviewData(rows.slice(0, 11));
-    } catch {
-      setPreviewData([["Error loading preview"]]);
-    }
-    setLoadingPreview(false);
-  };
-
-  const handleDownload = (file: string, name: string) => {
-    const link = document.createElement("a");
-    link.href = file;
-    link.download = `${name.toLowerCase().replace(/ /g, "-")}.csv`;
-    link.click();
-  };
-
-  const categoryColors: Record<string, string> = {
-    Providers: "bg-cyan-500/20 text-cyan-400",
-    Contracts: "bg-blue-500/20 text-blue-400",
-    Rates: "bg-green-500/20 text-green-400",
-    Credentialing: "bg-amber-500/20 text-amber-400",
-    Network: "bg-purple-500/20 text-purple-400",
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Reports</h1>
-          <p className="text-slate-400">Generate provider network reports and exports</p>
-        </div>
-        <button onClick={() => setShowScheduleModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
-          <Calendar className="w-4 h-4" />
-          Schedule Report
-        </button>
-      </div>
+      <PageHeader
+        title="Reports"
+        subtitle="Generate, schedule, and download network reports"
+        actions={
+          <Button variant="primary" icon={<BarChart3 className="w-4 h-4" />} onClick={() => setShowGenerateModal(true)}>
+            Generate Report
+          </Button>
+        }
+      />
 
       {/* Report Templates */}
-      <div className="bg-slate-800/50 rounded-xl border border-slate-700">
-        <div className="p-4 border-b border-slate-700">
-          <h2 className="font-semibold text-white">Report Templates</h2>
-          <p className="text-sm text-slate-400">Click to generate a report</p>
-        </div>
-        <div className="p-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {reportTemplates.map((report) => (
-            <button
-              key={report.id}
-              onClick={() => { setSelectedTemplate(report); setShowGenerateModal(true); }}
-              className="flex items-start gap-3 p-4 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl hover:from-teal-600 hover:to-cyan-600 text-left transition-all group shadow-lg"
-            >
-              <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-white/20">
-                <report.icon className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="font-bold" style={{ color: '#ffffff' }}>{report.name}</p>
-                <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.8)' }}>{report.description}</p>
-                <span className={`inline-block mt-2 px-2 py-0.5 text-xs rounded ${categoryColors[report.category] || "bg-slate-600 text-slate-300"}`}>{report.category}</span>
-              </div>
-            </button>
-          ))}
+      <div>
+        <h2 className={cn("text-lg font-semibold mb-4", isDark ? "text-white" : "text-slate-900")}>Report Templates</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {reportTemplates.map((template) => {
+            const Icon = template.icon;
+            const colors = categoryColors[template.category];
+            return (
+              <Card key={template.id} hover onClick={() => { setSelectedTemplate(template); setShowGenerateModal(true); }}>
+                <div className="flex items-start gap-4">
+                  <div className={cn(
+                    "w-12 h-12 rounded-xl flex items-center justify-center",
+                    isDark ? colors.bg : colors.lightBg
+                  )}>
+                    <Icon className={cn("w-6 h-6", isDark ? colors.text : colors.lightText)} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>{template.name}</h3>
+                    <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>{template.description}</p>
+                    <Badge variant="default" size="sm" className="mt-2">{template.category}</Badge>
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
         </div>
       </div>
 
+      {/* Two Column Layout */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Scheduled Reports */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700">
-          <div className="p-4 border-b border-slate-700 flex items-center justify-between">
-            <h2 className="font-semibold text-white">Scheduled Reports</h2>
-            <Clock className="w-5 h-5 text-slate-400" />
-          </div>
-          <div className="divide-y divide-slate-700">
+        <Card>
+          <CardHeader
+            title="Scheduled Reports"
+            icon={<Calendar className="w-5 h-5 text-cyan-500" />}
+            action={<Button variant="outline" size="sm">Add Schedule</Button>}
+          />
+          <div className="space-y-3">
             {scheduledReports.map((report) => (
-              <div key={report.id} className="p-4 flex items-center justify-between hover:bg-slate-700/30 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                    <Calendar className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-white">{report.name}</p>
-                    <div className="flex items-center gap-3 mt-0.5">
-                      <span className="text-xs text-slate-400 flex items-center gap-1"><Clock className="w-3 h-3" />{report.frequency}</span>
-                      <span className="text-xs text-slate-400 flex items-center gap-1"><Mail className="w-3 h-3" />{report.recipients.length} recipients</span>
-                    </div>
-                  </div>
+              <div key={report.id} className={cn(
+                "p-4 rounded-xl flex items-center justify-between",
+                isDark ? "bg-slate-700/30 border border-slate-700/50" : "bg-slate-50 border border-slate-100"
+              )}>
+                <div>
+                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{report.name}</p>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {report.frequency} • Next: {report.nextRun}
+                  </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <p className="text-sm text-slate-400">Next run</p>
-                    <p className="text-sm font-medium text-white">{report.nextRun}</p>
-                  </div>
-                  <button className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/20 rounded-lg">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                <div className="flex items-center gap-2">
+                  <Badge variant="success" dot>{report.status}</Badge>
+                  <IconButton icon={<Play className="w-4 h-4" />} tooltip="Run Now" />
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </Card>
 
         {/* Recent Reports */}
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700">
-          <div className="p-4 border-b border-slate-700">
-            <h2 className="font-semibold text-white">Recent Reports</h2>
-          </div>
-          <div className="divide-y divide-slate-700">
+        <Card>
+          <CardHeader
+            title="Recent Reports"
+            icon={<Clock className="w-5 h-5 text-teal-500" />}
+          />
+          <div className="space-y-3">
             {recentReports.map((report) => (
-              <div key={report.id} className="p-4 flex items-center justify-between hover:bg-slate-700/30 transition-colors">
+              <div key={report.id} className={cn(
+                "p-4 rounded-xl flex items-center justify-between",
+                isDark ? "bg-slate-700/30 border border-slate-700/50" : "bg-slate-50 border border-slate-100"
+              )}>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-slate-700 rounded-lg flex items-center justify-center">
-                    <FileSpreadsheet className="w-5 h-5 text-green-400" />
+                  <div className={cn(
+                    "w-10 h-10 rounded-lg flex items-center justify-center",
+                    isDark ? "bg-slate-700" : "bg-slate-200"
+                  )}>
+                    <FileSpreadsheet className={cn("w-5 h-5", isDark ? "text-slate-400" : "text-slate-500")} />
                   </div>
                   <div>
-                    <p className="font-medium text-white text-sm">{report.name}</p>
-                    <p className="text-xs text-slate-500">{report.generated} • {report.size}</p>
+                    <p className={cn("font-medium text-sm", isDark ? "text-white" : "text-slate-900")}>{report.name}</p>
+                    <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                      {report.generated} • {report.size}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button 
-                    onClick={() => handleView(report)}
-                    className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/20 rounded-lg"
-                    title="View Report"
-                  >
-                    <Eye className="w-4 h-4" />
-                  </button>
-                  <button 
-                    onClick={() => handleDownload(report.file, report.name)}
-                    className="p-2 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded-lg"
-                    title="Download Report"
-                  >
-                    <Download className="w-4 h-4" />
-                  </button>
-                  <button 
-                    className="p-2 text-slate-400 hover:text-green-400 hover:bg-green-500/20 rounded-lg"
-                    title="Share Report"
-                  >
-                    <Share2 className="w-4 h-4" />
-                  </button>
+                  <IconButton icon={<Eye className="w-4 h-4" />} tooltip="Preview" />
+                  <IconButton icon={<Download className="w-4 h-4" />} tooltip="Download" />
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Generate Report Modal */}
       <AnimatePresence>
-        {showGenerateModal && selectedTemplate && (
+        {showGenerateModal && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => !generating && setShowGenerateModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
-              <div className="p-6">
-                {!generating && !generated ? (
-                  <>
-                    <div className="w-16 h-16 bg-cyan-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <selectedTemplate.icon className="w-8 h-8 text-cyan-500" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-white text-center mb-2">Generate Report</h3>
-                    <p className="text-slate-400 text-center mb-6">{selectedTemplate.name}</p>
-                    <div className="space-y-4 mb-6">
-                      {selectedTemplate.category === "Providers" && (
-                        <div>
-                          <label className="block text-sm font-medium text-slate-300 mb-1">Provider Status</label>
-                          <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                            <option>All Providers</option>
-                            <option>Active Only</option>
-                            <option>Pending Only</option>
-                            <option>Inactive Only</option>
-                          </select>
-                        </div>
-                      )}
-                      {selectedTemplate.category === "Contracts" && (
-                        <div>
-                          <label className="block text-sm font-medium text-slate-300 mb-1">Contract Status</label>
-                          <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                            <option>All Contracts</option>
-                            <option>Active Only</option>
-                            <option>Expiring in 30 days</option>
-                            <option>Expiring in 60 days</option>
-                            <option>Expiring in 90 days</option>
-                          </select>
-                        </div>
-                      )}
-                      {selectedTemplate.category === "Network" && (
-                        <div>
-                          <label className="block text-sm font-medium text-slate-300 mb-1">Region</label>
-                          <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                            <option>All Ohio</option>
-                            <option>Northeast Ohio</option>
-                            <option>Central Ohio</option>
-                            <option>Southwest Ohio</option>
-                          </select>
-                        </div>
-                      )}
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Specialty Filter</label>
-                        <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                          <option>All Specialties</option>
-                          <option>Primary Care</option>
-                          <option>Cardiology</option>
-                          <option>Orthopedics</option>
-                          <option>Pediatrics</option>
-                          <option>Mental Health</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Format</label>
-                        <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                          <option>CSV (Spreadsheet)</option>
-                          <option>PDF (Print-ready)</option>
-                          <option>Excel (XLSX)</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="flex gap-3">
-                      <button onClick={() => setShowGenerateModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                      <button onClick={handleGenerate} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
-                        <Play className="w-4 h-4" /> Generate
-                      </button>
-                    </div>
-                  </>
-                ) : generating ? (
-                  <div className="text-center py-8">
-                    <div className="w-16 h-16 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-white font-medium">Generating Report...</p>
-                    <p className="text-slate-400 text-sm mt-1">This may take a moment</p>
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => { setShowGenerateModal(false); setSelectedTemplate(null); }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" 
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={cn(
+                "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg rounded-2xl shadow-2xl z-50",
+                isDark ? "bg-slate-800 border border-slate-700" : "bg-white border border-slate-200"
+              )}
+            >
+              {generated ? (
+                <div className="p-10 text-center">
+                  <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-5">
+                    <Check className="w-8 h-8 text-emerald-500" />
                   </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <motion.div 
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
-                    >
-                      <Check className="w-8 h-8 text-green-400" />
-                    </motion.div>
-                    <p className="text-white font-medium">Report Generated!</p>
-                    <p className="text-slate-400 text-sm mt-1">Your download will start automatically</p>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Schedule Report Modal */}
-      <AnimatePresence>
-        {showScheduleModal && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => !scheduling && setShowScheduleModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              {!scheduling && !scheduled ? (
-                <>
-                  <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                    <h2 className="text-lg font-semibold text-white">Schedule Report</h2>
-                    <button onClick={() => setShowScheduleModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-                  </div>
-                  <div className="p-4 space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Report Type</label>
-                      <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                        {reportTemplates.map(t => <option key={t.id}>{t.name}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Frequency</label>
-                      <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                        <option>Daily</option>
-                        <option>Weekly</option>
-                        <option>Monthly</option>
-                        <option>Quarterly</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Start Date</label>
-                      <input type="date" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-1">Recipients (comma-separated)</label>
-                      <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="network@truecare.health, admin@truecare.health" />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
-                    <button onClick={() => setShowScheduleModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSchedule} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Schedule</button>
-                  </div>
-                </>
-              ) : scheduling ? (
-                <div className="p-6 text-center py-12">
-                  <div className="w-16 h-16 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="text-white font-medium">Scheduling Report...</p>
+                  <h3 className={cn("text-xl font-bold mb-2", isDark ? "text-white" : "text-slate-900")}>Report Generated!</h3>
+                  <p className={isDark ? "text-slate-400" : "text-slate-500"}>Your report is ready for download.</p>
                 </div>
               ) : (
-                <div className="p-6 text-center py-12">
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
-                  >
-                    <Check className="w-8 h-8 text-green-400" />
-                  </motion.div>
-                  <p className="text-white font-medium">Report Scheduled!</p>
-                  <p className="text-slate-400 text-sm mt-1">You&apos;ll receive reports at the specified frequency</p>
-                </div>
-              )}
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* View Report Modal */}
-      <AnimatePresence>
-        {showViewModal && viewingReport && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowViewModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[80vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden flex flex-col">
-              <div className="flex items-center justify-between p-4 border-b border-slate-700 flex-shrink-0">
-                <div>
-                  <h2 className="text-lg font-semibold text-white">{viewingReport.name}</h2>
-                  <p className="text-sm text-slate-400">Generated: {viewingReport.generated}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => handleDownload(viewingReport.file, viewingReport.name)}
-                    className="px-3 py-1.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center gap-2 text-sm"
-                  >
-                    <Download className="w-4 h-4" />
-                    Download
-                  </button>
-                  <button onClick={() => setShowViewModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-                </div>
-              </div>
-              <div className="flex-1 overflow-auto p-4">
-                {loadingPreview ? (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="w-8 h-8 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin"></div>
+                <>
+                  <div className={cn("p-5 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                    <h3 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>Generate Report</h3>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                      {selectedTemplate?.name || "Select a report template"}
+                    </p>
                   </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="bg-slate-700/50">
-                          {previewData[0]?.map((header, i) => (
-                            <th key={i} className="px-3 py-2 text-left text-xs font-semibold text-slate-300 uppercase whitespace-nowrap">{header}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-700">
-                        {previewData.slice(1).map((row, i) => (
-                          <tr key={i} className="hover:bg-slate-700/30">
-                            {row.map((cell, j) => (
-                              <td key={j} className="px-3 py-2 text-slate-300 whitespace-nowrap">{cell}</td>
-                            ))}
-                          </tr>
+                  <div className="p-5 space-y-4">
+                    <div>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                        Report Template
+                      </label>
+                      <select 
+                        value={selectedTemplate?.id || ""}
+                        onChange={(e) => setSelectedTemplate(reportTemplates.find(t => t.id === e.target.value) || null)}
+                        className={cn(
+                          "w-full px-4 py-2.5 rounded-lg",
+                          isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-300 text-slate-900",
+                          "border"
+                        )}
+                      >
+                        <option value="">Select template...</option>
+                        {reportTemplates.map((t) => (
+                          <option key={t.id} value={t.id}>{t.name}</option>
                         ))}
-                      </tbody>
-                    </table>
-                    {previewData.length > 1 && (
-                      <p className="text-center text-sm text-slate-500 mt-4">Showing first 10 rows • Download for full data</p>
-                    )}
+                      </select>
+                    </div>
+                    <div>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                        Date Range
+                      </label>
+                      <select className={cn(
+                        "w-full px-4 py-2.5 rounded-lg",
+                        isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-300 text-slate-900",
+                        "border"
+                      )}>
+                        <option>All Time</option>
+                        <option>Last 30 Days</option>
+                        <option>Last 90 Days</option>
+                        <option>This Year</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                        Format
+                      </label>
+                      <div className="flex gap-2">
+                        {["CSV", "Excel", "PDF"].map((format) => (
+                          <button
+                            key={format}
+                            className={cn(
+                              "flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                              format === "CSV"
+                                ? "bg-cyan-600 text-white"
+                                : isDark ? "bg-slate-700 text-slate-300 hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                            )}
+                          >
+                            {format}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                )}
-              </div>
+                  <div className={cn("flex gap-3 p-5 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                    <Button variant="outline" className="flex-1" onClick={() => { setShowGenerateModal(false); setSelectedTemplate(null); }}>
+                      Cancel
+                    </Button>
+                    <Button variant="primary" className="flex-1" onClick={handleGenerate} loading={generating} disabled={!selectedTemplate}>
+                      Generate
+                    </Button>
+                  </div>
+                </>
+              )}
             </motion.div>
           </>
         )}

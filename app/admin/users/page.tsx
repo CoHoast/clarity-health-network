@@ -1,26 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, UserPlus, Shield, Mail, Edit, Trash2, X, CheckCircle, Clock, XCircle, Key, Check, Minus } from "lucide-react";
+import { Search, UserPlus, Shield, Mail, Edit, Trash2, X, CheckCircle, Clock, XCircle, Key, Check, Users as UsersIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface Permission {
-  module: string;
-  view: boolean;
-  create: boolean;
-  edit: boolean;
-  delete: boolean;
-  export: boolean;
-}
-
-interface Role {
-  id: string;
-  name: string;
-  description: string;
-  permissions: Permission[];
-  users: number;
-  isSystem: boolean;
-}
+import { useTheme } from "@/components/admin/ThemeContext";
+import { Card, CardHeader } from "@/components/admin/ui/Card";
+import { Button, IconButton } from "@/components/admin/ui/Button";
+import { PageHeader, PillTabs } from "@/components/admin/ui/PageHeader";
+import { SearchInput } from "@/components/admin/ui/SearchInput";
+import { Badge, StatusBadge } from "@/components/admin/ui/Badge";
+import { cn } from "@/lib/utils";
 
 const users = [
   { id: "USR-001", name: "Sarah Mitchell", email: "sarah.m@truecare.health", role: "Super Admin", department: "Administration", status: "active", lastLogin: "2024-03-12 09:15 AM", mfa: true },
@@ -33,252 +22,149 @@ const users = [
   { id: "USR-008", name: "Robert Taylor", email: "robert.t@truecare.health", role: "Network Analyst", department: "Analytics", status: "pending", lastLogin: "Never", mfa: false },
 ];
 
-const modules = ["Dashboard", "Providers", "Contracts", "Rates & Discounts", "Credentialing", "Reports", "Analytics", "Settings", "Users"];
+const roles = [
+  { id: "ROLE-001", name: "Super Admin", description: "Full system access", users: 1 },
+  { id: "ROLE-002", name: "Network Director", description: "Network management access", users: 1 },
+  { id: "ROLE-003", name: "Contract Manager", description: "Contract management", users: 1 },
+  { id: "ROLE-004", name: "Credentialing Specialist", description: "Credentialing workflow access", users: 2 },
+  { id: "ROLE-005", name: "Network Analyst", description: "Read-only analytics access", users: 2 },
+  { id: "ROLE-006", name: "Provider Relations Manager", description: "Provider communication", users: 1 },
+];
 
-const initialRoles: Role[] = [
-  { 
-    id: "ROLE-001",
-    name: "Super Admin", 
-    description: "Full system access with all permissions",
-    permissions: modules.map(m => ({ module: m, view: true, create: true, edit: true, delete: true, export: true })),
-    users: 2,
-    isSystem: true
-  },
-  { 
-    id: "ROLE-002",
-    name: "Network Director", 
-    description: "Oversee all network operations, contracts, and provider relationships",
-    permissions: modules.map(m => ({ 
-      module: m, 
-      view: true,
-      create: ["Providers", "Contracts"].includes(m),
-      edit: ["Providers", "Contracts", "Rates & Discounts"].includes(m),
-      delete: false,
-      export: true
-    })),
-    users: 2,
-    isSystem: false
-  },
-  { 
-    id: "ROLE-003",
-    name: "Provider Relations Manager", 
-    description: "Manage provider onboarding, relationships, and contract negotiations",
-    permissions: modules.map(m => ({ 
-      module: m, 
-      view: ["Dashboard", "Providers", "Contracts", "Credentialing", "Reports"].includes(m),
-      create: ["Providers"].includes(m),
-      edit: ["Providers", "Contracts"].includes(m),
-      delete: false,
-      export: ["Providers", "Contracts", "Reports"].includes(m)
-    })),
-    users: 4,
-    isSystem: false
-  },
-  { 
-    id: "ROLE-004",
-    name: "Contract Manager", 
-    description: "Create and manage provider contracts, rates, and fee schedules",
-    permissions: modules.map(m => ({ 
-      module: m, 
-      view: ["Dashboard", "Providers", "Contracts", "Rates & Discounts", "Reports"].includes(m),
-      create: ["Contracts", "Rates & Discounts"].includes(m),
-      edit: ["Contracts", "Rates & Discounts"].includes(m),
-      delete: false,
-      export: ["Contracts", "Rates & Discounts", "Reports"].includes(m)
-    })),
-    users: 3,
-    isSystem: false
-  },
-  { 
-    id: "ROLE-005",
-    name: "Credentialing Specialist", 
-    description: "Process provider credentialing applications and verification",
-    permissions: modules.map(m => ({ 
-      module: m, 
-      view: ["Dashboard", "Providers", "Credentialing", "Reports"].includes(m),
-      create: false,
-      edit: ["Credentialing"].includes(m),
-      delete: false,
-      export: ["Credentialing", "Reports"].includes(m)
-    })),
-    users: 6,
-    isSystem: false
-  },
-  { 
-    id: "ROLE-006",
-    name: "Network Analyst", 
-    description: "Read-only access to network data, reports, and analytics",
-    permissions: modules.map(m => ({ 
-      module: m, 
-      view: ["Dashboard", "Providers", "Contracts", "Reports", "Analytics"].includes(m),
-      create: false,
-      edit: false,
-      delete: false,
-      export: ["Reports", "Analytics"].includes(m)
-    })),
-    users: 5,
-    isSystem: false
-  },
+const tabs = [
+  { label: "Users", value: "users", count: users.length },
+  { label: "Roles", value: "roles", count: roles.length },
 ];
 
 export default function UsersPage() {
+  const { isDark } = useTheme();
+  const [activeTab, setActiveTab] = useState("users");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedUser, setSelectedUser] = useState<typeof users[0] | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [activeTab, setActiveTab] = useState<"users" | "roles" | "permissions">("users");
-  const [roles, setRoles] = useState<Role[]>(initialRoles);
-  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
-  const [showEditRoleModal, setShowEditRoleModal] = useState(false);
-  const [showAddRoleModal, setShowAddRoleModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const filteredUsers = users.filter((user) =>
+  const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.role.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "active": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Active</span>;
-      case "inactive": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded-full"><XCircle className="w-3 h-3" />Inactive</span>;
-      case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
-      default: return null;
-    }
-  };
+  const stats = [
+    { label: "Total Users", value: users.length, icon: <UsersIcon className="w-5 h-5" /> },
+    { label: "Active", value: users.filter(u => u.status === "active").length, icon: <CheckCircle className="w-5 h-5" /> },
+    { label: "MFA Enabled", value: users.filter(u => u.mfa).length, icon: <Shield className="w-5 h-5" /> },
+    { label: "Pending", value: users.filter(u => u.status === "pending").length, icon: <Clock className="w-5 h-5" /> },
+  ];
 
-  const togglePermission = (roleId: string, moduleIndex: number, permType: keyof Omit<Permission, 'module'>) => {
-    setRoles(roles.map(role => {
-      if (role.id === roleId && !role.isSystem) {
-        const newPermissions = [...role.permissions];
-        newPermissions[moduleIndex] = {
-          ...newPermissions[moduleIndex],
-          [permType]: !newPermissions[moduleIndex][permType]
-        };
-        return { ...role, permissions: newPermissions };
-      }
-      return role;
-    }));
+  const handleInvite = () => {
+    setShowSuccess(true);
+    setTimeout(() => {
+      setShowSuccess(false);
+      setShowAddModal(false);
+    }, 2000);
   };
-
-  const PermissionCell = ({ checked, onClick, disabled }: { checked: boolean; onClick: () => void; disabled?: boolean }) => (
-    <button 
-      onClick={onClick}
-      disabled={disabled}
-      className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${
-        disabled ? "cursor-not-allowed opacity-50" :
-        checked ? "bg-green-500/20 text-green-400 hover:bg-green-500/30" : "bg-slate-700 text-slate-500 hover:bg-slate-600"
-      }`}
-    >
-      {checked ? <Check className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
-    </button>
-  );
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Team & Permissions</h1>
-          <p className="text-slate-400">Manage network team members and access control</p>
-        </div>
-        <div className="flex gap-2">
-          {activeTab === "roles" && (
-            <button onClick={() => setShowAddRoleModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 border border-slate-600">
-              <Shield className="w-4 h-4" />
-              Add Role
-            </button>
-          )}
-          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
-            <UserPlus className="w-4 h-4" />
-            Add User
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        title="Team & Permissions"
+        subtitle="Manage user access and role-based permissions"
+        actions={
+          <Button variant="primary" icon={<UserPlus className="w-4 h-4" />} onClick={() => setShowAddModal(true)}>
+            Invite User
+          </Button>
+        }
+      />
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-white">22</p>
-          <p className="text-sm text-slate-400">Total Users</p>
-        </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-green-400">18</p>
-          <p className="text-sm text-slate-400">Active</p>
-        </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-cyan-500">{roles.length}</p>
-          <p className="text-sm text-slate-400">Roles</p>
-        </div>
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-amber-400">85%</p>
-          <p className="text-sm text-slate-400">MFA Enabled</p>
-        </div>
+        {stats.map((stat, i) => (
+          <Card key={i} padding="md">
+            <div className="flex items-center gap-3">
+              <div className={cn(
+                "w-10 h-10 rounded-lg flex items-center justify-center",
+                isDark ? "bg-cyan-500/20 text-cyan-400" : "bg-cyan-50 text-cyan-600"
+              )}>
+                {stat.icon}
+              </div>
+              <div>
+                <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>{stat.value}</p>
+                <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{stat.label}</p>
+              </div>
+            </div>
+          </Card>
+        ))}
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-slate-700 pb-2">
-        <button onClick={() => setActiveTab("users")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "users" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Team Members</button>
-        <button onClick={() => setActiveTab("roles")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "roles" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Roles</button>
-        <button onClick={() => setActiveTab("permissions")} className={`px-4 py-2 rounded-t-lg font-medium ${activeTab === "permissions" ? "bg-slate-800 text-cyan-500 border-b-2 border-cyan-500" : "text-slate-400 hover:text-white"}`}>Permission Matrix</button>
-      </div>
+      <PillTabs tabs={tabs} value={activeTab} onChange={setActiveTab} />
 
+      {/* Users Tab */}
       {activeTab === "users" && (
         <>
-          {/* Search */}
-          <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-              <input
-                type="text"
-                placeholder="Search team members..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
-              />
-            </div>
-          </div>
+          <Card padding="md">
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search users by name, email, or role..."
+              showShortcut
+            />
+          </Card>
 
-          {/* Users Table */}
-          <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
+          <Card padding="none">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-slate-800 border-b border-slate-700">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">User</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Role</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Department</th>
-                    <th className="px-4 py-3 text-center text-xs font-semibold text-slate-400 uppercase">MFA</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Last Login</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Status</th>
-                    <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Actions</th>
+                <thead>
+                  <tr className={cn(
+                    "text-left text-xs font-medium uppercase tracking-wider border-b",
+                    isDark ? "text-slate-400 border-slate-700 bg-slate-800/50" : "text-slate-500 border-slate-200 bg-slate-50"
+                  )}>
+                    <th className="px-6 py-4">User</th>
+                    <th className="px-6 py-4">Role</th>
+                    <th className="px-6 py-4">Department</th>
+                    <th className="px-6 py-4">Status</th>
+                    <th className="px-6 py-4">MFA</th>
+                    <th className="px-6 py-4">Last Login</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-700">
+                <tbody className={cn("divide-y", isDark ? "divide-slate-700" : "divide-slate-100")}>
                   {filteredUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-slate-700/50 transition-colors">
-                      <td className="px-4 py-3">
+                    <tr key={user.id} className={cn("transition-colors", isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50")}>
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-cyan-600/20 rounded-full flex items-center justify-center">
-                            <span className="text-cyan-500 font-medium">{user.name.split(' ').map(n => n[0]).join('')}</span>
+                          <div className={cn(
+                            "w-10 h-10 rounded-full flex items-center justify-center font-semibold",
+                            isDark ? "bg-slate-700 text-white" : "bg-slate-200 text-slate-700"
+                          )}>
+                            {user.name.split(" ").map(n => n[0]).join("")}
                           </div>
                           <div>
-                            <p className="font-medium text-white">{user.name}</p>
-                            <p className="text-xs text-slate-500">{user.email}</p>
+                            <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{user.name}</p>
+                            <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{user.email}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-slate-300">{user.role}</td>
-                      <td className="px-4 py-3 text-slate-400">{user.department}</td>
-                      <td className="px-4 py-3 text-center">
-                        {user.mfa ? <Shield className="w-4 h-4 text-green-400 mx-auto" /> : <span className="text-slate-500">—</span>}
+                      <td className="px-6 py-4">
+                        <Badge variant="default">{user.role}</Badge>
                       </td>
-                      <td className="px-4 py-3 text-slate-400 text-sm">{user.lastLogin}</td>
-                      <td className="px-4 py-3">{getStatusBadge(user.status)}</td>
-                      <td className="px-4 py-3 text-right">
+                      <td className={cn("px-6 py-4", isDark ? "text-slate-300" : "text-slate-600")}>{user.department}</td>
+                      <td className="px-6 py-4">
+                        <StatusBadge status={user.status} />
+                      </td>
+                      <td className="px-6 py-4">
+                        {user.mfa ? (
+                          <Badge variant="success" icon={<Shield className="w-3 h-3" />}>Enabled</Badge>
+                        ) : (
+                          <Badge variant="warning">Disabled</Badge>
+                        )}
+                      </td>
+                      <td className={cn("px-6 py-4 text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{user.lastLogin}</td>
+                      <td className="px-6 py-4">
                         <div className="flex items-center justify-end gap-1">
-                          <button onClick={() => { setSelectedUser(user); setShowEditModal(true); }} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"><Edit className="w-4 h-4" /></button>
-                          <button className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/20 rounded"><Trash2 className="w-4 h-4" /></button>
+                          <IconButton icon={<Edit className="w-4 h-4" />} tooltip="Edit" />
+                          <IconButton icon={<Key className="w-4 h-4" />} tooltip="Reset Password" />
+                          <IconButton icon={<Trash2 className="w-4 h-4" />} tooltip="Delete" variant="danger" />
                         </div>
                       </td>
                     </tr>
@@ -286,331 +172,109 @@ export default function UsersPage() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </Card>
         </>
       )}
 
+      {/* Roles Tab */}
       {activeTab === "roles" && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {roles.map((role) => (
-            <div key={role.id} className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
+            <Card key={role.id} hover>
               <div className="flex items-start justify-between mb-3">
-                <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-cyan-500" />
+                <div className={cn(
+                  "w-10 h-10 rounded-lg flex items-center justify-center",
+                  isDark ? "bg-teal-500/20" : "bg-teal-50"
+                )}>
+                  <Shield className={cn("w-5 h-5", isDark ? "text-teal-400" : "text-teal-600")} />
                 </div>
-                <div className="flex gap-1">
-                  {role.isSystem && (
-                    <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">System</span>
-                  )}
-                  <button 
-                    onClick={() => { setSelectedRole(role); setShowEditRoleModal(true); }}
-                    className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                </div>
+                <IconButton icon={<Edit className="w-4 h-4" />} tooltip="Edit Role" />
               </div>
-              <h3 className="font-semibold text-white mb-1">{role.name}</h3>
-              <p className="text-sm text-slate-400 mb-3">{role.description}</p>
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-slate-500">{role.users} users</p>
-                <button 
-                  onClick={() => { setSelectedRole(role); setActiveTab("permissions"); }}
-                  className="text-xs text-cyan-500 hover:text-cyan-400"
-                >
-                  View Permissions →
-                </button>
-              </div>
-            </div>
+              <h3 className={cn("font-semibold mb-1", isDark ? "text-white" : "text-slate-900")}>{role.name}</h3>
+              <p className={cn("text-sm mb-3", isDark ? "text-slate-400" : "text-slate-500")}>{role.description}</p>
+              <Badge variant="default">{role.users} users</Badge>
+            </Card>
           ))}
         </div>
       )}
 
-      {activeTab === "permissions" && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-white">Permission Matrix</h2>
-              <p className="text-sm text-slate-400">Configure what each role can access</p>
-            </div>
-            <select 
-              value={selectedRole?.id || ""}
-              onChange={(e) => setSelectedRole(roles.find(r => r.id === e.target.value) || null)}
-              className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
-            >
-              <option value="">All Roles</option>
-              {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
-            </select>
-          </div>
-
-          <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-slate-800 border-b border-slate-700">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase sticky left-0 bg-slate-800">Module</th>
-                  {(selectedRole ? [selectedRole] : roles).map(role => (
-                    <th key={role.id} colSpan={5} className="px-4 py-3 text-center text-xs font-semibold text-slate-300 uppercase border-l border-slate-700">
-                      {role.name}
-                      {role.isSystem && <span className="ml-1 text-blue-400">(System)</span>}
-                    </th>
-                  ))}
-                </tr>
-                <tr className="bg-slate-800/50">
-                  <th className="px-4 py-2 text-left text-xs text-slate-500 sticky left-0 bg-slate-800/50"></th>
-                  {(selectedRole ? [selectedRole] : roles).map(role => (
-                    <React.Fragment key={role.id}>
-                      <th className="px-2 py-2 text-center text-xs text-slate-500 border-l border-slate-700">View</th>
-                      <th className="px-2 py-2 text-center text-xs text-slate-500">Create</th>
-                      <th className="px-2 py-2 text-center text-xs text-slate-500">Edit</th>
-                      <th className="px-2 py-2 text-center text-xs text-slate-500">Delete</th>
-                      <th className="px-2 py-2 text-center text-xs text-slate-500">Export</th>
-                    </React.Fragment>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-700">
-                {modules.map((module, moduleIndex) => (
-                  <tr key={module} className="hover:bg-slate-700/30">
-                    <td className="px-4 py-3 text-white font-medium sticky left-0 bg-slate-800/90">{module}</td>
-                    {(selectedRole ? [selectedRole] : roles).map(role => {
-                      const perm = role.permissions[moduleIndex];
-                      return (
-                        <React.Fragment key={role.id}>
-                          <td className="px-2 py-3 text-center border-l border-slate-700">
-                            <PermissionCell checked={perm.view} onClick={() => togglePermission(role.id, moduleIndex, 'view')} disabled={role.isSystem} />
-                          </td>
-                          <td className="px-2 py-3 text-center">
-                            <PermissionCell checked={perm.create} onClick={() => togglePermission(role.id, moduleIndex, 'create')} disabled={role.isSystem} />
-                          </td>
-                          <td className="px-2 py-3 text-center">
-                            <PermissionCell checked={perm.edit} onClick={() => togglePermission(role.id, moduleIndex, 'edit')} disabled={role.isSystem} />
-                          </td>
-                          <td className="px-2 py-3 text-center">
-                            <PermissionCell checked={perm.delete} onClick={() => togglePermission(role.id, moduleIndex, 'delete')} disabled={role.isSystem} />
-                          </td>
-                          <td className="px-2 py-3 text-center">
-                            <PermissionCell checked={perm.export} onClick={() => togglePermission(role.id, moduleIndex, 'export')} disabled={role.isSystem} />
-                          </td>
-                        </React.Fragment>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          <div className="flex items-center gap-4 text-sm text-slate-400">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-green-500/20 rounded flex items-center justify-center"><Check className="w-4 h-4 text-green-400" /></div>
-              <span>Allowed</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-slate-700 rounded flex items-center justify-center"><Minus className="w-4 h-4 text-slate-500" /></div>
-              <span>Denied</span>
-            </div>
-            <span className="text-slate-500">• Click to toggle (System roles are read-only)</span>
-          </div>
-        </div>
-      )}
-
-      {/* Add User Modal */}
+      {/* Invite User Modal */}
       <AnimatePresence>
         {showAddModal && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowAddModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold text-white">Add Team Member</h2>
-                <button onClick={() => setShowAddModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-              </div>
-              <div className="p-4 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Full Name</label>
-                  <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="John Doe" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                  <input type="email" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="john.d@truecare.health" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>
-                  <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                    {roles.map(r => <option key={r.id}>{r.name}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Department</label>
-                  <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                    <option>Administration</option>
-                    <option>Network Operations</option>
-                    <option>Provider Relations</option>
-                    <option>Contracts</option>
-                    <option>Credentialing</option>
-                    <option>Analytics</option>
-                  </select>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" id="sendInvite" defaultChecked className="rounded border-slate-500 bg-slate-600 text-cyan-600" />
-                  <label htmlFor="sendInvite" className="text-sm text-slate-300">Send invitation email</label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" id="requireMFA" className="rounded border-slate-500 bg-slate-600 text-cyan-600" />
-                  <label htmlFor="requireMFA" className="text-sm text-slate-300">Require MFA setup</label>
-                </div>
-              </div>
-              <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Add Member</button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Edit User Modal */}
-      <AnimatePresence>
-        {showEditModal && selectedUser && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowEditModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold text-white">Edit Team Member</h2>
-                <button onClick={() => setShowEditModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-              </div>
-              <div className="p-4 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Full Name</label>
-                  <input type="text" defaultValue={selectedUser.name} className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                  <input type="email" defaultValue={selectedUser.email} className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>
-                  <select defaultValue={selectedUser.role} className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                    {roles.map(r => <option key={r.id}>{r.name}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Status</label>
-                  <select defaultValue={selectedUser.status} className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-                <div className="pt-2 border-t border-slate-700 space-y-2">
-                  <button className="flex items-center gap-2 text-amber-400 hover:text-amber-300 text-sm"><Key className="w-4 h-4" />Reset Password</button>
-                  <button className="flex items-center gap-2 text-cyan-500 hover:text-cyan-400 text-sm"><Shield className="w-4 h-4" />Reset MFA</button>
-                </div>
-              </div>
-              <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
-                <button onClick={() => setShowEditModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowEditModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Edit Role Modal */}
-      <AnimatePresence>
-        {showEditRoleModal && selectedRole && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowEditRoleModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold text-white">Edit Role</h2>
-                <button onClick={() => setShowEditRoleModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-              </div>
-              <div className="p-4 space-y-4">
-                {selectedRole.isSystem && (
-                  <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-sm text-blue-400">
-                    This is a system role. Name and description can be edited, but permissions are locked.
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowAddModal(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={cn(
+                "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md rounded-2xl shadow-2xl z-50",
+                isDark ? "bg-slate-800 border border-slate-700" : "bg-white border border-slate-200"
+              )}
+            >
+              {showSuccess ? (
+                <div className="p-10 text-center">
+                  <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-5">
+                    <Check className="w-8 h-8 text-emerald-500" />
                   </div>
-                )}
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Role Name</label>
-                  <input 
-                    type="text" 
-                    value={selectedRole.name}
-                    onChange={(e) => setSelectedRole({...selectedRole, name: e.target.value})}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" 
-                  />
+                  <h3 className={cn("text-xl font-bold mb-2", isDark ? "text-white" : "text-slate-900")}>Invitation Sent!</h3>
+                  <p className={isDark ? "text-slate-400" : "text-slate-500"}>User will receive an email to set up their account.</p>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Description</label>
-                  <textarea 
-                    value={selectedRole.description}
-                    onChange={(e) => setSelectedRole({...selectedRole, description: e.target.value})}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white h-20 resize-none" 
-                  />
-                </div>
-                <div className="pt-2 border-t border-slate-700">
-                  <button 
-                    onClick={() => { setShowEditRoleModal(false); setActiveTab("permissions"); }}
-                    className="flex items-center gap-2 text-cyan-500 hover:text-cyan-400 text-sm"
-                  >
-                    <Shield className="w-4 h-4" />Edit Permissions in Matrix →
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-center justify-between p-4 border-t border-slate-700">
-                {!selectedRole.isSystem && (
-                  <button className="px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 flex items-center gap-1">
-                    <Trash2 className="w-4 h-4" />Delete
-                  </button>
-                )}
-                <div className="flex gap-2 ml-auto">
-                  <button onClick={() => setShowEditRoleModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                  <button 
-                    onClick={() => {
-                      setRoles(roles.map(r => r.id === selectedRole.id ? selectedRole : r));
-                      setShowEditRoleModal(false);
-                    }} 
-                    className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
-                  >
-                    Save Changes
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Add Role Modal */}
-      <AnimatePresence>
-        {showAddRoleModal && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowAddRoleModal(false)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold text-white">Add New Role</h2>
-                <button onClick={() => setShowAddRoleModal(false)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"><X className="w-5 h-5" /></button>
-              </div>
-              <div className="p-4 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Role Name</label>
-                  <input type="text" className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white" placeholder="e.g., Fee Schedule Analyst" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Description</label>
-                  <textarea className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white h-20 resize-none" placeholder="What can this role do?" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Copy Permissions From</label>
-                  <select className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white">
-                    <option value="">Start with no permissions</option>
-                    {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
-                  </select>
-                </div>
-              </div>
-              <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700">
-                <button onClick={() => setShowAddRoleModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowAddRoleModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Create Role</button>
-              </div>
+              ) : (
+                <>
+                  <div className={cn("p-5 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                    <h3 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>Invite Team Member</h3>
+                  </div>
+                  <div className="p-5 space-y-4">
+                    <div>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>Email</label>
+                      <input
+                        type="email"
+                        placeholder="colleague@truecare.health"
+                        className={cn(
+                          "w-full px-4 py-2.5 rounded-lg border",
+                          isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-500" : "bg-white border-slate-300 text-slate-900 placeholder-slate-400"
+                        )}
+                      />
+                    </div>
+                    <div>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>Role</label>
+                      <select className={cn(
+                        "w-full px-4 py-2.5 rounded-lg border",
+                        isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-300 text-slate-900"
+                      )}>
+                        {roles.map(role => (
+                          <option key={role.id} value={role.id}>{role.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>Department</label>
+                      <select className={cn(
+                        "w-full px-4 py-2.5 rounded-lg border",
+                        isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-300 text-slate-900"
+                      )}>
+                        <option>Administration</option>
+                        <option>Network Operations</option>
+                        <option>Provider Relations</option>
+                        <option>Credentialing</option>
+                        <option>Contracts</option>
+                        <option>Analytics</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className={cn("flex gap-3 p-5 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                    <Button variant="outline" className="flex-1" onClick={() => setShowAddModal(false)}>Cancel</Button>
+                    <Button variant="primary" className="flex-1" onClick={handleInvite} icon={<Mail className="w-4 h-4" />}>Send Invite</Button>
+                  </div>
+                </>
+              )}
             </motion.div>
           </>
         )}

@@ -50,58 +50,48 @@ export function StatCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: delay * 0.1, duration: 0.3 }}
       className={cn(
-        "rounded-xl p-5 relative overflow-hidden",
+        "rounded-xl p-5",
         isDark 
-          ? "bg-gradient-to-br from-slate-800 to-slate-800/50 border border-slate-700/50" 
+          ? "bg-slate-800 border border-slate-700" 
           : "bg-white border border-slate-200 shadow-sm",
         className
       )}
     >
-      {/* Subtle gradient overlay */}
-      <div className={cn(
-        "absolute inset-0 pointer-events-none",
-        isDark 
-          ? "bg-gradient-to-br from-cyan-500/5 to-teal-500/5"
-          : "bg-gradient-to-br from-cyan-500/[0.02] to-teal-500/[0.02]"
-      )} />
-      
-      <div className="relative">
-        {/* Top row: Icon and Trend */}
-        <div className="flex items-start justify-between mb-4">
-          <div className={cn(
-            "w-11 h-11 rounded-xl flex items-center justify-center",
-            isDark 
-              ? "bg-cyan-500/20 border border-cyan-500/30"
-              : "bg-cyan-50 border border-cyan-200"
-          )}>
-            <div className={isDark ? "text-cyan-400" : "text-cyan-600"}>
-              {icon}
-            </div>
+      {/* Top row: Icon and Trend */}
+      <div className="flex items-start justify-between mb-4">
+        <div className={cn(
+          "w-11 h-11 rounded-xl flex items-center justify-center",
+          isDark 
+            ? "bg-cyan-500/20 border border-cyan-500/30"
+            : "bg-cyan-50 border border-cyan-200"
+        )}>
+          <div className={isDark ? "text-cyan-400" : "text-cyan-600"}>
+            {icon}
           </div>
-          
-          {change && (
-            <div className={cn(
-              "flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-full border",
-              trendColors[trend]
-            )}>
-              <TrendIcon className="w-3 h-3" />
-              <span>{change}</span>
-            </div>
-          )}
         </div>
         
-        {/* Value */}
-        <p className={cn(
-          "text-3xl font-bold tracking-tight",
-          isDark ? "text-white" : "text-slate-900"
-        )}>{value}</p>
-        
-        {/* Label */}
-        <p className={cn(
-          "text-sm mt-1 font-medium",
-          isDark ? "text-slate-400" : "text-slate-500"
-        )}>{label}</p>
+        {change && (
+          <div className={cn(
+            "flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-full border",
+            trendColors[trend]
+          )}>
+            <TrendIcon className="w-3 h-3" />
+            <span>{change}</span>
+          </div>
+        )}
       </div>
+      
+      {/* Value */}
+      <p className={cn(
+        "text-3xl font-bold tracking-tight",
+        isDark ? "text-white" : "text-slate-900"
+      )}>{value}</p>
+      
+      {/* Label */}
+      <p className={cn(
+        "text-sm mt-1 font-medium",
+        isDark ? "text-slate-400" : "text-slate-500"
+      )}>{label}</p>
     </motion.div>
   );
 }
@@ -129,14 +119,14 @@ export function StatCardCompact({
       "rounded-lg p-4 text-center",
       isDark 
         ? "bg-slate-700/50 border border-slate-600/50"
-        : "bg-slate-50 border border-slate-200",
+        : "bg-white border border-slate-200",
       className
     )}>
       {icon && (
         <div className="flex justify-center mb-2">
           <div className={cn(
-            "text-slate-400",
-            highlight && "text-cyan-500"
+            isDark ? "text-slate-400" : "text-slate-500",
+            highlight && (isDark ? "text-cyan-400" : "text-cyan-600")
           )}>
             {icon}
           </div>
@@ -145,8 +135,8 @@ export function StatCardCompact({
       <p className={cn(
         "text-2xl font-bold",
         highlight 
-          ? "text-cyan-500" 
-          : isDark ? "text-white" : "text-slate-900"
+          ? (isDark ? "text-cyan-400" : "text-cyan-600")
+          : (isDark ? "text-white" : "text-slate-900")
       )}>
         {value}
       </p>
