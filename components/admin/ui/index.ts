@@ -50,5 +50,8 @@ export {
 // Navigation (Phase 2)
 export { Breadcrumb } from './Breadcrumb';
 
+// Command Palette (Phase 3)
+export { CommandPalette } from './CommandPalette';
+
 // Re-export design system tokens
 export * from '../design-system';

@@ -35,6 +35,7 @@ import {
 import AdminPulseChat from "@/components/pulse/AdminPulseChat";
 import { ThemeProvider } from "@/components/admin/ThemeContext";
 import { ToastProvider } from "@/components/admin/ui/Toast";
+import { CommandPalette } from "@/components/admin/ui/CommandPalette";
 
 interface NavItem {
   name: string;
@@ -438,6 +439,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex-1 lg:flex-none" />
 
           <div className="flex items-center gap-4">
+            {/* Command Palette */}
+            <CommandPalette />
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
