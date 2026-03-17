@@ -143,6 +143,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push("/admin-login");
   };
 
+  // Check if a nav item is active - exact match only, no startsWith for sibling routes
+  const isNavActive = (itemHref: string): boolean => {
+    if (!pathname) return false;
+    if (pathname === itemHref) return true;
+    // Only match children if the path continues with /
+    if (itemHref !== "/admin" && pathname.startsWith(itemHref + "/")) return true;
+    return false;
+  };
+
   // Persist theme preference (default to light if no preference saved)
   useEffect(() => {
     const saved = localStorage.getItem("admin-theme");

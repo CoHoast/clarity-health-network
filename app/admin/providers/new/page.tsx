@@ -198,8 +198,8 @@ export default function AddProviderPage() {
             </div>
 
             {/* Individual Provider Info (always shown) */}
-            <div className="bg-cyan-900/20 border border-cyan-500/30 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-cyan-400 mb-4">Individual Provider Information</h3>
+            <div className="bg-[#0f2744] border border-[#1e3a5f] rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-white mb-4">Individual Provider Information</h3>
               <div className="grid md:grid-cols-4 gap-4">
                 <div>
                   <label className="block text-xs text-slate-400 mb-1">First Name *</label>
