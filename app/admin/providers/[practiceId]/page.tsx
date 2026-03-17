@@ -138,6 +138,27 @@ export default function PracticeDetailPage() {
   const [editData, setEditData] = useState(practice);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  
+  // Modal states
+  const [showAddNetwork, setShowAddNetwork] = useState(false);
+  const [showAddProvider, setShowAddProvider] = useState(false);
+  const [selectedNetworks, setSelectedNetworks] = useState<string[]>([]);
+  const [newProvider, setNewProvider] = useState({
+    firstName: "",
+    lastName: "",
+    title: "MD",
+    npi: "",
+    specialty: practice.specialty || "",
+    email: "",
+    phone: "",
+    licenseState: "OH",
+    licenseNumber: "",
+  });
+
+  // Available networks (not already assigned to this practice)
+  const availableNetworks = Object.entries(networkNames).filter(
+    ([id]) => !practice.networks?.includes(id)
+  );
 
   // Auto-enable edit mode if ?edit=true
   useEffect(() => {
@@ -890,7 +911,10 @@ export default function PracticeDetailPage() {
                 <Users className="w-5 h-5 text-teal-400" />
                 Affiliated Providers ({practice.providers?.length || 0})
               </h2>
-              <button className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors">
+              <button 
+                onClick={() => setShowAddProvider(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors"
+              >
                 <Users className="w-4 h-4" />
                 Add Provider
               </button>
@@ -950,7 +974,10 @@ export default function PracticeDetailPage() {
                 <Globe className="w-5 h-5 text-teal-400" />
                 Network Memberships ({practice.networks?.length || 0})
               </h2>
-              <button className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors">
+              <button 
+                onClick={() => setShowAddNetwork(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors"
+              >
                 <Globe className="w-4 h-4" />
                 Add to Network
               </button>
@@ -979,7 +1006,10 @@ export default function PracticeDetailPage() {
               <div className="text-center py-12 bg-slate-700/20 rounded-xl border border-dashed border-slate-600">
                 <Globe className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                 <p className="text-slate-400">Not assigned to any networks yet</p>
-                <button className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors text-sm">
+                <button 
+                  onClick={() => setShowAddNetwork(true)}
+                  className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors text-sm"
+                >
                   Add to Network
                 </button>
               </div>
@@ -987,6 +1017,284 @@ export default function PracticeDetailPage() {
           </div>
         )}
       </div>
+
+      {/* Add to Network Modal */}
+      {showAddNetwork && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl p-6 max-w-lg w-full shadow-xl"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-slate-900">Add to Network</h2>
+              <button 
+                onClick={() => {
+                  setShowAddNetwork(false);
+                  setSelectedNetworks([]);
+                }}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+            </div>
+
+            {availableNetworks.length === 0 ? (
+              <div className="text-center py-8">
+                <Globe className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <p className="text-slate-500">This practice is already in all available networks</p>
+              </div>
+            ) : (
+              <>
+                <p className="text-slate-600 mb-4">Select networks to add this practice to:</p>
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {availableNetworks.map(([id, name]) => (
+                    <label
+                      key={id}
+                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                        selectedNetworks.includes(id)
+                          ? "border-purple-500 bg-purple-50"
+                          : "border-slate-200 hover:bg-slate-50"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedNetworks.includes(id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedNetworks([...selectedNetworks, id]);
+                          } else {
+                            setSelectedNetworks(selectedNetworks.filter(n => n !== id));
+                          }
+                        }}
+                        className="w-4 h-4 text-purple-600 rounded border-slate-300 focus:ring-purple-500"
+                      />
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                          <Globe className="w-4 h-4 text-purple-600" />
+                        </div>
+                        <span className="text-slate-900 font-medium">{name}</span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+
+                <div className="flex gap-3 mt-6">
+                  <button
+                    onClick={() => {
+                      setShowAddNetwork(false);
+                      setSelectedNetworks([]);
+                    }}
+                    className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      // In real app, this would call an API
+                      console.log("Adding to networks:", selectedNetworks);
+                      setShowAddNetwork(false);
+                      setSelectedNetworks([]);
+                      setSaved(true);
+                      setTimeout(() => setSaved(false), 2000);
+                    }}
+                    disabled={selectedNetworks.length === 0}
+                    className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Add to {selectedNetworks.length || ""} Network{selectedNetworks.length !== 1 ? "s" : ""}
+                  </button>
+                </div>
+              </>
+            )}
+          </motion.div>
+        </div>
+      )}
+
+      {/* Add Provider Modal */}
+      {showAddProvider && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl p-6 max-w-2xl w-full shadow-xl my-8"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-slate-900">Add Provider to {practice.name}</h2>
+              <button 
+                onClick={() => setShowAddProvider(false)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">First Name *</label>
+                  <input
+                    type="text"
+                    value={newProvider.firstName}
+                    onChange={(e) => setNewProvider({ ...newProvider, firstName: e.target.value })}
+                    placeholder="Robert"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Last Name *</label>
+                  <input
+                    type="text"
+                    value={newProvider.lastName}
+                    onChange={(e) => setNewProvider({ ...newProvider, lastName: e.target.value })}
+                    placeholder="Smith"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Title *</label>
+                  <select
+                    value={newProvider.title}
+                    onChange={(e) => setNewProvider({ ...newProvider, title: e.target.value })}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  >
+                    <option value="MD">MD</option>
+                    <option value="DO">DO</option>
+                    <option value="NP">NP</option>
+                    <option value="PA">PA</option>
+                    <option value="PhD">PhD</option>
+                    <option value="DPM">DPM</option>
+                    <option value="DC">DC</option>
+                    <option value="PT">PT</option>
+                    <option value="OT">OT</option>
+                    <option value="DDS">DDS</option>
+                    <option value="DMD">DMD</option>
+                    <option value="PharmD">PharmD</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">NPI (10 digits) *</label>
+                  <input
+                    type="text"
+                    value={newProvider.npi}
+                    onChange={(e) => setNewProvider({ ...newProvider, npi: e.target.value.replace(/\D/g, "").slice(0, 10) })}
+                    placeholder="1234567890"
+                    maxLength={10}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Specialty *</label>
+                  <select
+                    value={newProvider.specialty}
+                    onChange={(e) => setNewProvider({ ...newProvider, specialty: e.target.value })}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  >
+                    <option value="">Select specialty...</option>
+                    <option value="Family Medicine">Family Medicine</option>
+                    <option value="Internal Medicine">Internal Medicine</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Orthopedics">Orthopedics</option>
+                    <option value="Dermatology">Dermatology</option>
+                    <option value="Neurology">Neurology</option>
+                    <option value="Gastroenterology">Gastroenterology</option>
+                    <option value="Pulmonology">Pulmonology</option>
+                    <option value="Psychiatry">Psychiatry</option>
+                    <option value="OB/GYN">OB/GYN</option>
+                    <option value="Urgent Care">Urgent Care</option>
+                    <option value="Emergency Medicine">Emergency Medicine</option>
+                    <option value="General Surgery">General Surgery</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                  <input
+                    type="email"
+                    value={newProvider.email}
+                    onChange={(e) => setNewProvider({ ...newProvider, email: e.target.value })}
+                    placeholder="provider@example.com"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+                  <input
+                    type="tel"
+                    value={newProvider.phone}
+                    onChange={(e) => setNewProvider({ ...newProvider, phone: e.target.value })}
+                    placeholder="(555) 123-4567"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">License State *</label>
+                  <input
+                    type="text"
+                    value={newProvider.licenseState}
+                    onChange={(e) => setNewProvider({ ...newProvider, licenseState: e.target.value.toUpperCase().slice(0, 2) })}
+                    placeholder="OH"
+                    maxLength={2}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">License Number *</label>
+                  <input
+                    type="text"
+                    value={newProvider.licenseNumber}
+                    onChange={(e) => setNewProvider({ ...newProvider, licenseNumber: e.target.value })}
+                    placeholder="MD-35-123456"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6 pt-4 border-t border-slate-200">
+              <button
+                onClick={() => setShowAddProvider(false)}
+                className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  // In real app, this would call an API
+                  console.log("Adding provider:", newProvider);
+                  setShowAddProvider(false);
+                  setNewProvider({
+                    firstName: "",
+                    lastName: "",
+                    title: "MD",
+                    npi: "",
+                    specialty: practice.specialty || "",
+                    email: "",
+                    phone: "",
+                    licenseState: "OH",
+                    licenseNumber: "",
+                  });
+                  setSaved(true);
+                  setTimeout(() => setSaved(false), 2000);
+                }}
+                disabled={!newProvider.firstName || !newProvider.lastName || !newProvider.npi || newProvider.npi.length !== 10}
+                className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <Users className="w-4 h-4" />
+                Add Provider
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
