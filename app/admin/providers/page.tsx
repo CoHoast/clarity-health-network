@@ -620,7 +620,7 @@ export default function ProvidersPage() {
     const matchesStatus = statusFilter === "All" || practice.status.toLowerCase() === statusFilter.toLowerCase();
     const matchesType = typeFilter === "All Types" || practice.type === typeFilter;
     return matchesSearch && matchesStatus && matchesType;
-  });
+  }).sort((a, b) => a.name.localeCompare(b.name));
 
   const getStatusBadge = (status: string) => {
     switch (status) {
