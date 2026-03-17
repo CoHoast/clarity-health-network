@@ -168,6 +168,7 @@ export default function PracticeDetailPage() {
   }, [searchParams]);
 
   // Discount rates state
+  const [discountBasis, setDiscountBasis] = useState<"medicare" | "billed">("medicare");
   const [rateType, setRateType] = useState<"flat" | "custom">("flat");
   const [flatRate, setFlatRate] = useState("135");
   const [serviceRates, setServiceRates] = useState<Record<string, string>>({
@@ -877,6 +878,39 @@ export default function PracticeDetailPage() {
               </p>
             </div>
 
+            {/* Discount Basis Selection */}
+            <div className="bg-slate-700/30 rounded-lg p-4">
+              <p className="text-sm font-medium text-white mb-3">Discount Basis</p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setDiscountBasis("medicare")}
+                  className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
+                    discountBasis === "medicare" 
+                      ? "bg-teal-600 border-teal-600 text-white" 
+                      : "bg-slate-700 border-slate-600 text-slate-400 hover:border-slate-500"
+                  }`}
+                >
+                  % of Medicare
+                </button>
+                <button
+                  onClick={() => setDiscountBasis("billed")}
+                  className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
+                    discountBasis === "billed" 
+                      ? "bg-teal-600 border-teal-600 text-white" 
+                      : "bg-slate-700 border-slate-600 text-slate-400 hover:border-slate-500"
+                  }`}
+                >
+                  % of Billed Charges
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mt-2">
+                {discountBasis === "medicare" 
+                  ? "Rates are calculated as a percentage of the Medicare allowable amount"
+                  : "Rates are calculated as a percentage off the provider's billed charges"
+                }
+              </p>
+            </div>
+
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white flex items-center gap-2">
                 <DollarSign className="w-5 h-5 text-teal-400" />
@@ -904,9 +938,11 @@ export default function PracticeDetailPage() {
 
             {rateType === "flat" ? (
               <div className="bg-slate-700/30 rounded-lg p-6">
-                <h3 className="text-sm font-semibold text-white mb-4">Flat % of Medicare</h3>
+                <h3 className="text-sm font-semibold text-white mb-4">
+                  Flat {discountBasis === "medicare" ? "% of Medicare" : "% Off Billed Charges"}
+                </h3>
                 <p className="text-slate-400 text-sm mb-4">
-                  Single rate applied to all services for this provider.
+                  Single rate applied to all services for this practice.
                 </p>
                 <div className="flex items-center gap-4">
                   <div className="flex-1 max-w-xs">
@@ -919,10 +955,17 @@ export default function PracticeDetailPage() {
                       />
                       <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">%</span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-2">of Medicare rate</p>
+                    <p className="text-xs text-slate-500 mt-2">
+                      {discountBasis === "medicare" ? "of Medicare rate" : "off billed charges"}
+                    </p>
                   </div>
                   <div className="bg-teal-500/20 border border-teal-500/30 rounded-lg p-4 flex-1">
-                    <p className="text-sm text-teal-400">Example: For a $100 Medicare allowable, you pay <strong>${parseFloat(flatRate) || 0}</strong></p>
+                    <p className="text-sm text-teal-400">
+                      {discountBasis === "medicare" 
+                        ? `Example: For a $100 Medicare allowable, you pay $${parseFloat(flatRate) || 0}`
+                        : `Example: For a $100 billed charge, you pay $${100 - (parseFloat(flatRate) || 0)}`
+                      }
+                    </p>
                   </div>
                 </div>
               </div>

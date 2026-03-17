@@ -213,6 +213,7 @@ export default function ProviderDetailPage() {
 
   // Rates
   const [useCustomRates, setUseCustomRates] = useState(provider.useCustomRates);
+  const [discountBasis, setDiscountBasis] = useState<"medicare" | "billed">("medicare");
   const [rateType, setRateType] = useState<"flat" | "custom" | "cpt">(provider.rateType);
   const [flatRate, setFlatRate] = useState(provider.flatRate);
   const [serviceRates, setServiceRates] = useState(provider.serviceRates);
@@ -997,6 +998,39 @@ export default function ProviderDetailPage() {
 
             {useCustomRates ? (
               <>
+                {/* Discount Basis Selection */}
+                <div className="bg-white border border-slate-200 rounded-lg p-4">
+                  <p className="text-sm font-medium text-slate-900 mb-3">Discount Basis</p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setDiscountBasis("medicare")}
+                      className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
+                        discountBasis === "medicare" 
+                          ? "bg-teal-600 border-teal-600 text-white" 
+                          : "bg-white border-slate-300 text-slate-600 hover:border-slate-400"
+                      }`}
+                    >
+                      % of Medicare
+                    </button>
+                    <button
+                      onClick={() => setDiscountBasis("billed")}
+                      className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
+                        discountBasis === "billed" 
+                          ? "bg-teal-600 border-teal-600 text-white" 
+                          : "bg-white border-slate-300 text-slate-600 hover:border-slate-400"
+                      }`}
+                    >
+                      % of Billed Charges
+                    </button>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-2">
+                    {discountBasis === "medicare" 
+                      ? "Rates are calculated as a percentage of the Medicare allowable amount"
+                      : "Rates are calculated as a percentage off the provider's billed charges"
+                    }
+                  </p>
+                </div>
+
                 <div className="flex gap-2">
                   <button
                     onClick={() => setRateType("flat")}
@@ -1026,7 +1060,9 @@ export default function ProviderDetailPage() {
 
                 {rateType === "flat" ? (
                   <div className="bg-white border border-slate-200 rounded-lg p-6">
-                    <h3 className="text-sm font-semibold text-slate-900 mb-4">Flat % of Medicare</h3>
+                    <h3 className="text-sm font-semibold text-slate-900 mb-4">
+                      Flat {discountBasis === "medicare" ? "% of Medicare" : "% Off Billed Charges"}
+                    </h3>
                     <div className="flex items-center gap-4">
                       <div className="flex-1 max-w-xs">
                         <div className="relative">
@@ -1038,6 +1074,17 @@ export default function ProviderDetailPage() {
                           />
                           <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">%</span>
                         </div>
+                        <p className="text-xs text-slate-500 mt-2">
+                          {discountBasis === "medicare" ? "of Medicare rate" : "off billed charges"}
+                        </p>
+                      </div>
+                      <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 flex-1">
+                        <p className="text-sm text-teal-700">
+                          {discountBasis === "medicare" 
+                            ? `Example: For a $100 Medicare allowable, you pay $${parseFloat(flatRate) || 0}`
+                            : `Example: For a $100 billed charge, you pay $${100 - (parseFloat(flatRate) || 0)}`
+                          }
+                        </p>
                       </div>
                     </div>
                   </div>
