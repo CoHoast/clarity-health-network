@@ -28,9 +28,15 @@ export function StatCard({
   const { isDark } = useTheme();
   
   const trendColors = {
-    up: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-    down: "bg-red-500/20 text-red-400 border-red-500/30",
-    warning: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+    up: isDark 
+      ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+      : "bg-emerald-50 text-emerald-600 border-emerald-200",
+    down: isDark
+      ? "bg-red-500/20 text-red-400 border-red-500/30"
+      : "bg-red-50 text-red-600 border-red-200",
+    warning: isDark
+      ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
+      : "bg-amber-50 text-amber-600 border-amber-200",
     neutral: isDark 
       ? "bg-slate-700/50 text-slate-400 border-slate-600/50"
       : "bg-slate-100 text-slate-500 border-slate-200",
@@ -47,12 +53,17 @@ export function StatCard({
         "rounded-xl p-5 relative overflow-hidden",
         isDark 
           ? "bg-gradient-to-br from-slate-800 to-slate-800/50 border border-slate-700/50" 
-          : "bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700/30",
+          : "bg-white border border-slate-200 shadow-sm",
         className
       )}
     >
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-teal-500/5 pointer-events-none" />
+      <div className={cn(
+        "absolute inset-0 pointer-events-none",
+        isDark 
+          ? "bg-gradient-to-br from-cyan-500/5 to-teal-500/5"
+          : "bg-gradient-to-br from-cyan-500/[0.02] to-teal-500/[0.02]"
+      )} />
       
       <div className="relative">
         {/* Top row: Icon and Trend */}
@@ -61,9 +72,9 @@ export function StatCard({
             "w-11 h-11 rounded-xl flex items-center justify-center",
             isDark 
               ? "bg-cyan-500/20 border border-cyan-500/30"
-              : "bg-white/10 border border-white/20"
+              : "bg-cyan-50 border border-cyan-200"
           )}>
-            <div className="text-cyan-400">
+            <div className={isDark ? "text-cyan-400" : "text-cyan-600"}>
               {icon}
             </div>
           </div>
@@ -80,10 +91,16 @@ export function StatCard({
         </div>
         
         {/* Value */}
-        <p className="text-3xl font-bold text-white tracking-tight">{value}</p>
+        <p className={cn(
+          "text-3xl font-bold tracking-tight",
+          isDark ? "text-white" : "text-slate-900"
+        )}>{value}</p>
         
         {/* Label */}
-        <p className="text-sm text-slate-400 mt-1 font-medium">{label}</p>
+        <p className={cn(
+          "text-sm mt-1 font-medium",
+          isDark ? "text-slate-400" : "text-slate-500"
+        )}>{label}</p>
       </div>
     </motion.div>
   );
