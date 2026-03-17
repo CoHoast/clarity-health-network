@@ -683,7 +683,7 @@ export default function PracticeDetailPage() {
                     )}
                   </div>
                   <div className="md:col-span-3">
-                    <p className="text-xs text-slate-500 mb-1">Pay-To Address</p>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 1</p>
                     {isEditing ? (
                       <input
                         type="text"
@@ -693,6 +693,20 @@ export default function PracticeDetailPage() {
                       />
                     ) : (
                       <p className="text-white">{practice.payToAddress}</p>
+                    )}
+                  </div>
+                  <div className="md:col-span-3">
+                    <p className="text-xs text-slate-500 mb-1">Address Line 2</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToAddress2 || ""}
+                        onChange={(e) => setEditData({ ...editData, payToAddress2: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        placeholder="Suite, Floor, Building"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.payToAddress2 || "—"}</p>
                     )}
                   </div>
                   <div>
@@ -732,6 +746,19 @@ export default function PracticeDetailPage() {
                       />
                     ) : (
                       <p className="text-white">{practice.payToZip}</p>
+                    )}
+                  </div>
+                  <div className="md:col-span-3">
+                    <p className="text-xs text-slate-500 mb-1">County</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.payToCounty || ""}
+                        onChange={(e) => setEditData({ ...editData, payToCounty: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    ) : (
+                      <p className="text-white">{practice.payToCounty || "—"}</p>
                     )}
                   </div>
                 </div>
