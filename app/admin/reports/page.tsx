@@ -50,6 +50,17 @@ export default function ReportsPage() {
   const [selectedTemplate, setSelectedTemplate] = useState<typeof reportTemplates[0] | null>(null);
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
+  const [previewingReport, setPreviewingReport] = useState<typeof recentReports[0] | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+
+  const showToast = (message: string) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleDownload = (report: typeof recentReports[0]) => {
+    showToast(`Downloading ${report.name}...`);
+  };
 
   const handleGenerate = () => {
     setGenerating(true);
@@ -161,8 +172,8 @@ export default function ReportsPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <IconButton icon={<Eye className="w-4 h-4" />} tooltip="Preview" />
-                  <IconButton icon={<Download className="w-4 h-4" />} tooltip="Download" />
+                  <IconButton icon={<Eye className="w-4 h-4" />} tooltip="Preview" onClick={() => setPreviewingReport(report)} />
+                  <IconButton icon={<Download className="w-4 h-4" />} tooltip="Download" onClick={() => handleDownload(report)} />
                 </div>
               </div>
             ))}
@@ -274,6 +285,110 @@ export default function ReportsPage() {
               )}
             </motion.div>
           </>
+        )}
+      </AnimatePresence>
+
+      {/* Report Preview Modal */}
+      <AnimatePresence>
+        {previewingReport && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setPreviewingReport(null)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" 
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={cn(
+                "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[85vh] rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden",
+                isDark ? "bg-slate-800 border border-slate-700" : "bg-white border border-slate-200"
+              )}
+            >
+              <div className={cn("p-4 border-b flex items-center justify-between", isDark ? "border-slate-700" : "border-slate-200")}>
+                <div>
+                  <h3 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>{previewingReport.name}</h3>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    Generated: {previewingReport.generated} • {previewingReport.size} • {previewingReport.format}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="secondary" size="sm" onClick={() => handleDownload(previewingReport)}>
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                  <IconButton icon={<X className="w-5 h-5" />} onClick={() => setPreviewingReport(null)} />
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-auto p-6 bg-slate-100 dark:bg-slate-900">
+                <div className={cn("rounded-lg shadow-lg overflow-hidden", isDark ? "bg-slate-800" : "bg-white")}>
+                  {/* Sample Report Table */}
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className={cn("border-b", isDark ? "border-slate-700 bg-slate-700/50" : "border-slate-200 bg-slate-50")}>
+                        <th className="text-left px-4 py-3 font-semibold">Provider Name</th>
+                        <th className="text-left px-4 py-3 font-semibold">NPI</th>
+                        <th className="text-left px-4 py-3 font-semibold">Specialty</th>
+                        <th className="text-left px-4 py-3 font-semibold">Status</th>
+                        <th className="text-left px-4 py-3 font-semibold">Contract Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { name: "Dr. Robert Smith, MD", npi: "1234567890", specialty: "Family Medicine", status: "Active", date: "Jan 15, 2024" },
+                        { name: "Dr. Jennifer Adams, MD", npi: "2345678901", specialty: "Internal Medicine", status: "Active", date: "Feb 20, 2024" },
+                        { name: "Dr. Michael Chen, DO", npi: "3456789012", specialty: "Cardiology", status: "Active", date: "Mar 1, 2024" },
+                        { name: "Dr. Sarah Wilson, MD", npi: "4567890123", specialty: "Pediatrics", status: "Pending", date: "Mar 10, 2024" },
+                        { name: "Cleveland Heart Center", npi: "5678901234", specialty: "Multi-Specialty", status: "Active", date: "Jan 5, 2024" },
+                        { name: "Dr. Emily Rodriguez, NP", npi: "6789012345", specialty: "Nurse Practitioner", status: "Active", date: "Feb 28, 2024" },
+                        { name: "Metro Imaging Center", npi: "7890123456", specialty: "Radiology", status: "Active", date: "Mar 15, 2024" },
+                        { name: "Dr. James Thompson, MD", npi: "8901234567", specialty: "Orthopedics", status: "Active", date: "Jan 22, 2024" },
+                      ].map((row, i) => (
+                        <tr key={i} className={cn("border-b", isDark ? "border-slate-700" : "border-slate-100")}>
+                          <td className={cn("px-4 py-3", isDark ? "text-white" : "text-slate-900")}>{row.name}</td>
+                          <td className={cn("px-4 py-3 font-mono", isDark ? "text-slate-400" : "text-slate-600")}>{row.npi}</td>
+                          <td className={cn("px-4 py-3", isDark ? "text-slate-300" : "text-slate-700")}>{row.specialty}</td>
+                          <td className="px-4 py-3">
+                            <span className={cn(
+                              "px-2 py-1 rounded-full text-xs font-medium",
+                              row.status === "Active" 
+                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                            )}>
+                              {row.status}
+                            </span>
+                          </td>
+                          <td className={cn("px-4 py-3", isDark ? "text-slate-400" : "text-slate-500")}>{row.date}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className={cn("text-center text-xs mt-4", isDark ? "text-slate-500" : "text-slate-400")}>
+                  Showing 8 of 156 records • Full report available on download
+                </p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50"
+          >
+            <Download className="w-5 h-5" />
+            {toast}
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
