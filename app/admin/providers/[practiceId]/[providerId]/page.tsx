@@ -6,11 +6,11 @@ import { cn } from "@/lib/utils";
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, User, MapPin, Phone, Mail, FileText, DollarSign, Edit, Save, X,
   CheckCircle, Clock, Briefcase, GraduationCap, Globe, Calendar, Stethoscope,
-  CreditCard, Building2, Languages, Shield, Plus, Trash2, Upload
+  CreditCard, Building2, Languages, Shield, Plus, Trash2, Upload, Download, Eye
 } from "lucide-react";
 
 // Provider data (in real app, this would come from API)
@@ -278,6 +278,7 @@ export default function ProviderDetailPage() {
   const sections = [
     { id: "overview", label: "Overview", icon: User },
     { id: "credentials", label: "Credentials & Licenses", icon: GraduationCap },
+    { id: "documents", label: "Documents", icon: FileText },
     { id: "malpractice", label: "Malpractice", icon: Shield },
     { id: "hospitals", label: "Hospital Affiliations", icon: Building2 },
     { id: "location", label: "Office Location", icon: MapPin },
@@ -286,6 +287,18 @@ export default function ProviderDetailPage() {
     { id: "rates", label: "Rates & Discounts", icon: DollarSign },
     { id: "networks", label: "Networks", icon: Globe },
   ];
+
+  // Sample documents for this provider
+  const providerDocuments = [
+    { id: "doc-1", type: "license", name: "State Medical License", uploadedDate: "2024-01-15", expires: "2026-12-31", status: "current" },
+    { id: "doc-2", type: "dea", name: "DEA Registration", uploadedDate: "2024-01-15", expires: "2025-06-30", status: "current" },
+    { id: "doc-3", type: "board_cert", name: "Board Certification", uploadedDate: "2024-01-10", expires: null, status: "current" },
+    { id: "doc-4", type: "malpractice_coi", name: "Malpractice Insurance COI", uploadedDate: "2024-03-01", expires: "2026-06-30", status: "current" },
+    { id: "doc-5", type: "cv", name: "Curriculum Vitae", uploadedDate: "2024-01-10", expires: null, status: "current" },
+    { id: "doc-6", type: "w9", name: "W-9 Form", uploadedDate: "2024-01-10", expires: null, status: "current" },
+  ];
+
+  const [viewingDocument, setViewingDocument] = useState<string | null>(null);
 
   const statusColors = {
     active: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -666,6 +679,279 @@ export default function ProviderDetailPage() {
             </div>
           </div>
         )}
+
+        {/* Documents Section */}
+        {activeSection === "documents" && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-blue-400" />
+                Credentialing Documents
+              </h2>
+              <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors">
+                <Upload className="w-4 h-4" />
+                Upload Document
+              </button>
+            </div>
+
+            <div className="grid gap-4">
+              {providerDocuments.map((doc) => (
+                <div
+                  key={doc.id}
+                  className="bg-white border border-slate-200 rounded-lg p-4 flex items-center justify-between hover:border-blue-300 transition-colors cursor-pointer"
+                  onClick={() => setViewingDocument(doc.type)}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                      <FileText className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900">{doc.name}</p>
+                      <p className="text-sm text-slate-500">
+                        Uploaded: {new Date(doc.uploadedDate).toLocaleDateString()}
+                        {doc.expires && ` • Expires: ${doc.expires}`}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                      Current
+                    </span>
+                    <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+                      <Eye className="w-5 h-5 text-slate-500" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Document Viewer Modal */}
+        <AnimatePresence>
+          {viewingDocument && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+              onClick={() => setViewingDocument(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                className="w-full max-w-3xl bg-white rounded-xl overflow-hidden max-h-[90vh] flex flex-col"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="p-4 border-b border-slate-200 flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      {viewingDocument === "license" && "State Medical License"}
+                      {viewingDocument === "dea" && "DEA Registration Certificate"}
+                      {viewingDocument === "board_cert" && "Board Certification"}
+                      {viewingDocument === "malpractice_coi" && "Malpractice Insurance COI"}
+                      {viewingDocument === "cv" && "Curriculum Vitae"}
+                      {viewingDocument === "w9" && "W-9 Form"}
+                    </h3>
+                    <p className="text-sm text-slate-500">{provider.firstName} {provider.lastName}, {provider.title}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg">
+                      <Download className="w-4 h-4" />
+                      Download
+                    </button>
+                    <button
+                      onClick={() => setViewingDocument(null)}
+                      className="p-2 hover:bg-slate-100 rounded-lg"
+                    >
+                      <X className="w-5 h-5 text-slate-500" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-auto p-6 bg-slate-100 min-h-[500px]">
+                  <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
+                    {/* License Document */}
+                    {viewingDocument === "license" && (
+                      <div className="text-center space-y-6">
+                        <div className="border-b-2 border-blue-600 pb-4">
+                          <div className="flex justify-center mb-2">
+                            <Shield className="w-12 h-12 text-blue-600" />
+                          </div>
+                          <h2 className="text-xl font-bold text-blue-800">STATE OF {provider.licenseState}</h2>
+                          <h3 className="text-lg font-semibold text-blue-700">STATE MEDICAL BOARD</h3>
+                        </div>
+                        <div className="py-4">
+                          <p className="text-sm uppercase tracking-wider text-slate-500 mb-2">License to Practice Medicine</p>
+                          <p className="text-2xl font-bold text-slate-900">{provider.firstName} {provider.lastName}, {provider.title}</p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">License Number</p>
+                            <p className="font-mono font-bold text-slate-900">{provider.licenseNumber}</p>
+                          </div>
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">Expiration Date</p>
+                            <p className="font-bold text-slate-900">{provider.licenseExpiration}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* DEA Document */}
+                    {viewingDocument === "dea" && (
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between border-b pb-4 border-slate-200">
+                          <div>
+                            <h2 className="text-lg font-bold text-slate-900">U.S. DEPARTMENT OF JUSTICE</h2>
+                            <h3 className="text-sm font-semibold text-slate-600">Drug Enforcement Administration</h3>
+                          </div>
+                          <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center">
+                            <Shield className="w-8 h-8 text-amber-600" />
+                          </div>
+                        </div>
+                        <div className="text-center py-4">
+                          <p className="text-sm font-semibold uppercase tracking-wider text-blue-600">DEA Registration Certificate</p>
+                          <p className="text-xl font-bold mt-2 text-slate-900">{provider.firstName} {provider.lastName}, {provider.title}</p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">DEA Number</p>
+                            <p className="font-mono font-bold text-slate-900">{provider.deaNumber}</p>
+                          </div>
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">Expiration</p>
+                            <p className="font-bold text-slate-900">{provider.deaExpiration}</p>
+                          </div>
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">Schedules</p>
+                            <p className="font-bold text-slate-900">2, 2N, 3, 3N, 4, 5</p>
+                          </div>
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">Business Activity</p>
+                            <p className="font-bold text-slate-900">Practitioner</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Board Certification */}
+                    {viewingDocument === "board_cert" && (
+                      <div className="text-center space-y-6">
+                        <div className="border-b-2 border-green-600 pb-4">
+                          <h2 className="text-xl font-bold text-green-800">AMERICAN BOARD OF MEDICAL SPECIALTIES</h2>
+                        </div>
+                        <div className="py-6">
+                          <p className="text-sm text-slate-500">This is to certify that</p>
+                          <p className="text-2xl font-bold my-3 text-slate-900">{provider.firstName} {provider.lastName}, {provider.title}</p>
+                          <p className="text-sm text-slate-500">having completed the prescribed requirements, is hereby certified by the</p>
+                          <p className="text-lg font-semibold text-green-700 mt-2">{provider.boardCertification}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Malpractice COI */}
+                    {viewingDocument === "malpractice_coi" && (
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between border-b pb-4 border-slate-200">
+                          <div>
+                            <h2 className="text-lg font-bold text-slate-900">{provider.malpracticeCarrier}</h2>
+                            <p className="text-sm text-slate-500">Certificate of Insurance</p>
+                          </div>
+                          <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">Active</span>
+                        </div>
+                        <div className="p-4 bg-slate-50 rounded">
+                          <p className="text-sm text-slate-500 mb-1">Named Insured</p>
+                          <p className="font-bold text-slate-900">{provider.firstName} {provider.lastName}, {provider.title}</p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">Policy Number</p>
+                            <p className="font-mono font-bold text-slate-900">{provider.malpracticePolicyNumber}</p>
+                          </div>
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">Coverage</p>
+                            <p className="font-bold text-green-600">{provider.malpracticeCoverage}</p>
+                          </div>
+                          <div className="p-3 bg-slate-50 rounded col-span-2">
+                            <p className="text-xs text-slate-500">Expiration Date</p>
+                            <p className="font-bold text-slate-900">{provider.malpracticeExpiration}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* CV */}
+                    {viewingDocument === "cv" && (
+                      <div className="space-y-6">
+                        <div className="text-center border-b pb-4 border-slate-200">
+                          <h1 className="text-2xl font-bold text-slate-900">{provider.firstName} {provider.lastName}, {provider.title}</h1>
+                          <p className="text-sm text-slate-500 mt-1">{provider.specialty}</p>
+                        </div>
+                        <div>
+                          <h3 className="font-semibold border-b pb-1 mb-2 text-blue-600 border-blue-200">Education</h3>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-slate-700">{provider.medicalSchool}</span>
+                              <span className="text-slate-500">{provider.graduationYear}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-700">{provider.residency}</span>
+                              <span className="text-slate-500">{parseInt(provider.graduationYear) + 3}-{parseInt(provider.graduationYear) + 6}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <h3 className="font-semibold border-b pb-1 mb-2 text-blue-600 border-blue-200">Certifications</h3>
+                          <ul className="text-sm text-slate-700 space-y-1">
+                            <li>• {provider.boardCertification}</li>
+                            <li>• State License: {provider.licenseNumber}</li>
+                            <li>• DEA Registration: {provider.deaNumber}</li>
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* W-9 */}
+                    {viewingDocument === "w9" && (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h2 className="text-lg font-bold text-slate-900">Form W-9</h2>
+                            <p className="text-xs text-slate-500">Request for Taxpayer Identification Number</p>
+                          </div>
+                        </div>
+                        <div className="border-t border-b py-4 border-slate-200">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-xs text-slate-500">Name</p>
+                              <p className="font-bold text-slate-900">{provider.firstName} {provider.lastName}, {provider.title}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-slate-500">Business Name</p>
+                              <p className="font-bold text-slate-900">{provider.practiceName}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">Tax Classification</p>
+                            <p className="font-bold text-slate-900">Individual/Sole Proprietor</p>
+                          </div>
+                          <div className="p-3 bg-slate-50 rounded">
+                            <p className="text-xs text-slate-500">TIN (masked)</p>
+                            <p className="font-mono font-bold text-slate-900">**-***{Math.floor(1000 + Math.random() * 9000)}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Malpractice Section */}
         {activeSection === "malpractice" && (
