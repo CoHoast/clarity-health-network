@@ -763,8 +763,8 @@ export default function PracticeDetailPage() {
               </div>
 
               {/* Pay-To Information */}
-              <div className="bg-cyan-900/20 border border-cyan-500/30 rounded-lg p-6 md:col-span-2">
-                <h3 className="text-sm font-semibold text-cyan-400 mb-4 flex items-center gap-2">
+              <div className="bg-slate-700/30 rounded-lg p-6 md:col-span-2">
+                <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                   <DollarSign className="w-4 h-4" />
                   Pay-To Information (Remittance)
                 </h3>
