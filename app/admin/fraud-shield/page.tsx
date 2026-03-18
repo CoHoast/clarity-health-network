@@ -1,5 +1,8 @@
 "use client";
 
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
+
 import { useState } from "react";
 import { Search, Shield, AlertTriangle, Eye, CheckCircle, XCircle, Clock, User, Building2, FileText, X, Flag, MessageSquare, Zap, TrendingDown, RefreshCw, Info, BarChart3 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
