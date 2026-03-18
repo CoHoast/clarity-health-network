@@ -1,9 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, X, DollarSign, Edit, User, CreditCard, Save, Users, ChevronRight, Trash2, Upload, FileSpreadsheet, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, X, DollarSign, Edit, User, CreditCard, Save, Users, ChevronRight, Trash2, Upload, FileSpreadsheet, AlertCircle, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
+import { StatCard } from "@/components/admin/ui/StatCard";
+import { StatCardSkeleton, TableRowSkeleton } from "@/components/admin/ui/Skeleton";
+import { EmptyState, NoSearchResults } from "@/components/admin/ui/EmptyState";
+import { useBulkSelect } from "@/lib/hooks/useBulkSelect";
+import { BulkActionBar, bulkActionCreators } from "@/components/admin/ui/BulkActionBar";
 
 // Practice = The office/group (has Pay-To, address, contract)
 interface Practice {
@@ -490,6 +497,7 @@ const statusOptions = ["All", "Active", "Pending", "Inactive"];
 const typeOptions = ["All Types", "Group Practice", "Facility"];
 
 export default function ProvidersPage() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All Types");
@@ -503,6 +511,14 @@ export default function ProvidersPage() {
   const [csvErrors, setCsvErrors] = useState<string[]>([]);
   const [isEditingPractice, setIsEditingPractice] = useState(false);
   const [isEditingProvider, setIsEditingProvider] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showNetworkAssign, setShowNetworkAssign] = useState(false);
+
+  // Simulate loading
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   // New practice form
   const [newPractice, setNewPractice] = useState<Partial<Practice>>({
@@ -622,6 +638,39 @@ export default function ProvidersPage() {
     return matchesSearch && matchesStatus && matchesType;
   }).sort((a, b) => a.name.localeCompare(b.name));
 
+  // Bulk select for practices
+  const {
+    selectedIds,
+    isSelected,
+    isAllSelected,
+    isSomeSelected,
+    selectedCount,
+    toggleSelect,
+    toggleSelectAll,
+    clearSelection,
+    getSelectedItems,
+  } = useBulkSelect({
+    items: filteredPractices,
+    getItemId: (practice) => practice.id,
+  });
+
+  // Bulk actions
+  const bulkActions = [
+    bulkActionCreators.assignNetwork(() => setShowNetworkAssign(true)),
+    bulkActionCreators.export(() => {
+      const selected = getSelectedItems();
+      console.log("Exporting:", selected);
+      // Export logic here
+    }),
+    bulkActionCreators.delete(() => {
+      const selected = getSelectedItems();
+      if (confirm(`Delete ${selected.length} practice(s)?`)) {
+        console.log("Deleting:", selected);
+        clearSelection();
+      }
+    }),
+  ];
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
@@ -640,17 +689,23 @@ export default function ProvidersPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Practices & Providers</h1>
-          <p className="text-slate-400 mt-1">Manage network practices and their affiliated providers</p>
+          <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>Practices & Providers</h1>
+          <p className={cn("mt-1", isDark ? "text-slate-400" : "text-slate-500")}>Manage network practices and their affiliated providers</p>
         </div>
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-colors">
+          <button className={cn(
+            "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
+            isDark ? "bg-slate-700 text-white hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+          )}>
             <Download className="w-4 h-4" />
             Export
           </button>
           <button 
             onClick={() => setShowCsvUpload(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-colors"
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
+              isDark ? "bg-slate-700 text-white hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+            )}
           >
             <Upload className="w-4 h-4" />
             Import CSV
@@ -666,69 +721,72 @@ export default function ProvidersPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-cyan-500/20 rounded-lg">
-              <Building2 className="w-5 h-5 text-cyan-400" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{practices.length}</p>
-              <p className="text-sm text-slate-400">Total Practices</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-teal-500/20 rounded-lg">
-              <Users className="w-5 h-5 text-teal-400" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{providers.length}</p>
-              <p className="text-sm text-slate-400">Total Providers</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-500/20 rounded-lg">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{practices.filter(p => p.status === "active").length}</p>
-              <p className="text-sm text-slate-400">Active Practices</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-purple-500/20 rounded-lg">
-              <User className="w-5 h-5 text-purple-400" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{providers.filter(p => p.acceptingNewPatients).length}</p>
-              <p className="text-sm text-slate-400">Accepting Patients</p>
-            </div>
-          </div>
-        </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {isLoading ? (
+          <>
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </>
+        ) : (
+          <>
+            <StatCard
+              label="Total Practices"
+              value={practices.length}
+              icon={<Building2 className="w-5 h-5" />}
+              delay={0}
+            />
+            <StatCard
+              label="Total Providers"
+              value={providers.length}
+              icon={<Users className="w-5 h-5" />}
+              delay={1}
+            />
+            <StatCard
+              label="Active Practices"
+              value={practices.filter(p => p.status === "active").length}
+              change={`${Math.round((practices.filter(p => p.status === "active").length / practices.length) * 100)}%`}
+              trend="up"
+              icon={<CheckCircle className="w-5 h-5" />}
+              delay={2}
+            />
+            <StatCard
+              label="Accepting Patients"
+              value={providers.filter(p => p.acceptingNewPatients).length}
+              icon={<User className="w-5 h-5" />}
+              delay={3}
+            />
+          </>
+        )}
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+          <Search className={cn("absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5", isDark ? "text-slate-400" : "text-slate-500")} />
           <input
             type="text"
             placeholder="Search practices or providers by name, NPI, specialty..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className={cn(
+              "w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-cyan-500",
+              isDark 
+                ? "bg-slate-800 border-slate-700 text-white placeholder-slate-400" 
+                : "bg-white border-slate-200 text-slate-900 placeholder-slate-400"
+            )}
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          className={cn(
+            "px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-cyan-500",
+            isDark 
+              ? "bg-slate-800 border-slate-700 text-white" 
+              : "bg-white border-slate-200 text-slate-900"
+          )}
         >
           {statusOptions.map(status => (
             <option key={status} value={status}>{status}</option>
@@ -737,7 +795,12 @@ export default function ProvidersPage() {
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          className={cn(
+            "px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-cyan-500",
+            isDark 
+              ? "bg-slate-800 border-slate-700 text-white" 
+              : "bg-white border-slate-200 text-slate-900"
+          )}
         >
           {typeOptions.map(type => (
             <option key={type} value={type}>{type}</option>
@@ -746,51 +809,120 @@ export default function ProvidersPage() {
       </div>
 
       {/* Practices Table */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-slate-900/50">
-            <tr>
-              <th className="text-left px-6 py-4 text-sm font-medium text-slate-400">Practice</th>
-              <th className="text-left px-6 py-4 text-sm font-medium text-slate-400">Type</th>
-              <th className="text-left px-6 py-4 text-sm font-medium text-slate-400">Location</th>
-              <th className="text-left px-6 py-4 text-sm font-medium text-slate-400">Providers</th>
-              <th className="text-left px-6 py-4 text-sm font-medium text-slate-400">Contract</th>
-              <th className="text-left px-6 py-4 text-sm font-medium text-slate-400">Status</th>
-              <th className="text-right px-6 py-4 text-sm font-medium text-slate-400">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-700">
-            {filteredPractices.map(practice => {
-              const practiceProviders = getProvidersForPractice(practice.id);
-              return (
-                <tr key={practice.id} className="hover:bg-slate-700/30 transition-colors">
+      <div className={cn(
+        "rounded-xl border overflow-hidden",
+        isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200 shadow-sm"
+      )}>
+        {isLoading ? (
+          <table className="w-full">
+            <thead className={isDark ? "bg-slate-900/50" : "bg-slate-50"}>
+              <tr>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Practice</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Type</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Location</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Providers</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Contract</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Status</th>
+                <th className={cn("text-right px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Actions</th>
+              </tr>
+            </thead>
+            <tbody className={cn("divide-y", isDark ? "divide-slate-700" : "divide-slate-200")}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <TableRowSkeleton key={i} columns={7} />
+              ))}
+            </tbody>
+          </table>
+        ) : filteredPractices.length === 0 ? (
+          searchQuery ? (
+            <NoSearchResults query={searchQuery} onClear={() => setSearchQuery("")} />
+          ) : (
+            <EmptyState
+              icon={<Building2 className="w-8 h-8" />}
+              title="No practices yet"
+              description="Get started by adding your first practice to the network."
+              action={{
+                label: "Add Practice",
+                onClick: () => setShowAddPractice(true),
+              }}
+            />
+          )
+        ) : (
+          <table className="w-full">
+            <thead className={isDark ? "bg-slate-900/50" : "bg-slate-50"}>
+              <tr>
+                <th className="w-10 px-4 py-4">
+                  <input
+                    type="checkbox"
+                    checked={isAllSelected}
+                    ref={(el) => { if (el) el.indeterminate = isSomeSelected; }}
+                    onChange={toggleSelectAll}
+                    className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                  />
+                </th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Practice</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Type</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Location</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Providers</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Contract</th>
+                <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Status</th>
+                <th className={cn("text-right px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Actions</th>
+              </tr>
+            </thead>
+            <tbody className={cn("divide-y", isDark ? "divide-slate-700" : "divide-slate-200")}>
+              {filteredPractices.map(practice => {
+                const practiceProviders = getProvidersForPractice(practice.id);
+                const selected = isSelected(practice.id);
+                return (
+                <tr 
+                  key={practice.id} 
+                  className={cn(
+                    "transition-colors",
+                    selected 
+                      ? (isDark ? "bg-cyan-900/20" : "bg-cyan-50") 
+                      : (isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50")
+                  )}
+                >
+                  <td className="w-10 px-4 py-4">
+                    <input
+                      type="checkbox"
+                      checked={selected}
+                      onChange={() => toggleSelect(practice.id)}
+                      className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                    />
+                  </td>
                   <td className="px-6 py-4">
                     <Link href={`/admin/providers/${practice.id}`} className="flex items-center gap-3 group">
-                      <div className="p-2 bg-cyan-500/20 rounded-lg">
-                        <Building2 className="w-5 h-5 text-cyan-400" />
+                      <div className={cn(
+                        "p-2 rounded-lg",
+                        isDark ? "bg-cyan-500/20" : "bg-cyan-50"
+                      )}>
+                        <Building2 className={cn("w-5 h-5", isDark ? "text-cyan-400" : "text-cyan-600")} />
                       </div>
                       <div>
-                        <p className="font-medium text-white group-hover:text-cyan-400 transition-colors">{practice.name}</p>
-                        <p className="text-sm text-slate-400">{practice.specialty}</p>
+                        <p className={cn("font-medium group-hover:text-cyan-500 transition-colors", isDark ? "text-white" : "text-slate-900")}>{practice.name}</p>
+                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{practice.specialty}</p>
                       </div>
                     </Link>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">{practice.type}</span>
+                    <span className={cn(
+                      "px-2 py-1 text-xs rounded-full",
+                      isDark ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600"
+                    )}>{practice.type}</span>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="text-slate-300">{practice.city}, {practice.state}</p>
+                    <p className={isDark ? "text-slate-300" : "text-slate-600"}>{practice.city}, {practice.state}</p>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-teal-400" />
-                      <span className="text-white font-medium">{practiceProviders.length}</span>
-                      <span className="text-slate-400 text-sm">providers</span>
+                      <Users className={cn("w-4 h-4", isDark ? "text-teal-400" : "text-teal-600")} />
+                      <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{practiceProviders.length}</span>
+                      <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>providers</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="text-slate-300">{practice.discountType}</p>
-                    <p className="text-sm text-cyan-400">{practice.discountRate}</p>
+                    <p className={isDark ? "text-slate-300" : "text-slate-600"}>{practice.discountType}</p>
+                    <p className={cn("text-sm", isDark ? "text-cyan-400" : "text-cyan-600")}>{practice.discountRate}</p>
                   </td>
                   <td className="px-6 py-4">
                     {getStatusBadge(practice.status)}
@@ -799,7 +931,12 @@ export default function ProvidersPage() {
                     <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/admin/providers/${practice.id}`}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-slate-300 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-sm"
+                        className={cn(
+                          "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm",
+                          isDark 
+                            ? "text-slate-300 bg-slate-700 hover:bg-slate-600" 
+                            : "text-slate-600 bg-slate-100 hover:bg-slate-200"
+                        )}
                         title="View Practice Details"
                       >
                         <Eye className="w-4 h-4" />
@@ -807,7 +944,12 @@ export default function ProvidersPage() {
                       </Link>
                       <Link
                         href={`/admin/providers/${practice.id}?edit=true`}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 rounded-lg transition-colors text-sm"
+                        className={cn(
+                          "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm",
+                          isDark 
+                            ? "text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20" 
+                            : "text-cyan-600 bg-cyan-50 hover:bg-cyan-100"
+                        )}
                         title="Edit Practice"
                       >
                         <Edit className="w-4 h-4" />
@@ -818,9 +960,77 @@ export default function ProvidersPage() {
                 </tr>
               );
             })}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        )}
       </div>
+
+      {/* Bulk Actions Bar */}
+      <BulkActionBar
+        selectedCount={selectedCount}
+        itemLabel="practice"
+        actions={bulkActions}
+        onClear={clearSelection}
+      />
+
+      {/* Network Assignment Modal */}
+      <AnimatePresence>
+        {showNetworkAssign && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowNetworkAssign(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={cn(
+                "rounded-xl max-w-lg w-full max-h-[90vh] overflow-auto border",
+                isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("p-6 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <div className="flex items-center justify-between">
+                  <h2 className={cn("text-xl font-bold", isDark ? "text-white" : "text-slate-900")}>Assign to Network</h2>
+                  <button onClick={() => setShowNetworkAssign(false)} className={isDark ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900"}>
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+                <p className={cn("mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                  Assign {selectedCount} practice(s) to a network
+                </p>
+              </div>
+              <div className="p-6 space-y-4">
+                {networks.map(network => (
+                  <button
+                    key={network.id}
+                    onClick={() => {
+                      console.log("Assigning to network:", network.id, getSelectedItems());
+                      setShowNetworkAssign(false);
+                      clearSelection();
+                    }}
+                    className={cn(
+                      "w-full p-4 rounded-lg border text-left transition-colors",
+                      isDark 
+                        ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700" 
+                        : "bg-slate-50 border-slate-200 hover:bg-slate-100"
+                    )}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{network.name}</p>
+                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{network.description}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Globe className={cn("w-4 h-4", isDark ? "text-cyan-400" : "text-cyan-600")} />
+                        <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{network.providerCount} providers</span>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Practice Detail Modal */}
       <AnimatePresence>
