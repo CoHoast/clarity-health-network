@@ -39,9 +39,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
 }, ref) => {
   const { isDark } = useTheme();
   
+  // DOKit Signature Blue gradient for primary CTAs
   const variantClasses: Record<ButtonVariant, string> = {
-    primary: "bg-cyan-600 text-white hover:bg-cyan-700 active:bg-cyan-800 shadow-sm",
-    secondary: "bg-teal-600 text-white hover:bg-teal-700 active:bg-teal-800 shadow-sm",
+    primary: "bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 active:from-blue-700 active:to-indigo-700 shadow-[0_2px_8px_rgba(59,130,246,0.3)]",
+    secondary: isDark 
+      ? "bg-slate-700 text-white hover:bg-slate-600 border border-slate-600" 
+      : "bg-slate-100 text-slate-900 hover:bg-slate-200 border border-slate-200",
     outline: isDark
       ? "border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white hover:border-slate-500"
       : "border border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900 hover:border-slate-400",
@@ -53,7 +56,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   
   const baseClasses = cn(
     "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-150",
-    "focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:ring-offset-2",
+    "focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2",
     isDark ? "focus:ring-offset-slate-900" : "focus:ring-offset-white",
     "disabled:opacity-50 disabled:pointer-events-none",
     sizeClasses[size],
@@ -120,8 +123,10 @@ export function IconButton({
   };
   
   const variantClasses: Record<ButtonVariant, string> = {
-    primary: "bg-cyan-600 text-white hover:bg-cyan-700",
-    secondary: "bg-teal-600 text-white hover:bg-teal-700",
+    primary: "bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600",
+    secondary: isDark 
+      ? "bg-slate-700 text-white hover:bg-slate-600" 
+      : "bg-slate-100 text-slate-700 hover:bg-slate-200",
     outline: isDark
       ? "border border-slate-600 text-slate-400 hover:bg-slate-800 hover:text-white"
       : "border border-slate-300 text-slate-500 hover:bg-slate-100 hover:text-slate-900",

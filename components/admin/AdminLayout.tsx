@@ -214,10 +214,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     text: isDark ? "text-white" : "text-gray-900",
     textMuted: isDark ? "text-slate-400" : "text-gray-500",
     textSubtle: isDark ? "text-slate-500" : "text-gray-400",
-    navActive: isDark ? "bg-teal-600/20 text-cyan-500" : "bg-teal-50 text-teal-700",
-    navInactive: isDark ? "text-slate-400 hover:bg-[#1e3a5f] hover:text-white" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+    navActive: isDark ? "bg-blue-500/10 text-blue-400" : "bg-blue-50 text-blue-700",
+    navInactive: isDark ? "text-slate-400 hover:bg-[#1E293B] hover:text-white" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
     navIcon: isDark ? "text-slate-500" : "text-gray-400",
-    navIconActive: isDark ? "text-cyan-500" : "text-teal-600",
+    navIconActive: isDark ? "text-blue-400" : "text-blue-600",
     card: isDark ? "bg-slate-800/50 border-slate-700" : "bg-white border-gray-200 shadow-sm",
     buttonGhost: isDark ? "text-slate-400 hover:text-white hover:bg-slate-800" : "text-gray-500 hover:text-gray-900 hover:bg-gray-100",
     dropdown: isDark ? "bg-slate-800 border-slate-700" : "bg-white border-gray-200 shadow-lg",
@@ -240,14 +240,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         )}
       </AnimatePresence>
 
-      {/* Sidebar - always dark */}
+      {/* Sidebar - always dark (DOKit Slate 900) */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-[#0f2744] border-r border-[#1e3a5f] transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-[#0F172A] border-r border-[#334155] transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Logo */}
-        <div className="h-20 flex items-center justify-between px-4 border-b border-[#1e3a5f] bg-[#0f2744]">
+        <div className="h-20 flex items-center justify-between px-4 border-b border-[#334155] bg-[#0F172A]">
           <Link href="/admin" className="flex items-center hover:opacity-80 transition-opacity">
             <img src="/truecare-logo-dark.png" alt="TrueCare Health Network" className="h-12 w-auto" />
           </Link>
@@ -260,9 +260,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Admin badge */}
-        <div className="p-4 border-b border-[#2d4a6f]">
+        <div className="p-4 border-b border-[#334155]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center shadow-[0_2px_8px_rgba(59,130,246,0.3)]">
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -296,12 +296,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       onClick={() => toggleSection(group.label!)}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                         hasActiveChild 
-                          ? "text-cyan-400" 
-                          : "text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
+                          ? "text-blue-400" 
+                          : "text-slate-400 hover:bg-[#1E293B] hover:text-white"
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        {GroupIcon && <GroupIcon className={`w-5 h-5 ${hasActiveChild ? "text-cyan-500" : "text-slate-500"}`} />}
+                        {GroupIcon && <GroupIcon className={`w-5 h-5 ${hasActiveChild ? "text-blue-400" : "text-slate-500"}`} />}
                         <span>{group.label}</span>
                       </div>
                       <motion.div
@@ -330,13 +330,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               key={item.name}
                               href={item.href}
                               onClick={() => setSidebarOpen(false)}
-                              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              className={`relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                 isActive
-                                  ? "bg-teal-600/20 text-cyan-500"
-                                  : "text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
+                                  ? "bg-blue-500/10 text-blue-400"
+                                  : "text-slate-400 hover:bg-[#1E293B] hover:text-white"
                               }`}
                             >
-                              <item.icon className={`w-4 h-4 ${isActive ? "text-cyan-500" : "text-slate-500"}`} />
+                              {isActive && (
+                                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-blue-500 rounded-r" />
+                              )}
+                              <item.icon className={`w-4 h-4 ${isActive ? "text-blue-400" : "text-slate-500"}`} />
                               {item.name}
                             </Link>
                           );
@@ -348,7 +351,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 
                 {/* Section divider */}
                 {group.dividerAfter && (
-                  <div className="my-3 mx-3 border-t border-[#2d4a6f]/50" />
+                  <div className="my-3 mx-3 border-t border-[#334155]" />
                 )}
               </div>
             );
@@ -367,12 +370,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     onClick={() => toggleSection(settingsGroup.label!)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       hasActiveChild 
-                        ? "text-cyan-400" 
-                        : "text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
+                        ? "text-blue-400" 
+                        : "text-slate-400 hover:bg-[#1E293B] hover:text-white"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      {GroupIcon && <GroupIcon className={`w-5 h-5 ${hasActiveChild ? "text-cyan-500" : "text-slate-500"}`} />}
+                      {GroupIcon && <GroupIcon className={`w-5 h-5 ${hasActiveChild ? "text-blue-400" : "text-slate-500"}`} />}
                       <span>{settingsGroup.label}</span>
                     </div>
                     <motion.div
@@ -399,13 +402,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               key={item.name}
                               href={item.href}
                               onClick={() => setSidebarOpen(false)}
-                              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              className={`relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                 isActive
-                                  ? "bg-teal-600/20 text-cyan-500"
-                                  : "text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
+                                  ? "bg-blue-500/10 text-blue-400"
+                                  : "text-slate-400 hover:bg-[#1E293B] hover:text-white"
                               }`}
                             >
-                              <item.icon className={`w-4 h-4 ${isActive ? "text-cyan-500" : "text-slate-500"}`} />
+                              {isActive && (
+                                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-blue-500 rounded-r" />
+                              )}
+                              <item.icon className={`w-4 h-4 ${isActive ? "text-blue-400" : "text-slate-500"}`} />
                               {item.name}
                             </Link>
                           );
@@ -420,19 +426,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* Bottom section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-[#1e3a5f] bg-[#0f2744]">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-[#334155] bg-[#0F172A]">
           <button
             onClick={() => setShowPulse(true)}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-[#1e3a5f] hover:text-white mb-2"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-[#1E293B] hover:text-white mb-2"
           >
-            <div className="w-5 h-5 bg-gradient-to-br from-cyan-600 to-teal-600 rounded flex items-center justify-center">
+            <div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-indigo-500 rounded flex items-center justify-center shadow-[0_2px_8px_rgba(59,130,246,0.3)]">
               <Zap className="w-3 h-3 text-white" />
             </div>
             Ask Pulse AI
           </button>
           <button 
             onClick={handleSignOut}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-[#1e3a5f] hover:text-white"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-[#1E293B] hover:text-white"
           >
             <LogOut className="w-5 h-5 text-slate-500" />
             Sign Out
@@ -475,7 +481,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Pulse AI quick access */}
             <button
               onClick={() => setShowPulse(true)}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-teal-600 text-white text-sm font-medium rounded-lg hover:from-cyan-600 hover:to-teal-700 transition-colors"
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 shadow-[0_2px_8px_rgba(59,130,246,0.3)] transition-colors"
             >
               <Zap className="w-4 h-4" />
               Ask Pulse
@@ -487,7 +493,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className={`flex items-center gap-2 p-1.5 rounded-lg ${isDark ? "hover:bg-slate-800" : "hover:bg-gray-100"}`}
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-[10px] flex items-center justify-center shadow-[0_2px_8px_rgba(59,130,246,0.3)]">
                   <span className="text-white text-sm font-semibold">SA</span>
                 </div>
                 <ChevronDown className={`w-4 h-4 ${theme.textMuted} hidden sm:block`} />
@@ -545,7 +551,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Floating Pulse button (mobile) */}
       <button
         onClick={() => setShowPulse(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-cyan-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center lg:hidden z-40"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full shadow-[0_4px_16px_rgba(59,130,246,0.4)] hover:shadow-[0_6px_20px_rgba(59,130,246,0.5)] transition-all flex items-center justify-center lg:hidden z-40"
       >
         <Zap className="w-6 h-6" />
       </button>
