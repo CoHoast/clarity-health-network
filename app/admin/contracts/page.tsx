@@ -1,16 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Plus, Download, Eye, CheckCircle, Clock, AlertTriangle, X, FileText, Calendar, Building2, Printer, ExternalLink, FileSignature, RefreshCw } from "lucide-react";
+import { Plus, Download, Eye, CheckCircle, Clock, AlertTriangle, X, FileText, Calendar, Building2, Printer, ExternalLink, FileSignature, RefreshCw, Trash2, Mail, Loader2 } from "lucide-react";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { Card, CardHeader } from "@/components/admin/ui/Card";
 import { StatCard } from "@/components/admin/ui/StatCard";
+import { StatCardSkeleton } from "@/components/admin/ui/Skeleton";
 import { Badge, StatusBadge } from "@/components/admin/ui/Badge";
 import { Button, IconButton } from "@/components/admin/ui/Button";
 import { PageHeader, Tabs } from "@/components/admin/ui/PageHeader";
 import { SearchInput, FilterSelect } from "@/components/admin/ui/SearchInput";
+import { TableRowSkeleton, EmptyState } from "@/components/admin/ui";
+import { BulkActionBar, bulkActionCreators } from "@/components/admin/ui/BulkActionBar";
+import { useBulkSelect } from "@/lib/hooks/useBulkSelect";
 import { cn } from "@/lib/utils";
 
 const contracts = [
@@ -46,6 +50,13 @@ export default function ContractsPage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showRenewalModal, setShowRenewalModal] = useState<typeof contracts[0] | null>(null);
   const [actionSuccess, setActionSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate initial data loading
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredContracts = contracts.filter((contract) => {
     const matchesSearch = contract.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -53,6 +64,30 @@ export default function ContractsPage() {
     const matchesStatus = !statusFilter || contract.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  // Bulk selection
+  const bulk = useBulkSelect({
+    items: filteredContracts,
+    getItemId: (c) => c.id,
+  });
+
+  const handleBulkExport = () => {
+    const selected = bulk.getSelectedItems();
+    console.log("Exporting", selected.length, "contracts");
+    bulk.clearSelection();
+  };
+
+  const handleBulkEmail = () => {
+    const selected = bulk.getSelectedItems();
+    console.log("Sending email to", selected.length, "providers");
+    bulk.clearSelection();
+  };
+
+  const handleBulkDelete = () => {
+    const selected = bulk.getSelectedItems();
+    console.log("Deleting", selected.length, "contracts");
+    bulk.clearSelection();
+  };
 
   const handleAction = () => {
     setActionSuccess(true);
@@ -83,17 +118,23 @@ export default function ContractsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-        {stats.map((stat, i) => (
-          <StatCard
-            key={stat.label}
-            label={stat.label}
-            value={stat.value}
-            change={stat.change}
-            trend={stat.trend}
-            icon={stat.icon}
-            delay={i}
-          />
-        ))}
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <StatCardSkeleton key={i} />
+          ))
+        ) : (
+          stats.map((stat, i) => (
+            <StatCard
+              key={stat.label}
+              label={stat.label}
+              value={stat.value}
+              change={stat.change}
+              trend={stat.trend}
+              icon={stat.icon}
+              delay={i}
+            />
+          ))
+        )}
       </div>
 
       {/* Filters */}
@@ -123,86 +164,130 @@ export default function ContractsPage() {
                 "text-left text-xs font-medium uppercase tracking-wider border-b",
                 isDark ? "text-slate-400 border-slate-700 bg-slate-800/50" : "text-slate-500 border-slate-200 bg-slate-50"
               )}>
-                <th className="px-6 py-4">Contract</th>
-                <th className="px-6 py-4">Provider</th>
-                <th className="px-6 py-4">Type</th>
-                <th className="px-6 py-4">Fee Schedule</th>
-                <th className="px-6 py-4">Expires</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4 text-right">Actions</th>
+                <th className="px-4 py-4 w-12">
+                  <input
+                    type="checkbox"
+                    checked={bulk.isAllSelected}
+                    ref={(el) => { if (el) el.indeterminate = bulk.isSomeSelected; }}
+                    onChange={bulk.toggleSelectAll}
+                    className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-cyan-600 focus:ring-cyan-500/40"
+                  />
+                </th>
+                <th className="px-4 py-4">Contract</th>
+                <th className="px-4 py-4">Provider</th>
+                <th className="px-4 py-4">Type</th>
+                <th className="px-4 py-4">Fee Schedule</th>
+                <th className="px-4 py-4">Expires</th>
+                <th className="px-4 py-4">Status</th>
+                <th className="px-4 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className={cn("divide-y", isDark ? "divide-slate-700/50" : "divide-slate-100")}>
-              {filteredContracts.map((contract) => (
-                <tr key={contract.id} className={cn(
-                  "transition-colors",
-                  isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50"
-                )}>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => setSelectedContract(contract)}
-                      className="font-mono text-sm text-cyan-500 hover:text-cyan-400 hover:underline"
-                    >
-                      {contract.id}
-                    </button>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div>
-                      {contract.practiceId ? (
-                        <Link 
-                          href={`/admin/providers/${contract.practiceId}`}
-                          className={cn(
-                            "font-medium hover:text-cyan-500 transition-colors",
-                            isDark ? "text-white" : "text-slate-900"
-                          )}
-                        >
-                          {contract.provider}
-                        </Link>
-                      ) : (
-                        <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                          {contract.provider}
-                        </p>
-                      )}
-                      <p className={cn("text-xs font-mono mt-0.5", isDark ? "text-slate-500" : "text-slate-400")}>
-                        NPI: {contract.npi}
-                      </p>
-                    </div>
-                  </td>
-                  <td className={cn("px-6 py-4", isDark ? "text-slate-300" : "text-slate-600")}>
-                    {contract.type}
-                  </td>
-                  <td className="px-6 py-4">
-                    <Badge variant="default">{contract.feeSchedule}</Badge>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={contract.status === "expiring" ? "text-amber-500 font-medium" : (isDark ? "text-slate-300" : "text-slate-600")}>
-                      {contract.expires}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <StatusBadge status={contract.status === "expiring" ? "Expiring Soon" : contract.status} />
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <IconButton
-                        icon={<Eye className="w-4 h-4" />}
-                        onClick={() => setSelectedContract(contract)}
-                        tooltip="View Details"
-                      />
-                      {contract.status === "expiring" && (
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => setShowRenewalModal(contract)}
-                          className="text-amber-500 border-amber-500/30 hover:bg-amber-500/10"
-                        >
-                          Renew
-                        </Button>
-                      )}
-                    </div>
+              {isLoading ? (
+                // Loading skeleton
+                Array.from({ length: 5 }).map((_, i) => (
+                  <TableRowSkeleton key={i} columns={8} />
+                ))
+              ) : filteredContracts.length === 0 ? (
+                // Empty state
+                <tr>
+                  <td colSpan={8} className="px-6 py-12">
+                    <EmptyState
+                      icon={<FileSignature className="w-8 h-8" />}
+                      title={searchQuery || statusFilter ? "No contracts found" : "No contracts yet"}
+                      description={searchQuery || statusFilter ? "Try adjusting your search or filters" : "Add your first provider contract to get started"}
+                      action={!searchQuery && !statusFilter ? {
+                        label: "Add Contract",
+                        onClick: () => setShowAddModal(true),
+                      } : undefined}
+                    />
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredContracts.map((contract) => (
+                  <tr 
+                    key={contract.id} 
+                    className={cn(
+                      "transition-colors",
+                      bulk.isSelected(contract.id) 
+                        ? isDark ? "bg-cyan-900/20" : "bg-cyan-50"
+                        : isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50"
+                    )}
+                  >
+                    <td className="px-4 py-4">
+                      <input
+                        type="checkbox"
+                        checked={bulk.isSelected(contract.id)}
+                        onChange={() => bulk.toggleSelect(contract.id)}
+                        className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-cyan-600 focus:ring-cyan-500/40"
+                      />
+                    </td>
+                    <td className="px-4 py-4">
+                      <button
+                        onClick={() => setSelectedContract(contract)}
+                        className="font-mono text-sm text-cyan-500 hover:text-cyan-400 hover:underline"
+                      >
+                        {contract.id}
+                      </button>
+                    </td>
+                    <td className="px-4 py-4">
+                      <div>
+                        {contract.practiceId ? (
+                          <Link 
+                            href={`/admin/providers/${contract.practiceId}`}
+                            className={cn(
+                              "font-medium hover:text-cyan-500 transition-colors",
+                              isDark ? "text-white" : "text-slate-900"
+                            )}
+                          >
+                            {contract.provider}
+                          </Link>
+                        ) : (
+                          <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                            {contract.provider}
+                          </p>
+                        )}
+                        <p className={cn("text-xs font-mono mt-0.5", isDark ? "text-slate-500" : "text-slate-400")}>
+                          NPI: {contract.npi}
+                        </p>
+                      </div>
+                    </td>
+                    <td className={cn("px-4 py-4", isDark ? "text-slate-300" : "text-slate-600")}>
+                      {contract.type}
+                    </td>
+                    <td className="px-4 py-4">
+                      <Badge variant="default">{contract.feeSchedule}</Badge>
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className={contract.status === "expiring" ? "text-amber-500 font-medium" : (isDark ? "text-slate-300" : "text-slate-600")}>
+                        {contract.expires}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4">
+                      <StatusBadge status={contract.status === "expiring" ? "Expiring Soon" : contract.status} />
+                    </td>
+                    <td className="px-4 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <IconButton
+                          icon={<Eye className="w-4 h-4" />}
+                          onClick={() => setSelectedContract(contract)}
+                          tooltip="View Details"
+                        />
+                        {contract.status === "expiring" && (
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => setShowRenewalModal(contract)}
+                            className="text-amber-500 border-amber-500/30 hover:bg-amber-500/10"
+                          >
+                            Renew
+                          </Button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -613,6 +698,18 @@ export default function ContractsPage() {
           </>
         )}
       </AnimatePresence>
+
+      {/* Bulk Action Bar */}
+      <BulkActionBar
+        selectedCount={bulk.selectedCount}
+        itemLabel="contract"
+        onClear={bulk.clearSelection}
+        actions={[
+          bulkActionCreators.export(handleBulkExport),
+          bulkActionCreators.email(handleBulkEmail),
+          bulkActionCreators.delete(handleBulkDelete),
+        ]}
+      />
     </div>
   );
 }

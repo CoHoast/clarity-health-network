@@ -53,5 +53,8 @@ export { Breadcrumb } from './Breadcrumb';
 // Command Palette (Phase 3)
 export { CommandPalette } from './CommandPalette';
 
+// Bulk Actions (Phase 8)
+export { BulkActionBar, bulkActionCreators } from './BulkActionBar';
+
 // Re-export design system tokens
 export * from '../design-system';
