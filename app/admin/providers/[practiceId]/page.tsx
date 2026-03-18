@@ -666,15 +666,42 @@ export default function PracticeDetailPage() {
                   <div className="grid grid-cols-3 gap-3">
                     <div>
                       <p className="text-xs text-slate-500 mb-1">City</p>
-                      <p className="text-white">{practice.correspondenceCity}</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.correspondenceCity || ""}
+                          onChange={(e) => setEditData({ ...editData, correspondenceCity: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.correspondenceCity}</p>
+                      )}
                     </div>
                     <div>
                       <p className="text-xs text-slate-500 mb-1">State</p>
-                      <p className="text-white">{practice.correspondenceState}</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.correspondenceState || ""}
+                          onChange={(e) => setEditData({ ...editData, correspondenceState: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.correspondenceState}</p>
+                      )}
                     </div>
                     <div>
                       <p className="text-xs text-slate-500 mb-1">ZIP</p>
-                      <p className="text-white">{practice.correspondenceZip}</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.correspondenceZip || ""}
+                          onChange={(e) => setEditData({ ...editData, correspondenceZip: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{practice.correspondenceZip}</p>
+                      )}
                     </div>
                   </div>
                 </div>
