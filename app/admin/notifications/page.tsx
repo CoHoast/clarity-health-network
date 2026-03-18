@@ -226,34 +226,96 @@ export default function NotificationsPage() {
         </>
       ) : (
         /* Settings Tab */
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 divide-y divide-slate-700">
-          {settings.map((setting) => (
-            <div key={setting.id} className="p-4 flex items-center justify-between">
-              <div className="flex-1">
-                <h3 className="text-white font-medium">{setting.name}</h3>
-                <p className="text-slate-400 text-sm mt-1">{setting.description}</p>
-                <div className="flex gap-2 mt-2">
-                  {setting.channels.map((channel) => (
-                    <span key={channel} className="px-2 py-0.5 bg-slate-700 text-slate-400 text-xs rounded">
-                      {channel === "email" ? "📧 Email" : "🖥️ Dashboard"}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <button
-                onClick={() => toggleSetting(setting.id)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
-                  setting.enabled ? "bg-teal-600" : "bg-slate-600"
-                }`}
-              >
-                <div
-                  className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
-                    setting.enabled ? "translate-x-6" : "translate-x-0.5"
-                  }`}
-                />
+        <div className="space-y-6">
+          {/* Email Recipients Section */}
+          <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <Mail className="w-5 h-5 text-cyan-400" />
+                Notification Recipients
+              </h2>
+              <button className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors">
+                + Add Recipient
               </button>
             </div>
-          ))}
+            <p className="text-slate-400 text-sm mb-4">Configure which email addresses receive different types of notifications.</p>
+            
+            <div className="space-y-3">
+              {[
+                { email: "admin@truecare.health", name: "Admin Team", types: ["All Notifications"] },
+                { email: "contracts@truecare.health", name: "Contracts Team", types: ["Contract Alerts", "Renewals"] },
+                { email: "credentialing@truecare.health", name: "Credentialing Dept", types: ["Credential Expiration", "Applications", "Status Changes"] },
+                { email: "network@truecare.health", name: "Network Operations", types: ["Weekly Summary", "Provider Updates"] },
+              ].map((recipient, i) => (
+                <div key={i} className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                      <Mail className="w-5 h-5 text-cyan-400" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-white">{recipient.name}</p>
+                      <p className="text-sm text-slate-400">{recipient.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap gap-1 max-w-xs">
+                      {recipient.types.map((type, j) => (
+                        <span key={j} className="px-2 py-1 bg-slate-600 text-slate-300 text-xs rounded-full">
+                          {type}
+                        </span>
+                      ))}
+                    </div>
+                    <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-600 rounded-lg transition-colors">
+                      <Settings className="w-4 h-4" />
+                    </button>
+                    <button className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Notification Types */}
+          <div className="bg-slate-800/50 rounded-xl border border-slate-700">
+            <div className="p-4 border-b border-slate-700">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <Bell className="w-5 h-5 text-amber-400" />
+                Notification Types
+              </h2>
+              <p className="text-slate-400 text-sm mt-1">Enable or disable specific notification categories.</p>
+            </div>
+            <div className="divide-y divide-slate-700">
+              {settings.map((setting) => (
+                <div key={setting.id} className="p-4 flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-white font-medium">{setting.name}</h3>
+                    <p className="text-slate-400 text-sm mt-1">{setting.description}</p>
+                    <div className="flex gap-2 mt-2">
+                      {setting.channels.map((channel) => (
+                        <span key={channel} className="px-2 py-0.5 bg-slate-700 text-slate-400 text-xs rounded">
+                          {channel === "email" ? "📧 Email" : "🖥️ Dashboard"}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => toggleSetting(setting.id)}
+                    className={`relative w-12 h-6 rounded-full transition-colors ${
+                      setting.enabled ? "bg-teal-600" : "bg-slate-600"
+                    }`}
+                  >
+                    <div
+                      className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
+                        setting.enabled ? "translate-x-6" : "translate-x-0.5"
+                      }`}
+                    />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
