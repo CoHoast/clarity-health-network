@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   CheckCircle,
@@ -18,15 +18,104 @@ import {
   ExternalLink,
   Download,
   ChevronRight,
+  RefreshCw,
+  Loader2,
+  Building2,
+  Calendar,
+  Mail,
+  Phone,
+  MapPin,
+  X,
+  History,
+  Send,
+  UserCheck,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { StatCard } from "@/components/admin/ui/StatCard";
 import { Badge } from "@/components/admin/ui/Badge";
-import { Button } from "@/components/admin/ui/Button";
+import { Button, IconButton } from "@/components/admin/ui/Button";
 import { cn } from "@/lib/utils";
 
-const reviewQueue = [
+// Live Verification Display Component
+function LiveVerificationDisplay({ results, isDark }: { results: Record<string, unknown>; isDark: boolean }) {
+  const summary = results.summary as { passed: number; failed: number; needsReview: number; recommendation: string } | undefined;
+  
+  if (!summary) return null;
+
+  return (
+    <div className={cn(
+      "p-4 rounded-lg border mt-4",
+      isDark ? "bg-slate-700/30 border-cyan-700" : "bg-cyan-50 border-cyan-200"
+    )}>
+      <h4 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-cyan-400" : "text-cyan-700")}>
+        <Shield className="w-4 h-4" />
+        Live Verification Results
+      </h4>
+      <div className="grid grid-cols-3 gap-4 text-center mb-3">
+        <div>
+          <p className="text-2xl font-bold text-green-600">{summary.passed}</p>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Passed</p>
+        </div>
+        <div>
+          <p className="text-2xl font-bold text-red-600">{summary.failed}</p>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Failed</p>
+        </div>
+        <div>
+          <p className="text-2xl font-bold text-yellow-600">{summary.needsReview}</p>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Review</p>
+        </div>
+      </div>
+      <Badge variant={
+        summary.recommendation === 'AUTO_APPROVE' ? 'success' :
+        summary.recommendation === 'AUTO_DENY' ? 'error' : 'warning'
+      }>
+        {summary.recommendation?.replace(/_/g, ' ')}
+      </Badge>
+    </div>
+  );
+}
+
+// Types
+interface Verification {
+  status: string;
+  verifiedAt: string;
+  expires?: string;
+  coverage?: string;
+  body?: string;
+  reason?: string;
+}
+
+interface Application {
+  id: string;
+  provider: string;
+  practice: string;
+  npi: string;
+  specialty: string;
+  type: string;
+  submitted: string;
+  email: string;
+  phone: string;
+  address: string;
+  verifications: Record<string, Verification>;
+  documents: string[];
+  flags: string[];
+  recommendation: string;
+  status: string;
+  decisionHistory?: Decision[];
+}
+
+interface Decision {
+  id: string;
+  decision: string;
+  notes: string;
+  decidedBy: string;
+  decidedAt: string;
+  conditions?: string;
+}
+
+// Initial mock data
+const initialReviewQueue: Application[] = [
   {
     id: "CRED-2024-1246",
     provider: "Dr. James Wilson",
@@ -35,6 +124,9 @@ const reviewQueue = [
     specialty: "Orthopedics",
     type: "initial",
     submitted: "2024-03-08",
+    email: "dr.wilson@wilsonortho.com",
+    phone: "(555) 234-5678",
+    address: "200 Bone & Joint Blvd, Lakewood, OH 44107",
     verifications: {
       nppes: { status: "passed", verifiedAt: "2024-03-10" },
       oig: { status: "passed", verifiedAt: "2024-03-10" },
@@ -47,6 +139,8 @@ const reviewQueue = [
     documents: ["license", "dea", "board_cert", "malpractice_coi", "cv", "w9"],
     flags: [],
     recommendation: "approve",
+    status: "pending",
+    decisionHistory: [],
   },
   {
     id: "CRED-2024-1240",
@@ -56,6 +150,9 @@ const reviewQueue = [
     specialty: "Ambulatory Surgery",
     type: "initial",
     submitted: "2024-02-15",
+    email: "admin@westlakesurgery.com",
+    phone: "(555) 890-1234",
+    address: "800 Surgery Lane, Westlake, OH 44145",
     verifications: {
       nppes: { status: "passed", verifiedAt: "2024-02-18" },
       oig: { status: "passed", verifiedAt: "2024-02-18" },
@@ -67,6 +164,8 @@ const reviewQueue = [
     documents: ["license", "accreditation", "malpractice_coi", "w9"],
     flags: [],
     recommendation: "approve",
+    status: "pending",
+    decisionHistory: [],
   },
   {
     id: "CRED-2024-1238",
@@ -76,9 +175,12 @@ const reviewQueue = [
     specialty: "Internal Medicine",
     type: "initial",
     submitted: "2024-02-10",
+    email: "dr.brown@brownmed.com",
+    phone: "(555) 112-2334",
+    address: "500 Medical Plaza, Cleveland, OH 44106",
     verifications: {
       nppes: { status: "passed", verifiedAt: "2024-02-12" },
-      oig: { status: "failed", verifiedAt: "2024-02-12", reason: "Exclusion found" },
+      oig: { status: "failed", verifiedAt: "2024-02-12", reason: "Exclusion found - Patient Abuse" },
       sam: { status: "passed", verifiedAt: "2024-02-12" },
       license: { status: "passed", verifiedAt: "2024-02-13", expires: "2026-12-31" },
       dea: { status: "passed", verifiedAt: "2024-02-13", expires: "2025-06-30" },
@@ -87,6 +189,8 @@ const reviewQueue = [
     documents: ["license", "dea", "malpractice_coi", "cv", "w9"],
     flags: ["OIG Exclusion Found - Immediate Review Required"],
     recommendation: "deny",
+    status: "pending",
+    decisionHistory: [],
   },
   {
     id: "CRED-2024-1235",
@@ -96,6 +200,9 @@ const reviewQueue = [
     specialty: "Family Medicine",
     type: "recredential",
     submitted: "2024-02-05",
+    email: "dr.chen@lakesidefm.com",
+    phone: "(555) 556-6778",
+    address: "300 Lakeside Dr, Shaker Heights, OH 44120",
     verifications: {
       nppes: { status: "passed", verifiedAt: "2024-02-07" },
       oig: { status: "passed", verifiedAt: "2024-02-07" },
@@ -108,56 +215,195 @@ const reviewQueue = [
     documents: ["license", "dea", "board_cert", "malpractice_coi", "w9"],
     flags: ["License expires in 45 days"],
     recommendation: "approve_conditions",
+    status: "pending",
+    decisionHistory: [],
   },
 ];
 
-const stats = [
-  { label: "Ready for Review", value: "12", trend: "warning" as const, change: "Awaiting decision", icon: <Eye className="w-5 h-5" /> },
-  { label: "Flagged for MD", value: "3", trend: "warning" as const, change: "Critical issues", icon: <AlertTriangle className="w-5 h-5" /> },
-  { label: "Approved Today", value: "5", trend: "up" as const, change: "This session", icon: <CheckCircle className="w-5 h-5" /> },
-  { label: "Avg. Review Time", value: "4 min", trend: "up" as const, change: "-1 min", icon: <Clock className="w-5 h-5" /> },
+// Decision options
+const decisionOptions = [
+  { value: "approve", label: "Approve", description: "Add provider to network", color: "green", icon: ThumbsUp },
+  { value: "approve_conditions", label: "Approve with Conditions", description: "Approve with monitoring requirements", color: "yellow", icon: AlertTriangle },
+  { value: "request_info", label: "Request More Info", description: "Pause and request information from provider", color: "blue", icon: MessageSquare },
+  { value: "refer_md", label: "Refer to Medical Director", description: "Escalate for MD review", color: "purple", icon: UserCheck },
+  { value: "deny", label: "Deny", description: "Reject application", color: "red", icon: ThumbsDown },
 ];
 
-const getVerificationIcon = (status: string) => {
-  switch (status) {
-    case "passed":
-      return <CheckCircle className="w-4 h-4 text-green-500" />;
-    case "failed":
-      return <XCircle className="w-4 h-4 text-red-500" />;
-    case "warning":
-      return <AlertTriangle className="w-4 h-4 text-yellow-500" />;
-    default:
-      return <Clock className="w-4 h-4 text-slate-400" />;
-  }
-};
-
-const getRecommendationBadge = (rec: string) => {
-  switch (rec) {
-    case "approve":
-      return <Badge variant="success">Recommend: Approve</Badge>;
-    case "approve_conditions":
-      return <Badge variant="warning">Recommend: Approve with Conditions</Badge>;
-    case "deny":
-      return <Badge variant="error">Recommend: Deny</Badge>;
-    default:
-      return <Badge variant="default">Needs Review</Badge>;
-  }
+// Stats calculation
+const calculateStats = (applications: Application[]) => {
+  const pending = applications.filter(a => a.status === "pending").length;
+  const flagged = applications.filter(a => a.flags.length > 0 && a.status === "pending").length;
+  const decidedToday = applications.filter(a => {
+    if (!a.decisionHistory?.length) return false;
+    const lastDecision = a.decisionHistory[a.decisionHistory.length - 1];
+    return new Date(lastDecision.decidedAt).toDateString() === new Date().toDateString();
+  }).length;
+  
+  return [
+    { label: "Ready for Review", value: String(pending), trend: "warning" as const, change: "Awaiting decision", icon: <Eye className="w-5 h-5" /> },
+    { label: "Flagged for MD", value: String(flagged), trend: "warning" as const, change: "Critical issues", icon: <AlertTriangle className="w-5 h-5" /> },
+    { label: "Decided Today", value: String(decidedToday), trend: "up" as const, change: "This session", icon: <CheckCircle className="w-5 h-5" /> },
+    { label: "Avg. Review Time", value: "4 min", trend: "up" as const, change: "-1 min", icon: <Clock className="w-5 h-5" /> },
+  ];
 };
 
 export default function ReviewQueuePage() {
   const { isDark } = useTheme();
-  const [selectedApplication, setSelectedApplication] = useState<typeof reviewQueue[0] | null>(null);
+  const [applications, setApplications] = useState<Application[]>(initialReviewQueue);
+  const [selectedApp, setSelectedApp] = useState<Application | null>(null);
+  const [activeTab, setActiveTab] = useState<"details" | "verifications" | "documents" | "history">("details");
   const [showDecisionModal, setShowDecisionModal] = useState(false);
-  const [decision, setDecision] = useState<string>("");
+  const [selectedDecision, setSelectedDecision] = useState<string>("");
   const [decisionNotes, setDecisionNotes] = useState("");
+  const [decisionConditions, setDecisionConditions] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationResults, setVerificationResults] = useState<Record<string, unknown> | null>(null);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "flagged">("pending");
 
-  const handleDecision = (type: string) => {
-    setDecision(type);
-    setShowDecisionModal(true);
+  const stats = calculateStats(applications);
+
+  const filteredApplications = applications.filter(app => {
+    if (filterStatus === "pending") return app.status === "pending";
+    if (filterStatus === "flagged") return app.flags.length > 0 && app.status === "pending";
+    return true;
+  });
+
+  // Run live verification
+  const runVerification = async () => {
+    if (!selectedApp) return;
+    
+    setIsVerifying(true);
+    try {
+      const response = await fetch('/api/verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          npi: selectedApp.npi,
+          firstName: selectedApp.provider.split(' ')[1],
+          lastName: selectedApp.provider.split(' ').slice(2).join(' ') || selectedApp.provider.split(' ')[1],
+          organizationName: selectedApp.practice,
+          providerType: selectedApp.type === 'organization' ? 'organization' : 'individual',
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setVerificationResults(data);
+      }
+    } catch (error) {
+      console.error('Verification error:', error);
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  // Submit decision
+  const submitDecision = () => {
+    if (!selectedApp || !selectedDecision || !decisionNotes) return;
+
+    const newDecision: Decision = {
+      id: `DEC-${Date.now()}`,
+      decision: selectedDecision,
+      notes: decisionNotes,
+      conditions: decisionConditions || undefined,
+      decidedBy: "Current User",
+      decidedAt: new Date().toISOString(),
+    };
+
+    // Update application
+    const updatedApps = applications.map(app => {
+      if (app.id === selectedApp.id) {
+        let newStatus = app.status;
+        if (selectedDecision === "approve" || selectedDecision === "approve_conditions") {
+          newStatus = "approved";
+        } else if (selectedDecision === "deny") {
+          newStatus = "denied";
+        } else if (selectedDecision === "request_info") {
+          newStatus = "info_requested";
+        } else if (selectedDecision === "refer_md") {
+          newStatus = "referred_md";
+        }
+
+        return {
+          ...app,
+          status: newStatus,
+          decisionHistory: [...(app.decisionHistory || []), newDecision],
+        };
+      }
+      return app;
+    });
+
+    setApplications(updatedApps);
+    setShowDecisionModal(false);
+    setSelectedDecision("");
+    setDecisionNotes("");
+    setDecisionConditions("");
+    setSelectedApp(null);
+    setShowSuccessToast(true);
+    setTimeout(() => setShowSuccessToast(false), 3000);
+  };
+
+  const getVerificationIcon = (status: string) => {
+    switch (status) {
+      case "passed": return <CheckCircle className="w-4 h-4 text-green-500" />;
+      case "failed": return <XCircle className="w-4 h-4 text-red-500" />;
+      case "warning": return <AlertTriangle className="w-4 h-4 text-yellow-500" />;
+      default: return <Clock className="w-4 h-4 text-slate-400" />;
+    }
+  };
+
+  const getRecommendationBadge = (rec: string) => {
+    switch (rec) {
+      case "approve": return <Badge variant="success">Recommend: Approve</Badge>;
+      case "approve_conditions": return <Badge variant="warning">Recommend: Approve with Conditions</Badge>;
+      case "deny": return <Badge variant="error">Recommend: Deny</Badge>;
+      default: return <Badge variant="default">Needs Review</Badge>;
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "pending": return <Badge variant="warning">Pending Review</Badge>;
+      case "approved": return <Badge variant="success">Approved</Badge>;
+      case "denied": return <Badge variant="error">Denied</Badge>;
+      case "info_requested": return <Badge variant="info">Info Requested</Badge>;
+      case "referred_md": return <Badge variant="default">Referred to MD</Badge>;
+      default: return <Badge variant="default">{status}</Badge>;
+    }
+  };
+
+  const formatVerificationType = (type: string) => {
+    const map: Record<string, string> = {
+      nppes: "NPI Registry",
+      oig: "OIG Exclusion",
+      sam: "SAM.gov",
+      license: "State License",
+      dea: "DEA Registration",
+      boardCert: "Board Certification",
+      malpractice: "Malpractice Insurance",
+      accreditation: "Accreditation",
+    };
+    return map[type] || type;
   };
 
   return (
     <div className="space-y-6">
+      {/* Success Toast */}
+      <AnimatePresence>
+        {showSuccessToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-4 right-4 z-50 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2"
+          >
+            <CheckCircle className="w-5 h-5" />
+            Decision submitted successfully
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -175,6 +421,20 @@ export default function ReviewQueuePage() {
               Review and approve credentialing applications
             </p>
           </div>
+        </div>
+        <div className="flex gap-2">
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value as "all" | "pending" | "flagged")}
+            className={cn(
+              "px-3 py-2 rounded-lg border text-sm",
+              isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+            )}
+          >
+            <option value="all">All Applications</option>
+            <option value="pending">Pending Only</option>
+            <option value="flagged">Flagged Only</option>
+          </select>
         </div>
       </div>
 
@@ -197,162 +457,366 @@ export default function ReviewQueuePage() {
         {/* Queue List */}
         <div className="lg:col-span-1 space-y-3">
           <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
-            Applications ({reviewQueue.length})
+            Applications ({filteredApplications.length})
           </h2>
-          {reviewQueue.map((app) => (
-            <div
-              key={app.id}
-              onClick={() => setSelectedApplication(app)}
-              className={cn(
-                "p-4 rounded-xl border cursor-pointer transition-all",
-                selectedApplication?.id === app.id
-                  ? isDark
-                    ? "bg-cyan-900/30 border-cyan-700"
-                    : "bg-cyan-50 border-cyan-300"
-                  : isDark
-                  ? "bg-slate-800 border-slate-700 hover:border-slate-600"
-                  : "bg-white border-slate-200 hover:border-slate-300"
-              )}
-            >
-              <div className="flex items-start justify-between mb-2">
-                <div>
-                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                    {app.provider}
-                  </p>
-                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                    {app.specialty}
-                  </p>
-                </div>
-                <ChevronRight className={cn("w-5 h-5", isDark ? "text-slate-500" : "text-slate-400")} />
-              </div>
-              <div className="flex items-center gap-2">
-                {getRecommendationBadge(app.recommendation)}
-              </div>
-              {app.flags.length > 0 && (
-                <div className="mt-2 flex items-center gap-1 text-red-500 text-xs">
-                  <AlertTriangle className="w-3 h-3" />
-                  {app.flags.length} flag(s)
-                </div>
-              )}
+          {filteredApplications.length === 0 ? (
+            <div className={cn(
+              "p-6 rounded-xl border text-center",
+              isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+            )}>
+              <CheckCircle className={cn("w-12 h-12 mx-auto mb-3", isDark ? "text-green-400" : "text-green-500")} />
+              <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>All caught up!</p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>No applications pending review</p>
             </div>
-          ))}
+          ) : (
+            filteredApplications.map((app) => (
+              <div
+                key={app.id}
+                onClick={() => {
+                  setSelectedApp(app);
+                  setActiveTab("details");
+                  setVerificationResults(null);
+                }}
+                className={cn(
+                  "p-4 rounded-xl border cursor-pointer transition-all",
+                  selectedApp?.id === app.id
+                    ? isDark ? "bg-cyan-900/30 border-cyan-700" : "bg-cyan-50 border-cyan-300"
+                    : isDark ? "bg-slate-800 border-slate-700 hover:border-slate-600" : "bg-white border-slate-200 hover:border-slate-300"
+                )}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                      {app.provider}
+                    </p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                      {app.specialty} • {app.type === "recredential" ? "Re-cred" : "Initial"}
+                    </p>
+                  </div>
+                  <ChevronRight className={cn("w-5 h-5", isDark ? "text-slate-500" : "text-slate-400")} />
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {getStatusBadge(app.status)}
+                  {app.flags.length > 0 && app.status === "pending" && (
+                    <span className="text-red-500 text-xs flex items-center gap-1">
+                      <AlertTriangle className="w-3 h-3" />
+                      {app.flags.length} flag(s)
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Detail Panel */}
         <div className="lg:col-span-2">
-          {selectedApplication ? (
+          {selectedApp ? (
             <div className={cn(
-              "rounded-xl border p-6",
+              "rounded-xl border",
               isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
             )}>
               {/* Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <h2 className={cn("text-xl font-semibold", isDark ? "text-white" : "text-slate-900")}>
-                    {selectedApplication.provider}
-                  </h2>
-                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                    {selectedApplication.practice} • {selectedApplication.id}
-                  </p>
-                  <p className={cn("text-sm mt-1", isDark ? "text-slate-500" : "text-slate-400")}>
-                    NPI: {selectedApplication.npi} • {selectedApplication.specialty}
-                  </p>
-                </div>
-                <div>
-                  {getRecommendationBadge(selectedApplication.recommendation)}
-                </div>
-              </div>
-
-              {/* Flags */}
-              {selectedApplication.flags.length > 0 && (
-                <div className="mb-6 p-4 rounded-lg bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800">
-                  <div className="flex items-center gap-2 text-red-700 dark:text-red-400 font-medium mb-2">
-                    <AlertTriangle className="w-5 h-5" />
-                    Flags Requiring Attention
-                  </div>
-                  <ul className="list-disc list-inside text-sm text-red-600 dark:text-red-300">
-                    {selectedApplication.flags.map((flag, i) => (
-                      <li key={i}>{flag}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Verifications */}
-              <div className="mb-6">
-                <h3 className={cn("text-lg font-semibold mb-3", isDark ? "text-white" : "text-slate-900")}>
-                  Verification Results
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {Object.entries(selectedApplication.verifications).map(([key, val]: [string, any]) => (
-                    <div
-                      key={key}
-                      className={cn(
-                        "p-3 rounded-lg flex items-center justify-between",
-                        isDark ? "bg-slate-700/50" : "bg-slate-50"
-                      )}
-                    >
-                      <div className="flex items-center gap-2">
-                        {getVerificationIcon(val.status)}
-                        <span className={cn("text-sm font-medium capitalize", isDark ? "text-white" : "text-slate-900")}>
-                          {key.replace(/([A-Z])/g, " $1").trim()}
-                        </span>
+              <div className="p-6 border-b border-slate-200 dark:border-slate-700">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className={cn(
+                        "w-12 h-12 rounded-full flex items-center justify-center",
+                        isDark ? "bg-cyan-900/50 text-cyan-400" : "bg-cyan-100 text-cyan-600"
+                      )}>
+                        {selectedApp.type === "organization" ? (
+                          <Building2 className="w-6 h-6" />
+                        ) : (
+                          <User className="w-6 h-6" />
+                        )}
                       </div>
-                      {val.expires && (
-                        <span className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
-                          Exp: {val.expires}
-                        </span>
-                      )}
+                      <div>
+                        <h2 className={cn("text-xl font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                          {selectedApp.provider}
+                        </h2>
+                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                          {selectedApp.practice} • {selectedApp.id}
+                        </p>
+                      </div>
                     </div>
-                  ))}
+                    <div className="flex items-center gap-2">
+                      {getStatusBadge(selectedApp.status)}
+                      {selectedApp.status === "pending" && getRecommendationBadge(selectedApp.recommendation)}
+                    </div>
+                  </div>
+                  {selectedApp.status === "pending" && (
+                    <Button variant="primary" onClick={() => setShowDecisionModal(true)}>
+                      Make Decision
+                    </Button>
+                  )}
                 </div>
               </div>
 
-              {/* Documents */}
-              <div className="mb-6">
-                <h3 className={cn("text-lg font-semibold mb-3", isDark ? "text-white" : "text-slate-900")}>
-                  Documents on File
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {selectedApplication.documents.map((doc) => (
-                    <span
-                      key={doc}
-                      className={cn(
-                        "px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 cursor-pointer hover:opacity-80",
-                        isDark ? "bg-slate-700 text-white" : "bg-slate-100 text-slate-700"
-                      )}
-                    >
-                      <FileText className="w-4 h-4" />
-                      {doc.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-                      <ExternalLink className="w-3 h-3 opacity-50" />
-                    </span>
-                  ))}
-                </div>
+              {/* Tabs */}
+              <div className="flex border-b border-slate-200 dark:border-slate-700">
+                {(["details", "verifications", "documents", "history"] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={cn(
+                      "px-4 py-3 text-sm font-medium capitalize transition-colors",
+                      activeTab === tab
+                        ? isDark ? "text-cyan-400 border-b-2 border-cyan-400" : "text-cyan-600 border-b-2 border-cyan-600"
+                        : isDark ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900"
+                    )}
+                  >
+                    {tab}
+                  </button>
+                ))}
               </div>
 
-              {/* Decision Actions */}
-              <div className="pt-6 border-t border-slate-200 dark:border-slate-700">
-                <h3 className={cn("text-lg font-semibold mb-3", isDark ? "text-white" : "text-slate-900")}>
-                  Committee Decision
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="primary" onClick={() => handleDecision("approve")}>
-                    <ThumbsUp className="w-4 h-4 mr-2" />
-                    Approve
-                  </Button>
-                  <Button variant="secondary" onClick={() => handleDecision("approve_conditions")}>
-                    <AlertTriangle className="w-4 h-4 mr-2" />
-                    Approve with Conditions
-                  </Button>
-                  <Button variant="secondary" onClick={() => handleDecision("request_info")}>
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    Request More Info
-                  </Button>
-                  <Button variant="ghost" className="text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30" onClick={() => handleDecision("deny")}>
-                    <ThumbsDown className="w-4 h-4 mr-2" />
-                    Deny
-                  </Button>
-                </div>
+              {/* Tab Content */}
+              <div className="p-6">
+                {/* Details Tab */}
+                {activeTab === "details" && (
+                  <div className="space-y-6">
+                    {/* Flags */}
+                    {selectedApp.flags.length > 0 && (
+                      <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800">
+                        <div className="flex items-center gap-2 text-red-700 dark:text-red-400 font-medium mb-2">
+                          <AlertTriangle className="w-5 h-5" />
+                          Flags Requiring Attention
+                        </div>
+                        <ul className="list-disc list-inside text-sm text-red-600 dark:text-red-300">
+                          {selectedApp.flags.map((flag, i) => (
+                            <li key={i}>{flag}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Provider Info */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                        <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                          NPI
+                        </p>
+                        <p className={cn("font-mono font-medium", isDark ? "text-white" : "text-slate-900")}>
+                          {selectedApp.npi}
+                        </p>
+                      </div>
+                      <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                        <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                          Specialty
+                        </p>
+                        <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                          {selectedApp.specialty}
+                        </p>
+                      </div>
+                      <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                        <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                          Application Type
+                        </p>
+                        <p className={cn("font-medium capitalize", isDark ? "text-white" : "text-slate-900")}>
+                          {selectedApp.type === "recredential" ? "Re-credentialing" : "Initial Credentialing"}
+                        </p>
+                      </div>
+                      <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                        <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                          Submitted
+                        </p>
+                        <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                          {new Date(selectedApp.submitted).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Contact Info */}
+                    <div>
+                      <h3 className={cn("text-sm font-semibold mb-3", isDark ? "text-white" : "text-slate-900")}>
+                        Contact Information
+                      </h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3">
+                          <Mail className={cn("w-4 h-4", isDark ? "text-slate-400" : "text-slate-500")} />
+                          <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                            {selectedApp.email}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Phone className={cn("w-4 h-4", isDark ? "text-slate-400" : "text-slate-500")} />
+                          <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                            {selectedApp.phone}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <MapPin className={cn("w-4 h-4", isDark ? "text-slate-400" : "text-slate-500")} />
+                          <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                            {selectedApp.address}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Verifications Tab */}
+                {activeTab === "verifications" && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                        Verification Results
+                      </h3>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={runVerification}
+                        disabled={isVerifying}
+                      >
+                        {isVerifying ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Verifying...
+                          </>
+                        ) : (
+                          <>
+                            <RefreshCw className="w-4 h-4 mr-2" />
+                            Run Live Check
+                          </>
+                        )}
+                      </Button>
+                    </div>
+
+                    {/* Stored Verifications */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {Object.entries(selectedApp.verifications).map(([key, val]) => (
+                        <div
+                          key={key}
+                          className={cn(
+                            "p-3 rounded-lg",
+                            isDark ? "bg-slate-700/50" : "bg-slate-50"
+                          )}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              {getVerificationIcon(val.status)}
+                              <span className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
+                                {formatVerificationType(key)}
+                              </span>
+                            </div>
+                          </div>
+                          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                            Verified: {new Date(val.verifiedAt).toLocaleDateString()}
+                          </p>
+                          {val.expires && (
+                            <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                              Expires: {val.expires}
+                            </p>
+                          )}
+                          {val.coverage && (
+                            <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                              Coverage: {val.coverage}
+                            </p>
+                          )}
+                          {val.reason && (
+                            <p className="text-xs text-red-500 mt-1">{val.reason}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Live Verification Results */}
+                    {verificationResults && (
+                      <LiveVerificationDisplay results={verificationResults} isDark={isDark} />
+                    )}
+                  </div>
+                )}
+
+                {/* Documents Tab */}
+                {activeTab === "documents" && (
+                  <div className="space-y-4">
+                    <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                      Documents on File ({selectedApp.documents.length})
+                    </h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      {selectedApp.documents.map((doc) => (
+                        <div
+                          key={doc}
+                          className={cn(
+                            "p-4 rounded-lg flex items-center justify-between cursor-pointer hover:opacity-80",
+                            isDark ? "bg-slate-700/50" : "bg-slate-50"
+                          )}
+                        >
+                          <div className="flex items-center gap-3">
+                            <FileText className={cn("w-5 h-5", isDark ? "text-cyan-400" : "text-cyan-600")} />
+                            <span className={cn("text-sm font-medium capitalize", isDark ? "text-white" : "text-slate-900")}>
+                              {doc.replace(/_/g, " ")}
+                            </span>
+                          </div>
+                          <ExternalLink className={cn("w-4 h-4", isDark ? "text-slate-500" : "text-slate-400")} />
+                        </div>
+                      ))}
+                    </div>
+                    <Button variant="secondary" size="sm">
+                      <Download className="w-4 h-4 mr-2" />
+                      Download All Documents
+                    </Button>
+                  </div>
+                )}
+
+                {/* History Tab */}
+                {activeTab === "history" && (
+                  <div className="space-y-4">
+                    <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                      Decision History
+                    </h3>
+                    {selectedApp.decisionHistory && selectedApp.decisionHistory.length > 0 ? (
+                      <div className="space-y-3">
+                        {selectedApp.decisionHistory.map((decision, index) => (
+                          <div
+                            key={decision.id}
+                            className={cn(
+                              "p-4 rounded-lg border-l-4",
+                              decision.decision === "approve" || decision.decision === "approve_conditions"
+                                ? "border-l-green-500"
+                                : decision.decision === "deny"
+                                ? "border-l-red-500"
+                                : "border-l-blue-500",
+                              isDark ? "bg-slate-700/50" : "bg-slate-50"
+                            )}
+                          >
+                            <div className="flex items-center justify-between mb-2">
+                              <span className={cn("font-medium capitalize", isDark ? "text-white" : "text-slate-900")}>
+                                {decision.decision.replace(/_/g, " ")}
+                              </span>
+                              <span className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                                {new Date(decision.decidedAt).toLocaleString()}
+                              </span>
+                            </div>
+                            <p className={cn("text-sm mb-2", isDark ? "text-slate-300" : "text-slate-600")}>
+                              {decision.notes}
+                            </p>
+                            {decision.conditions && (
+                              <p className="text-sm text-amber-600 dark:text-amber-400">
+                                Conditions: {decision.conditions}
+                              </p>
+                            )}
+                            <p className={cn("text-xs mt-2", isDark ? "text-slate-500" : "text-slate-400")}>
+                              By: {decision.decidedBy}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className={cn(
+                        "p-8 rounded-lg text-center",
+                        isDark ? "bg-slate-700/30" : "bg-slate-50"
+                      )}>
+                        <History className={cn("w-12 h-12 mx-auto mb-3", isDark ? "text-slate-600" : "text-slate-300")} />
+                        <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>No Decision History</p>
+                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                          This application is awaiting initial review
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ) : (
@@ -374,7 +838,7 @@ export default function ReviewQueuePage() {
 
       {/* Decision Modal */}
       <AnimatePresence>
-        {showDecisionModal && selectedApplication && (
+        {showDecisionModal && selectedApp && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -387,28 +851,93 @@ export default function ReviewQueuePage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               className={cn(
-                "w-full max-w-md rounded-xl p-6",
+                "w-full max-w-lg rounded-xl p-6 max-h-[90vh] overflow-y-auto",
                 isDark ? "bg-slate-800" : "bg-white"
               )}
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className={cn("text-xl font-semibold mb-4", isDark ? "text-white" : "text-slate-900")}>
-                Confirm Decision: {decision.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-              </h2>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className={cn("text-xl font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    Committee Decision
+                  </h2>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedApp.provider}
+                  </p>
+                </div>
+                <IconButton icon={<X className="w-5 h-5" />} onClick={() => setShowDecisionModal(false)} />
+              </div>
 
-              <p className={cn("text-sm mb-4", isDark ? "text-slate-400" : "text-slate-500")}>
-                You are about to {decision === "approve" ? "approve" : decision === "deny" ? "deny" : "update"} the application for{" "}
-                <strong>{selectedApplication.provider}</strong>.
-              </p>
+              {/* Decision Options */}
+              <div className="space-y-3 mb-6">
+                {decisionOptions.map((option) => {
+                  const Icon = option.icon;
+                  return (
+                    <label
+                      key={option.value}
+                      className={cn(
+                        "flex items-start gap-3 p-4 rounded-lg cursor-pointer transition-colors border",
+                        selectedDecision === option.value
+                          ? isDark
+                            ? `bg-${option.color}-900/30 border-${option.color}-700`
+                            : `bg-${option.color}-50 border-${option.color}-300`
+                          : isDark
+                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700"
+                          : "bg-slate-50 border-slate-200 hover:bg-slate-100"
+                      )}
+                    >
+                      <input
+                        type="radio"
+                        name="decision"
+                        value={option.value}
+                        checked={selectedDecision === option.value}
+                        onChange={(e) => setSelectedDecision(e.target.value)}
+                        className="mt-1"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <Icon className={cn("w-4 h-4", `text-${option.color}-500`)} />
+                          <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                            {option.label}
+                          </span>
+                        </div>
+                        <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                          {option.description}
+                        </p>
+                      </div>
+                    </label>
+                  );
+                })}
+              </div>
 
-              <div className="mb-4">
+              {/* Conditions (for approve with conditions) */}
+              {selectedDecision === "approve_conditions" && (
+                <div className="mb-4">
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Conditions / Monitoring Requirements
+                  </label>
+                  <textarea
+                    value={decisionConditions}
+                    onChange={(e) => setDecisionConditions(e.target.value)}
+                    placeholder="e.g., Provider must submit updated license within 30 days..."
+                    rows={2}
+                    className={cn(
+                      "w-full px-3 py-2 rounded-lg border text-sm resize-none",
+                      isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400" : "bg-white border-slate-200 text-slate-900 placeholder-slate-400"
+                    )}
+                  />
+                </div>
+              )}
+
+              {/* Notes */}
+              <div className="mb-6">
                 <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
-                  Notes (required)
+                  Decision Notes <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   value={decisionNotes}
                   onChange={(e) => setDecisionNotes(e.target.value)}
-                  placeholder="Enter decision notes..."
+                  placeholder="Enter notes explaining this decision..."
                   rows={3}
                   className={cn(
                     "w-full px-3 py-2 rounded-lg border text-sm resize-none",
@@ -417,16 +946,18 @@ export default function ReviewQueuePage() {
                 />
               </div>
 
+              {/* Actions */}
               <div className="flex gap-3">
                 <Button variant="secondary" className="flex-1" onClick={() => setShowDecisionModal(false)}>
                   Cancel
                 </Button>
                 <Button
-                  variant={decision === "deny" ? "ghost" : "primary"}
-                  className={cn("flex-1", decision === "deny" && "text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30")}
-                  disabled={!decisionNotes}
+                  variant={selectedDecision === "deny" ? "ghost" : "primary"}
+                  className={cn("flex-1", selectedDecision === "deny" && "text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30")}
+                  disabled={!selectedDecision || !decisionNotes}
+                  onClick={submitDecision}
                 >
-                  Confirm {decision === "approve" ? "Approval" : decision === "deny" ? "Denial" : "Decision"}
+                  Submit Decision
                 </Button>
               </div>
             </motion.div>
