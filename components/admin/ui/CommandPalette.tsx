@@ -248,7 +248,7 @@ export function CommandPalette() {
                           <div className={cn(
                             "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
                             isSelected
-                              ? "bg-cyan-500/20 text-cyan-500"
+                              ? "bg-blue-500/20 text-blue-500"
                               : (isDark ? "bg-slate-800 text-slate-400" : "bg-slate-100 text-slate-500")
                           )}>
                             {cmd.icon}
@@ -284,7 +284,7 @@ export function CommandPalette() {
                           {isSelected && (
                             <ArrowRight className={cn(
                               "w-4 h-4",
-                              isDark ? "text-cyan-500" : "text-cyan-600"
+                              isDark ? "text-blue-500" : "text-blue-600"
                             )} />
                           )}
                         </button>

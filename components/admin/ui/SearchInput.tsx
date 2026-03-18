@@ -51,7 +51,7 @@ export function SearchInput({
       <Search className={cn(
         "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors",
         isFocused
-          ? "text-cyan-500"
+          ? "text-blue-500"
           : isDark ? "text-slate-500" : "text-slate-400"
       )} />
       
@@ -67,10 +67,10 @@ export function SearchInput({
         placeholder={placeholder}
         className={cn(
           "w-full pl-10 pr-10 py-2.5 rounded-lg text-sm transition-all",
-          "focus:outline-none focus:ring-2 focus:ring-cyan-500/40",
+          "focus:outline-none focus:ring-2 focus:ring-blue-500/40",
           isDark
-            ? "bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:bg-slate-800 focus:border-cyan-500/50"
-            : "bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:border-cyan-500/50",
+            ? "bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:bg-slate-800 focus:border-blue-500/50"
+            : "bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:border-blue-500/50",
         )}
       />
       
@@ -128,7 +128,7 @@ export function FilterSelect({
       onChange={(e) => onChange(e.target.value)}
       className={cn(
         "px-3 py-2.5 rounded-lg text-sm font-medium transition-all appearance-none cursor-pointer",
-        "focus:outline-none focus:ring-2 focus:ring-cyan-500/40",
+        "focus:outline-none focus:ring-2 focus:ring-blue-500/40",
         "bg-[length:16px] bg-[right_8px_center] bg-no-repeat",
         isDark
           ? "bg-slate-800 border border-slate-700 text-white"

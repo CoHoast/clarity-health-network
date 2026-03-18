@@ -40,7 +40,7 @@ export function Badge({
     warning: "bg-amber-500/15 text-amber-500 border border-amber-500/25",
     error: "bg-red-500/15 text-red-500 border border-red-500/25",
     info: "bg-blue-500/15 text-blue-500 border border-blue-500/25",
-    primary: "bg-cyan-500/15 text-cyan-500 border border-cyan-500/25",
+    primary: "bg-blue-500/15 text-blue-500 border border-blue-500/25",
     secondary: "bg-teal-500/15 text-teal-500 border border-teal-500/25",
   };
   
@@ -50,7 +50,7 @@ export function Badge({
     warning: "bg-amber-500",
     error: "bg-red-500",
     info: "bg-blue-500",
-    primary: "bg-cyan-500",
+    primary: "bg-blue-500",
     secondary: "bg-teal-500",
   };
 

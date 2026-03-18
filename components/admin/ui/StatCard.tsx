@@ -62,10 +62,10 @@ export function StatCard({
         <div className={cn(
           "w-11 h-11 rounded-xl flex items-center justify-center",
           isDark 
-            ? "bg-cyan-500/20 border border-cyan-500/30"
-            : "bg-cyan-50 border border-cyan-200"
+            ? "bg-blue-500/20 border border-blue-500/30"
+            : "bg-blue-50 border border-blue-200"
         )}>
-          <div className={isDark ? "text-cyan-400" : "text-cyan-600"}>
+          <div className={isDark ? "text-blue-400" : "text-blue-600"}>
             {icon}
           </div>
         </div>
@@ -126,7 +126,7 @@ export function StatCardCompact({
         <div className="flex justify-center mb-2">
           <div className={cn(
             isDark ? "text-slate-400" : "text-slate-500",
-            highlight && (isDark ? "text-cyan-400" : "text-cyan-600")
+            highlight && (isDark ? "text-blue-400" : "text-blue-600")
           )}>
             {icon}
           </div>
@@ -135,7 +135,7 @@ export function StatCardCompact({
       <p className={cn(
         "text-2xl font-bold",
         highlight 
-          ? (isDark ? "text-cyan-400" : "text-cyan-600")
+          ? (isDark ? "text-blue-400" : "text-blue-600")
           : (isDark ? "text-white" : "text-slate-900")
       )}>
         {value}

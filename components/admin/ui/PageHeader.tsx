@@ -164,7 +164,7 @@ export function Tabs({ tabs, value, onChange, className }: TabsProps) {
             <span className={cn(
               "px-1.5 py-0.5 text-xs rounded-full",
               value === tab.value
-                ? "bg-cyan-500/20 text-cyan-500"
+                ? "bg-blue-500/20 text-blue-500"
                 : (isDark ? "bg-slate-600 text-slate-400" : "bg-slate-200 text-slate-500")
             )}>
               {tab.count}
@@ -193,7 +193,7 @@ export function PillTabs({ tabs, value, onChange, className }: TabsProps) {
           className={cn(
             "flex items-center gap-2 pb-3 text-sm font-medium transition-all relative",
             value === tab.value
-              ? (isDark ? "text-cyan-400" : "text-cyan-600")
+              ? (isDark ? "text-blue-400" : "text-blue-600")
               : (isDark ? "text-slate-400 hover:text-slate-300" : "text-slate-500 hover:text-slate-700")
           )}
         >
@@ -208,7 +208,7 @@ export function PillTabs({ tabs, value, onChange, className }: TabsProps) {
             </span>
           )}
           {value === tab.value && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-500 rounded-t" />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-t" />
           )}
         </button>
       ))}

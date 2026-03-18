@@ -51,7 +51,7 @@ export function BulkActionBar({
           <span
             className={cn(
               "px-3 py-1 rounded-full text-sm font-medium",
-              "bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-400"
+              "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400"
             )}
           >
             {selectedCount} {itemLabel}{selectedCount !== 1 ? "s" : ""} selected

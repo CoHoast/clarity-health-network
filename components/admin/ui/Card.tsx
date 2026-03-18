@@ -66,8 +66,8 @@ export function CardHeader({ title, subtitle, icon, action, className }: CardHea
           <div className={cn(
             "w-10 h-10 rounded-lg flex items-center justify-center",
             isDark 
-              ? "bg-cyan-500/20 border border-cyan-500/30"
-              : "bg-cyan-50 border border-cyan-200"
+              ? "bg-blue-500/20 border border-blue-500/30"
+              : "bg-blue-50 border border-blue-200"
           )}>
             {icon}
           </div>

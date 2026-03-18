@@ -216,7 +216,7 @@ export function Input({ error, className, ...props }: InputProps) {
     <input
       className={cn(
         "w-full px-4 py-2.5 rounded-lg text-sm transition-all",
-        "focus:outline-none focus:ring-2 focus:ring-cyan-500/40",
+        "focus:outline-none focus:ring-2 focus:ring-blue-500/40",
         isDark
           ? "bg-slate-800 border border-slate-600 text-white placeholder-slate-500"
           : "bg-white border border-slate-300 text-slate-900 placeholder-slate-400",
@@ -240,7 +240,7 @@ export function Textarea({ error, className, ...props }: TextareaProps) {
     <textarea
       className={cn(
         "w-full px-4 py-2.5 rounded-lg text-sm transition-all resize-none",
-        "focus:outline-none focus:ring-2 focus:ring-cyan-500/40",
+        "focus:outline-none focus:ring-2 focus:ring-blue-500/40",
         isDark
           ? "bg-slate-800 border border-slate-600 text-white placeholder-slate-500"
           : "bg-white border border-slate-300 text-slate-900 placeholder-slate-400",
@@ -265,7 +265,7 @@ export function Select({ options, error, className, ...props }: SelectProps) {
     <select
       className={cn(
         "w-full px-4 py-2.5 rounded-lg text-sm transition-all appearance-none cursor-pointer",
-        "focus:outline-none focus:ring-2 focus:ring-cyan-500/40",
+        "focus:outline-none focus:ring-2 focus:ring-blue-500/40",
         "bg-[length:16px] bg-[right_12px_center] bg-no-repeat",
         isDark
           ? "bg-slate-800 border border-slate-600 text-white"
