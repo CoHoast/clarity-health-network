@@ -157,7 +157,7 @@ Questions? Contact credentialing@truecarehealth.com
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  activeTab === tab.id ? "bg-teal-600/20 text-cyan-500" : "text-slate-400 hover:bg-slate-700 hover:text-white"
+                  activeTab === tab.id ? "bg-teal-600/20 text-blue-500" : "text-slate-400 hover:bg-slate-700 hover:text-white"
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -227,7 +227,7 @@ Questions? Contact credentialing@truecarehealth.com
               {/* Localization */}
               <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
                 <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-cyan-400" />
+                  <Globe className="w-5 h-5 text-blue-400" />
                   Regional Settings
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -259,7 +259,7 @@ Questions? Contact credentialing@truecarehealth.com
               <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <Mail className="w-5 h-5 text-cyan-400" />
+                    <Mail className="w-5 h-5 text-blue-400" />
                     Notification Recipients
                   </h2>
                   <button className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors">
@@ -278,8 +278,8 @@ Questions? Contact credentialing@truecarehealth.com
                   ].map((recipient, i) => (
                     <div key={i} className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                          <Mail className="w-5 h-5 text-cyan-400" />
+                        <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                          <Mail className="w-5 h-5 text-blue-400" />
                         </div>
                         <div>
                           <p className="font-medium text-white">{recipient.name}</p>
@@ -344,7 +344,7 @@ Questions? Contact credentialing@truecarehealth.com
               <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <Mail className="w-5 h-5 text-cyan-400" />
+                    <Mail className="w-5 h-5 text-blue-400" />
                     Email Templates
                   </h2>
                 </div>
@@ -360,8 +360,8 @@ Questions? Contact credentialing@truecarehealth.com
                     >
                       <div className="flex items-center justify-between p-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                            <FileText className="w-5 h-5 text-cyan-400" />
+                          <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-blue-400" />
                           </div>
                           <div>
                             <p className="font-medium text-white">{template.name}</p>
@@ -411,7 +411,7 @@ Questions? Contact credentialing@truecarehealth.com
                                 <button
                                   key={field}
                                   onClick={() => navigator.clipboard.writeText(field)}
-                                  className="px-2 py-0.5 bg-slate-700 hover:bg-slate-600 text-cyan-400 text-xs rounded cursor-pointer transition-colors"
+                                  className="px-2 py-0.5 bg-slate-700 hover:bg-slate-600 text-blue-400 text-xs rounded cursor-pointer transition-colors"
                                   title="Click to copy"
                                 >
                                   {field}
@@ -468,7 +468,7 @@ Questions? Contact credentialing@truecarehealth.com
                           <button
                             key={field}
                             onClick={() => navigator.clipboard.writeText(`{{${field}}}`)}
-                            className="block w-full text-left px-2 py-1 text-sm font-mono text-cyan-400 hover:bg-slate-600 rounded transition-colors"
+                            className="block w-full text-left px-2 py-1 text-sm font-mono text-blue-400 hover:bg-slate-600 rounded transition-colors"
                             title="Click to copy"
                           >
                             {`{{${field}}}`}
@@ -597,7 +597,7 @@ Questions? Contact credentialing@truecarehealth.com
                           <td className="py-3 text-sm text-slate-400">{user.lastLogin}</td>
                           <td className="py-3 text-right">
                             {!user.mfa && (
-                              <button className="text-xs text-cyan-400 hover:text-cyan-300 font-medium">
+                              <button className="text-xs text-blue-400 hover:text-blue-300 font-medium">
                                 Send Reminder
                               </button>
                             )}
@@ -688,7 +688,7 @@ Questions? Contact credentialing@truecarehealth.com
                     </div>
                   ))}
                 </div>
-                <button className="mt-4 text-cyan-400 hover:text-cyan-300 text-sm font-medium">
+                <button className="mt-4 text-blue-400 hover:text-blue-300 text-sm font-medium">
                   View Full Audit Log →
                 </button>
               </div>
@@ -708,7 +708,7 @@ Questions? Contact credentialing@truecarehealth.com
                     <button className="px-3 py-1.5 bg-slate-600 text-white rounded hover:bg-slate-500 text-sm">Regenerate</button>
                   </div>
                 </div>
-                <button className="text-cyan-400 hover:text-cyan-300 text-sm font-medium">+ Create new API key</button>
+                <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">+ Create new API key</button>
               </div>
             </>
           )}

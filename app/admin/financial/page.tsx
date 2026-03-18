@@ -72,12 +72,12 @@ export default function FinancialPage() {
           <p className="text-3xl font-bold" style={{ color: 'white' }}>${(totalExpenses / 1000000).toFixed(2)}M</p>
           <p className="text-sm flex items-center gap-1 mt-1" style={{ color: 'rgba(255,255,255,0.8)' }}><TrendingUp className="w-3 h-3" />+5.2%</p>
         </div>
-        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-5 shadow-lg">
+        <div className="bg-gradient-to-br from-teal-600 to-blue-600 rounded-xl p-5 shadow-lg">
           <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>Net Income YTD</p>
           <p className="text-3xl font-bold" style={{ color: 'white' }}>${(netIncome / 1000000).toFixed(2)}M</p>
           <p className="text-sm flex items-center gap-1 mt-1" style={{ color: 'rgba(255,255,255,0.8)' }}><TrendingUp className="w-3 h-3" />+15.3%</p>
         </div>
-        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-5 shadow-lg">
+        <div className="bg-gradient-to-br from-blue-500 to-teal-600 rounded-xl p-5 shadow-lg">
           <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>Loss Ratio</p>
           <p className="text-3xl font-bold" style={{ color: 'white' }}>78.2%</p>
           <p className="text-sm flex items-center gap-1 mt-1" style={{ color: 'rgba(255,255,255,0.8)' }}><TrendingDown className="w-3 h-3" />-2.1%</p>

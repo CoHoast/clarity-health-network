@@ -336,7 +336,7 @@ export default function ContractTemplatesPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-slate-500">Times Used:</span>
-                  <span className="text-cyan-400">{template.usageCount}</span>
+                  <span className="text-blue-400">{template.usageCount}</span>
                 </div>
               </div>
 
@@ -390,7 +390,7 @@ export default function ContractTemplatesPage() {
                 <div className="flex gap-2">
                   <button 
                     onClick={() => handleViewClause(clause)}
-                    className="p-2 text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors"
+                    className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
                   >
                     <Eye className="w-4 h-4" />
                   </button>

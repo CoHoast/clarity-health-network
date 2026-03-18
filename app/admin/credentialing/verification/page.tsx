@@ -98,12 +98,12 @@ export default function VerificationStatusPage() {
           return (
             <div key={i} className={`rounded-xl p-5 shadow-lg ${
               isDark 
-                ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
+                ? "bg-gradient-to-br from-blue-900/30 to-teal-900/30 border border-blue-800/30" 
                 : "bg-white border border-slate-200"
             }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  isDark ? "bg-cyan-500/20 border border-cyan-500/30" : "bg-teal-50"
+                  isDark ? "bg-blue-500/20 border border-blue-500/30" : "bg-teal-50"
                 }`}>
                   <Icon className={`w-5 h-5 ${isDark ? "text-white" : "text-teal-600"}`} />
                 </div>

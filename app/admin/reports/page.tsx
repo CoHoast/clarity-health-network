@@ -37,7 +37,7 @@ const recentReports = [
 ];
 
 const categoryColors: Record<string, { bg: string; text: string; lightBg: string; lightText: string }> = {
-  Providers: { bg: "bg-cyan-500/20", text: "text-cyan-400", lightBg: "bg-cyan-50", lightText: "text-cyan-600" },
+  Providers: { bg: "bg-blue-500/20", text: "text-blue-400", lightBg: "bg-blue-50", lightText: "text-blue-600" },
   Contracts: { bg: "bg-amber-500/20", text: "text-amber-400", lightBg: "bg-amber-50", lightText: "text-amber-600" },
   Rates: { bg: "bg-green-500/20", text: "text-green-400", lightBg: "bg-green-50", lightText: "text-green-600" },
   Credentialing: { bg: "bg-purple-500/20", text: "text-purple-400", lightBg: "bg-purple-50", lightText: "text-purple-600" },
@@ -110,7 +110,7 @@ export default function ReportsPage() {
         <Card>
           <CardHeader
             title="Scheduled Reports"
-            icon={<Calendar className="w-5 h-5 text-cyan-500" />}
+            icon={<Calendar className="w-5 h-5 text-blue-500" />}
             action={<Button variant="outline" size="sm">Add Schedule</Button>}
           />
           <div className="space-y-3">
@@ -252,7 +252,7 @@ export default function ReportsPage() {
                             className={cn(
                               "flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
                               format === "CSV"
-                                ? "bg-cyan-600 text-white"
+                                ? "bg-blue-600 text-white"
                                 : isDark ? "bg-slate-700 text-slate-300 hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                             )}
                           >

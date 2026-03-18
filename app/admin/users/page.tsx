@@ -154,7 +154,7 @@ export default function UsersPage() {
             <div className="flex items-center gap-3">
               <div className={cn(
                 "w-10 h-10 rounded-lg flex items-center justify-center",
-                isDark ? "bg-cyan-500/20 text-cyan-400" : "bg-cyan-50 text-cyan-600"
+                isDark ? "bg-blue-500/20 text-blue-400" : "bg-blue-50 text-blue-600"
               )}>
                 {stat.icon}
               </div>
@@ -283,8 +283,8 @@ export default function UsersPage() {
                   className={cn(
                     "text-xs font-medium px-2 py-1 rounded-lg transition-colors",
                     isDark 
-                      ? "text-cyan-400 hover:bg-cyan-500/20" 
-                      : "text-cyan-600 hover:bg-cyan-50"
+                      ? "text-blue-400 hover:bg-blue-500/20" 
+                      : "text-blue-600 hover:bg-blue-50"
                   )}
                 >
                   View Permissions →

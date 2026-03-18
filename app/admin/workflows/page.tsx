@@ -110,7 +110,7 @@ export default function WorkflowsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
             <Workflow className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -138,7 +138,7 @@ export default function WorkflowsPage() {
           <p className="text-sm text-slate-400">SLA Compliance</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-cyan-500">6</p>
+          <p className="text-2xl font-bold text-blue-500">6</p>
           <p className="text-sm text-slate-400">Active Workflows</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
@@ -182,7 +182,7 @@ export default function WorkflowsPage() {
                     {wf.status}
                   </span>
                   <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
-                    <button onClick={() => setSelectedWorkflow(wf)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
+                    <button onClick={() => setSelectedWorkflow(wf)} className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-600/20 rounded">
                       <Settings className="w-4 h-4" />
                     </button>
                     <button className="p-1.5 text-slate-400 hover:text-green-400 hover:bg-green-500/20 rounded">
@@ -201,7 +201,7 @@ export default function WorkflowsPage() {
                   <p className="text-slate-400 text-sm mb-3">{wf.description}</p>
                   <div className="text-sm">
                     <span className="text-slate-500">Associated Rules: </span>
-                    <span className="text-cyan-500">{businessRules.filter(r => r.workflow === wf.name).length} rules</span>
+                    <span className="text-blue-500">{businessRules.filter(r => r.workflow === wf.name).length} rules</span>
                   </div>
                 </motion.div>
               )}
@@ -281,7 +281,7 @@ export default function WorkflowsPage() {
                   </button>
                   <button 
                     onClick={() => { setSelectedRule({...rule}); setShowEditRuleModal(true); }}
-                    className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"
+                    className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-600/20 rounded"
                   >
                     <Edit className="w-4 h-4" />
                   </button>
@@ -498,7 +498,7 @@ export default function WorkflowsPage() {
                 </div>
                 <div className="bg-slate-700/50 rounded-lg p-3">
                   <p className="text-xs text-slate-400 mb-1">Condition</p>
-                  <p className="text-cyan-500 font-mono text-sm">{selectedRule.condition}</p>
+                  <p className="text-blue-500 font-mono text-sm">{selectedRule.condition}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="bg-slate-700/50 rounded-lg p-3">

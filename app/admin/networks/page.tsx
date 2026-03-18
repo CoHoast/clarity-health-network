@@ -168,8 +168,8 @@ export default function NetworksPage() {
         </div>
         <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-cyan-500/20 rounded-lg">
-              <Users className="w-5 h-5 text-cyan-400" />
+            <div className="p-2 bg-blue-500/20 rounded-lg">
+              <Users className="w-5 h-5 text-blue-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{totalProviders.toLocaleString()}</p>
@@ -251,7 +251,7 @@ export default function NetworksPage() {
             
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-slate-700/50 rounded-lg p-2 text-center">
-                <p className="text-lg font-bold text-cyan-400">{network.providerCount.toLocaleString()}</p>
+                <p className="text-lg font-bold text-blue-400">{network.providerCount.toLocaleString()}</p>
                 <p className="text-xs text-slate-500">Providers</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-2 text-center">
@@ -311,7 +311,7 @@ export default function NetworksPage() {
                 {/* Stats */}
                 <div className="grid grid-cols-4 gap-4">
                   <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-cyan-400">{selectedNetwork.providerCount.toLocaleString()}</p>
+                    <p className="text-2xl font-bold text-blue-400">{selectedNetwork.providerCount.toLocaleString()}</p>
                     <p className="text-sm text-slate-400">Providers</p>
                   </div>
                   <div className="bg-slate-700/50 rounded-lg p-4 text-center">
@@ -369,7 +369,7 @@ export default function NetworksPage() {
                 <div className="flex gap-3">
                   <Link
                     href={`/admin/providers?network=${selectedNetwork.id}`}
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-cyan-600 text-white font-medium rounded-lg hover:bg-cyan-700 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     <Users className="w-4 h-4" />
                     View Providers ({selectedNetwork.providerCount.toLocaleString()})

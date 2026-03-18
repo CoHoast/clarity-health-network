@@ -712,7 +712,7 @@ export default function ProvidersPage() {
           </button>
           <button 
             onClick={() => setShowAddPractice(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-lg hover:from-cyan-500 hover:to-teal-500 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-lg hover:from-blue-500 hover:to-teal-500 transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Practice
@@ -771,7 +771,7 @@ export default function ProvidersPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={cn(
-              "w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-cyan-500",
+              "w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500",
               isDark 
                 ? "bg-slate-800 border-slate-700 text-white placeholder-slate-400" 
                 : "bg-white border-slate-200 text-slate-900 placeholder-slate-400"
@@ -782,7 +782,7 @@ export default function ProvidersPage() {
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
           className={cn(
-            "px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-cyan-500",
+            "px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500",
             isDark 
               ? "bg-slate-800 border-slate-700 text-white" 
               : "bg-white border-slate-200 text-slate-900"
@@ -796,7 +796,7 @@ export default function ProvidersPage() {
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
           className={cn(
-            "px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-cyan-500",
+            "px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500",
             isDark 
               ? "bg-slate-800 border-slate-700 text-white" 
               : "bg-white border-slate-200 text-slate-900"
@@ -856,7 +856,7 @@ export default function ProvidersPage() {
                     checked={isAllSelected}
                     ref={(el) => { if (el) el.indeterminate = isSomeSelected; }}
                     onChange={toggleSelectAll}
-                    className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                    className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                   />
                 </th>
                 <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Practice</th>
@@ -878,7 +878,7 @@ export default function ProvidersPage() {
                   className={cn(
                     "transition-colors",
                     selected 
-                      ? (isDark ? "bg-cyan-900/20" : "bg-cyan-50") 
+                      ? (isDark ? "bg-blue-900/20" : "bg-blue-50") 
                       : (isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50")
                   )}
                 >
@@ -887,19 +887,19 @@ export default function ProvidersPage() {
                       type="checkbox"
                       checked={selected}
                       onChange={() => toggleSelect(practice.id)}
-                      className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                      className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                     />
                   </td>
                   <td className="px-6 py-4">
                     <Link href={`/admin/providers/${practice.id}`} className="flex items-center gap-3 group">
                       <div className={cn(
                         "p-2 rounded-lg",
-                        isDark ? "bg-cyan-500/20" : "bg-cyan-50"
+                        isDark ? "bg-blue-500/20" : "bg-blue-50"
                       )}>
-                        <Building2 className={cn("w-5 h-5", isDark ? "text-cyan-400" : "text-cyan-600")} />
+                        <Building2 className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
                       </div>
                       <div>
-                        <p className={cn("font-medium group-hover:text-cyan-500 transition-colors", isDark ? "text-white" : "text-slate-900")}>{practice.name}</p>
+                        <p className={cn("font-medium group-hover:text-blue-500 transition-colors", isDark ? "text-white" : "text-slate-900")}>{practice.name}</p>
                         <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{practice.specialty}</p>
                       </div>
                     </Link>
@@ -922,7 +922,7 @@ export default function ProvidersPage() {
                   </td>
                   <td className="px-6 py-4">
                     <p className={isDark ? "text-slate-300" : "text-slate-600"}>{practice.discountType}</p>
-                    <p className={cn("text-sm", isDark ? "text-cyan-400" : "text-cyan-600")}>{practice.discountRate}</p>
+                    <p className={cn("text-sm", isDark ? "text-blue-400" : "text-blue-600")}>{practice.discountRate}</p>
                   </td>
                   <td className="px-6 py-4">
                     {getStatusBadge(practice.status)}
@@ -947,8 +947,8 @@ export default function ProvidersPage() {
                         className={cn(
                           "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm",
                           isDark 
-                            ? "text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20" 
-                            : "text-cyan-600 bg-cyan-50 hover:bg-cyan-100"
+                            ? "text-blue-400 bg-blue-500/10 hover:bg-blue-500/20" 
+                            : "text-blue-600 bg-blue-50 hover:bg-blue-100"
                         )}
                         title="Edit Practice"
                       >
@@ -1020,7 +1020,7 @@ export default function ProvidersPage() {
                         <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{network.description}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Globe className={cn("w-4 h-4", isDark ? "text-cyan-400" : "text-cyan-600")} />
+                        <Globe className={cn("w-4 h-4", isDark ? "text-blue-400" : "text-blue-600")} />
                         <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{network.providerCount} providers</span>
                       </div>
                     </div>
@@ -1071,7 +1071,7 @@ export default function ProvidersPage() {
                     onClick={() => setActiveTab(tab.id as typeof activeTab)}
                     className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                       activeTab === tab.id
-                        ? "text-cyan-400 border-cyan-400"
+                        ? "text-blue-400 border-blue-400"
                         : "text-slate-400 border-transparent hover:text-white"
                     }`}
                   >
@@ -1107,7 +1107,7 @@ export default function ProvidersPage() {
                       <p className="text-slate-300">{selectedPractice.contactName}</p>
                       <p className="text-slate-300">Phone: {selectedPractice.phone}</p>
                       <p className="text-slate-300">Fax: {selectedPractice.fax}</p>
-                      <p className="text-cyan-400">{selectedPractice.email}</p>
+                      <p className="text-blue-400">{selectedPractice.email}</p>
                     </div>
                   </div>
                 )}
@@ -1118,7 +1118,7 @@ export default function ProvidersPage() {
                       {/* Billing Department Contact */}
                       <div className="bg-slate-700/30 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                          <Phone className="w-5 h-5 text-cyan-400" />
+                          <Phone className="w-5 h-5 text-blue-400" />
                           Billing Department Contact
                         </h3>
                         <div className="space-y-3">
@@ -1136,7 +1136,7 @@ export default function ProvidersPage() {
                       {/* Correspondence for Billing */}
                       <div className="bg-slate-700/30 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                          <Mail className="w-5 h-5 text-cyan-400" />
+                          <Mail className="w-5 h-5 text-blue-400" />
                           Billing Correspondence
                         </h3>
                         <div className="space-y-2">
@@ -1173,7 +1173,7 @@ export default function ProvidersPage() {
                     {/* Provider Cards - More Readable Layout */}
                     <div className="space-y-3">
                       {getProvidersForPractice(selectedPractice.id).map(provider => (
-                        <div key={provider.id} className="bg-slate-700/30 rounded-xl p-4 hover:bg-slate-700/50 transition-colors border border-slate-600/50 hover:border-cyan-500/50">
+                        <div key={provider.id} className="bg-slate-700/30 rounded-xl p-4 hover:bg-slate-700/50 transition-colors border border-slate-600/50 hover:border-blue-500/50">
                           <div className="flex items-start justify-between">
                             {/* Provider Info */}
                             <Link href={`/admin/providers/${selectedPractice.id}/${provider.id}`} className="flex items-start gap-4 group flex-1">
@@ -1182,7 +1182,7 @@ export default function ProvidersPage() {
                               </div>
                               <div className="space-y-2">
                                 <div>
-                                  <h4 className="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors">{provider.name}, {provider.credential}</h4>
+                                  <h4 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">{provider.name}, {provider.credential}</h4>
                                   <p className="text-slate-400">{provider.specialty}</p>
                                 </div>
                                 
@@ -1206,7 +1206,7 @@ export default function ProvidersPage() {
                                 <div className="space-y-1">
                                   <div className="flex items-center gap-2">
                                     <span className="text-xs text-slate-500">Primary:</span>
-                                    <span className="text-xs font-mono text-cyan-400">{provider.primaryTaxonomy}</span>
+                                    <span className="text-xs font-mono text-blue-400">{provider.primaryTaxonomy}</span>
                                     <span className="text-xs text-teal-400">— {provider.primaryTaxonomyDesc}</span>
                                   </div>
                                   {provider.secondaryTaxonomy && (
@@ -1259,7 +1259,7 @@ export default function ProvidersPage() {
                                 </button>
                                 <button
                                   onClick={() => { setSelectedProvider(provider); setIsEditingProvider(true); }}
-                                  className="flex items-center gap-2 px-3 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-500 transition-colors"
+                                  className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-500 transition-colors"
                                   title="Edit Provider"
                                 >
                                   <Edit className="w-4 h-4" />
@@ -1287,7 +1287,7 @@ export default function ProvidersPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="bg-slate-700/30 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                          <CreditCard className="w-5 h-5 text-cyan-400" />
+                          <CreditCard className="w-5 h-5 text-blue-400" />
                           Pay-To Entity
                         </h3>
                         <div className="space-y-3">
@@ -1308,15 +1308,15 @@ export default function ProvidersPage() {
 
                       <div className="bg-slate-700/30 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                          <MapPin className="w-5 h-5 text-cyan-400" />
+                          <MapPin className="w-5 h-5 text-blue-400" />
                           Pay-To Address
                         </h3>
                         <div className="space-y-2">
                           <p className="text-lg text-white font-medium">{selectedPractice.payToName}</p>
-                          <p className="text-lg text-cyan-300">{selectedPractice.payToAddress}</p>
-                          {selectedPractice.payToAddress2 && <p className="text-lg text-cyan-300">{selectedPractice.payToAddress2}</p>}
-                          <p className="text-lg text-cyan-300">{selectedPractice.payToCity}, {selectedPractice.payToState} {selectedPractice.payToZip}</p>
-                          <p className="text-cyan-400">{selectedPractice.payToCountry}</p>
+                          <p className="text-lg text-blue-300">{selectedPractice.payToAddress}</p>
+                          {selectedPractice.payToAddress2 && <p className="text-lg text-blue-300">{selectedPractice.payToAddress2}</p>}
+                          <p className="text-lg text-blue-300">{selectedPractice.payToCity}, {selectedPractice.payToState} {selectedPractice.payToZip}</p>
+                          <p className="text-blue-400">{selectedPractice.payToCountry}</p>
                         </div>
                       </div>
                     </div>
@@ -1334,7 +1334,7 @@ export default function ProvidersPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="bg-slate-700/30 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                          <FileText className="w-5 h-5 text-cyan-400" />
+                          <FileText className="w-5 h-5 text-blue-400" />
                           Contract Terms
                         </h3>
                         <div className="space-y-4">
@@ -1348,7 +1348,7 @@ export default function ProvidersPage() {
                           </div>
                           <div>
                             <p className="text-xs text-slate-500 mb-1">Discount Rate</p>
-                            <p className="text-2xl font-bold text-cyan-400">{selectedPractice.discountRate}</p>
+                            <p className="text-2xl font-bold text-blue-400">{selectedPractice.discountRate}</p>
                           </div>
                         </div>
                       </div>
@@ -1387,12 +1387,12 @@ export default function ProvidersPage() {
                       placeholder="Practice Name *"
                       value={newPractice.name || ""}
                       onChange={(e) => setNewPractice({...newPractice, name: e.target.value})}
-                      className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <select
                       value={newPractice.type || "Group Practice"}
                       onChange={(e) => setNewPractice({...newPractice, type: e.target.value as Practice["type"]})}
-                      className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="Group Practice">Group Practice</option>
                       <option value="Facility">Facility</option>
@@ -1403,7 +1403,7 @@ export default function ProvidersPage() {
                     placeholder="Primary Specialty *"
                     value={newPractice.specialty || ""}
                     onChange={(e) => setNewPractice({...newPractice, specialty: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
@@ -1415,14 +1415,14 @@ export default function ProvidersPage() {
                     placeholder="Street Address *"
                     value={newPractice.address || ""}
                     onChange={(e) => setNewPractice({...newPractice, address: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <div className="grid grid-cols-5 gap-2">
-                    <input type="text" placeholder="City *" value={newPractice.city || ""} onChange={(e) => setNewPractice({...newPractice, city: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="County" value={newPractice.county || ""} onChange={(e) => setNewPractice({...newPractice, county: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="State *" value={newPractice.state || ""} onChange={(e) => setNewPractice({...newPractice, state: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="Postal Code *" value={newPractice.zip || ""} onChange={(e) => setNewPractice({...newPractice, zip: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="Country" value={newPractice.country || "USA"} onChange={(e) => setNewPractice({...newPractice, country: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="City *" value={newPractice.city || ""} onChange={(e) => setNewPractice({...newPractice, city: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="County" value={newPractice.county || ""} onChange={(e) => setNewPractice({...newPractice, county: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="State *" value={newPractice.state || ""} onChange={(e) => setNewPractice({...newPractice, state: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Postal Code *" value={newPractice.zip || ""} onChange={(e) => setNewPractice({...newPractice, zip: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Country" value={newPractice.country || "USA"} onChange={(e) => setNewPractice({...newPractice, country: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
 
@@ -1434,25 +1434,25 @@ export default function ProvidersPage() {
                     placeholder="Correspondence Street Address"
                     value={newPractice.correspondenceAddress || ""}
                     onChange={(e) => setNewPractice({...newPractice, correspondenceAddress: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <div className="grid grid-cols-4 gap-2">
-                    <input type="text" placeholder="City" value={newPractice.correspondenceCity || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceCity: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="State" value={newPractice.correspondenceState || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceState: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="Postal Code" value={newPractice.correspondenceZip || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceZip: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="Country" value={newPractice.correspondenceCountry || "USA"} onChange={(e) => setNewPractice({...newPractice, correspondenceCountry: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="City" value={newPractice.correspondenceCity || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceCity: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="State" value={newPractice.correspondenceState || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceState: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Postal Code" value={newPractice.correspondenceZip || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceZip: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Country" value={newPractice.correspondenceCountry || "USA"} onChange={(e) => setNewPractice({...newPractice, correspondenceCountry: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
-                  <input type="tel" placeholder="Correspondence Fax" value={newPractice.correspondenceFax || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceFax: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                  <input type="tel" placeholder="Correspondence Fax" value={newPractice.correspondenceFax || ""} onChange={(e) => setNewPractice({...newPractice, correspondenceFax: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
 
                 {/* Main Office Contact */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Main Office Contact</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="Contact Name *" value={newPractice.contactName || ""} onChange={(e) => setNewPractice({...newPractice, contactName: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="email" placeholder="Email *" value={newPractice.email || ""} onChange={(e) => setNewPractice({...newPractice, email: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="tel" placeholder="Main Office Phone *" value={newPractice.phone || ""} onChange={(e) => setNewPractice({...newPractice, phone: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="tel" placeholder="Main Office Fax" value={newPractice.fax || ""} onChange={(e) => setNewPractice({...newPractice, fax: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="Contact Name *" value={newPractice.contactName || ""} onChange={(e) => setNewPractice({...newPractice, contactName: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="email" placeholder="Email *" value={newPractice.email || ""} onChange={(e) => setNewPractice({...newPractice, email: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="tel" placeholder="Main Office Phone *" value={newPractice.phone || ""} onChange={(e) => setNewPractice({...newPractice, phone: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="tel" placeholder="Main Office Fax" value={newPractice.fax || ""} onChange={(e) => setNewPractice({...newPractice, fax: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
 
@@ -1460,8 +1460,8 @@ export default function ProvidersPage() {
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Billing Department</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input type="tel" placeholder="Billing Phone *" value={newPractice.billingPhone || ""} onChange={(e) => setNewPractice({...newPractice, billingPhone: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="tel" placeholder="Billing Fax" value={newPractice.billingFax || ""} onChange={(e) => setNewPractice({...newPractice, billingFax: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="tel" placeholder="Billing Phone *" value={newPractice.billingPhone || ""} onChange={(e) => setNewPractice({...newPractice, billingPhone: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="tel" placeholder="Billing Fax" value={newPractice.billingFax || ""} onChange={(e) => setNewPractice({...newPractice, billingFax: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
 
@@ -1469,16 +1469,16 @@ export default function ProvidersPage() {
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Pay-To Information</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="Pay-To Name *" value={newPractice.payToName || ""} onChange={(e) => setNewPractice({...newPractice, payToName: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="Pay-To NPI *" value={newPractice.payToNpi || ""} onChange={(e) => setNewPractice({...newPractice, payToNpi: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono" />
+                    <input type="text" placeholder="Pay-To Name *" value={newPractice.payToName || ""} onChange={(e) => setNewPractice({...newPractice, payToName: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Pay-To NPI *" value={newPractice.payToNpi || ""} onChange={(e) => setNewPractice({...newPractice, payToNpi: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
                   </div>
-                  <input type="text" placeholder="Pay-To Tax ID / EIN *" value={newPractice.payToTaxId || ""} onChange={(e) => setNewPractice({...newPractice, payToTaxId: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono" />
-                  <input type="text" placeholder="Pay-To Address *" value={newPractice.payToAddress || ""} onChange={(e) => setNewPractice({...newPractice, payToAddress: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                  <input type="text" placeholder="Pay-To Tax ID / EIN *" value={newPractice.payToTaxId || ""} onChange={(e) => setNewPractice({...newPractice, payToTaxId: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                  <input type="text" placeholder="Pay-To Address *" value={newPractice.payToAddress || ""} onChange={(e) => setNewPractice({...newPractice, payToAddress: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   <div className="grid grid-cols-4 gap-2">
-                    <input type="text" placeholder="City *" value={newPractice.payToCity || ""} onChange={(e) => setNewPractice({...newPractice, payToCity: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="State *" value={newPractice.payToState || ""} onChange={(e) => setNewPractice({...newPractice, payToState: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="Postal Code *" value={newPractice.payToZip || ""} onChange={(e) => setNewPractice({...newPractice, payToZip: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="Country" value={newPractice.payToCountry || "USA"} onChange={(e) => setNewPractice({...newPractice, payToCountry: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="City *" value={newPractice.payToCity || ""} onChange={(e) => setNewPractice({...newPractice, payToCity: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="State *" value={newPractice.payToState || ""} onChange={(e) => setNewPractice({...newPractice, payToState: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Postal Code *" value={newPractice.payToZip || ""} onChange={(e) => setNewPractice({...newPractice, payToZip: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Country" value={newPractice.payToCountry || "USA"} onChange={(e) => setNewPractice({...newPractice, payToCountry: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
 
@@ -1488,15 +1488,15 @@ export default function ProvidersPage() {
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs text-slate-400 mb-1">Contract Start *</label>
-                      <input type="date" value={newPractice.contractStart || ""} onChange={(e) => setNewPractice({...newPractice, contractStart: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                      <input type="date" value={newPractice.contractStart || ""} onChange={(e) => setNewPractice({...newPractice, contractStart: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
                     <div>
                       <label className="block text-xs text-slate-400 mb-1">Contract End *</label>
-                      <input type="date" value={newPractice.contractEnd || ""} onChange={(e) => setNewPractice({...newPractice, contractEnd: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                      <input type="date" value={newPractice.contractEnd || ""} onChange={(e) => setNewPractice({...newPractice, contractEnd: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <select value={newPractice.discountType || ""} onChange={(e) => setNewPractice({...newPractice, discountType: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                    <select value={newPractice.discountType || ""} onChange={(e) => setNewPractice({...newPractice, discountType: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <option value="">Select Discount Type *</option>
                       <option value="% Off Billed">% Off Billed</option>
                       <option value="% of Medicare">% of Medicare</option>
@@ -1504,14 +1504,14 @@ export default function ProvidersPage() {
                       <option value="Per Diem">Per Diem</option>
                       <option value="Fee Schedule">Fee Schedule</option>
                     </select>
-                    <input type="text" placeholder="Discount Rate (e.g. 35%)" value={newPractice.discountRate || ""} onChange={(e) => setNewPractice({...newPractice, discountRate: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="Discount Rate (e.g. 35%)" value={newPractice.discountRate || ""} onChange={(e) => setNewPractice({...newPractice, discountRate: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
               </div>
 
               <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
                 <button onClick={() => setShowAddPractice(false)} className="px-4 py-2 text-slate-400 hover:text-white transition-colors">Cancel</button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-lg hover:from-cyan-500 hover:to-teal-500 transition-colors">
+                <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-lg hover:from-blue-500 hover:to-teal-500 transition-colors">
                   <Save className="w-4 h-4" />
                   Create Practice
                 </button>
@@ -1534,7 +1534,7 @@ export default function ProvidersPage() {
             >
               <div className="p-6 border-b border-slate-700">
                 <h2 className="text-xl font-bold text-white">Add Provider to Practice</h2>
-                <p className="text-slate-400 mt-1">Adding provider to: <span className="text-cyan-400">{selectedPractice.name}</span></p>
+                <p className="text-slate-400 mt-1">Adding provider to: <span className="text-blue-400">{selectedPractice.name}</span></p>
               </div>
 
               <div className="p-6 space-y-6">
@@ -1542,8 +1542,8 @@ export default function ProvidersPage() {
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Provider Information</h3>
                   <div className="grid md:grid-cols-3 gap-4">
-                    <input type="text" placeholder="Full Name *" value={newProvider.name || ""} onChange={(e) => setNewProvider({...newProvider, name: e.target.value})} className="col-span-2 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <select value={newProvider.credential || "MD"} onChange={(e) => setNewProvider({...newProvider, credential: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                    <input type="text" placeholder="Full Name *" value={newProvider.name || ""} onChange={(e) => setNewProvider({...newProvider, name: e.target.value})} className="col-span-2 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <select value={newProvider.credential || "MD"} onChange={(e) => setNewProvider({...newProvider, credential: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <option value="MD">MD</option>
                       <option value="DO">DO</option>
                       <option value="NP">NP</option>
@@ -1555,8 +1555,8 @@ export default function ProvidersPage() {
                     </select>
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="NPI *" value={newProvider.npi || ""} onChange={(e) => setNewProvider({...newProvider, npi: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono" />
-                    <select value={newProvider.gender || ""} onChange={(e) => setNewProvider({...newProvider, gender: e.target.value as Provider["gender"]})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                    <input type="text" placeholder="NPI *" value={newProvider.npi || ""} onChange={(e) => setNewProvider({...newProvider, npi: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                    <select value={newProvider.gender || ""} onChange={(e) => setNewProvider({...newProvider, gender: e.target.value as Provider["gender"]})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <option value="">Gender</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
@@ -1567,14 +1567,14 @@ export default function ProvidersPage() {
                 {/* Specialty & Taxonomy */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">Specialty & Taxonomy</h3>
-                  <input type="text" placeholder="Specialty *" value={newProvider.specialty || ""} onChange={(e) => setNewProvider({...newProvider, specialty: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                  <input type="text" placeholder="Specialty *" value={newProvider.specialty || ""} onChange={(e) => setNewProvider({...newProvider, specialty: e.target.value})} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="Primary Taxonomy Code *" value={newProvider.primaryTaxonomy || ""} onChange={(e) => setNewProvider({...newProvider, primaryTaxonomy: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono" />
-                    <input type="text" placeholder="Primary Taxonomy Description" value={newProvider.primaryTaxonomyDesc || ""} onChange={(e) => setNewProvider({...newProvider, primaryTaxonomyDesc: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="Primary Taxonomy Code *" value={newProvider.primaryTaxonomy || ""} onChange={(e) => setNewProvider({...newProvider, primaryTaxonomy: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                    <input type="text" placeholder="Primary Taxonomy Description" value={newProvider.primaryTaxonomyDesc || ""} onChange={(e) => setNewProvider({...newProvider, primaryTaxonomyDesc: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="Secondary Taxonomy Code" value={newProvider.secondaryTaxonomy || ""} onChange={(e) => setNewProvider({...newProvider, secondaryTaxonomy: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono" />
-                    <input type="text" placeholder="Secondary Taxonomy Description" value={newProvider.secondaryTaxonomyDesc || ""} onChange={(e) => setNewProvider({...newProvider, secondaryTaxonomyDesc: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                    <input type="text" placeholder="Secondary Taxonomy Code" value={newProvider.secondaryTaxonomy || ""} onChange={(e) => setNewProvider({...newProvider, secondaryTaxonomy: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                    <input type="text" placeholder="Secondary Taxonomy Description" value={newProvider.secondaryTaxonomyDesc || ""} onChange={(e) => setNewProvider({...newProvider, secondaryTaxonomyDesc: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
 
@@ -1582,8 +1582,8 @@ export default function ProvidersPage() {
                 <div className="space-y-4">
                   <h3 className="text-sm font-semibold text-white">License Information</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="License State * (e.g. OH)" value={newProvider.licenseState || ""} onChange={(e) => setNewProvider({...newProvider, licenseState: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
-                    <input type="text" placeholder="License Number *" value={newProvider.licenseNumber || ""} onChange={(e) => setNewProvider({...newProvider, licenseNumber: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono" />
+                    <input type="text" placeholder="License State * (e.g. OH)" value={newProvider.licenseState || ""} onChange={(e) => setNewProvider({...newProvider, licenseState: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="License Number *" value={newProvider.licenseNumber || ""} onChange={(e) => setNewProvider({...newProvider, licenseNumber: e.target.value})} className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
                   </div>
                 </div>
 
@@ -1602,7 +1602,7 @@ export default function ProvidersPage() {
                             ...newProvider,
                             clinicHours: { ...(newProvider.clinicHours as any), [day]: e.target.value }
                           })}
-                          className="flex-1 px-2 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                          className="flex-1 px-2 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </div>
                     ))}
@@ -1659,7 +1659,7 @@ export default function ProvidersPage() {
 
               <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
                 <button onClick={() => setShowAddProvider(false)} className="px-4 py-2 text-slate-400 hover:text-white transition-colors">Cancel</button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg hover:from-teal-500 hover:to-cyan-500 transition-colors">
+                <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-600 to-blue-600 text-white rounded-lg hover:from-teal-500 hover:to-blue-500 transition-colors">
                   <Save className="w-4 h-4" />
                   Add Provider
                 </button>
@@ -1682,7 +1682,7 @@ export default function ProvidersPage() {
             >
               <div className="p-6 border-b border-slate-700">
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                  <FileSpreadsheet className="w-6 h-6 text-cyan-400" />
+                  <FileSpreadsheet className="w-6 h-6 text-blue-400" />
                   Import Providers from CSV
                 </h2>
                 <p className="text-slate-400 mt-1">Upload a CSV file to bulk import providers</p>
@@ -1704,7 +1704,7 @@ export default function ProvidersPage() {
                     />
                     <label
                       htmlFor="csv-upload"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 cursor-pointer transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 cursor-pointer transition-colors"
                     >
                       <Upload className="w-4 h-4" />
                       Select CSV File
@@ -1717,8 +1717,8 @@ export default function ProvidersPage() {
                   <div className="bg-slate-700/30 rounded-lg p-4">
                     <h3 className="text-sm font-semibold text-white mb-3">Expected CSV Columns</h3>
                     <div className="grid grid-cols-3 gap-2 text-sm">
-                      <div className="text-cyan-400">name *</div>
-                      <div className="text-cyan-400">npi *</div>
+                      <div className="text-blue-400">name *</div>
+                      <div className="text-blue-400">npi *</div>
                       <div className="text-slate-400">credential</div>
                       <div className="text-slate-400">gender</div>
                       <div className="text-slate-400">specialty</div>
@@ -1786,7 +1786,7 @@ export default function ProvidersPage() {
                 {csvData.length > 0 && (
                   <div className="bg-slate-700/30 rounded-lg p-4">
                     <h3 className="text-sm font-semibold text-white mb-3">Assign to Practice</h3>
-                    <select className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                    <select className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <option value="">Select a practice...</option>
                       {practices.map(p => (
                         <option key={p.id} value={p.id}>{p.name}</option>
@@ -1809,7 +1809,7 @@ export default function ProvidersPage() {
                     disabled={csvData.length === 0}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                       csvData.length > 0 
-                        ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white hover:from-cyan-500 hover:to-teal-500' 
+                        ? 'bg-gradient-to-r from-blue-600 to-teal-600 text-white hover:from-blue-500 hover:to-teal-500' 
                         : 'bg-slate-700 text-slate-500 cursor-not-allowed'
                     }`}
                   >
@@ -1853,7 +1853,7 @@ export default function ProvidersPage() {
                       </div>
                       <p className="text-slate-400">{selectedProvider.specialty}</p>
                       {providerPractice && (
-                        <p className="text-cyan-400 text-sm mt-1 flex items-center gap-1">
+                        <p className="text-blue-400 text-sm mt-1 flex items-center gap-1">
                           <Building2 className="w-3 h-3" />
                           {providerPractice.name}
                         </p>
@@ -1890,7 +1890,7 @@ export default function ProvidersPage() {
                   {!isEditingProvider ? (
                     <button 
                       onClick={() => setIsEditingProvider(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-colors"
                     >
                       <Edit className="w-4 h-4" />
                       Edit Provider
@@ -1936,7 +1936,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
             onClick={() => setProviderTab(tab.id as typeof providerTab)}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
               providerTab === tab.id
-                ? "text-cyan-400 border-cyan-400"
+                ? "text-blue-400 border-blue-400"
                 : "text-slate-400 border-transparent hover:text-white"
             }`}
           >
@@ -1955,7 +1955,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-slate-700/30 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-                  <User className="w-4 h-4 text-cyan-400" />
+                  <User className="w-4 h-4 text-blue-400" />
                   Provider Information
                 </h3>
                 <div className="space-y-3">
@@ -1977,14 +1977,14 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Credential</span>
-                    <span className="text-cyan-400 font-medium">{provider.credential}</span>
+                    <span className="text-blue-400 font-medium">{provider.credential}</span>
                   </div>
                 </div>
               </div>
 
               <div className="bg-slate-700/30 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-cyan-400" />
+                  <FileText className="w-4 h-4 text-blue-400" />
                   License Information
                 </h3>
                 <div className="space-y-3">
@@ -2015,7 +2015,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
             {/* Languages */}
             <div className="bg-slate-700/30 rounded-lg p-4">
               <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                <svg className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="w-4 h-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1M21 12l-5 10-2-4-4-2 10-5z"/>
                 </svg>
                 Languages Spoken
@@ -2033,7 +2033,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
             {practice && (
               <div className="bg-slate-700/30 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-cyan-400" />
+                  <Building2 className="w-4 h-4 text-blue-400" />
                   Affiliated Practice
                 </h3>
                 <div className="flex items-center justify-between">
@@ -2121,7 +2121,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
           <div className="space-y-6">
             <div className="bg-slate-700/30 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-cyan-400" />
+                <Clock className="w-5 h-5 text-blue-400" />
                 Clinic Hours
               </h3>
               <div className="space-y-3">
@@ -2158,7 +2158,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                 {/* Practice Location */}
                 <div className="bg-slate-700/30 rounded-lg p-6">
                   <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-cyan-400" />
+                    <MapPin className="w-5 h-5 text-blue-400" />
                     Practice Location
                   </h3>
                   <div className="space-y-2">
@@ -2174,7 +2174,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-slate-700/30 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                      <Phone className="w-5 h-5 text-cyan-400" />
+                      <Phone className="w-5 h-5 text-blue-400" />
                       Main Office Contact
                     </h3>
                     <div className="space-y-3">
@@ -2184,7 +2184,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                       </div>
                       <div>
                         <p className="text-xs text-slate-500 mb-1">Phone</p>
-                        <p className="text-cyan-400 font-medium">{practice.phone}</p>
+                        <p className="text-blue-400 font-medium">{practice.phone}</p>
                       </div>
                       <div>
                         <p className="text-xs text-slate-500 mb-1">Fax</p>
@@ -2192,14 +2192,14 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                       </div>
                       <div>
                         <p className="text-xs text-slate-500 mb-1">Email</p>
-                        <p className="text-cyan-400">{practice.email}</p>
+                        <p className="text-blue-400">{practice.email}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="bg-slate-700/30 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                      <Mail className="w-5 h-5 text-cyan-400" />
+                      <Mail className="w-5 h-5 text-blue-400" />
                       Correspondence Address
                     </h3>
                     <div className="space-y-2">
@@ -2277,9 +2277,9 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                   </h3>
                   <div className="space-y-2">
                     <p className="text-lg text-white font-medium">{practice.payToName}</p>
-                    <p className="text-cyan-400">{practice.payToAddress}</p>
-                    <p className="text-cyan-400">{practice.payToCity}, {practice.payToState} {practice.payToZip}</p>
-                    <p className="text-cyan-300">{practice.payToCountry}</p>
+                    <p className="text-blue-400">{practice.payToAddress}</p>
+                    <p className="text-blue-400">{practice.payToCity}, {practice.payToState} {practice.payToZip}</p>
+                    <p className="text-blue-300">{practice.payToCountry}</p>
                   </div>
                 </div>
 
@@ -2301,7 +2301,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                     </div>
                     <div>
                       <p className="text-xs text-slate-500 mb-1">Discount Rate</p>
-                      <p className="text-2xl text-cyan-400 font-bold">{practice.discountRate}</p>
+                      <p className="text-2xl text-blue-400 font-bold">{practice.discountRate}</p>
                     </div>
                   </div>
                 </div>

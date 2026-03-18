@@ -46,9 +46,9 @@ function LiveVerificationDisplay({ results, isDark }: { results: Record<string, 
   return (
     <div className={cn(
       "p-4 rounded-lg border mt-4",
-      isDark ? "bg-slate-700/30 border-cyan-700" : "bg-cyan-50 border-cyan-200"
+      isDark ? "bg-slate-700/30 border-blue-700" : "bg-blue-50 border-blue-200"
     )}>
-      <h4 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-cyan-400" : "text-cyan-700")}>
+      <h4 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-blue-400" : "text-blue-700")}>
         <Shield className="w-4 h-4" />
         Live Verification Results
       </h4>
@@ -480,7 +480,7 @@ export default function ReviewQueuePage() {
                 className={cn(
                   "p-4 rounded-xl border cursor-pointer transition-all",
                   selectedApp?.id === app.id
-                    ? isDark ? "bg-cyan-900/30 border-cyan-700" : "bg-cyan-50 border-cyan-300"
+                    ? isDark ? "bg-blue-900/30 border-blue-700" : "bg-blue-50 border-blue-300"
                     : isDark ? "bg-slate-800 border-slate-700 hover:border-slate-600" : "bg-white border-slate-200 hover:border-slate-300"
                 )}
               >
@@ -523,7 +523,7 @@ export default function ReviewQueuePage() {
                     <div className="flex items-center gap-3 mb-2">
                       <div className={cn(
                         "w-12 h-12 rounded-full flex items-center justify-center",
-                        isDark ? "bg-cyan-900/50 text-cyan-400" : "bg-cyan-100 text-cyan-600"
+                        isDark ? "bg-blue-900/50 text-blue-400" : "bg-blue-100 text-blue-600"
                       )}>
                         {selectedApp.type === "organization" ? (
                           <Building2 className="w-6 h-6" />
@@ -562,7 +562,7 @@ export default function ReviewQueuePage() {
                     className={cn(
                       "px-4 py-3 text-sm font-medium capitalize transition-colors",
                       activeTab === tab
-                        ? isDark ? "text-cyan-400 border-b-2 border-cyan-400" : "text-cyan-600 border-b-2 border-cyan-600"
+                        ? isDark ? "text-blue-400 border-b-2 border-blue-400" : "text-blue-600 border-b-2 border-blue-600"
                         : isDark ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900"
                     )}
                   >
@@ -744,7 +744,7 @@ export default function ReviewQueuePage() {
                           )}
                         >
                           <div className="flex items-center gap-3">
-                            <FileText className={cn("w-5 h-5", isDark ? "text-cyan-400" : "text-cyan-600")} />
+                            <FileText className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
                             <span className={cn("text-sm font-medium capitalize", isDark ? "text-white" : "text-slate-900")}>
                               {doc.replace(/_/g, " ")}
                             </span>

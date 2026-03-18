@@ -237,7 +237,7 @@ export default function DocumentRequestsPage() {
               <div className="flex items-center gap-4">
                 <div className={cn(
                   "w-12 h-12 rounded-full flex items-center justify-center",
-                  isDark ? "bg-cyan-900/50 text-cyan-400" : "bg-cyan-100 text-cyan-600"
+                  isDark ? "bg-blue-900/50 text-blue-400" : "bg-blue-100 text-blue-600"
                 )}>
                   <User className="w-6 h-6" />
                 </div>
@@ -275,7 +275,7 @@ export default function DocumentRequestsPage() {
                 <div
                   className={cn(
                     "h-2 rounded-full transition-all",
-                    req.status === "complete" ? "bg-green-500" : req.status === "expired" ? "bg-red-500" : "bg-cyan-500"
+                    req.status === "complete" ? "bg-green-500" : req.status === "expired" ? "bg-red-500" : "bg-blue-500"
                   )}
                   style={{ width: `${getProgress(req)}%` }}
                 />
@@ -415,8 +415,8 @@ export default function DocumentRequestsPage() {
                           "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors",
                           newRequest.selectedDocs.includes(doc.value)
                             ? isDark
-                              ? "bg-cyan-900/30 border border-cyan-700"
-                              : "bg-cyan-50 border border-cyan-200"
+                              ? "bg-blue-900/30 border border-blue-700"
+                              : "bg-blue-50 border border-blue-200"
                             : isDark
                             ? "bg-slate-700/50 border border-slate-600 hover:bg-slate-700"
                             : "bg-slate-50 border border-slate-200 hover:bg-slate-100"
@@ -426,7 +426,7 @@ export default function DocumentRequestsPage() {
                           type="checkbox"
                           checked={newRequest.selectedDocs.includes(doc.value)}
                           onChange={() => toggleDocSelection(doc.value)}
-                          className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                          className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                         />
                         <span className={cn("text-sm", isDark ? "text-white" : "text-slate-900")}>
                           {doc.label}
@@ -529,7 +529,7 @@ export default function DocumentRequestsPage() {
                   <div className="flex items-center gap-2">
                     <code className={cn(
                       "flex-1 px-3 py-2 rounded text-sm font-mono truncate",
-                      isDark ? "bg-slate-800 text-cyan-400" : "bg-white text-cyan-600"
+                      isDark ? "bg-slate-800 text-blue-400" : "bg-white text-blue-600"
                     )}>
                       {typeof window !== 'undefined' ? `${window.location.origin}/upload/demo123` : `/upload/demo123`}
                     </code>

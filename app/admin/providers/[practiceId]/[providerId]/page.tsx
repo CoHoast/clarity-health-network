@@ -306,7 +306,7 @@ export default function ProviderDetailPage() {
           </Link>
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
                 {provider.firstName[0]}{provider.lastName[0]}
               </div>
               <div>
@@ -320,7 +320,7 @@ export default function ProviderDetailPage() {
               </span>
             </div>
             <div className="flex items-center gap-4 mt-2 text-sm">
-              <Link href={`/admin/providers/${practiceId}`} className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+              <Link href={`/admin/providers/${practiceId}`} className="text-blue-400 hover:text-blue-300 flex items-center gap-1">
                 <Building2 className="w-4 h-4" />
                 {provider.practiceName}
               </Link>
@@ -764,8 +764,8 @@ export default function ProviderDetailPage() {
               {(provider.hospitalAffiliations || []).map((hospital: any, index: number) => (
                 <div key={index} className="bg-white border border-slate-200 rounded-lg p-4 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center">
-                      <Building2 className="w-6 h-6 text-cyan-400" />
+                    <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                      <Building2 className="w-6 h-6 text-blue-400" />
                     </div>
                     <div>
                       <p className="text-slate-900 font-medium">{hospital.name}</p>
@@ -1000,7 +1000,7 @@ export default function ProviderDetailPage() {
                         className="px-3 py-1 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 text-right w-48"
                       />
                     ) : (
-                      <span className={`${hours === "Closed" ? "text-slate-500" : "text-cyan-400"}`}>
+                      <span className={`${hours === "Closed" ? "text-slate-500" : "text-blue-400"}`}>
                         {hours as string}
                       </span>
                     )}
@@ -1273,7 +1273,7 @@ export default function ProviderDetailPage() {
                 </p>
                 <Link
                   href={`/admin/providers/${practiceId}`}
-                  className="inline-flex items-center gap-2 mt-4 text-cyan-400 hover:text-cyan-300"
+                  className="inline-flex items-center gap-2 mt-4 text-blue-400 hover:text-blue-300"
                 >
                   <Building2 className="w-4 h-4" />
                   View Practice Rates

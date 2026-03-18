@@ -75,7 +75,7 @@ export default function EligibilityPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+        <div className="bg-gradient-to-br from-teal-600 to-blue-600 rounded-xl p-4 shadow-lg">
           <p className="text-2xl font-bold" style={{ color: 'white' }}>3,456</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Checks Today</p>
         </div>
@@ -83,7 +83,7 @@ export default function EligibilityPage() {
           <p className="text-2xl font-bold" style={{ color: 'white' }}>99.8%</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Success Rate</p>
         </div>
-        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+        <div className="bg-gradient-to-br from-blue-500 to-teal-600 rounded-xl p-4 shadow-lg">
           <p className="text-2xl font-bold" style={{ color: 'white' }}>&lt;1s</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Avg Response Time</p>
         </div>
@@ -152,7 +152,7 @@ export default function EligibilityPage() {
                     issue.severity === "medium" ? "bg-amber-400" : "bg-blue-400"
                   }`}></div>
                   <div>
-                    <p className="text-white font-medium hover:text-cyan-500">{issue.member}</p>
+                    <p className="text-white font-medium hover:text-blue-500">{issue.member}</p>
                     <p className="text-xs text-slate-500">{issue.memberId}</p>
                     <p className="text-sm text-slate-400 mt-1">{issue.issue}</p>
                   </div>
@@ -267,7 +267,7 @@ export default function EligibilityPage() {
                 {/* Request Details */}
                 <div className="bg-slate-700/50 rounded-lg p-4">
                   <h3 className="font-medium text-white mb-3 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-cyan-500" />Request Details
+                    <Clock className="w-4 h-4 text-blue-500" />Request Details
                   </h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">

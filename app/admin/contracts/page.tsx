@@ -170,7 +170,7 @@ export default function ContractsPage() {
                     checked={bulk.isAllSelected}
                     ref={(el) => { if (el) el.indeterminate = bulk.isSomeSelected; }}
                     onChange={bulk.toggleSelectAll}
-                    className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-cyan-600 focus:ring-cyan-500/40"
+                    className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500/40"
                   />
                 </th>
                 <th className="px-4 py-4">Contract</th>
@@ -210,7 +210,7 @@ export default function ContractsPage() {
                     className={cn(
                       "transition-colors",
                       bulk.isSelected(contract.id) 
-                        ? isDark ? "bg-cyan-900/20" : "bg-cyan-50"
+                        ? isDark ? "bg-blue-900/20" : "bg-blue-50"
                         : isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50"
                     )}
                   >
@@ -219,13 +219,13 @@ export default function ContractsPage() {
                         type="checkbox"
                         checked={bulk.isSelected(contract.id)}
                         onChange={() => bulk.toggleSelect(contract.id)}
-                        className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-cyan-600 focus:ring-cyan-500/40"
+                        className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500/40"
                       />
                     </td>
                     <td className="px-4 py-4">
                       <button
                         onClick={() => setSelectedContract(contract)}
-                        className="font-mono text-sm text-cyan-500 hover:text-cyan-400 hover:underline"
+                        className="font-mono text-sm text-blue-500 hover:text-blue-400 hover:underline"
                       >
                         {contract.id}
                       </button>
@@ -236,7 +236,7 @@ export default function ContractsPage() {
                           <Link 
                             href={`/admin/providers/${contract.practiceId}`}
                             className={cn(
-                              "font-medium hover:text-cyan-500 transition-colors",
+                              "font-medium hover:text-blue-500 transition-colors",
                               isDark ? "text-white" : "text-slate-900"
                             )}
                           >
@@ -321,9 +321,9 @@ export default function ContractsPage() {
                 <div className="flex items-center gap-4">
                   <div className={cn(
                     "w-12 h-12 rounded-xl flex items-center justify-center",
-                    isDark ? "bg-cyan-500/20" : "bg-cyan-50"
+                    isDark ? "bg-blue-500/20" : "bg-blue-50"
                   )}>
-                    <FileSignature className="w-6 h-6 text-cyan-500" />
+                    <FileSignature className="w-6 h-6 text-blue-500" />
                   </div>
                   <div>
                     <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
@@ -362,7 +362,7 @@ export default function ContractsPage() {
                       "font-medium mb-4 flex items-center gap-2",
                       isDark ? "text-white" : "text-slate-900"
                     )}>
-                      <Building2 className="w-4 h-4 text-cyan-500" />
+                      <Building2 className="w-4 h-4 text-blue-500" />
                       Provider Details
                     </h3>
                     <div className="space-y-3 text-sm">
@@ -522,7 +522,7 @@ export default function ContractsPage() {
                       <input 
                         type="checkbox" 
                         defaultChecked 
-                        className="w-4 h-4 rounded bg-slate-700 border-slate-600 text-cyan-600 focus:ring-cyan-500/40" 
+                        className="w-4 h-4 rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-blue-500/40" 
                       />
                       <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-700")}>
                         Enable auto-renewal
@@ -674,7 +674,7 @@ export default function ContractsPage() {
                       <input 
                         type="checkbox" 
                         defaultChecked 
-                        className="w-4 h-4 rounded bg-slate-700 border-slate-600 text-cyan-600 focus:ring-cyan-500/40" 
+                        className="w-4 h-4 rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-blue-500/40" 
                       />
                       <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-700")}>
                         Enable auto-renewal

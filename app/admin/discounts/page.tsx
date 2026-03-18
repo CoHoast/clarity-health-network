@@ -574,7 +574,7 @@ export default function DiscountSchedulesPage() {
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
                   <span className="text-slate-500">Providers Using:</span>
-                  <span className="text-cyan-400 font-medium">{schedule.providersUsing.toLocaleString()}</span>
+                  <span className="text-blue-400 font-medium">{schedule.providersUsing.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-slate-500">Service Rates:</span>
@@ -644,7 +644,7 @@ export default function DiscountSchedulesPage() {
                       ) : (
                         <button
                           onClick={() => setSelectedProviderRate(pr)}
-                          className="text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-1"
+                          className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
                         >
                           <Eye className="w-3 h-3" />
                           {Object.keys(pr.serviceRates || {}).length} categories
@@ -727,7 +727,7 @@ export default function DiscountSchedulesPage() {
                     <p className="text-sm text-slate-400">Default Rate</p>
                   </div>
                   <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-cyan-400">{selectedSchedule.services.length}</p>
+                    <p className="text-2xl font-bold text-blue-400">{selectedSchedule.services.length}</p>
                     <p className="text-sm text-slate-400">Service Rates</p>
                   </div>
                 </div>
@@ -992,7 +992,7 @@ export default function DiscountSchedulesPage() {
                         <button 
                           type="button"
                           onClick={addServiceRow}
-                          className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                          className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"
                         >
                           <Plus className="w-4 h-4" />
                           Add Service
@@ -1270,7 +1270,7 @@ export default function DiscountSchedulesPage() {
                           <button 
                             type="button"
                             onClick={addCptRow}
-                            className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                            className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"
                           >
                             <Plus className="w-4 h-4" />
                             Add Row

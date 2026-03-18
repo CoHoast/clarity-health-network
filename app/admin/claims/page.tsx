@@ -66,7 +66,7 @@ function ClaimsContent() {
       case "approved": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Approved</span>;
       case "denied": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded-full"><XCircle className="w-3 h-3" />Denied</span>;
       case "pending": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending</span>;
-      case "review": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-600/20 text-cyan-500 text-xs font-medium rounded-full"><AlertTriangle className="w-3 h-3" />Review</span>;
+      case "review": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-600/20 text-blue-500 text-xs font-medium rounded-full"><AlertTriangle className="w-3 h-3" />Review</span>;
       default: return null;
     }
   };
@@ -99,9 +99,9 @@ function ClaimsContent() {
 
       {/* Member Filter Banner */}
       {memberFilter && (
-        <div className="bg-cyan-600/10 border border-cyan-600/30 rounded-xl p-4 flex items-center justify-between">
+        <div className="bg-blue-600/10 border border-blue-600/30 rounded-xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <User className="w-5 h-5 text-cyan-500" />
+            <User className="w-5 h-5 text-blue-500" />
             <span className="text-white">Showing claims for: <strong>{memberName}</strong> ({memberFilter})</span>
           </div>
           <button 
@@ -115,7 +115,7 @@ function ClaimsContent() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+        <div className="bg-gradient-to-br from-teal-600 to-blue-600 rounded-xl p-4 shadow-lg">
           <p className="text-2xl font-bold" style={{ color: 'white' }}>1,114</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Total Today</p>
         </div>
@@ -127,7 +127,7 @@ function ClaimsContent() {
           <p className="text-2xl font-bold" style={{ color: 'white' }}>92%</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Auto-Adjudicated</p>
         </div>
-        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+        <div className="bg-gradient-to-br from-blue-500 to-teal-600 rounded-xl p-4 shadow-lg">
           <p className="text-2xl font-bold" style={{ color: 'white' }}>$1.24M</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Processed Value</p>
         </div>
@@ -143,7 +143,7 @@ function ClaimsContent() {
               placeholder="Search claims, members, providers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600 focus:border-cyan-600"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -185,7 +185,7 @@ function ClaimsContent() {
                   <td className="px-4 py-3">
                     <button
                       onClick={() => setSelectedClaim(claim)}
-                      className="font-mono text-sm text-cyan-500 hover:text-cyan-400 hover:underline"
+                      className="font-mono text-sm text-blue-500 hover:text-blue-400 hover:underline"
                     >
                       {claim.id}
                     </button>
@@ -204,7 +204,7 @@ function ClaimsContent() {
                     <div className="flex items-center justify-end gap-1">
                       <button 
                         onClick={() => setSelectedClaim(claim)}
-                        className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded"
+                        className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-600/20 rounded"
                         title="View Details"
                       >
                         <Eye className="w-4 h-4" />
@@ -274,7 +274,7 @@ function ClaimsContent() {
                   {/* Claim Info */}
                   <div className="space-y-4">
                     <div className="bg-slate-700/50 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><FileText className="w-4 h-4 text-cyan-500" />Claim Information</h3>
+                      <h3 className="font-medium text-white mb-3 flex items-center gap-2"><FileText className="w-4 h-4 text-blue-500" />Claim Information</h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between"><span className="text-slate-400">Claim ID</span><span className="text-white font-mono">{selectedClaim.id}</span></div>
                         <div className="flex justify-between"><span className="text-slate-400">Status</span>{getStatusBadge(selectedClaim.status)}</div>
@@ -420,7 +420,7 @@ export default function ClaimsPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-8 h-8 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     }>
       <ClaimsContent />

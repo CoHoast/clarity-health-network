@@ -45,7 +45,7 @@ const auditLogs: AuditLog[] = [
 
 const categoryConfig: Record<CategoryType, { label: string; icon: React.ElementType; color: string; lightColor: string }> = {
   auth: { label: "Authentication", icon: LogIn, color: "text-blue-400", lightColor: "text-blue-600" },
-  phi_access: { label: "PHI Access", icon: Eye, color: "text-cyan-400", lightColor: "text-cyan-600" },
+  phi_access: { label: "PHI Access", icon: Eye, color: "text-blue-400", lightColor: "text-blue-600" },
   data_change: { label: "Data Change", icon: Edit, color: "text-amber-400", lightColor: "text-amber-600" },
   system: { label: "System", icon: Settings, color: "text-slate-400", lightColor: "text-slate-600" },
   security: { label: "Security", icon: Shield, color: "text-red-400", lightColor: "text-red-600" },
@@ -194,7 +194,7 @@ export default function AuditLogsPage() {
                     </td>
                     <td className={cn("px-4 py-3 text-sm", isDark ? "text-white" : "text-slate-900")}>{log.action}</td>
                     <td className="px-4 py-3">
-                      <span className={cn("font-mono text-sm", isDark ? "text-cyan-400" : "text-cyan-600")}>{log.resource}</span>
+                      <span className={cn("font-mono text-sm", isDark ? "text-blue-400" : "text-blue-600")}>{log.resource}</span>
                     </td>
                     <td className="px-4 py-3 text-center">
                       {log.phiAccessed ? (
@@ -216,7 +216,7 @@ export default function AuditLogsPage() {
                         onClick={() => setSelectedLog(log)} 
                         className={cn(
                           "p-1.5 rounded transition-colors",
-                          isDark ? "text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/20" : "text-slate-500 hover:text-cyan-600 hover:bg-cyan-50"
+                          isDark ? "text-slate-400 hover:text-blue-400 hover:bg-blue-500/20" : "text-slate-500 hover:text-blue-600 hover:bg-blue-50"
                         )}
                       >
                         <Eye className="w-4 h-4" />
@@ -263,7 +263,7 @@ export default function AuditLogsPage() {
                 isDark ? "border-slate-700" : "border-slate-200"
               )}>
                 <div className="flex items-center gap-3">
-                  <Shield className="w-5 h-5 text-cyan-500" />
+                  <Shield className="w-5 h-5 text-blue-500" />
                   <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>Audit Log Detail</h3>
                 </div>
                 <button 

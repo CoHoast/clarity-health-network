@@ -77,7 +77,7 @@ export default function NotificationsPage() {
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "contract": return <FileText className="w-5 h-5 text-cyan-400" />;
+      case "contract": return <FileText className="w-5 h-5 text-blue-400" />;
       case "credentialing": return <CheckCircle className="w-5 h-5 text-green-400" />;
       case "provider": return <Building2 className="w-5 h-5 text-teal-400" />;
       case "system": return <Settings className="w-5 h-5 text-slate-400" />;
@@ -206,7 +206,7 @@ export default function NotificationsPage() {
                         {notification.actionUrl && (
                           <a
                             href={notification.actionUrl}
-                            className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                            className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
                           >
                             <Eye className="w-3 h-3" />
                             View Details
@@ -234,7 +234,7 @@ export default function NotificationsPage() {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <Mail className="w-5 h-5 text-cyan-400" />
+                <Mail className="w-5 h-5 text-blue-400" />
                 Notification Recipients
               </h2>
               <button className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors">
@@ -252,8 +252,8 @@ export default function NotificationsPage() {
               ].map((recipient, i) => (
                 <div key={i} className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                      <Mail className="w-5 h-5 text-cyan-400" />
+                    <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <Mail className="w-5 h-5 text-blue-400" />
                     </div>
                     <div>
                       <p className="font-medium text-white">{recipient.name}</p>

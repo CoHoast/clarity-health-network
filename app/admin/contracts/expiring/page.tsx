@@ -48,7 +48,7 @@ export default function ExpiringContractsPage() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "renewal_sent": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-medium rounded-full"><Send className="w-3 h-3" />Renewal Sent</span>;
+      case "renewal_sent": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-medium rounded-full"><Send className="w-3 h-3" />Renewal Sent</span>;
       case "pending_review": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending Review</span>;
       case "negotiating": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full"><FileText className="w-3 h-3" />Negotiating</span>;
       case "not_started": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-500/20 text-slate-400 text-xs font-medium rounded-full"><AlertTriangle className="w-3 h-3" />Not Started</span>;
@@ -95,7 +95,7 @@ export default function ExpiringContractsPage() {
             key={stat.label} 
             className={`rounded-xl p-5 shadow-lg ${
               isDark 
-                ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
+                ? "bg-gradient-to-br from-blue-900/30 to-teal-900/30 border border-blue-800/30" 
                 : "bg-slate-900 border border-slate-700"
             }`}
           >

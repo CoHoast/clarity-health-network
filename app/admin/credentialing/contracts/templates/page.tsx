@@ -219,7 +219,7 @@ export default function ContractTemplatesPage() {
               className={cn(
                 "rounded-xl border p-4 transition-colors cursor-pointer",
                 selectedTemplate?.id === template.id
-                  ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20"
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
                   : isDark
                   ? "bg-slate-800/50 border-slate-700 hover:border-slate-600"
                   : "bg-white border-slate-200 hover:border-slate-300"
@@ -374,8 +374,8 @@ export default function ContractTemplatesPage() {
                         className={cn(
                           "text-xs px-2 py-0.5 rounded cursor-pointer transition-colors",
                           isDark
-                            ? "bg-slate-700 hover:bg-slate-600 text-cyan-400"
-                            : "bg-slate-100 hover:bg-slate-200 text-cyan-600"
+                            ? "bg-slate-700 hover:bg-slate-600 text-blue-400"
+                            : "bg-slate-100 hover:bg-slate-200 text-blue-600"
                         )}
                         onClick={() => navigator.clipboard.writeText(field)}
                         title="Click to copy"
@@ -458,7 +458,7 @@ export default function ContractTemplatesPage() {
                       className={cn(
                         "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors",
                         idx === 0
-                          ? "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400"
+                          ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
                           : isDark
                           ? "hover:bg-slate-700"
                           : "hover:bg-slate-200"
@@ -523,26 +523,26 @@ export default function ContractTemplatesPage() {
                     
                     <p className="mb-4">
                       This Participation Agreement ("Agreement") is entered into by and between{" "}
-                      <code className="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/30 px-1 rounded">{"{{network_name}}"}</code>{" "}
+                      <code className="text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{"{{network_name}}"}</code>{" "}
                       ("Network") and{" "}
-                      <code className="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/30 px-1 rounded">{"{{provider_name}}"}</code>{" "}
+                      <code className="text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{"{{provider_name}}"}</code>{" "}
                       ("Provider"), with an effective date of{" "}
-                      <code className="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/30 px-1 rounded">{"{{effective_date}}"}</code>.
+                      <code className="text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{"{{effective_date}}"}</code>.
                     </p>
 
                     <h3 className="text-lg font-semibold mt-6 mb-3">1. PROVIDER INFORMATION</h3>
                     <p className="mb-4">
                       Provider Name:{" "}
-                      <code className="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/30 px-1 rounded">{"{{provider_name}}"}</code>
+                      <code className="text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{"{{provider_name}}"}</code>
                       <br />
                       NPI:{" "}
-                      <code className="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/30 px-1 rounded">{"{{provider_npi}}"}</code>
+                      <code className="text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{"{{provider_npi}}"}</code>
                       <br />
                       Specialty:{" "}
-                      <code className="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/30 px-1 rounded">{"{{provider_specialty}}"}</code>
+                      <code className="text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{"{{provider_specialty}}"}</code>
                       <br />
                       State License:{" "}
-                      <code className="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/30 px-1 rounded">{"{{provider_license}}"}</code>
+                      <code className="text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{"{{provider_license}}"}</code>
                     </p>
 
                     <h3 className="text-lg font-semibold mt-6 mb-3">2. CREDENTIALING REQUIREMENTS</h3>
@@ -554,7 +554,7 @@ export default function ContractTemplatesPage() {
                     <p className="mb-4">
                       Provider shall be reimbursed according to the fee schedule attached hereto as{" "}
                       <strong>Exhibit A</strong>:{" "}
-                      <code className="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/30 px-1 rounded">{"{{rate_schedule}}"}</code>
+                      <code className="text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{"{{rate_schedule}}"}</code>
                     </p>
 
                     <p className={cn("text-sm mt-8 text-center", isDark ? "text-slate-500" : "text-slate-400")}>

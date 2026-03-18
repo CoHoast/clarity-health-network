@@ -67,7 +67,7 @@ export default function BillReviewPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-500 rounded-xl flex items-center justify-center">
             <Brain className="w-6 h-6 text-white"/>
           </div>
           <div>
@@ -85,7 +85,7 @@ export default function BillReviewPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+        <div className="bg-gradient-to-br from-teal-600 to-blue-600 rounded-xl p-4 shadow-lg">
           <p className="text-2xl font-bold" style={{ color: 'white' }}>1,892</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Bills Reviewed Today</p>
         </div>
@@ -93,7 +93,7 @@ export default function BillReviewPage() {
           <p className="text-2xl font-bold" style={{ color: 'white' }}>${totalSavings.toLocaleString()}</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Savings Found</p>
         </div>
-        <div className="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl p-4 shadow-lg">
+        <div className="bg-gradient-to-br from-blue-500 to-teal-600 rounded-xl p-4 shadow-lg">
           <p className="text-2xl font-bold" style={{ color: 'white' }}>{avgReduction}%</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Avg Reduction</p>
         </div>
@@ -104,7 +104,7 @@ export default function BillReviewPage() {
       </div>
 
       {/* AI Engine Status Card */}
-      <div className="bg-gradient-to-br from-teal-700 to-cyan-700 rounded-xl p-6 shadow-lg">
+      <div className="bg-gradient-to-br from-teal-700 to-blue-700 rounded-xl p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <Brain className="w-6 h-6" style={{ color: 'white' }}/>
@@ -294,7 +294,7 @@ export default function BillReviewPage() {
 
                 {/* AI Analysis */}
                 <div className="bg-slate-700/50 rounded-lg p-4">
-                  <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Brain className="w-4 h-4 text-cyan-400" />AI Analysis</h3>
+                  <h3 className="font-medium text-white mb-3 flex items-center gap-2"><Brain className="w-4 h-4 text-blue-400" />AI Analysis</h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-slate-400">Confidence Score</span>
@@ -309,7 +309,7 @@ export default function BillReviewPage() {
                       <p className="text-slate-400 text-sm mb-2">Rules Applied:</p>
                       <div className="flex flex-wrap gap-2">
                         <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded">Medicare Benchmark</span>
-                        <span className="px-2 py-1 bg-cyan-600/20 text-cyan-300 text-xs rounded">Fee Schedule Match</span>
+                        <span className="px-2 py-1 bg-blue-600/20 text-blue-300 text-xs rounded">Fee Schedule Match</span>
                         <span className="px-2 py-1 bg-teal-500/20 text-teal-300 text-xs rounded">Network Discount</span>
                         {selectedBill.flags.includes("high-value") && <span className="px-2 py-1 bg-amber-500/20 text-amber-300 text-xs rounded">High-Value Review</span>}
                       </div>

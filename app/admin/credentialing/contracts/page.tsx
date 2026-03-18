@@ -280,7 +280,7 @@ export default function CredentialingContractsPage() {
                   className={cn("border-b", isDark ? "border-slate-700 hover:bg-slate-800" : "border-slate-100 hover:bg-slate-50")}
                 >
                   <td className="px-4 py-3">
-                    <span className="font-mono text-sm text-cyan-600 dark:text-cyan-400">{contract.id}</span>
+                    <span className="font-mono text-sm text-blue-600 dark:text-blue-400">{contract.id}</span>
                   </td>
                   <td className="px-4 py-3">
                     <div>
@@ -324,7 +324,7 @@ export default function CredentialingContractsPage() {
                       {contract.status === "draft" && (
                         <button
                           className={cn(
-                            "p-2 rounded-lg transition-colors text-cyan-600",
+                            "p-2 rounded-lg transition-colors text-blue-600",
                             isDark ? "hover:bg-slate-700" : "hover:bg-slate-100"
                           )}
                           title="Send for Signature"
@@ -475,7 +475,7 @@ export default function CredentialingContractsPage() {
                 </label>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-cyan-500"></div>
+                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
                     <span className="text-sm">Generated: {selectedContract.generatedDate}</span>
                   </div>
                   {selectedContract.sentDate && (
@@ -615,7 +615,7 @@ export default function CredentialingContractsPage() {
               <div
                 className={cn(
                   "p-4 rounded-lg",
-                  isDark ? "bg-cyan-900/20 border border-cyan-800" : "bg-cyan-50 border border-cyan-200"
+                  isDark ? "bg-blue-900/20 border border-blue-800" : "bg-blue-50 border border-blue-200"
                 )}
               >
                 <label className="flex items-center gap-3 cursor-pointer">
@@ -724,13 +724,13 @@ function GenerateContractModal({
                   className={cn(
                     "h-1 rounded-full transition-colors",
                     s <= step
-                      ? "bg-cyan-500"
+                      ? "bg-blue-500"
                       : isDark
                       ? "bg-slate-700"
                       : "bg-slate-200"
                   )}
                 />
-                <p className={cn("text-xs mt-1", s === step ? "text-cyan-500 font-medium" : isDark ? "text-slate-500" : "text-slate-400")}>
+                <p className={cn("text-xs mt-1", s === step ? "text-blue-500 font-medium" : isDark ? "text-slate-500" : "text-slate-400")}>
                   {s === 1 && "Application"}
                   {s === 2 && "Template"}
                   {s === 3 && "Rates"}
@@ -755,7 +755,7 @@ function GenerateContractModal({
                     className={cn(
                       "flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-colors",
                       selectedApplication === app.id
-                        ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20"
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
                         : isDark
                         ? "border-slate-700 hover:border-slate-600"
                         : "border-slate-200 hover:border-slate-300"
@@ -771,7 +771,7 @@ function GenerateContractModal({
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <p className="font-medium">{app.provider}</p>
-                        <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400">{app.id}</span>
+                        <span className="text-xs font-mono text-blue-600 dark:text-blue-400">{app.id}</span>
                       </div>
                       <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
                         {app.practice} • {app.specialty}
@@ -799,7 +799,7 @@ function GenerateContractModal({
                     className={cn(
                       "flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-colors",
                       selectedTemplate === tpl.id
-                        ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20"
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
                         : isDark
                         ? "border-slate-700 hover:border-slate-600"
                         : "border-slate-200 hover:border-slate-300"
@@ -838,7 +838,7 @@ function GenerateContractModal({
                     className={cn(
                       "flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-colors",
                       selectedRateSchedule === rate.id
-                        ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20"
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
                         : isDark
                         ? "border-slate-700 hover:border-slate-600"
                         : "border-slate-200 hover:border-slate-300"
@@ -854,7 +854,7 @@ function GenerateContractModal({
                     <div className="flex-1">
                       <p className="font-medium">{rate.name}</p>
                     </div>
-                    <span className="font-mono text-cyan-600 dark:text-cyan-400">{rate.value}</span>
+                    <span className="font-mono text-blue-600 dark:text-blue-400">{rate.value}</span>
                   </label>
                 ))}
               </div>
@@ -934,7 +934,7 @@ function GenerateContractModal({
                 </div>
               </div>
 
-              <div className={cn("p-4 rounded-lg", isDark ? "bg-cyan-900/20 border border-cyan-800" : "bg-cyan-50 border border-cyan-200")}>
+              <div className={cn("p-4 rounded-lg", isDark ? "bg-blue-900/20 border border-blue-800" : "bg-blue-50 border border-blue-200")}>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" defaultChecked className="w-4 h-4 rounded" />
                   <div>

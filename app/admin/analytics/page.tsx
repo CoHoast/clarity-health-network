@@ -67,7 +67,7 @@ const dataByRange: Record<DateRange, { stats: Array<{ label: string; value: stri
 };
 
 const providersBySpecialty = [
-  { specialty: "Primary Care", count: 892, percentage: 31, color: "bg-cyan-500" },
+  { specialty: "Primary Care", count: 892, percentage: 31, color: "bg-blue-500" },
   { specialty: "Specialists", count: 756, percentage: 27, color: "bg-teal-500" },
   { specialty: "Hospitals", count: 234, percentage: 8, color: "bg-emerald-500" },
   { specialty: "Urgent Care", count: 189, percentage: 7, color: "bg-blue-500" },
@@ -143,11 +143,11 @@ export default function AnalyticsPage() {
         <Card className="lg:col-span-2">
           <CardHeader
             title="Network Growth"
-            icon={<BarChart3 className="w-5 h-5 text-cyan-500" />}
+            icon={<BarChart3 className="w-5 h-5 text-blue-500" />}
             action={
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-cyan-500" />
+                  <div className="w-3 h-3 rounded-full bg-blue-500" />
                   <span className={isDark ? "text-slate-400" : "text-slate-500"}>Providers</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -188,7 +188,7 @@ export default function AnalyticsPage() {
                         initial={{ width: 0 }}
                         animate={{ width: `${providerWidth}%` }}
                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400 rounded-full"
+                        className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full"
                       />
                     </div>
                     <div className={cn(
@@ -262,7 +262,7 @@ export default function AnalyticsPage() {
         <Card>
           <CardHeader
             title="Top Provider Groups"
-            icon={<Building2 className="w-5 h-5 text-cyan-500" />}
+            icon={<Building2 className="w-5 h-5 text-blue-500" />}
           />
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -362,7 +362,7 @@ export default function AnalyticsPage() {
               "w-10 h-10 rounded-lg flex items-center justify-center",
               isDark ? "bg-slate-700" : "bg-white"
             )}>
-              <div className="text-cyan-500">{item.icon}</div>
+              <div className="text-blue-500">{item.icon}</div>
             </div>
             <div>
               <p className={cn("text-lg font-bold", isDark ? "text-white" : "text-slate-900")}>

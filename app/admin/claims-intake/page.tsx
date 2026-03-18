@@ -86,7 +86,7 @@ export default function ClaimsIntakePage() {
           <tbody className="divide-y divide-slate-700">
             {incomingClaims.map((batch) => (
               <tr key={batch.id} className="hover:bg-slate-800/80">
-                <td className="px-4 py-3 font-mono text-cyan-500">{batch.id}</td>
+                <td className="px-4 py-3 font-mono text-blue-500">{batch.id}</td>
                 <td className="px-4 py-3"><span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">{batch.type}</span></td>
                 <td className="px-4 py-3 text-white">{batch.submitter}</td>
                 <td className="px-4 py-3 text-slate-400 text-sm">{batch.received}</td>
@@ -101,7 +101,7 @@ export default function ClaimsIntakePage() {
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <button onClick={() => setSelectedBatch(batch)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
+                  <button onClick={() => setSelectedBatch(batch)} className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-600/20 rounded">
                     <Eye className="w-4 h-4" />
                   </button>
                 </td>
@@ -170,7 +170,7 @@ export default function ClaimsIntakePage() {
                 <h3 className="font-semibold text-white">Manual Upload</h3>
               </div>
               <div className="p-4 space-y-4">
-                <div className="border-2 border-dashed border-slate-600 rounded-lg p-8 text-center hover:border-cyan-600/50 transition-colors cursor-pointer">
+                <div className="border-2 border-dashed border-slate-600 rounded-lg p-8 text-center hover:border-blue-600/50 transition-colors cursor-pointer">
                   <Upload className="w-10 h-10 text-slate-400 mx-auto mb-3" />
                   <p className="font-medium text-white">Drop 837 file here</p>
                   <p className="text-sm text-slate-500 mt-1">837P or 837I format</p>

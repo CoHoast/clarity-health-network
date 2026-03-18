@@ -110,10 +110,10 @@ export default function AdminDashboard() {
                   <div className={cn(
                     "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
                     isDark 
-                      ? "bg-gradient-to-br from-cyan-500/20 to-teal-500/20 border border-cyan-500/30"
-                      : "bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200"
+                      ? "bg-blue-500/20 border border-blue-500/30"
+                      : "bg-blue-50 border border-blue-200"
                   )}>
-                    <Icon className={cn("w-5 h-5", isDark ? "text-cyan-400" : "text-cyan-600")} />
+                    <Icon className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className={cn(
@@ -145,7 +145,7 @@ export default function AdminDashboard() {
               title="Contracts Expiring Soon"
               icon={<AlertTriangle className="w-5 h-5 text-amber-500" />}
               action={
-                <Link href="/admin/contracts/expiring" className="text-sm text-cyan-500 hover:text-cyan-400 flex items-center gap-1">
+                <Link href="/admin/contracts/expiring" className="text-sm text-blue-500 hover:text-blue-400 flex items-center gap-1">
                   View All <ArrowRight className="w-4 h-4" />
                 </Link>
               }
@@ -202,12 +202,12 @@ export default function AdminDashboard() {
               <div key={i} className="flex items-start gap-3">
                 <div className={cn(
                   "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0",
-                  activity.type === "provider" && "bg-cyan-500/15",
+                  activity.type === "provider" && "bg-blue-500/15",
                   activity.type === "contract" && "bg-emerald-500/15",
                   activity.type === "discount" && "bg-amber-500/15",
                   activity.type === "credentialing" && "bg-teal-500/15"
                 )}>
-                  {activity.type === "provider" && <Building2 className="w-4 h-4 text-cyan-500" />}
+                  {activity.type === "provider" && <Building2 className="w-4 h-4 text-blue-500" />}
                   {activity.type === "contract" && <FileSignature className="w-4 h-4 text-emerald-500" />}
                   {activity.type === "discount" && <DollarSign className="w-4 h-4 text-amber-500" />}
                   {activity.type === "credentialing" && <CheckCircle className="w-4 h-4 text-teal-500" />}
@@ -233,9 +233,9 @@ export default function AdminDashboard() {
       <Card>
         <CardHeader
           title="Network by Specialty"
-          icon={<Globe className="w-5 h-5 text-cyan-500" />}
+          icon={<Globe className="w-5 h-5 text-blue-500" />}
           action={
-            <Link href="/admin/analytics" className="text-sm text-cyan-500 hover:text-cyan-400 flex items-center gap-1">
+            <Link href="/admin/analytics" className="text-sm text-blue-500 hover:text-blue-400 flex items-center gap-1">
               Full Analytics <ArrowRight className="w-4 h-4" />
             </Link>
           }
@@ -257,11 +257,11 @@ export default function AdminDashboard() {
                 isDark ? "bg-slate-600" : "bg-slate-200"
               )}>
                 <div 
-                  className="h-full bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
                   style={{ width: `${item.percentage}%` }}
                 />
               </div>
-              <p className={cn("text-xs mt-1.5 font-medium", isDark ? "text-cyan-400" : "text-cyan-600")}>
+              <p className={cn("text-xs mt-1.5 font-medium", isDark ? "text-blue-400" : "text-blue-600")}>
                 {item.percentage}%
               </p>
             </div>
@@ -277,7 +277,7 @@ export default function AdminDashboard() {
             title="Credentialing Queue"
             icon={<Users className="w-5 h-5 text-teal-500" />}
             action={
-              <Link href="/admin/credentialing" className="text-sm text-cyan-500 hover:text-cyan-400 flex items-center gap-1">
+              <Link href="/admin/credentialing" className="text-sm text-blue-500 hover:text-blue-400 flex items-center gap-1">
                 View All <ArrowRight className="w-4 h-4" />
               </Link>
             }
@@ -311,7 +311,7 @@ export default function AdminDashboard() {
                       ? "bg-slate-600/50 border border-slate-500/50"
                       : "bg-white border border-slate-200"
                   )}>
-                    <Building2 className="w-5 h-5 text-cyan-500" />
+                    <Building2 className="w-5 h-5 text-blue-500" />
                   </div>
                   <div>
                     <p className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>

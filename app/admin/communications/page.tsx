@@ -535,7 +535,7 @@ function CommunicationsContent() {
 
   const getResponseStatusBadge = (status: string) => {
     switch (status) {
-      case "new": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-medium rounded-full"><Mail className="w-3 h-3" />New</span>;
+      case "new": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-medium rounded-full"><Mail className="w-3 h-3" />New</span>;
       case "read": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-500/20 text-slate-400 text-xs font-medium rounded-full"><Eye className="w-3 h-3" />Read</span>;
       case "replied": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><Reply className="w-3 h-3" />Replied</span>;
       case "archived": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-600/20 text-slate-500 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Archived</span>;
@@ -546,7 +546,7 @@ function CommunicationsContent() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "delivered": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-500/20 text-slate-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Delivered</span>;
-      case "opened": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-medium rounded-full"><Mail className="w-3 h-3" />Opened</span>;
+      case "opened": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-medium rounded-full"><Mail className="w-3 h-3" />Opened</span>;
       case "replied": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Replied</span>;
       case "sent": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Send className="w-3 h-3" />Sent</span>;
       case "responded": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full"><CheckCircle className="w-3 h-3" />Responded</span>;
@@ -556,7 +556,7 @@ function CommunicationsContent() {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case "Initial Outreach": return "bg-cyan-500/20 text-cyan-400";
+      case "Initial Outreach": return "bg-blue-500/20 text-blue-400";
       case "Follow-Up": return "bg-amber-500/20 text-amber-400";
       case "Specialty": return "bg-purple-500/20 text-purple-400";
       case "Renewal": return "bg-green-500/20 text-green-400";
@@ -704,7 +704,7 @@ function CommunicationsContent() {
               <Inbox className="w-4 h-4 inline mr-2" />
               Responses
               {newResponsesCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-cyan-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
                   {newResponsesCount}
                 </span>
               )}
@@ -725,7 +725,7 @@ function CommunicationsContent() {
               {/* Quick Send Section */}
               <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
                 <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <Send className="w-5 h-5 text-cyan-400" />
+                  <Send className="w-5 h-5 text-blue-400" />
                   Send Outreach Email
                 </h2>
                 <p className="text-slate-400 text-sm mb-4">Select a template to send to a potential network provider</p>
@@ -787,7 +787,7 @@ function CommunicationsContent() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                      <Inbox className="w-5 h-5 text-cyan-400" />
+                      <Inbox className="w-5 h-5 text-blue-400" />
                       Provider Responses
                     </h2>
                     <p className="text-slate-400 text-sm mt-1">
@@ -803,7 +803,7 @@ function CommunicationsContent() {
                       key={response.id} 
                       className={`rounded-lg p-4 transition-colors cursor-pointer ${
                         response.status === "new" 
-                          ? "bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20" 
+                          ? "bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/20" 
                           : "bg-slate-700/30 hover:bg-slate-700/50"
                       }`}
                       onClick={() => openResponseModal(response)}
@@ -869,7 +869,7 @@ function CommunicationsContent() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-cyan-400" />
+                      <FileText className="w-5 h-5 text-blue-400" />
                       Email Templates
                     </h2>
                     <p className="text-slate-400 text-sm mt-1">Create and customize outreach email templates</p>
@@ -907,7 +907,7 @@ function CommunicationsContent() {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => openPreviewModal(template)}
-                            className="p-2 text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors"
+                            className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
                             title="Preview"
                           >
                             <Eye className="w-4 h-4" />
@@ -955,7 +955,7 @@ function CommunicationsContent() {
                     { tag: "[EMAIL]", desc: "Contact email" },
                   ].map((placeholder) => (
                     <div key={placeholder.tag} className="bg-slate-700/50 rounded-lg p-3">
-                      <code className="text-cyan-400 text-sm">{placeholder.tag}</code>
+                      <code className="text-blue-400 text-sm">{placeholder.tag}</code>
                       <p className="text-slate-400 text-xs mt-1">{placeholder.desc}</p>
                     </div>
                   ))}
@@ -1666,7 +1666,7 @@ function CommunicationsContent() {
 
 export default function CommunicationsPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+    <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div></div>}>
       <CommunicationsContent />
     </Suspense>
   );

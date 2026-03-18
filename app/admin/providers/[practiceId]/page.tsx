@@ -411,7 +411,7 @@ export default function PracticeDetailPage() {
             {/* Quick Stats */}
             <div className="grid grid-cols-4 gap-4 mt-6">
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                <p className="text-3xl font-bold text-cyan-400">{practice.providers?.length || 0}</p>
+                <p className="text-3xl font-bold text-blue-400">{practice.providers?.length || 0}</p>
                 <p className="text-sm text-slate-400">Providers</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
@@ -597,7 +597,7 @@ export default function PracticeDetailPage() {
                         className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
                       />
                     ) : (
-                      <p className="text-cyan-400">{practice.email}</p>
+                      <p className="text-blue-400">{practice.email}</p>
                     )}
                   </div>
                 </div>
@@ -1000,8 +1000,8 @@ export default function PracticeDetailPage() {
         {activeSection === "rates" && (
           <div className="space-y-6">
             {/* Info Banner */}
-            <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
-              <p className="text-cyan-300 text-sm">
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+              <p className="text-blue-300 text-sm">
                 <strong>Default Practice Rate:</strong> This rate applies to all providers in this practice unless they have custom rates set on their individual provider page.
               </p>
             </div>
@@ -1177,7 +1177,7 @@ export default function PracticeDetailPage() {
                 <strong className="text-slate-700 dark:text-slate-300">CSV Format:</strong> First Name, Last Name, Title, NPI, Specialty, Email, Phone, License State, License Number
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Example: <span className="text-cyan-600 dark:text-cyan-400 font-mono">John, Smith, MD, 1234567890, Family Medicine, john@clinic.com, 555-123-4567, OH, MD-123456</span>
+                Example: <span className="text-blue-600 dark:text-blue-400 font-mono">John, Smith, MD, 1234567890, Family Medicine, john@clinic.com, 555-123-4567, OH, MD-123456</span>
               </p>
             </div>
 
@@ -1190,7 +1190,7 @@ export default function PracticeDetailPage() {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold">
                         {provider.name.split(" ").map((n: string) => n[0]).join("")}
                       </div>
                       <div>

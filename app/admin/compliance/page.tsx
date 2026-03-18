@@ -149,7 +149,7 @@ export default function CompliancePage() {
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-2 rounded-t-lg font-medium whitespace-nowrap transition-colors ${
               activeTab === tab.id
-                ? "bg-slate-800 text-white border-b-2 border-cyan-600"
+                ? "bg-slate-800 text-white border-b-2 border-blue-600"
                 : "text-slate-400 hover:text-white"
             }`}
           >
@@ -163,7 +163,7 @@ export default function CompliancePage() {
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
           <div className="p-4 border-b border-slate-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">Compliance Checklist</h2>
-            <button className="text-sm text-cyan-500 hover:text-cyan-400 flex items-center gap-1">
+            <button className="text-sm text-blue-500 hover:text-blue-400 flex items-center gap-1">
               <RefreshCw className="w-4 h-4" />
               Refresh Status
             </button>
@@ -238,14 +238,14 @@ export default function CompliancePage() {
               <tbody className="divide-y divide-slate-700">
                 {openIssues.map((issue) => (
                   <tr key={issue.id} className="hover:bg-slate-700/50 transition-colors">
-                    <td className="px-4 py-3 font-mono text-cyan-500 text-sm">{issue.id}</td>
+                    <td className="px-4 py-3 font-mono text-blue-500 text-sm">{issue.id}</td>
                     <td className="px-4 py-3 text-white">{issue.title}</td>
                     <td className="px-4 py-3 text-slate-400">{issue.category}</td>
                     <td className="px-4 py-3">{getSeverityBadge(issue.severity)}</td>
                     <td className="px-4 py-3 text-slate-300">{issue.assignee}</td>
                     <td className="px-4 py-3 text-slate-400">{issue.dueDate}</td>
                     <td className="px-4 py-3 text-right">
-                      <button onClick={() => setSelectedIssue(issue)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
+                      <button onClick={() => setSelectedIssue(issue)} className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-600/20 rounded">
                         <Eye className="w-4 h-4" />
                       </button>
                     </td>
@@ -280,7 +280,7 @@ export default function CompliancePage() {
             <tbody className="divide-y divide-slate-700">
               {auditHistory.map((audit) => (
                 <tr key={audit.id} className="hover:bg-slate-700/50 transition-colors">
-                  <td className="px-4 py-3 font-mono text-cyan-500 text-sm">{audit.id}</td>
+                  <td className="px-4 py-3 font-mono text-blue-500 text-sm">{audit.id}</td>
                   <td className="px-4 py-3 text-white">{audit.type}</td>
                   <td className="px-4 py-3 text-slate-300">{audit.area}</td>
                   <td className="px-4 py-3 text-slate-400">{audit.date}</td>
@@ -296,7 +296,7 @@ export default function CompliancePage() {
                     {audit.critical > 0 && <span className="text-red-400 ml-1">({audit.critical} critical)</span>}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <button onClick={() => setSelectedAudit(audit)} className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-cyan-600/20 rounded">
+                    <button onClick={() => setSelectedAudit(audit)} className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-600/20 rounded">
                       <Eye className="w-4 h-4" />
                     </button>
                   </td>
@@ -362,7 +362,7 @@ export default function CompliancePage() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
                     <p className="font-medium text-white">{training.name}</p>
-                    {training.required && <span className="px-2 py-0.5 bg-cyan-600/20 text-cyan-500 text-xs rounded">Required</span>}
+                    {training.required && <span className="px-2 py-0.5 bg-blue-600/20 text-blue-500 text-xs rounded">Required</span>}
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-slate-400">Due: {training.dueDate}</p>

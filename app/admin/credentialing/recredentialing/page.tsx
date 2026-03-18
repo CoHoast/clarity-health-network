@@ -323,7 +323,7 @@ export default function RecredentialingPage() {
       )}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-cyan-500" />
+            <Zap className="w-5 h-5 text-blue-500" />
             <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
               Automation Status
             </h3>
@@ -459,7 +459,7 @@ export default function RecredentialingPage() {
                   <div className="flex items-center gap-4">
                     <div className={cn(
                       "w-12 h-12 rounded-full flex items-center justify-center",
-                      isDark ? "bg-cyan-900/50 text-cyan-400" : "bg-cyan-100 text-cyan-600"
+                      isDark ? "bg-blue-900/50 text-blue-400" : "bg-blue-100 text-blue-600"
                     )}>
                       <User className="w-6 h-6" />
                     </div>
@@ -724,7 +724,7 @@ export default function RecredentialingPage() {
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" defaultChecked={rule.enabled} className="sr-only peer" />
-                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-blue-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                   </label>
                 </div>
               ))}
@@ -772,7 +772,7 @@ export default function RecredentialingPage() {
                       <div className={cn(
                         "w-3 h-3 rounded-full",
                         step.status === "complete" ? "bg-green-500" :
-                        step.status === "current" ? "bg-cyan-500 animate-pulse" :
+                        step.status === "current" ? "bg-blue-500 animate-pulse" :
                         "bg-slate-300 dark:bg-slate-600"
                       )} />
                       {index < 5 && (
@@ -786,7 +786,7 @@ export default function RecredentialingPage() {
                       <div className="flex items-center justify-between">
                         <p className={cn(
                           "font-medium",
-                          step.status === "current" ? "text-cyan-600 dark:text-cyan-400" :
+                          step.status === "current" ? "text-blue-600 dark:text-blue-400" :
                           isDark ? "text-white" : "text-slate-900"
                         )}>
                           {step.action}

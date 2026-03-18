@@ -15,7 +15,7 @@ const LeafletMap = dynamic(
     ssr: false,
     loading: () => (
       <div className="w-full h-[500px] bg-slate-900/50 rounded-xl flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-cyan-500 animate-spin" />
+        <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
       </div>
     ),
   }
@@ -91,7 +91,7 @@ export default function NetworkMapPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Globe className="w-7 h-7 text-cyan-500" />
+            <Globe className="w-7 h-7 text-blue-500" />
             Network Map
           </h1>
           <p className="text-slate-400">Interactive view of providers across Northeast Ohio</p>
@@ -134,7 +134,7 @@ export default function NetworkMapPage() {
               placeholder="Search providers or cities..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600"
             />
           </div>
           <select 
@@ -197,7 +197,7 @@ export default function NetworkMapPage() {
                 onClick={() => setSelectedProvider(p)}
                 className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors text-left ${
                   selectedProvider?.id === p.id 
-                    ? 'bg-cyan-600/20 border border-cyan-600/50' 
+                    ? 'bg-blue-600/20 border border-blue-600/50' 
                     : 'bg-slate-700/50 hover:bg-slate-700'
                 }`}
               >
@@ -208,7 +208,7 @@ export default function NetworkMapPage() {
                     <p className="text-slate-400 text-xs">{p.city} • {p.specialty}</p>
                   </div>
                 </div>
-                <span className="text-cyan-500 font-semibold">{p.providers}</span>
+                <span className="text-blue-500 font-semibold">{p.providers}</span>
               </button>
             ))}
           </div>
@@ -218,7 +218,7 @@ export default function NetworkMapPage() {
           <h2 className="text-lg font-semibold text-white mb-4">Coverage by Specialty</h2>
           <div className="space-y-3">
             {[
-              { spec: "Multi-Specialty", count: providers.filter(p => p.specialty === "Multi-Specialty").reduce((s, p) => s + p.providers, 0), color: "bg-cyan-600" },
+              { spec: "Multi-Specialty", count: providers.filter(p => p.specialty === "Multi-Specialty").reduce((s, p) => s + p.providers, 0), color: "bg-blue-600" },
               { spec: "General Medical", count: providers.filter(p => p.specialty === "General Medical").reduce((s, p) => s + p.providers, 0), color: "bg-slate-500" },
               { spec: "Family Medicine", count: providers.filter(p => p.specialty === "Family Medicine").reduce((s, p) => s + p.providers, 0), color: "bg-blue-500" },
               { spec: "Internal Medicine", count: providers.filter(p => p.specialty === "Internal Medicine").reduce((s, p) => s + p.providers, 0), color: "bg-teal-500" },
@@ -279,9 +279,9 @@ export default function NetworkMapPage() {
               </div>
               
               <div className="p-6 space-y-4">
-                <div className="bg-gradient-to-r from-cyan-600/10 to-teal-500/10 border border-cyan-600/30 rounded-lg p-4">
+                <div className="bg-gradient-to-r from-blue-600/10 to-teal-500/10 border border-blue-600/30 rounded-lg p-4">
                   <div className="flex items-center gap-3 mb-2">
-                    <Users className="w-5 h-5 text-cyan-500" />
+                    <Users className="w-5 h-5 text-blue-500" />
                     <span className="text-white font-medium">Provider Count</span>
                   </div>
                   <p className="text-4xl font-bold text-white">{selectedProvider.providers}</p>

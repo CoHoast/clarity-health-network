@@ -237,7 +237,7 @@ export default function FeeSchedulesPage() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
               activeTab === tab.id
-                ? "border-cyan-600 text-cyan-500"
+                ? "border-blue-600 text-blue-500"
                 : "border-transparent text-slate-400 hover:text-white"
             }`}
           >
@@ -267,12 +267,12 @@ export default function FeeSchedulesPage() {
             {feeSchedules.map((schedule) => (
               <div
                 key={schedule.id}
-                className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 hover:border-cyan-600/50 transition-colors"
+                className="bg-slate-800/50 rounded-xl border border-slate-700 p-6 hover:border-blue-600/50 transition-colors"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center">
-                      <Calculator className="w-5 h-5 text-cyan-500" />
+                    <div className="w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center">
+                      <Calculator className="w-5 h-5 text-blue-500" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-white">{schedule.name}</h3>
@@ -282,7 +282,7 @@ export default function FeeSchedulesPage() {
                   <div className="flex gap-1">
                     <button
                       onClick={() => setEditingSchedule(schedule)}
-                      className="p-2 text-slate-400 hover:text-cyan-500 hover:bg-slate-700 rounded-lg"
+                      className="p-2 text-slate-400 hover:text-blue-500 hover:bg-slate-700 rounded-lg"
                     >
                       <Edit className="w-4 h-4" />
                     </button>
@@ -305,7 +305,7 @@ export default function FeeSchedulesPage() {
                   {schedule.type === "percent_medicare" && (
                     <div className="flex justify-between">
                       <span className="text-slate-400">Rate</span>
-                      <span className="text-cyan-500 font-medium">{schedule.rate}%</span>
+                      <span className="text-blue-500 font-medium">{schedule.rate}%</span>
                     </div>
                   )}
                   <div className="flex justify-between">
@@ -343,7 +343,7 @@ export default function FeeSchedulesPage() {
                 placeholder="Search CPT codes..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600"
               />
             </div>
             <button
@@ -374,7 +374,7 @@ export default function FeeSchedulesPage() {
               <tbody className="divide-y divide-slate-700">
                 {filteredCodes.map((code) => (
                   <tr key={code.code} className="hover:bg-slate-800/80">
-                    <td className="px-4 py-3 font-mono text-cyan-500">{code.code}</td>
+                    <td className="px-4 py-3 font-mono text-blue-500">{code.code}</td>
                     <td className="px-4 py-3 text-white">{code.description}</td>
                     <td className="px-4 py-3">
                       <span className="px-2 py-0.5 bg-slate-700 rounded text-sm text-slate-300">{code.category}</span>
@@ -393,7 +393,7 @@ export default function FeeSchedulesPage() {
                       <div className="flex justify-end gap-1">
                         <button
                           onClick={() => setEditingCode(code)}
-                          className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-slate-700 rounded"
+                          className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-slate-700 rounded"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -429,7 +429,7 @@ export default function FeeSchedulesPage() {
                 placeholder="Search providers or NPI..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600"
               />
             </div>
             <button
@@ -460,7 +460,7 @@ export default function FeeSchedulesPage() {
                     <td className="px-4 py-3 text-white font-medium">{contract.provider}</td>
                     <td className="px-4 py-3 font-mono text-slate-400">{contract.npi}</td>
                     <td className="px-4 py-3">
-                      <span className="px-2 py-0.5 bg-cyan-600/20 text-cyan-500 rounded text-sm">
+                      <span className="px-2 py-0.5 bg-blue-600/20 text-blue-500 rounded text-sm">
                         {rateTypeLabels[contract.rateType]}
                       </span>
                     </td>
@@ -486,7 +486,7 @@ export default function FeeSchedulesPage() {
                       <div className="flex justify-end gap-1">
                         <button
                           onClick={() => setEditingContract(contract)}
-                          className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-slate-700 rounded"
+                          className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-slate-700 rounded"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -564,7 +564,7 @@ export default function FeeSchedulesPage() {
                       <div className="flex justify-end gap-1">
                         <button
                           onClick={() => setEditingModifier(modifier)}
-                          className="p-1.5 text-slate-400 hover:text-cyan-500 hover:bg-slate-700 rounded"
+                          className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-slate-700 rounded"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -592,7 +592,7 @@ export default function FeeSchedulesPage() {
           {/* Test Input */}
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <TestTube className="w-5 h-5 text-cyan-500" />
+              <TestTube className="w-5 h-5 text-blue-500" />
               Test Repricing Calculator
             </h3>
             <div className="space-y-4">
@@ -601,7 +601,7 @@ export default function FeeSchedulesPage() {
                 <select
                   value={testCptCode}
                   onChange={(e) => setTestCptCode(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-cyan-600"
+                  className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-600"
                 >
                   {cptCodes.map(code => (
                     <option key={code.code} value={code.code}>
@@ -616,7 +616,7 @@ export default function FeeSchedulesPage() {
                 <select
                   value={testProvider}
                   onChange={(e) => setTestProvider(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-cyan-600"
+                  className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-600"
                 >
                   {providerContracts.map(contract => (
                     <option key={contract.id} value={contract.id}>
@@ -633,7 +633,7 @@ export default function FeeSchedulesPage() {
                   value={testUnits}
                   onChange={(e) => setTestUnits(parseInt(e.target.value) || 1)}
                   min={1}
-                  className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-cyan-600"
+                  className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-600"
                 />
               </div>
 
@@ -710,7 +710,7 @@ export default function FeeSchedulesPage() {
                   <div className="space-y-2">
                     {testResult.breakdown.map((step, i) => (
                       <div key={i} className="flex items-center gap-2 text-sm">
-                        <div className="w-5 h-5 bg-cyan-600/20 rounded-full flex items-center justify-center text-xs text-cyan-500">
+                        <div className="w-5 h-5 bg-blue-600/20 rounded-full flex items-center justify-center text-xs text-blue-500">
                           {i + 1}
                         </div>
                         <span className="text-slate-300">{step}</span>
@@ -727,7 +727,7 @@ export default function FeeSchedulesPage() {
                   </div>
                   <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                     <p className="text-xs text-slate-400">Provider Rate</p>
-                    <p className="text-lg font-bold text-cyan-500">${testResult.providerRate.toFixed(2)}</p>
+                    <p className="text-lg font-bold text-blue-500">${testResult.providerRate.toFixed(2)}</p>
                   </div>
                   <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                     <p className="text-xs text-slate-400">Savings vs Billed*</p>

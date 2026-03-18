@@ -162,7 +162,7 @@ export default function FraudShieldPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2"><Shield className="w-7 h-7 text-cyan-500" />FraudShield AI</h1>
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2"><Shield className="w-7 h-7 text-blue-500" />FraudShield AI</h1>
           <p className="text-slate-400">AI-powered fraud detection and investigation</p>
         </div>
         <button
@@ -184,7 +184,7 @@ export default function FraudShieldPage() {
           <p className="text-2xl font-bold" style={{ color: 'white' }}>8</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Under Investigation</p>
         </div>
-        <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-4 shadow-lg">
+        <div className="bg-gradient-to-br from-teal-600 to-blue-600 rounded-xl p-4 shadow-lg">
           <p className="text-2xl font-bold" style={{ color: 'white' }}>$172K</p>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Potential Savings</p>
         </div>
@@ -204,7 +204,7 @@ export default function FraudShieldPage() {
               placeholder="Search alerts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600"
             />
           </div>
           <select value={riskFilter} onChange={(e) => setRiskFilter(e.target.value)} className="px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white">
@@ -227,7 +227,7 @@ export default function FraudShieldPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono text-sm text-cyan-500">{alert.id}</span>
+                    <span className="font-mono text-sm text-blue-500">{alert.id}</span>
                     {getRiskBadge(alert.risk)}
                     {getStatusBadge(alert.status)}
                   </div>
@@ -302,7 +302,7 @@ export default function FraudShieldPage() {
                   <h3 className="font-medium text-white mb-2">Investigation History</h3>
                   <div className="space-y-3">
                     <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-cyan-500 rounded-full mt-2"></div>
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                       <div>
                         <p className="text-slate-300 text-sm">Alert created by FraudShield AI</p>
                         <p className="text-xs text-slate-500">{selectedAlert.detected} at 9:00 AM</p>
@@ -343,15 +343,15 @@ export default function FraudShieldPage() {
               <div className="p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">Take Action on {selectedAlert.id}</h3>
                 <div className="space-y-3 mb-6">
-                  <button onClick={() => setActionType("investigate")} className={`w-full p-4 rounded-lg border text-left ${actionType === "investigate" ? "border-cyan-600 bg-cyan-600/10" : "border-slate-600 hover:border-slate-500"}`}>
+                  <button onClick={() => setActionType("investigate")} className={`w-full p-4 rounded-lg border text-left ${actionType === "investigate" ? "border-blue-600 bg-blue-600/10" : "border-slate-600 hover:border-slate-500"}`}>
                     <p className="font-medium text-white">Start Investigation</p>
                     <p className="text-sm text-slate-400">Assign to team for detailed review</p>
                   </button>
-                  <button onClick={() => setActionType("dismiss")} className={`w-full p-4 rounded-lg border text-left ${actionType === "dismiss" ? "border-cyan-600 bg-cyan-600/10" : "border-slate-600 hover:border-slate-500"}`}>
+                  <button onClick={() => setActionType("dismiss")} className={`w-full p-4 rounded-lg border text-left ${actionType === "dismiss" ? "border-blue-600 bg-blue-600/10" : "border-slate-600 hover:border-slate-500"}`}>
                     <p className="font-medium text-white">Dismiss Alert</p>
                     <p className="text-sm text-slate-400">Mark as false positive</p>
                   </button>
-                  <button onClick={() => setActionType("escalate")} className={`w-full p-4 rounded-lg border text-left ${actionType === "escalate" ? "border-cyan-600 bg-cyan-600/10" : "border-slate-600 hover:border-slate-500"}`}>
+                  <button onClick={() => setActionType("escalate")} className={`w-full p-4 rounded-lg border text-left ${actionType === "escalate" ? "border-blue-600 bg-blue-600/10" : "border-slate-600 hover:border-slate-500"}`}>
                     <p className="font-medium text-white">Escalate to SIU</p>
                     <p className="text-sm text-slate-400">Forward to Special Investigations Unit</p>
                   </button>
@@ -378,7 +378,7 @@ export default function FraudShieldPage() {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] overflow-auto bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50">
               <div className="p-4 border-b border-slate-700 flex items-center justify-between sticky top-0 bg-slate-800 z-10">
                 <h3 className="font-semibold text-white flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-cyan-500" />
+                  <Shield className="w-5 h-5 text-blue-500" />
                   FraudShield AI - Claim Scoring
                 </h3>
                 <button onClick={() => { setShowScoringModal(false); setFraudScore(null); setSelectedClaim(null); }} className="p-1 text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
@@ -393,11 +393,11 @@ export default function FraudShieldPage() {
                         <button
                           key={claim.claimId}
                           onClick={() => handleScoreClaim(claim)}
-                          className="w-full p-4 bg-slate-700/50 border border-slate-600 rounded-lg text-left hover:border-cyan-600 transition-colors"
+                          className="w-full p-4 bg-slate-700/50 border border-slate-600 rounded-lg text-left hover:border-blue-600 transition-colors"
                         >
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="font-mono text-cyan-500">{claim.claimId}</p>
+                              <p className="font-mono text-blue-500">{claim.claimId}</p>
                               <p className="text-white">{claim.memberName} • {claim.providerName}</p>
                               <p className="text-sm text-slate-400">Service Date: {claim.serviceDate}</p>
                             </div>
@@ -414,7 +414,7 @@ export default function FraudShieldPage() {
 
                 {isScoring && (
                   <div className="flex flex-col items-center justify-center py-16">
-                    <RefreshCw className="w-10 h-10 text-cyan-500 animate-spin mb-4" />
+                    <RefreshCw className="w-10 h-10 text-blue-500 animate-spin mb-4" />
                     <p className="text-white font-medium text-lg">Analyzing claim for fraud indicators...</p>
                     <p className="text-slate-400 text-sm mt-2">Running 20+ detection rules, statistical analysis, and ML scoring</p>
                   </div>
@@ -473,7 +473,7 @@ export default function FraudShieldPage() {
                     {/* Score Breakdown */}
                     <div className="grid grid-cols-4 gap-4">
                       <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                        <p className="text-2xl font-bold text-cyan-500">{fraudScore.ruleScore}</p>
+                        <p className="text-2xl font-bold text-blue-500">{fraudScore.ruleScore}</p>
                         <p className="text-xs text-slate-400">Rule Score</p>
                         <p className="text-xs text-slate-500">35% weight</p>
                       </div>
@@ -483,7 +483,7 @@ export default function FraudShieldPage() {
                         <p className="text-xs text-slate-500">25% weight</p>
                       </div>
                       <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                        <p className="text-2xl font-bold text-cyan-400">{Math.round(fraudScore.mlScore)}</p>
+                        <p className="text-2xl font-bold text-blue-400">{Math.round(fraudScore.mlScore)}</p>
                         <p className="text-xs text-slate-400">ML Score</p>
                         <p className="text-xs text-slate-500">30% weight</p>
                       </div>
@@ -505,7 +505,7 @@ export default function FraudShieldPage() {
                           {fraudScore.triggeredRules.map((rule, i) => (
                             <div key={i} className="bg-slate-800/50 rounded-lg p-3 border-l-4 border-red-500">
                               <div className="flex items-center justify-between mb-1">
-                                <span className="font-mono text-xs text-cyan-500">{rule.ruleId}</span>
+                                <span className="font-mono text-xs text-blue-500">{rule.ruleId}</span>
                                 <div className="flex items-center gap-2">
                                   <span className={`px-2 py-0.5 text-xs rounded ${
                                     rule.severity === 'critical' ? 'bg-red-500/20 text-red-400' :

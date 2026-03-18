@@ -157,7 +157,7 @@ export default function CredentialingDashboardPage() {
               <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
                 Recent Applications
               </h2>
-              <Link href="/admin/credentialing/applications" className="text-cyan-600 hover:text-cyan-700 text-sm font-medium flex items-center gap-1">
+              <Link href="/admin/credentialing/applications" className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
                 View All <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -173,7 +173,7 @@ export default function CredentialingDashboardPage() {
                   <div className="flex items-center gap-4">
                     <div className={cn(
                       "w-10 h-10 rounded-full flex items-center justify-center",
-                      isDark ? "bg-cyan-900/50 text-cyan-400" : "bg-cyan-100 text-cyan-600"
+                      isDark ? "bg-blue-900/50 text-blue-400" : "bg-blue-100 text-blue-600"
                     )}>
                       <BadgeCheck className="w-5 h-5" />
                     </div>
@@ -219,7 +219,7 @@ export default function CredentialingDashboardPage() {
                   {alerts.length} Active
                 </span>
               </div>
-              <Link href="/admin/credentialing/monitoring" className="text-cyan-600 hover:text-cyan-700 text-sm font-medium flex items-center gap-1">
+              <Link href="/admin/credentialing/monitoring" className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
                 View All <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -336,7 +336,7 @@ export default function CredentialingDashboardPage() {
               <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
                 Document Requests
               </h2>
-              <Link href="/admin/credentialing/document-requests" className="text-cyan-600 hover:text-cyan-700 text-sm">
+              <Link href="/admin/credentialing/document-requests" className="text-blue-600 hover:text-blue-700 text-sm">
                 View All
               </Link>
             </div>
@@ -358,7 +358,7 @@ export default function CredentialingDashboardPage() {
                     <div
                       className={cn(
                         "h-1.5 rounded-full",
-                        req.progress === 100 ? "bg-green-500" : "bg-cyan-500"
+                        req.progress === 100 ? "bg-green-500" : "bg-blue-500"
                       )}
                       style={{ width: `${req.progress}%` }}
                     />
@@ -380,7 +380,7 @@ export default function CredentialingDashboardPage() {
               <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
                 Re-Credentialing Due
               </h2>
-              <Link href="/admin/credentialing/recredentialing" className="text-cyan-600 hover:text-cyan-700 text-sm">
+              <Link href="/admin/credentialing/recredentialing" className="text-blue-600 hover:text-blue-700 text-sm">
                 View All
               </Link>
             </div>

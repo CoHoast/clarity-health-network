@@ -51,7 +51,7 @@ export default function ReferencePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-teal-500 rounded-xl flex items-center justify-center">
             <Database className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -71,14 +71,14 @@ export default function ReferencePage() {
             key={codeSet.id}
             onClick={() => setSelectedCodeSet(codeSet.id)}
             className={`bg-slate-800/50 rounded-xl border p-5 text-left transition-all ${
-              selectedCodeSet === codeSet.id ? "border-cyan-600 ring-1 ring-cyan-600" : "border-slate-700 hover:border-slate-600"
+              selectedCodeSet === codeSet.id ? "border-blue-600 ring-1 ring-blue-600" : "border-slate-700 hover:border-slate-600"
             }`}
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
-                {codeSet.id === "NDC" ? <Pill className="w-5 h-5 text-cyan-400" /> :
-                 codeSet.id === "ICD10" ? <Stethoscope className="w-5 h-5 text-cyan-400" /> :
-                 <Hash className="w-5 h-5 text-cyan-400" />}
+              <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                {codeSet.id === "NDC" ? <Pill className="w-5 h-5 text-blue-400" /> :
+                 codeSet.id === "ICD10" ? <Stethoscope className="w-5 h-5 text-blue-400" /> :
+                 <Hash className="w-5 h-5 text-blue-400" />}
               </div>
               <div>
                 <h3 className="font-semibold text-white">{codeSet.name}</h3>
@@ -113,7 +113,7 @@ export default function ReferencePage() {
                 placeholder="Search by code or description..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-cyan-600"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600"
               />
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function ReferencePage() {
                 c.description.toLowerCase().includes(searchQuery.toLowerCase())
               ).map((code) => (
                 <tr key={code.code} className="hover:bg-slate-800/80">
-                  <td className="px-6 py-3 font-mono text-cyan-500">{code.code}</td>
+                  <td className="px-6 py-3 font-mono text-blue-500">{code.code}</td>
                   <td className="px-6 py-3 text-white">{code.description}</td>
                   <td className="px-6 py-3">
                     <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">{code.category}</span>

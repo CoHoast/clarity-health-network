@@ -361,7 +361,7 @@ export default function MonitoringPage() {
               <span className={cn(
                 "px-2 py-0.5 rounded-full text-xs",
                 activeTab === tab.id
-                  ? "bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-400"
+                  ? "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400"
                   : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
               )}>
                 {tab.count}
@@ -516,16 +516,16 @@ export default function MonitoringPage() {
               isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
             )}>
               <h2 className={cn("text-lg font-semibold mb-4 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
-                <Clock className="w-5 h-5 text-cyan-500" />
+                <Clock className="w-5 h-5 text-blue-500" />
                 Next Scheduled Scans
               </h2>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 rounded-lg bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
                   <div>
                     <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>OIG/SAM Daily</p>
-                    <p className="text-xs text-cyan-600 dark:text-cyan-400">487 providers</p>
+                    <p className="text-xs text-blue-600 dark:text-blue-400">487 providers</p>
                   </div>
-                  <span className="text-sm font-medium text-cyan-700 dark:text-cyan-400">
+                  <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
                     Tomorrow 2:00 AM
                   </span>
                 </div>
@@ -718,7 +718,7 @@ export default function MonitoringPage() {
                   <div className="flex items-center gap-4">
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked={item.enabled} className="sr-only peer" />
-                      <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                      <div className="w-9 h-5 bg-slate-300 peer-checked:bg-blue-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                     </label>
                     <div>
                       <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
@@ -780,10 +780,10 @@ export default function MonitoringPage() {
                     </span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked={rule.enabled} className="sr-only peer" />
-                      <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                      <div className="w-9 h-5 bg-slate-300 peer-checked:bg-blue-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                     </label>
                   </div>
-                  <p className={cn("text-sm font-medium text-cyan-600 dark:text-cyan-400 mb-1")}>
+                  <p className={cn("text-sm font-medium text-blue-600 dark:text-blue-400 mb-1")}>
                     {rule.action}
                   </p>
                   <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
@@ -804,7 +804,7 @@ export default function MonitoringPage() {
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" defaultChecked className="sr-only peer" />
-                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-blue-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                   </label>
                 </div>
                 <div className="flex items-center justify-between">
@@ -813,7 +813,7 @@ export default function MonitoringPage() {
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" defaultChecked className="sr-only peer" />
-                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-blue-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                   </label>
                 </div>
                 <div className="flex items-center justify-between">
@@ -822,7 +822,7 @@ export default function MonitoringPage() {
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" defaultChecked className="sr-only peer" />
-                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-blue-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                   </label>
                 </div>
               </div>
