@@ -19,12 +19,14 @@ import {
   AlertCircle,
   TrendingUp,
   Eye,
+  Search,
 } from "lucide-react";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { StatCard } from "@/components/admin/ui/StatCard";
 import { Button } from "@/components/admin/ui/Button";
 import { Badge } from "@/components/admin/ui/Badge";
 import { cn } from "@/lib/utils";
+import { VerificationModal } from "@/components/admin/VerificationModal";
 
 // Dashboard stats
 const stats = [
@@ -83,6 +85,24 @@ const getSeverityColor = (severity: string) => {
 
 export default function CredentialingDashboardPage() {
   const { isDark } = useTheme();
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [verifyNpi, setVerifyNpi] = useState("");
+  const [verifyProvider, setVerifyProvider] = useState<{
+    name: string;
+    npi: string;
+    firstName?: string;
+    lastName?: string;
+  } | null>(null);
+
+  const handleQuickVerify = () => {
+    if (verifyNpi.length === 10) {
+      setVerifyProvider({
+        name: `NPI: ${verifyNpi}`,
+        npi: verifyNpi,
+      });
+      setShowVerifyModal(true);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -237,6 +257,46 @@ export default function CredentialingDashboardPage() {
 
         {/* Right Column - Quick Actions & Status */}
         <div className="space-y-6">
+          {/* Quick NPI Verification */}
+          <div className={cn(
+            "rounded-xl border p-6",
+            isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+          )}>
+            <h2 className={cn("text-lg font-semibold mb-4", isDark ? "text-white" : "text-slate-900")}>
+              Quick Verification
+            </h2>
+            <div className="space-y-3">
+              <div>
+                <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
+                  Enter NPI to Verify
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={verifyNpi}
+                    onChange={(e) => setVerifyNpi(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                    placeholder="1234567890"
+                    maxLength={10}
+                    className={cn(
+                      "flex-1 px-3 py-2 rounded-lg border text-sm font-mono",
+                      isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400" : "bg-white border-slate-200 text-slate-900 placeholder-slate-400"
+                    )}
+                  />
+                  <Button 
+                    variant="primary" 
+                    onClick={handleQuickVerify}
+                    disabled={verifyNpi.length !== 10}
+                  >
+                    <Search className="w-4 h-4" />
+                  </Button>
+                </div>
+                <p className={cn("text-xs mt-1", isDark ? "text-slate-500" : "text-slate-400")}>
+                  Checks NPPES, OIG, and SAM.gov databases
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Quick Actions */}
           <div className={cn(
             "rounded-xl border p-6",
@@ -264,10 +324,6 @@ export default function CredentialingDashboardPage() {
                   Request Documents
                 </Button>
               </Link>
-              <Button variant="secondary" className="w-full justify-start">
-                <RefreshCw className="w-4 h-4 mr-3" />
-                Run Verification
-              </Button>
             </div>
           </div>
 
@@ -397,6 +453,19 @@ export default function CredentialingDashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Verification Modal */}
+      {verifyProvider && (
+        <VerificationModal
+          isOpen={showVerifyModal}
+          onClose={() => {
+            setShowVerifyModal(false);
+            setVerifyProvider(null);
+            setVerifyNpi("");
+          }}
+          provider={verifyProvider}
+        />
+      )}
     </div>
   );
 }
