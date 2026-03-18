@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText,
   Send,
@@ -22,6 +23,9 @@ import {
   FileSignature,
   XCircle,
   AlertCircle,
+  Loader2,
+  Check,
+  X,
 } from "lucide-react";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { StatCard } from "@/components/admin/ui/StatCard";
@@ -168,6 +172,85 @@ export default function CredentialingContractsPage() {
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [selectedContract, setSelectedContract] = useState<typeof contracts[0] | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [signerName, setSignerName] = useState("");
+  const [signerTitle, setSignerTitle] = useState("");
+  const [signatureDate, setSignatureDate] = useState("");
+  const [activateProvider, setActivateProvider] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Show toast helper
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  // Handle PDF download
+  const handleDownloadPdf = (contract: typeof contracts[0], e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setSelectedContract(contract);
+    setShowPdfModal(true);
+  };
+
+  // Handle send for signature
+  const handleSendForSignature = async (contract: typeof contracts[0], e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setSelectedContract(contract);
+    setShowSendModal(true);
+  };
+
+  // Confirm send for signature
+  const confirmSendForSignature = async () => {
+    setIsProcessing(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsProcessing(false);
+    setShowSendModal(false);
+    showToast(`Contract sent to ${selectedContract?.provider} for signature`);
+    setSelectedContract(null);
+  };
+
+  // Handle file upload
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        showToast('Please upload a PDF file', 'error');
+        return;
+      }
+      setUploadedFile(file);
+    }
+  };
+
+  // Confirm upload signed contract
+  const confirmUpload = async () => {
+    if (!uploadedFile || !signerName || !signatureDate) {
+      showToast('Please fill in all required fields', 'error');
+      return;
+    }
+    setIsProcessing(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsProcessing(false);
+    setShowUploadModal(false);
+    showToast(`Contract uploaded and ${activateProvider ? 'provider activated' : 'marked as signed'} successfully`);
+    // Reset form
+    setUploadedFile(null);
+    setSignerName("");
+    setSignerTitle("");
+    setSignatureDate("");
+    setActivateProvider(true);
+    setSelectedContract(null);
+  };
+
+  // Handle row click
+  const handleRowClick = (contract: typeof contracts[0]) => {
+    setSelectedContract(contract);
+  };
 
   const filteredContracts = contracts.filter((contract) => {
     const matchesSearch =
@@ -277,7 +360,11 @@ export default function CredentialingContractsPage() {
               {filteredContracts.map((contract) => (
                 <tr
                   key={contract.id}
-                  className={cn("border-b", isDark ? "border-slate-700 hover:bg-slate-800" : "border-slate-100 hover:bg-slate-50")}
+                  onClick={() => handleRowClick(contract)}
+                  className={cn(
+                    "border-b cursor-pointer transition-colors",
+                    isDark ? "border-slate-700 hover:bg-slate-700/50" : "border-slate-100 hover:bg-blue-50/50"
+                  )}
                 >
                   <td className="px-4 py-3">
                     <span className="font-mono text-sm text-blue-600 dark:text-blue-400">{contract.id}</span>
@@ -301,21 +388,25 @@ export default function CredentialingContractsPage() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-2">
+                    <div className="flex items-center justify-end gap-1">
                       <button
-                        onClick={() => setSelectedContract(contract)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedContract(contract);
+                        }}
                         className={cn(
                           "p-2 rounded-lg transition-colors",
-                          isDark ? "hover:bg-slate-700" : "hover:bg-slate-100"
+                          isDark ? "hover:bg-slate-600" : "hover:bg-slate-200"
                         )}
                         title="View Details"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
                       <button
+                        onClick={(e) => handleDownloadPdf(contract, e)}
                         className={cn(
                           "p-2 rounded-lg transition-colors",
-                          isDark ? "hover:bg-slate-700" : "hover:bg-slate-100"
+                          isDark ? "hover:bg-slate-600" : "hover:bg-slate-200"
                         )}
                         title="Download PDF"
                       >
@@ -323,9 +414,10 @@ export default function CredentialingContractsPage() {
                       </button>
                       {contract.status === "draft" && (
                         <button
+                          onClick={(e) => handleSendForSignature(contract, e)}
                           className={cn(
                             "p-2 rounded-lg transition-colors text-blue-600",
-                            isDark ? "hover:bg-slate-700" : "hover:bg-slate-100"
+                            isDark ? "hover:bg-slate-600" : "hover:bg-blue-100"
                           )}
                           title="Send for Signature"
                         >
@@ -334,13 +426,14 @@ export default function CredentialingContractsPage() {
                       )}
                       {contract.status === "pending_signature" && (
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setSelectedContract(contract);
                             setShowUploadModal(true);
                           }}
                           className={cn(
                             "p-2 rounded-lg transition-colors text-green-600",
-                            isDark ? "hover:bg-slate-700" : "hover:bg-slate-100"
+                            isDark ? "hover:bg-slate-600" : "hover:bg-green-100"
                           )}
                           title="Upload Signed Contract"
                         >
@@ -499,12 +592,17 @@ export default function CredentialingContractsPage() {
               <Button variant="secondary" onClick={() => setSelectedContract(null)}>
                 Close
               </Button>
-              <Button variant="secondary">
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setShowPdfModal(true);
+                }}
+              >
                 <Download className="w-4 h-4 mr-2" />
                 Download PDF
               </Button>
               {selectedContract.status === "draft" && (
-                <Button>
+                <Button onClick={() => setShowSendModal(true)}>
                   <Send className="w-4 h-4 mr-2" />
                   Send for Signature
                 </Button>
@@ -520,134 +618,427 @@ export default function CredentialingContractsPage() {
         </div>
       )}
 
-      {/* Upload Signed Contract Modal */}
-      {showUploadModal && selectedContract && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
             className={cn(
-              "w-full max-w-lg rounded-xl shadow-xl",
-              isDark ? "bg-slate-800" : "bg-white"
+              "fixed top-4 right-4 z-[60] px-4 py-3 rounded-lg shadow-lg flex items-center gap-2",
+              toast.type === 'success' ? "bg-green-600 text-white" : "bg-red-600 text-white"
             )}
           >
-            <div className={cn("flex items-center justify-between p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
-              <div>
-                <h2 className="text-lg font-semibold">Upload Signed Contract</h2>
-                <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                  {selectedContract.provider}
-                </p>
-              </div>
-              <button
-                onClick={() => {
-                  setShowUploadModal(false);
-                  setSelectedContract(null);
-                }}
-                className={cn("p-2 rounded-lg", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}
-              >
-                <XCircle className="w-5 h-5" />
-              </button>
-            </div>
+            {toast.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+            {toast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            <div className="p-6 space-y-6">
-              {/* Upload Area */}
-              <div
-                className={cn(
-                  "border-2 border-dashed rounded-lg p-8 text-center",
-                  isDark ? "border-slate-600 hover:border-slate-500" : "border-slate-300 hover:border-slate-400"
-                )}
-              >
-                <Upload className={cn("w-10 h-10 mx-auto mb-4", isDark ? "text-slate-500" : "text-slate-400")} />
-                <p className="font-medium mb-1">Drop signed contract here</p>
-                <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                  or click to browse (PDF only)
-                </p>
-                <input type="file" accept=".pdf" className="hidden" />
-              </div>
-
-              {/* Signature Details */}
-              <div className="space-y-4">
+      {/* PDF Preview Modal */}
+      <AnimatePresence>
+        {showPdfModal && selectedContract && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+            onClick={() => { setShowPdfModal(false); setSelectedContract(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-4xl rounded-xl overflow-hidden max-h-[90vh] flex flex-col",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("p-4 border-b flex items-center justify-between", isDark ? "border-slate-700" : "border-slate-200")}>
                 <div>
-                  <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
-                    Signed By (Name)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., Dr. Sarah Mitchell"
-                    className={cn(
-                      "w-full px-4 py-2 rounded-lg border text-sm",
-                      isDark
-                        ? "bg-slate-900 border-slate-700 text-white"
-                        : "bg-white border-slate-300 text-slate-900"
-                    )}
-                  />
+                  <h3 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    Contract Preview
+                  </h3>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedContract.id} • {selectedContract.provider}
+                  </p>
                 </div>
-                <div>
-                  <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., Medical Director"
-                    className={cn(
-                      "w-full px-4 py-2 rounded-lg border text-sm",
-                      isDark
-                        ? "bg-slate-900 border-slate-700 text-white"
-                        : "bg-white border-slate-300 text-slate-900"
-                    )}
-                  />
-                </div>
-                <div>
-                  <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
-                    Signature Date
-                  </label>
-                  <input
-                    type="date"
-                    className={cn(
-                      "w-full px-4 py-2 rounded-lg border text-sm",
-                      isDark
-                        ? "bg-slate-900 border-slate-700 text-white"
-                        : "bg-white border-slate-300 text-slate-900"
-                    )}
-                  />
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      showToast('Contract PDF downloaded');
+                      setShowPdfModal(false);
+                      setSelectedContract(null);
+                    }}
+                  >
+                    <Download className="w-4 h-4 mr-1" />
+                    Download
+                  </Button>
+                  <button
+                    onClick={() => { setShowPdfModal(false); setSelectedContract(null); }}
+                    className={cn("p-2 rounded-lg", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
 
-              {/* Activate Provider */}
-              <div
-                className={cn(
-                  "p-4 rounded-lg",
-                  isDark ? "bg-blue-900/20 border border-blue-800" : "bg-blue-50 border border-blue-200"
-                )}
-              >
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded" />
-                  <div>
-                    <p className="font-medium">Activate Provider</p>
-                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-600")}>
-                      Set provider status to Active and send welcome email
+              {/* Simulated PDF Content */}
+              <div className="flex-1 overflow-auto p-6 bg-slate-100 dark:bg-slate-900 min-h-[500px]">
+                <div className={cn("max-w-2xl mx-auto rounded-lg shadow-lg p-8", isDark ? "bg-slate-800" : "bg-white")}>
+                  {/* Contract Header */}
+                  <div className="text-center border-b pb-6 mb-6" style={{ borderColor: isDark ? '#334155' : '#e2e8f0' }}>
+                    <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>
+                      PROVIDER PARTICIPATION AGREEMENT
+                    </h1>
+                    <p className={cn("mt-2", isDark ? "text-slate-400" : "text-slate-600")}>
+                      TrueCare Health Network
                     </p>
+                    <p className="text-sm mt-1 font-mono text-blue-600">{selectedContract.id}</p>
                   </div>
-                </label>
-              </div>
-            </div>
 
-            <div className={cn("flex items-center justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setShowUploadModal(false);
-                  setSelectedContract(null);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button>
-                <CheckCircle className="w-4 h-4 mr-2" />
-                Confirm & Activate
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+                  {/* Contract Body */}
+                  <div className="space-y-6">
+                    <div>
+                      <h2 className={cn("text-lg font-semibold mb-2", isDark ? "text-white" : "text-slate-900")}>
+                        1. PARTIES
+                      </h2>
+                      <p className={cn("text-sm leading-relaxed", isDark ? "text-slate-300" : "text-slate-700")}>
+                        This Agreement is entered into by and between TrueCare Health Network ("Network") 
+                        and <strong>{selectedContract.provider}</strong> doing business as <strong>{selectedContract.practice}</strong> ("Provider").
+                      </p>
+                    </div>
+
+                    <div>
+                      <h2 className={cn("text-lg font-semibold mb-2", isDark ? "text-white" : "text-slate-900")}>
+                        2. TERM
+                      </h2>
+                      <p className={cn("text-sm leading-relaxed", isDark ? "text-slate-300" : "text-slate-700")}>
+                        This Agreement shall be effective as of <strong>{selectedContract.effectiveDate || "[EFFECTIVE DATE]"}</strong> and 
+                        shall continue through <strong>{selectedContract.termDate || "[TERM DATE]"}</strong>, unless 
+                        terminated earlier in accordance with the terms herein.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h2 className={cn("text-lg font-semibold mb-2", isDark ? "text-white" : "text-slate-900")}>
+                        3. COMPENSATION
+                      </h2>
+                      <p className={cn("text-sm leading-relaxed", isDark ? "text-slate-300" : "text-slate-700")}>
+                        Network shall compensate Provider according to the following rate schedule: 
+                        <strong> {selectedContract.rateSchedule}</strong>.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h2 className={cn("text-lg font-semibold mb-2", isDark ? "text-white" : "text-slate-900")}>
+                        4. PROVIDER OBLIGATIONS
+                      </h2>
+                      <p className={cn("text-sm leading-relaxed", isDark ? "text-slate-300" : "text-slate-700")}>
+                        Provider agrees to maintain all required licenses, certifications, and malpractice 
+                        insurance coverage throughout the term of this Agreement...
+                      </p>
+                    </div>
+
+                    {/* Signature Block */}
+                    <div className="mt-8 pt-6 border-t" style={{ borderColor: isDark ? '#334155' : '#e2e8f0' }}>
+                      <div className="grid grid-cols-2 gap-8">
+                        <div>
+                          <p className={cn("text-sm font-medium mb-4", isDark ? "text-slate-400" : "text-slate-500")}>
+                            NETWORK:
+                          </p>
+                          <div className="border-b mb-2" style={{ borderColor: isDark ? '#475569' : '#cbd5e1' }}></div>
+                          <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-600")}>
+                            TrueCare Health Network
+                          </p>
+                          <p className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>Date: _______________</p>
+                        </div>
+                        <div>
+                          <p className={cn("text-sm font-medium mb-4", isDark ? "text-slate-400" : "text-slate-500")}>
+                            PROVIDER:
+                          </p>
+                          <div className="border-b mb-2" style={{ borderColor: isDark ? '#475569' : '#cbd5e1' }}></div>
+                          <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-600")}>
+                            {selectedContract.provider}
+                          </p>
+                          <p className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>Date: _______________</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Send for Signature Modal */}
+      <AnimatePresence>
+        {showSendModal && selectedContract && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => { setShowSendModal(false); setSelectedContract(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn("w-full max-w-md rounded-xl shadow-xl", isDark ? "bg-slate-800" : "bg-white")}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                  Send for Signature
+                </h2>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                  <p className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedContract.provider}
+                  </p>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedContract.practice}
+                  </p>
+                  <p className="text-sm font-mono text-blue-600 mt-1">{selectedContract.id}</p>
+                </div>
+
+                <p className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                  This will email the contract to the provider for electronic signature. 
+                  They will receive a link to review and sign the document.
+                </p>
+
+                <div className={cn("p-3 rounded-lg text-sm", isDark ? "bg-blue-900/20 border border-blue-800" : "bg-blue-50 border border-blue-200")}>
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-blue-500" />
+                    <span className={isDark ? "text-blue-300" : "text-blue-700"}>
+                      Email will be sent to provider's registered address
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={cn("flex items-center justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button variant="secondary" onClick={() => { setShowSendModal(false); setSelectedContract(null); }}>
+                  Cancel
+                </Button>
+                <Button onClick={confirmSendForSignature} disabled={isProcessing}>
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Send Contract
+                    </>
+                  )}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Upload Signed Contract Modal */}
+      <AnimatePresence>
+        {showUploadModal && selectedContract && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => {
+              setShowUploadModal(false);
+              setSelectedContract(null);
+              setUploadedFile(null);
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn("w-full max-w-lg rounded-xl shadow-xl", isDark ? "bg-slate-800" : "bg-white")}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("flex items-center justify-between p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <div>
+                  <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    Upload Signed Contract
+                  </h2>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedContract.provider}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowUploadModal(false);
+                    setSelectedContract(null);
+                    setUploadedFile(null);
+                  }}
+                  className={cn("p-2 rounded-lg", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Upload Area */}
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className={cn(
+                    "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+                    uploadedFile
+                      ? "border-green-500 bg-green-50 dark:bg-green-900/20"
+                      : isDark
+                      ? "border-slate-600 hover:border-blue-500"
+                      : "border-slate-300 hover:border-blue-400"
+                  )}
+                >
+                  {uploadedFile ? (
+                    <>
+                      <CheckCircle className="w-10 h-10 mx-auto mb-4 text-green-500" />
+                      <p className="font-medium mb-1 text-green-600">{uploadedFile.name}</p>
+                      <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                        {(uploadedFile.size / 1024).toFixed(1)} KB • Click to change
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className={cn("w-10 h-10 mx-auto mb-4", isDark ? "text-slate-500" : "text-slate-400")} />
+                      <p className={cn("font-medium mb-1", isDark ? "text-white" : "text-slate-900")}>
+                        Drop signed contract here
+                      </p>
+                      <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                        or click to browse (PDF only)
+                      </p>
+                    </>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                </div>
+
+                {/* Signature Details */}
+                <div className="space-y-4">
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
+                      Signed By (Name) <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={signerName}
+                      onChange={(e) => setSignerName(e.target.value)}
+                      placeholder="e.g., Dr. Sarah Mitchell"
+                      className={cn(
+                        "w-full px-4 py-2 rounded-lg border text-sm",
+                        isDark
+                          ? "bg-slate-900 border-slate-700 text-white"
+                          : "bg-white border-slate-300 text-slate-900"
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
+                      Title
+                    </label>
+                    <input
+                      type="text"
+                      value={signerTitle}
+                      onChange={(e) => setSignerTitle(e.target.value)}
+                      placeholder="e.g., Medical Director"
+                      className={cn(
+                        "w-full px-4 py-2 rounded-lg border text-sm",
+                        isDark
+                          ? "bg-slate-900 border-slate-700 text-white"
+                          : "bg-white border-slate-300 text-slate-900"
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
+                      Signature Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      value={signatureDate}
+                      onChange={(e) => setSignatureDate(e.target.value)}
+                      className={cn(
+                        "w-full px-4 py-2 rounded-lg border text-sm",
+                        isDark
+                          ? "bg-slate-900 border-slate-700 text-white"
+                          : "bg-white border-slate-300 text-slate-900"
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Activate Provider */}
+                <div
+                  className={cn(
+                    "p-4 rounded-lg",
+                    isDark ? "bg-blue-900/20 border border-blue-800" : "bg-blue-50 border border-blue-200"
+                  )}
+                >
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={activateProvider}
+                      onChange={(e) => setActivateProvider(e.target.checked)}
+                      className="w-4 h-4 rounded"
+                    />
+                    <div>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>Activate Provider</p>
+                      <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-600")}>
+                        Set provider status to Active and send welcome email
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div className={cn("flex items-center justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setShowUploadModal(false);
+                    setSelectedContract(null);
+                    setUploadedFile(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={confirmUpload} disabled={isProcessing || !uploadedFile || !signerName || !signatureDate}>
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Confirm & {activateProvider ? 'Activate' : 'Save'}
+                    </>
+                  )}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Generate Contract Modal */}
       {showGenerateModal && (
