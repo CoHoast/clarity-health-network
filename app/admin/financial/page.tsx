@@ -1,5 +1,8 @@
 "use client";
 
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
+
 import { useState } from "react";
 import { DollarSign, TrendingUp, TrendingDown, Download, Calendar, CreditCard, FileText, PieChart } from "lucide-react";
 

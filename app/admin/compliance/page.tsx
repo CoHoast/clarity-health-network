@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { AlertTriangle, CheckCircle, Shield, Clock, X, FileText, Calendar, User, Building2, ChevronRight, Download, Eye, RefreshCw, Filter, Search, AlertCircle, TrendingUp, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
 
 type ComplianceStatus = "compliant" | "attention" | "critical";
 type TabId = "overview" | "issues" | "audits" | "policies" | "training";
@@ -51,6 +53,7 @@ const trainingModules = [
 ];
 
 export default function CompliancePage() {
+  const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [selectedItem, setSelectedItem] = useState<typeof complianceChecklist[0] | null>(null);
   const [selectedIssue, setSelectedIssue] = useState<typeof openIssues[0] | null>(null);
@@ -92,12 +95,15 @@ export default function CompliancePage() {
             <Shield className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Compliance Center</h1>
-            <p className="text-slate-400">Track regulatory compliance and audits</p>
+            <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>Compliance Center</h1>
+            <p className={isDark ? "text-slate-400" : "text-slate-500"}>Track regulatory compliance and audits</p>
           </div>
         </div>
         <div className="flex gap-3">
-          <button className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 border border-slate-600">
+          <button className={cn(
+            "inline-flex items-center gap-2 px-4 py-2 rounded-lg border",
+            isDark ? "bg-slate-700 text-white hover:bg-slate-600 border-slate-600" : "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
+          )}>
             <Download className="w-4 h-4" />
             Export Report
           </button>

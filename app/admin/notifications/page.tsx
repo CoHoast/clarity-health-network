@@ -1,5 +1,8 @@
 "use client";
 
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
+
 import { useState } from "react";
 import { Bell, Mail, MessageSquare, Settings, CheckCircle, AlertTriangle, Clock, Calendar, Building2, FileText, Trash2, Eye, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
