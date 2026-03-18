@@ -1,5 +1,8 @@
 "use client";
 
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
+
 import { ArrowLeft, FileText, User, Building2, Calendar, DollarSign, Clock, CheckCircle, AlertTriangle, X, Send, Calculator, RefreshCw, TrendingDown, Info, ClipboardCheck, ShieldCheck, XCircle, Pause } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";

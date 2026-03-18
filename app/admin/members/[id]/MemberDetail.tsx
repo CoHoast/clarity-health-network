@@ -1,4 +1,7 @@
 "use client";
+
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
 import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Shield, CreditCard, FileText, CheckCircle, AlertTriangle, X, Edit } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
