@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText,
   CheckCircle,
@@ -20,6 +22,9 @@ import {
   TrendingUp,
   Eye,
   Search,
+  Mail,
+  Loader2,
+  X,
 } from "lucide-react";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { StatCard } from "@/components/admin/ui/StatCard";
@@ -85,6 +90,7 @@ const getSeverityColor = (severity: string) => {
 
 export default function CredentialingDashboardPage() {
   const { isDark } = useTheme();
+  const router = useRouter();
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [verifyNpi, setVerifyNpi] = useState("");
   const [verifyProvider, setVerifyProvider] = useState<{
@@ -93,6 +99,18 @@ export default function CredentialingDashboardPage() {
     firstName?: string;
     lastName?: string;
   } | null>(null);
+  
+  // Alert action states
+  const [selectedAlert, setSelectedAlert] = useState<typeof alerts[0] | null>(null);
+  const [showReminderModal, setShowReminderModal] = useState(false);
+  const [showRequestDocModal, setShowRequestDocModal] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const handleQuickVerify = () => {
     if (verifyNpi.length === 10) {
@@ -102,6 +120,37 @@ export default function CredentialingDashboardPage() {
       });
       setShowVerifyModal(true);
     }
+  };
+
+  const handleAlertAction = (alert: typeof alerts[0]) => {
+    if (alert.action === "Immediate Review Required") {
+      // Navigate to review page with provider context
+      router.push("/admin/credentialing/review");
+    } else if (alert.action === "Send Renewal Reminder") {
+      setSelectedAlert(alert);
+      setShowReminderModal(true);
+    } else if (alert.action === "Request Updated COI") {
+      setSelectedAlert(alert);
+      setShowRequestDocModal(true);
+    }
+  };
+
+  const confirmSendReminder = async () => {
+    setIsProcessing(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsProcessing(false);
+    setShowReminderModal(false);
+    showToast(`Renewal reminder sent to ${selectedAlert?.provider}`);
+    setSelectedAlert(null);
+  };
+
+  const confirmRequestDoc = async () => {
+    setIsProcessing(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsProcessing(false);
+    setShowRequestDocModal(false);
+    showToast(`COI request sent to ${selectedAlert?.provider}`);
+    setSelectedAlert(null);
   };
 
   return (
@@ -245,7 +294,14 @@ export default function CredentialingDashboardPage() {
                       <p className="text-sm mt-1">{alert.issue}</p>
                       <p className="text-xs mt-1 opacity-75">Detected: {alert.detected}</p>
                     </div>
-                    <Button variant="secondary" size="sm">
+                    <Button 
+                      variant="secondary" 
+                      size="sm"
+                      onClick={() => handleAlertAction(alert)}
+                    >
+                      {alert.action === "Send Renewal Reminder" && <Mail className="w-3 h-3 mr-1" />}
+                      {alert.action === "Request Updated COI" && <Send className="w-3 h-3 mr-1" />}
+                      {alert.action === "Immediate Review Required" && <Eye className="w-3 h-3 mr-1" />}
                       {alert.action}
                     </Button>
                   </div>
@@ -466,6 +522,178 @@ export default function CredentialingDashboardPage() {
           provider={verifyProvider}
         />
       )}
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={cn(
+              "fixed top-4 right-4 z-[60] px-4 py-3 rounded-lg shadow-lg flex items-center gap-2",
+              toast.type === 'success' ? "bg-green-600 text-white" : "bg-red-600 text-white"
+            )}
+          >
+            {toast.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+            {toast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Send Renewal Reminder Modal */}
+      <AnimatePresence>
+        {showReminderModal && selectedAlert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => { setShowReminderModal(false); setSelectedAlert(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn("w-full max-w-md rounded-xl", isDark ? "bg-slate-800" : "bg-white")}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                  Send Renewal Reminder
+                </h2>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedAlert.provider}
+                  </p>
+                  <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedAlert.issue}
+                  </p>
+                </div>
+
+                <p className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                  This will send an email reminder to the provider about their upcoming license renewal deadline.
+                </p>
+
+                <div className={cn("p-3 rounded-lg", isDark ? "bg-amber-900/20 border border-amber-800" : "bg-amber-50 border border-amber-200")}>
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-amber-500" />
+                    <span className={cn("text-sm", isDark ? "text-amber-300" : "text-amber-700")}>
+                      License expires in 28 days
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={cn("flex items-center justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button variant="secondary" onClick={() => { setShowReminderModal(false); setSelectedAlert(null); }}>
+                  Cancel
+                </Button>
+                <Button onClick={confirmSendReminder} disabled={isProcessing}>
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="w-4 h-4 mr-2" />
+                      Send Reminder
+                    </>
+                  )}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Request COI Modal */}
+      <AnimatePresence>
+        {showRequestDocModal && selectedAlert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => { setShowRequestDocModal(false); setSelectedAlert(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn("w-full max-w-md rounded-xl", isDark ? "bg-slate-800" : "bg-white")}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                  Request Updated COI
+                </h2>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedAlert.provider}
+                  </p>
+                  <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedAlert.issue}
+                  </p>
+                </div>
+
+                <p className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                  This will send a request for an updated Certificate of Insurance (COI) to the provider via email with a secure upload link.
+                </p>
+
+                <div className={cn("p-3 rounded-lg", isDark ? "bg-blue-900/20 border border-blue-800" : "bg-blue-50 border border-blue-200")}>
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-blue-500" />
+                    <span className={cn("text-sm", isDark ? "text-blue-300" : "text-blue-700")}>
+                      Document: Malpractice Certificate of Insurance
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Request Expires In
+                  </label>
+                  <select className={cn(
+                    "w-full px-3 py-2 rounded-lg border text-sm",
+                    isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+                  )}>
+                    <option>7 days</option>
+                    <option>14 days</option>
+                    <option>30 days</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className={cn("flex items-center justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button variant="secondary" onClick={() => { setShowRequestDocModal(false); setSelectedAlert(null); }}>
+                  Cancel
+                </Button>
+                <Button onClick={confirmRequestDoc} disabled={isProcessing}>
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Send Request
+                    </>
+                  )}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
