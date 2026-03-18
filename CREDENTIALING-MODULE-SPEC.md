@@ -122,73 +122,199 @@ Overview | Contact & Location | Billing Info | Contract | Rates & Discounts | Cr
 - Last verified dates
 - Expiration dates
 - "Run Verification" button
+- "Request Documents" button (sends secure link)
 - Credentialing history timeline
 
 **Documents Tab Contents:**
 - All uploaded documents by type
-- Upload new document
+- Upload new document (admin direct upload)
+- Request documents from provider (secure link)
 - Document expiration tracking
 - Download/preview
+- Pending upload requests status
 
 ---
 
 ## Feature Specifications
 
-### 1. Provider Application Portal
+### 1. Admin-Driven Credentialing + Document Collection
 
-**New Public-Facing Site:** `apply.truecarenetwork.com`
+**Model:** Solidarity controls the process. No provider portal/login required.
 
-#### Application Flow
+#### How Providers Get Added
 ```
-Landing Page
+Solidarity Admin
     ↓
-Practice Information
-    ├── Legal Name, DBA
-    ├── Tax ID (TIN/EIN)
-    ├── NPI (Type 2 if applicable)
-    ├── Practice Type (solo, group, facility)
-    ├── Primary Address
-    └── Billing Address
+Creates provider record in admin dashboard
+    ├── Practice info (name, Tax ID, NPI, address)
+    ├── Provider info (name, NPI, specialty, license #, DEA #)
+    └── Known data from existing sources
     ↓
-Provider Information (for each provider)
-    ├── Full Legal Name
-    ├── NPI (Type 1)
-    ├── Date of Birth
-    ├── State License(s)
-    ├── DEA Number
-    ├── Specialties (taxonomy codes)
-    ├── Board Certifications
-    └── Education/Training
-    ↓
-Practice Locations
-    ├── Each location address
-    ├── Phone/Fax
-    ├── Hours of operation
-    ├── Languages spoken
-    └── Accepting new patients
-    ↓
-Document Upload
-    ├── State Medical License(s)
-    ├── DEA Certificate
-    ├── Board Certification(s)
-    ├── Malpractice Insurance (COI)
-    ├── CV/Resume
-    ├── W-9
-    └── Signed Attestation
-    ↓
-Review & Submit
-    ├── Review all entered data
-    ├── Electronic signature
-    └── Submit application
+Needs documents? Two options:
+    ├── Option A: Admin uploads directly (received via fax/email/mail)
+    └── Option B: Send secure upload link to provider
 ```
 
-#### Application Status Portal
-Providers can log in to check:
-- Application status (Draft, Submitted, In Review, Approved, Denied)
-- Missing documents
-- Verification progress
-- Messages from credentialing team
-- Contract (when ready for signature)
+#### Option A: Admin Direct Upload
+Admin can upload documents directly when received from provider via other channels:
+- Fax
+- Email attachment
+- Mail/scan
+- In-person
+
+**Admin Upload UI:**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ Upload Documents for: Dr. Sarah Chen, MD                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│ Document Type: [State Medical License ▼]                        │
+│                                                                  │
+│ ┌─────────────────────────────────────────────────────────────┐ │
+│ │                                                             │ │
+│ │     Drag & drop file here, or click to browse              │ │
+│ │                                                             │ │
+│ └─────────────────────────────────────────────────────────────┘ │
+│                                                                  │
+│ Issuing State: [OH ▼]                                           │
+│ License Number: [MD-123456        ]                             │
+│ Issue Date:     [01/15/2024]                                    │
+│ Expiration:     [12/31/2027]                                    │
+│                                                                  │
+│ Notes: [                                        ]               │
+│                                                                  │
+│                              [Cancel]  [Upload Document]        │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### Option B: Secure Document Request Link
+When admin needs docs directly from provider:
+
+**Step 1: Admin Requests Documents**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ Request Documents from Provider                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│ Provider: Dr. Sarah Chen, MD                                    │
+│ Email: dr.chen@lakesidemedical.com                              │
+│                                                                  │
+│ Select documents to request:                                    │
+│ ☑️ State Medical License                                        │
+│ ☑️ DEA Certificate                                              │
+│ ☑️ Board Certification                                          │
+│ ☑️ Malpractice Insurance (COI)                                  │
+│ ☐ CV/Resume                                                     │
+│ ☑️ W-9                                                          │
+│ ☐ Signed Attestation                                            │
+│                                                                  │
+│ Link expires in: [14 days ▼]                                    │
+│                                                                  │
+│ Custom message (optional):                                      │
+│ [Please upload at your earliest convenience.    ]               │
+│                                                                  │
+│                    [Cancel]  [Send Request Email]               │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Step 2: Provider Receives Email**
+```
+Subject: Document Request - Solidarity Health Network Credentialing
+
+Dear Dr. Chen,
+
+Solidarity Health Network is processing your credentialing application.
+Please upload the following documents:
+
+• State Medical License
+• DEA Certificate
+• Board Certification
+• Malpractice Insurance (COI)
+• W-9
+
+[Upload Documents →]
+
+This secure link expires on March 28, 2026.
+
+Please upload at your earliest convenience.
+
+Questions? Contact credentialing@solidarityhealthnetwork.com
+
+— Solidarity Health Network Credentialing Team
+```
+
+**Step 3: Provider Clicks Link → Simple Upload Page (No Login)**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ 🏥 Solidarity Health Network                                    │
+│    Secure Document Upload                                       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│ Dr. Sarah Chen, MD                                              │
+│ Lakeside Medical Group                                          │
+│                                                                  │
+│ Please upload the requested documents:                          │
+│                                                                  │
+│ ┌─────────────────────────────────────────────────────────────┐ │
+│ │ State Medical License                              Required │ │
+│ │ [Choose File] or drag & drop                                │ │
+│ │ Accepted: PDF, JPG, PNG (max 10MB)                          │ │
+│ └─────────────────────────────────────────────────────────────┘ │
+│                                                                  │
+│ ┌─────────────────────────────────────────────────────────────┐ │
+│ │ DEA Certificate                                    Required │ │
+│ │ [Choose File] or drag & drop                                │ │
+│ └─────────────────────────────────────────────────────────────┘ │
+│                                                                  │
+│ ┌─────────────────────────────────────────────────────────────┐ │
+│ │ Board Certification                                Required │ │
+│ │ [Choose File] or drag & drop                                │ │
+│ └─────────────────────────────────────────────────────────────┘ │
+│                                                                  │
+│ ┌─────────────────────────────────────────────────────────────┐ │
+│ │ Malpractice Insurance (COI)                        Required │ │
+│ │ [Choose File] or drag & drop                                │ │
+│ └─────────────────────────────────────────────────────────────┘ │
+│                                                                  │
+│ ┌─────────────────────────────────────────────────────────────┐ │
+│ │ W-9                                                Required │ │
+│ │ [Choose File] or drag & drop                                │ │
+│ └─────────────────────────────────────────────────────────────┘ │
+│                                                                  │
+│                         [Submit Documents]                      │
+│                                                                  │
+│ 🔒 Secure upload • Link expires: March 28, 2026                │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Step 4: Admin Gets Notified**
+- Email notification: "Dr. Chen uploaded 5 documents"
+- Dashboard shows pending review
+- Documents appear in provider's record
+
+#### Document Request Tracking
+Admin can see status of all pending requests:
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ Pending Document Requests                                       │
+├─────────────────────────────────────────────────────────────────┤
+│ Provider          │ Requested │ Expires   │ Status             │
+├───────────────────┼───────────┼───────────┼────────────────────┤
+│ Dr. Sarah Chen    │ Mar 14    │ Mar 28    │ 3/5 uploaded       │
+│ Dr. James Wilson  │ Mar 12    │ Mar 26    │ Not started        │
+│ Valley Health     │ Mar 10    │ Mar 24    │ ✅ Complete        │
+└─────────────────────────────────────────────────────────────────┘
+│                                    [Send Reminder] [Resend Link]│
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### Security for Upload Links
+- Token-based URLs (no login required)
+- Tokens are single-use or time-limited
+- Configurable expiration (7/14/30 days)
+- Links tied to specific provider + document types
+- HTTPS only
+- Upload goes directly to secure storage (S3)
 
 #### Document Requirements by Provider Type
 
@@ -787,6 +913,45 @@ CREATE TABLE credentialing_documents (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Document Requests (Secure Upload Links)
+CREATE TABLE document_requests (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    provider_id UUID REFERENCES providers(id) NOT NULL,
+    practice_id UUID REFERENCES practices(id),
+    
+    -- Token for secure link
+    token VARCHAR(64) UNIQUE NOT NULL, -- Secure random token
+    
+    -- What's being requested
+    requested_documents JSONB NOT NULL, -- Array of document types needed
+    -- e.g., ['license', 'dea', 'malpractice_coi', 'w9']
+    
+    -- Recipient
+    recipient_email VARCHAR(255) NOT NULL,
+    recipient_name VARCHAR(200),
+    
+    -- Status
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    -- pending, partial, complete, expired, cancelled
+    
+    uploaded_documents JSONB DEFAULT '[]', -- Track which have been uploaded
+    
+    -- Timing
+    expires_at TIMESTAMPTZ NOT NULL,
+    reminder_sent_at TIMESTAMPTZ,
+    
+    -- Custom message
+    custom_message TEXT,
+    
+    -- Tracking
+    sent_by UUID REFERENCES users(id),
+    sent_at TIMESTAMPTZ DEFAULT NOW(),
+    completed_at TIMESTAMPTZ,
+    
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Audit Log
 CREATE TABLE credentialing_audit_log (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -827,6 +992,9 @@ CREATE INDEX idx_alerts_status ON compliance_alerts(status);
 CREATE INDEX idx_alerts_severity ON compliance_alerts(severity);
 CREATE INDEX idx_documents_provider ON credentialing_documents(provider_id);
 CREATE INDEX idx_documents_expiration ON credentialing_documents(expiration_date);
+CREATE INDEX idx_doc_requests_token ON document_requests(token);
+CREATE INDEX idx_doc_requests_provider ON document_requests(provider_id);
+CREATE INDEX idx_doc_requests_status ON document_requests(status);
 CREATE INDEX idx_audit_application ON credentialing_audit_log(application_id);
 CREATE INDEX idx_audit_provider ON credentialing_audit_log(provider_id);
 ```
@@ -867,10 +1035,27 @@ GET    /api/credentialing/decisions                 Decision history
 ### Documents
 
 ```
-POST   /api/credentialing/documents                 Upload document
+POST   /api/credentialing/documents                 Admin upload document
 GET    /api/credentialing/documents/:id             Get/download document
 DELETE /api/credentialing/documents/:id             Delete document
 GET    /api/credentialing/providers/:id/documents   Get provider's documents
+```
+
+### Document Requests (Secure Links)
+
+```
+POST   /api/credentialing/document-requests         Create request + send email
+GET    /api/credentialing/document-requests         List pending requests
+GET    /api/credentialing/document-requests/:id     Get request status
+POST   /api/credentialing/document-requests/:id/remind  Resend reminder email
+DELETE /api/credentialing/document-requests/:id     Cancel request
+```
+
+### Secure Upload (Public - Token-Based)
+
+```
+GET    /api/upload/:token                           Validate token, get request info
+POST   /api/upload/:token                           Upload documents (no auth)
 ```
 
 ### Monitoring
@@ -880,16 +1065,6 @@ GET    /api/credentialing/monitoring/alerts         Get active alerts
 PATCH  /api/credentialing/monitoring/alerts/:id     Update alert status
 POST   /api/credentialing/monitoring/run            Trigger manual scan
 GET    /api/credentialing/monitoring/history        Scan history
-```
-
-### Provider Portal (Public)
-
-```
-POST   /api/portal/applications                     Submit application (public)
-GET    /api/portal/applications/:token              Check status (with token)
-POST   /api/portal/applications/:token/documents    Upload document
-GET    /api/portal/applications/:token/contract     Get contract for signing
-POST   /api/portal/applications/:token/sign         Sign contract
 ```
 
 ---
@@ -954,25 +1129,25 @@ POST   /api/portal/applications/:token/sign         Sign contract
 
 ---
 
-### Phase 5: Provider Portal (Weeks 11-12)
-**Goal:** Providers can apply online
+### Phase 5: Secure Document Links (Week 11)
+**Goal:** Providers can upload docs via secure link
 
-- [ ] Public application portal (apply.domain.com)
-- [ ] Multi-step application wizard
-- [ ] Document upload
-- [ ] Application status checking
-- [ ] Contract viewing/signing
-- [ ] Provider account creation
+- [ ] Token-based secure upload URLs
+- [ ] Document request email templates
+- [ ] Simple upload page (no login)
+- [ ] Upload notification to admin
+- [ ] Request tracking dashboard
+- [ ] Reminder emails
 
-**Deliverable:** Providers can self-service the entire application
+**Deliverable:** Admin can request docs, providers upload via link
 
 ---
 
-### Phase 6: Re-Credentialing (Weeks 13-14)
+### Phase 6: Re-Credentialing (Weeks 12-13)
 **Goal:** Automated re-credentialing workflow
 
 - [ ] Re-cred scheduling engine
-- [ ] Auto-generate pre-filled applications
+- [ ] Auto-generate renewal notifications
 - [ ] Reminder email sequences
 - [ ] Escalation workflow
 - [ ] Abbreviated re-cred (auto-approve clean providers)
@@ -982,7 +1157,7 @@ POST   /api/portal/applications/:token/sign         Sign contract
 
 ---
 
-### Phase 7: Continuous Monitoring (Weeks 15-16)
+### Phase 7: Continuous Monitoring (Weeks 14-15)
 **Goal:** Daily/weekly compliance monitoring
 
 - [ ] Scheduled background jobs
@@ -997,18 +1172,35 @@ POST   /api/portal/applications/:token/sign         Sign contract
 
 ---
 
-### Phase 8: Polish & Enterprise (Weeks 17-18)
+### Phase 8: Polish & Enterprise (Week 16)
 **Goal:** Production-ready
 
 - [ ] Full committee mode (optional)
 - [ ] DocuSign integration (optional)
 - [ ] NCQA compliance report
 - [ ] Performance optimization
-- [ ] Load testing
 - [ ] Documentation
 - [ ] Admin training materials
 
 **Deliverable:** Production deployment ready
+
+---
+
+## Timeline Summary
+
+| Phase | Weeks | Focus |
+|-------|-------|-------|
+| 1. Foundation | 1-2 | Database + admin forms |
+| 2. Verification | 3-4 | Integrate Architect's engine |
+| 3. Review Workflow | 5-6 | Committee dashboard |
+| 4. Contracts | 7-8 | Generation + signature |
+| 5. Document Links | 9 | Secure upload links |
+| 6. Re-Credentialing | 10-11 | Automation |
+| 7. Monitoring | 12-13 | Daily checks + alerts |
+| 8. Polish | 14 | Production-ready |
+| **TOTAL** | **14 weeks** | |
+
+**MVP (Phases 1-5): 9 weeks** - Full credentialing workflow working
 
 ---
 
