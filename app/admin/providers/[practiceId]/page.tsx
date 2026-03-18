@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, Building2, MapPin, Phone, Mail, FileText, DollarSign, Users, Edit, Save, X,
-  CheckCircle, Clock, AlertTriangle, Globe, CreditCard, Calendar, Percent, FileSignature
+  CheckCircle, Clock, AlertTriangle, Globe, CreditCard, Calendar, Percent, FileSignature, Upload, Plus
 } from "lucide-react";
 
 // Practice data (in real app, this would come from API)
@@ -161,6 +161,61 @@ export default function PracticeDetailPage() {
   const availableNetworks = Object.entries(networkNames).filter(
     ([id]) => !practice.networks?.includes(id)
   );
+
+  // Provider CSV upload
+  const providerFileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedProviders, setUploadedProviders] = useState<any[]>([]);
+  
+  const handleProviderCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      const lines = text.split("\n").filter(line => line.trim());
+      
+      // Skip header row if present
+      const startIndex = lines[0].toLowerCase().includes("first") || 
+                         lines[0].toLowerCase().includes("name") ? 1 : 0;
+      
+      const newProviders: any[] = [];
+      
+      for (let i = startIndex; i < lines.length; i++) {
+        const parts = lines[i].split(",").map(p => p.trim().replace(/^"|"$/g, ""));
+        if (parts.length >= 4) {
+          newProviders.push({
+            id: `PRV-UPLOAD-${Date.now()}-${i}`,
+            firstName: parts[0],
+            lastName: parts[1],
+            title: parts[2] || "MD",
+            npi: parts[3],
+            specialty: parts[4] || practice.specialty,
+            email: parts[5] || "",
+            phone: parts[6] || "",
+            licenseState: parts[7] || "OH",
+            licenseNumber: parts[8] || "",
+            status: "active",
+            useCustomRates: false,
+          });
+        }
+      }
+      
+      if (newProviders.length > 0) {
+        setUploadedProviders(newProviders);
+        // Show success message
+        setSaved(true);
+        setTimeout(() => setSaved(false), 3000);
+        console.log("Uploaded providers:", newProviders);
+      }
+    };
+    reader.readAsText(file);
+    
+    // Reset input
+    if (providerFileInputRef.current) {
+      providerFileInputRef.current.value = "";
+    }
+  };
 
   // Auto-enable edit mode if ?edit=true
   useEffect(() => {
@@ -1086,13 +1141,41 @@ export default function PracticeDetailPage() {
                 <Users className="w-5 h-5 text-teal-400" />
                 Affiliated Providers ({practice.providers?.length || 0})
               </h2>
-              <button 
-                onClick={() => setShowAddProvider(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors"
-              >
-                <Users className="w-4 h-4" />
-                Add Provider
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Hidden file input for CSV upload */}
+                <input
+                  ref={providerFileInputRef}
+                  type="file"
+                  accept=".csv"
+                  onChange={handleProviderCsvUpload}
+                  className="hidden"
+                />
+                <button 
+                  onClick={() => providerFileInputRef.current?.click()}
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors"
+                  title="Upload CSV with provider data"
+                >
+                  <Upload className="w-4 h-4" />
+                  Upload CSV
+                </button>
+                <button 
+                  onClick={() => setShowAddProvider(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Provider
+                </button>
+              </div>
+            </div>
+
+            {/* CSV format hint */}
+            <div className="p-3 bg-slate-700/30 border border-slate-600 rounded-lg">
+              <p className="text-xs text-slate-400">
+                <strong className="text-slate-300">CSV Format:</strong> First Name, Last Name, Title, NPI, Specialty, Email, Phone, License State, License Number
+              </p>
+              <p className="text-xs text-slate-500 mt-1">
+                Example: <code className="bg-slate-600 px-1 rounded">John, Smith, MD, 1234567890, Family Medicine, john@clinic.com, 555-123-4567, OH, MD-123456</code>
+              </p>
             </div>
 
             <div className="space-y-3">
