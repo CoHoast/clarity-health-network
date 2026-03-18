@@ -180,7 +180,7 @@ export default function NetworksPage() {
         <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-teal-500/20 rounded-lg">
-              <Building2 className="w-5 h-5 text-teal-400" />
+              <Building2 className="w-5 h-5 text-blue-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{totalPractices.toLocaleString()}</p>
@@ -255,7 +255,7 @@ export default function NetworksPage() {
                 <p className="text-xs text-slate-500">Providers</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-2 text-center">
-                <p className="text-lg font-bold text-teal-400">{network.practiceCount.toLocaleString()}</p>
+                <p className="text-lg font-bold text-blue-400">{network.practiceCount.toLocaleString()}</p>
                 <p className="text-xs text-slate-500">Practices</p>
               </div>
             </div>
@@ -315,7 +315,7 @@ export default function NetworksPage() {
                     <p className="text-sm text-slate-400">Providers</p>
                   </div>
                   <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-teal-400">{selectedNetwork.practiceCount.toLocaleString()}</p>
+                    <p className="text-2xl font-bold text-blue-400">{selectedNetwork.practiceCount.toLocaleString()}</p>
                     <p className="text-sm text-slate-400">Practices</p>
                   </div>
                   <div className="bg-slate-700/50 rounded-lg p-4 text-center">

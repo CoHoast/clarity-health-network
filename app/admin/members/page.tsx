@@ -91,7 +91,7 @@ export default function MembersPage() {
             <Download className="w-4 h-4" />
             Export Census
           </a>
-          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+          <button onClick={() => setShowAddModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
             <UserPlus className="w-4 h-4" />
             Add Member
           </button>
@@ -137,7 +137,7 @@ export default function MembersPage() {
                 key={status}
                 onClick={() => setStatusFilter(status)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  statusFilter === status ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                  statusFilter === status ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                 }`}
               >
                 {status}
@@ -300,7 +300,7 @@ export default function MembersPage() {
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700 bg-slate-800">
                 <button className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">Edit Member</button>
-                <button onClick={() => setSelectedMember(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
+                <button onClick={() => setSelectedMember(null)} className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">Close</button>
               </div>
             </motion.div>
           </>
@@ -368,7 +368,7 @@ export default function MembersPage() {
                   </div>
                   <div className="flex gap-2 p-4 border-t border-slate-700">
                     <button onClick={() => setShowMessageModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                    <button onClick={handleSendMessage} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 inline-flex items-center justify-center gap-2">
+                    <button onClick={handleSendMessage} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 inline-flex items-center justify-center gap-2">
                       <Send className="w-4 h-4" />Send Message
                     </button>
                   </div>
@@ -439,7 +439,7 @@ export default function MembersPage() {
               </div>
               <div className="flex items-center justify-end gap-2 p-4 border-t border-slate-700 bg-slate-800">
                 <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">Cancel</button>
-                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Add Member</button>
+                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">Add Member</button>
               </div>
             </motion.div>
           </>

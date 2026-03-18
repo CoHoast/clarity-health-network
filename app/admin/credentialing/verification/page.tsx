@@ -100,14 +100,14 @@ export default function VerificationStatusPage() {
           return (
             <div key={i} className={`rounded-xl p-5 shadow-lg ${
               isDark 
-                ? "bg-gradient-to-br from-blue-900/30 to-teal-900/30 border border-blue-800/30" 
+                ? "bg-gradient-to-br from-blue-900/30 to-indigo-900/30 border border-blue-800/30" 
                 : "bg-white border border-slate-200"
             }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                   isDark ? "bg-blue-500/20 border border-blue-500/30" : "bg-teal-50"
                 }`}>
-                  <Icon className={`w-5 h-5 ${isDark ? "text-white" : "text-teal-600"}`} />
+                  <Icon className={`w-5 h-5 ${isDark ? "text-white" : "text-blue-600"}`} />
                 </div>
                 <div>
                   <p className={`text-3xl font-bold ${isDark ? "text-white" : "text-slate-900"}`}>{stat.value}</p>
@@ -214,7 +214,7 @@ export default function VerificationStatusPage() {
                         Details
                       </button>
                       {(verification.status === "failed" || verification.status === "expiring") && (
-                        <button className="inline-flex items-center gap-1 px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors">
+                        <button className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors">
                           <RefreshCw className="w-4 h-4" />
                           Reverify
                         </button>
@@ -277,7 +277,7 @@ export default function VerificationStatusPage() {
                 >
                   Close
                 </button>
-                <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2">
                   <ExternalLink className="w-4 h-4" />
                   View Source
                 </button>

@@ -118,7 +118,7 @@ export default function WorkflowsPage() {
             <p className="text-slate-400">Task queues, business rules, and SLAs</p>
           </div>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+        <button className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
           <Plus className="w-4 h-4" />New Workflow
         </button>
       </div>
@@ -256,7 +256,7 @@ export default function WorkflowsPage() {
               </select>
               <button 
                 onClick={() => setShowAddRuleModal(true)}
-                className="px-3 py-1.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm flex items-center gap-1"
+                className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm flex items-center gap-1"
               >
                 <Plus className="w-4 h-4" />Add Rule
               </button>
@@ -376,7 +376,7 @@ export default function WorkflowsPage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700 flex-shrink-0">
                 <button onClick={() => setShowAddRuleModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={handleAddRule} disabled={!newRule.name || !newRule.condition} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed">Add Rule</button>
+                <button onClick={handleAddRule} disabled={!newRule.name || !newRule.condition} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed">Add Rule</button>
               </div>
             </motion.div>
           </>
@@ -460,7 +460,7 @@ export default function WorkflowsPage() {
                   <Trash2 className="w-4 h-4" />Delete
                 </button>
                 <button onClick={() => setShowEditRuleModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={handleEditRule} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button>
+                <button onClick={handleEditRule} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Save Changes</button>
               </div>
             </motion.div>
           </>
@@ -523,7 +523,7 @@ export default function WorkflowsPage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => { setShowRuleDetail(false); setShowEditRuleModal(true); }} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Edit</button>
-                <button onClick={() => setShowRuleDetail(false)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Close</button>
+                <button onClick={() => setShowRuleDetail(false)} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Close</button>
               </div>
             </motion.div>
           </>
@@ -569,7 +569,7 @@ export default function WorkflowsPage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setSelectedWorkflow(null)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setSelectedWorkflow(null)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save</button>
+                <button onClick={() => setSelectedWorkflow(null)} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Save</button>
               </div>
             </motion.div>
           </>

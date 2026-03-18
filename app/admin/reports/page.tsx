@@ -138,7 +138,7 @@ export default function ReportsPage() {
         <Card>
           <CardHeader
             title="Recent Reports"
-            icon={<Clock className="w-5 h-5 text-teal-500" />}
+            icon={<Clock className="w-5 h-5 text-blue-500" />}
           />
           <div className="space-y-3">
             {recentReports.map((report) => (

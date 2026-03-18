@@ -271,14 +271,14 @@ export default function ContractTemplatesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-            <FileText className="w-7 h-7 text-teal-500" />
+            <FileText className="w-7 h-7 text-blue-500" />
             Contract Templates
           </h1>
           <p className="text-slate-400 mt-1">Manage contract templates and clause library</p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 font-medium rounded-lg hover:bg-teal-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
           style={{ color: 'white' }}
         >
           <Plus className="w-4 h-4" />
@@ -291,7 +291,7 @@ export default function ContractTemplatesPage() {
         <button
           onClick={() => setActiveTab("templates")}
           className={`px-4 py-2 font-medium rounded-lg transition-colors ${
-            activeTab === "templates" ? "bg-teal-600 text-white" : "text-slate-400 hover:text-white hover:bg-slate-700"
+            activeTab === "templates" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "text-slate-400 hover:text-white hover:bg-slate-700"
           }`}
         >
           Templates ({templates.length})
@@ -299,7 +299,7 @@ export default function ContractTemplatesPage() {
         <button
           onClick={() => setActiveTab("clauses")}
           className={`px-4 py-2 font-medium rounded-lg transition-colors ${
-            activeTab === "clauses" ? "bg-teal-600 text-white" : "text-slate-400 hover:text-white hover:bg-slate-700"
+            activeTab === "clauses" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "text-slate-400 hover:text-white hover:bg-slate-700"
           }`}
         >
           Clause Library ({clauseLibrary.length})
@@ -316,10 +316,10 @@ export default function ContractTemplatesPage() {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 bg-teal-500/20 rounded-lg flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-teal-400" />
+                  <FileText className="w-6 h-6 text-blue-400" />
                 </div>
                 {template.isDefault && (
-                  <span className="px-2 py-1 bg-teal-500/20 text-teal-400 text-xs font-medium rounded-full">Default</span>
+                  <span className="px-2 py-1 bg-teal-500/20 text-blue-400 text-xs font-medium rounded-full">Default</span>
                 )}
               </div>
               <h3 className="text-lg font-semibold text-white mb-1">{template.name}</h3>
@@ -365,7 +365,7 @@ export default function ContractTemplatesPage() {
             <h3 className="text-white font-semibold">Clause Library</h3>
             <button 
               onClick={() => setShowAddClauseModal(true)}
-              className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
             >
               <Plus className="w-4 h-4" />
               Add Clause
@@ -504,7 +504,7 @@ export default function ContractTemplatesPage() {
                   <Download className="w-4 h-4" />
                   Download PDF
                 </button>
-                <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2">
                   <Edit className="w-4 h-4" />
                   Edit Template
                 </button>
@@ -591,7 +591,7 @@ export default function ContractTemplatesPage() {
                       <div className="bg-slate-700/50 rounded-lg p-4 max-h-40 overflow-auto space-y-2">
                         {clauseLibrary.map(clause => (
                           <label key={clause.id} className="flex items-center gap-3 cursor-pointer hover:bg-slate-600/30 p-2 rounded">
-                            <input type="checkbox" defaultChecked={["CL-002", "CL-003", "CL-005", "CL-006", "CL-008"].includes(clause.id)} className="rounded bg-slate-600 border-slate-500 text-teal-500 focus:ring-teal-500" />
+                            <input type="checkbox" defaultChecked={["CL-002", "CL-003", "CL-005", "CL-006", "CL-008"].includes(clause.id)} className="rounded bg-slate-600 border-slate-500 text-blue-500 focus:ring-teal-500" />
                             <span className="text-slate-300 text-sm">{clause.name}</span>
                             <span className="text-slate-500 text-xs">({clause.category})</span>
                           </label>
@@ -600,7 +600,7 @@ export default function ContractTemplatesPage() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <input type="checkbox" id="setDefault" className="rounded bg-slate-600 border-slate-500 text-teal-500 focus:ring-teal-500" />
+                      <input type="checkbox" id="setDefault" className="rounded bg-slate-600 border-slate-500 text-blue-500 focus:ring-teal-500" />
                       <label htmlFor="setDefault" className="text-slate-300 text-sm">Set as default template for this provider type</label>
                     </div>
                   </div>
@@ -613,7 +613,7 @@ export default function ContractTemplatesPage() {
                     </button>
                     <button 
                       onClick={handleSave}
-                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
                       Create Template
@@ -658,7 +658,7 @@ export default function ContractTemplatesPage() {
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">{selectedClause.name}</h2>
                   <div className="flex items-center gap-3 mt-1">
-                    <span className="px-2 py-0.5 bg-teal-100 text-teal-700 text-xs font-medium rounded-full">{selectedClause.category}</span>
+                    <span className="px-2 py-0.5 bg-teal-100 text-indigo-700 text-xs font-medium rounded-full">{selectedClause.category}</span>
                     <span className="text-gray-500 text-sm">Used in {selectedClause.usedIn} contracts</span>
                   </div>
                 </div>
@@ -688,7 +688,7 @@ export default function ContractTemplatesPage() {
                   <Copy className="w-4 h-4" />
                   Copy Text
                 </button>
-                <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2">
                   <Edit className="w-4 h-4" />
                   Edit Clause
                 </button>
@@ -770,7 +770,7 @@ export default function ContractTemplatesPage() {
                     </button>
                     <button 
                       onClick={handleSave}
-                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
                       Add Clause

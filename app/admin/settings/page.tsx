@@ -142,7 +142,7 @@ Questions? Contact credentialing@truecarehealth.com
           <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>Settings</h1>
           <p className={isDark ? "text-slate-400" : "text-slate-500"}>Configure system preferences and options</p>
         </div>
-        <button onClick={handleSave} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+        <button onClick={handleSave} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
           {saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
           {saved ? "Saved!" : "Save Changes"}
         </button>
@@ -157,7 +157,7 @@ Questions? Contact credentialing@truecarehealth.com
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  activeTab === tab.id ? "bg-teal-600/20 text-blue-500" : "text-slate-400 hover:bg-slate-700 hover:text-white"
+                  activeTab === tab.id ? "bg-gradient-to-r from-blue-500 to-indigo-500/20 text-blue-500" : "text-slate-400 hover:bg-slate-700 hover:text-white"
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -174,7 +174,7 @@ Questions? Contact credentialing@truecarehealth.com
               {/* Organization Details */}
               <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
                 <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <Building2 className="w-5 h-5 text-teal-400" />
+                  <Building2 className="w-5 h-5 text-blue-400" />
                   Organization Details
                 </h2>
                 <div className="space-y-4">
@@ -262,7 +262,7 @@ Questions? Contact credentialing@truecarehealth.com
                     <Mail className="w-5 h-5 text-blue-400" />
                     Notification Recipients
                   </h2>
-                  <button className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors">
+                  <button className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors">
                     <Plus className="w-4 h-4" />
                     Add Recipient
                   </button>
@@ -329,7 +329,7 @@ Questions? Contact credentialing@truecarehealth.com
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" defaultChecked={item.default} className="sr-only peer" />
-                        <div className="w-11 h-6 bg-slate-600 peer-focus:ring-4 peer-focus:ring-teal-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                        <div className="w-11 h-6 bg-slate-600 peer-focus:ring-4 peer-focus:ring-indigo-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-500 to-indigo-500"></div>
                       </label>
                     </div>
                 ))}
@@ -430,7 +430,7 @@ Questions? Contact credentialing@truecarehealth.com
                                   setEditingTemplate(null);
                                   handleSave();
                                 }}
-                                className="px-3 py-1.5 bg-teal-600 text-white rounded hover:bg-teal-500 text-sm"
+                                className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded hover:from-blue-600 hover:to-indigo-600 text-sm"
                               >
                                 Save Template
                               </button>
@@ -512,7 +512,7 @@ Questions? Contact credentialing@truecarehealth.com
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-500 to-indigo-500"></div>
                     </label>
                   </div>
                   <div className="flex items-center justify-between py-3">
@@ -522,7 +522,7 @@ Questions? Contact credentialing@truecarehealth.com
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-500 to-indigo-500"></div>
                     </label>
                   </div>
                 </div>
@@ -612,7 +612,7 @@ Questions? Contact credentialing@truecarehealth.com
               {/* Security Policies */}
               <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
                 <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-teal-400" />
+                  <Shield className="w-5 h-5 text-blue-400" />
                   Security Policies
                 </h2>
                 <div className="space-y-4">
@@ -623,7 +623,7 @@ Questions? Contact credentialing@truecarehealth.com
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-500 to-indigo-500"></div>
                     </label>
                   </div>
                   <div className="flex items-center justify-between py-3 border-b border-slate-700">
@@ -633,7 +633,7 @@ Questions? Contact credentialing@truecarehealth.com
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-500 to-indigo-500"></div>
                     </label>
                   </div>
                   <div>

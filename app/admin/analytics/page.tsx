@@ -221,7 +221,7 @@ export default function AnalyticsPage() {
         <Card>
           <CardHeader
             title="By Specialty"
-            icon={<PieChart className="w-5 h-5 text-teal-500" />}
+            icon={<PieChart className="w-5 h-5 text-blue-500" />}
           />
           <div className="space-y-4">
             {providersBySpecialty.map((item, i) => (

@@ -210,7 +210,7 @@ export default function AdminDashboard() {
                   {activity.type === "provider" && <Building2 className="w-4 h-4 text-blue-500" />}
                   {activity.type === "contract" && <FileSignature className="w-4 h-4 text-emerald-500" />}
                   {activity.type === "discount" && <DollarSign className="w-4 h-4 text-amber-500" />}
-                  {activity.type === "credentialing" && <CheckCircle className="w-4 h-4 text-teal-500" />}
+                  {activity.type === "credentialing" && <CheckCircle className="w-4 h-4 text-blue-500" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
@@ -275,7 +275,7 @@ export default function AdminDashboard() {
         <Card>
           <CardHeader
             title="Credentialing Queue"
-            icon={<Users className="w-5 h-5 text-teal-500" />}
+            icon={<Users className="w-5 h-5 text-blue-500" />}
             action={
               <Link href="/admin/credentialing" className="text-sm text-blue-500 hover:text-blue-400 flex items-center gap-1">
                 View All <ArrowRight className="w-4 h-4" />
@@ -337,7 +337,7 @@ export default function AdminDashboard() {
         <Card>
           <CardHeader
             title="Upcoming Tasks"
-            icon={<Calendar className="w-5 h-5 text-teal-500" />}
+            icon={<Calendar className="w-5 h-5 text-blue-500" />}
           />
           <div className="space-y-3">
             {[

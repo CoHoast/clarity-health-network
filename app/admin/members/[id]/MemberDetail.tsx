@@ -250,7 +250,7 @@ export default function MemberDetail({ id }: { id: string }) {
           <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-5">
             <h3 className="font-semibold text-white mb-4">Actions</h3>
             <div className="space-y-2">
-              <button onClick={() => setShowEditModal(true)} className="w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+              <button onClick={() => setShowEditModal(true)} className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
                 Edit Member
               </button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
@@ -293,7 +293,7 @@ export default function MemberDetail({ id }: { id: string }) {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Save Changes</button>
+                <button onClick={() => setShowEditModal(false)} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Save Changes</button>
               </div>
             </motion.div>
           </>

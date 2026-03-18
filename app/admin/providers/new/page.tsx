@@ -157,8 +157,8 @@ export default function AddProviderPage() {
               <div key={s.num} className="flex items-center">
                 <div 
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer transition-colors ${
-                    isActive ? "bg-teal-600 text-white" :
-                    isComplete ? "bg-teal-600/20 text-teal-400" :
+                    isActive ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" :
+                    isComplete ? "bg-gradient-to-r from-blue-500 to-indigo-500/20 text-blue-400" :
                     "bg-slate-700 text-slate-400"
                   }`}
                   onClick={() => setStep(s.num)}
@@ -185,7 +185,7 @@ export default function AddProviderPage() {
               <button
                 onClick={() => setAddMode("new")}
                 className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                  addMode === "new" ? "bg-teal-600 text-white" : "text-slate-400 hover:text-white"
+                  addMode === "new" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "text-slate-400 hover:text-white"
                 }`}
               >
                 New Practice
@@ -193,7 +193,7 @@ export default function AddProviderPage() {
               <button
                 onClick={() => setAddMode("existing")}
                 className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                  addMode === "existing" ? "bg-teal-600 text-white" : "text-slate-400 hover:text-white"
+                  addMode === "existing" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "text-slate-400 hover:text-white"
                 }`}
               >
                 Add to Existing Practice
@@ -328,7 +328,7 @@ export default function AddProviderPage() {
                   ))}
                 </div>
                 {formData.networks.length > 0 && (
-                  <p className="text-xs text-teal-400 mt-2">
+                  <p className="text-xs text-blue-400 mt-2">
                     {formData.networks.length} network{formData.networks.length !== 1 ? 's' : ''} selected
                   </p>
                 )}
@@ -532,7 +532,7 @@ export default function AddProviderPage() {
                     type="checkbox"
                     checked={formData.autoRenew}
                     onChange={(e) => updateField("autoRenew", e.target.checked)}
-                    className="w-5 h-5 rounded bg-slate-700 border-slate-600 text-teal-500 focus:ring-teal-500"
+                    className="w-5 h-5 rounded bg-slate-700 border-slate-600 text-blue-500 focus:ring-teal-500"
                   />
                   <span className="text-slate-300">Auto-renew contract at end of term</span>
                 </label>
@@ -628,7 +628,7 @@ export default function AddProviderPage() {
           {step < 5 ? (
             <button
               onClick={() => setStep(s => Math.min(5, s + 1))}
-              className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+              className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
             >
               Continue
             </button>
@@ -659,7 +659,7 @@ export default function AddProviderPage() {
             <p className="text-slate-400 mb-6">The provider has been successfully added to your network.</p>
             <Link
               href="/admin/providers"
-              className="inline-flex items-center gap-2 px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
             >
               View All Providers
             </Link>

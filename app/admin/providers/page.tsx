@@ -915,7 +915,7 @@ export default function ProvidersPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <Users className={cn("w-4 h-4", isDark ? "text-teal-400" : "text-teal-600")} />
+                      <Users className={cn("w-4 h-4", isDark ? "text-blue-400" : "text-blue-600")} />
                       <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{practiceProviders.length}</span>
                       <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>providers</span>
                     </div>
@@ -1088,7 +1088,7 @@ export default function ProvidersPage() {
                     {/* Location */}
                     <div className="bg-slate-700/30 rounded-lg p-4">
                       <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-teal-400" />
+                        <MapPin className="w-4 h-4 text-blue-400" />
                         Location Address
                       </h3>
                       <p className="text-slate-300">{selectedPractice.address}</p>
@@ -1101,7 +1101,7 @@ export default function ProvidersPage() {
                     {/* Main Office Contact */}
                     <div className="bg-slate-700/30 rounded-lg p-4">
                       <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-teal-400" />
+                        <Phone className="w-4 h-4 text-blue-400" />
                         Main Office
                       </h3>
                       <p className="text-slate-300">{selectedPractice.contactName}</p>
@@ -1163,7 +1163,7 @@ export default function ProvidersPage() {
                       <h3 className="text-lg font-semibold text-white">Affiliated Providers ({getProvidersForPractice(selectedPractice.id).length})</h3>
                       <button
                         onClick={() => setShowAddProvider(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors text-sm font-medium"
+                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors text-sm font-medium"
                       >
                         <Plus className="w-4 h-4" />
                         Add Provider
@@ -1207,7 +1207,7 @@ export default function ProvidersPage() {
                                   <div className="flex items-center gap-2">
                                     <span className="text-xs text-slate-500">Primary:</span>
                                     <span className="text-xs font-mono text-blue-400">{provider.primaryTaxonomy}</span>
-                                    <span className="text-xs text-teal-400">— {provider.primaryTaxonomyDesc}</span>
+                                    <span className="text-xs text-blue-400">— {provider.primaryTaxonomyDesc}</span>
                                   </div>
                                   {provider.secondaryTaxonomy && (
                                     <div className="flex items-center gap-2">
@@ -1223,7 +1223,7 @@ export default function ProvidersPage() {
                                   <span className="text-xs text-slate-500">Languages:</span>
                                   <div className="flex flex-wrap gap-1">
                                     {provider.languages.map(lang => (
-                                      <span key={lang} className="px-2 py-0.5 bg-teal-600 text-xs rounded-full" style={{ color: 'white' }}>
+                                      <span key={lang} className="px-2 py-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-xs rounded-full" style={{ color: 'white' }}>
                                         {languageNames[lang] || lang}
                                       </span>
                                     ))}
@@ -1627,7 +1627,7 @@ export default function ProvidersPage() {
                         }}
                         className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                           (newProvider.languages || []).includes(code)
-                            ? "bg-teal-600 text-white"
+                            ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
                             : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
                         }`}
                       >
@@ -2022,7 +2022,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {provider.languages.map(lang => (
-                  <span key={lang} className="px-3 py-1.5 bg-teal-600 rounded-full text-sm font-medium" style={{ color: 'white' }}>
+                  <span key={lang} className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full text-sm font-medium" style={{ color: 'white' }}>
                     {languageNames[lang] || lang} ({lang.toUpperCase()})
                   </span>
                 ))}
@@ -2059,7 +2059,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
             {/* Primary Taxonomy */}
             <div className="bg-slate-700/30 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-teal-400" />
+                <FileText className="w-5 h-5 text-blue-400" />
                 Primary Taxonomy
               </h3>
               <div className="space-y-3">
@@ -2069,7 +2069,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                 </div>
                 <div>
                   <p className="text-xs text-slate-500 mb-1">Description</p>
-                  <p className="text-lg text-teal-400">{provider.primaryTaxonomyDesc || "No description"}</p>
+                  <p className="text-lg text-blue-400">{provider.primaryTaxonomyDesc || "No description"}</p>
                 </div>
               </div>
             </div>

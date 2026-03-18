@@ -479,7 +479,7 @@ export default function DiscountSchedulesPage() {
         </div>
         <button
           onClick={() => activeTab === "schedules" ? setShowCreateModal(true) : setShowProviderRateModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 font-medium rounded-lg hover:bg-teal-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
           style={{ color: 'white' }}
         >
           <Plus className="w-4 h-4" />
@@ -493,7 +493,7 @@ export default function DiscountSchedulesPage() {
           onClick={() => setActiveTab("schedules")}
           className={`px-4 py-2 rounded-md font-medium text-sm transition-colors flex items-center gap-2 ${
             activeTab === "schedules"
-              ? "bg-teal-600 text-white"
+              ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
               : "text-slate-400 hover:text-white hover:bg-slate-700"
           }`}
         >
@@ -504,7 +504,7 @@ export default function DiscountSchedulesPage() {
           onClick={() => setActiveTab("providers")}
           className={`px-4 py-2 rounded-md font-medium text-sm transition-colors flex items-center gap-2 ${
             activeTab === "providers"
-              ? "bg-teal-600 text-white"
+              ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
               : "text-slate-400 hover:text-white hover:bg-slate-700"
           }`}
         >
@@ -764,7 +764,7 @@ export default function DiscountSchedulesPage() {
                     <Download className="w-4 h-4" />
                     Export
                   </button>
-                  <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                  <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2">
                     <Edit className="w-4 h-4" />
                     Edit Schedule
                   </button>
@@ -899,7 +899,7 @@ export default function DiscountSchedulesPage() {
                   <Download className="w-4 h-4" />
                   Export
                 </button>
-                <button className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2">
+                <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2">
                   <Edit className="w-4 h-4" />
                   Edit Rates
                 </button>
@@ -1046,7 +1046,7 @@ export default function DiscountSchedulesPage() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <input type="checkbox" id="applyToNew" className="rounded bg-slate-600 border-slate-500 text-teal-500 focus:ring-teal-500" />
+                      <input type="checkbox" id="applyToNew" className="rounded bg-slate-600 border-slate-500 text-blue-500 focus:ring-teal-500" />
                       <label htmlFor="applyToNew" className="text-slate-300 text-sm">Automatically apply to new providers of this type</label>
                     </div>
 
@@ -1067,7 +1067,7 @@ export default function DiscountSchedulesPage() {
                     </button>
                     <button 
                       onClick={handleSave}
-                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
                       Create Schedule
@@ -1150,7 +1150,7 @@ export default function DiscountSchedulesPage() {
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                               newProviderRate.rateType === "flat" ? "bg-teal-500/20" : "bg-slate-700"
                             }`}>
-                              <Percent className={`w-5 h-5 ${newProviderRate.rateType === "flat" ? "text-teal-400" : "text-slate-400"}`} />
+                              <Percent className={`w-5 h-5 ${newProviderRate.rateType === "flat" ? "text-blue-400" : "text-slate-400"}`} />
                             </div>
                             <span className="text-white font-medium">Flat Rate</span>
                           </div>
@@ -1169,7 +1169,7 @@ export default function DiscountSchedulesPage() {
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                               newProviderRate.rateType === "custom" ? "bg-teal-500/20" : "bg-slate-700"
                             }`}>
-                              <Filter className={`w-5 h-5 ${newProviderRate.rateType === "custom" ? "text-teal-400" : "text-slate-400"}`} />
+                              <Filter className={`w-5 h-5 ${newProviderRate.rateType === "custom" ? "text-blue-400" : "text-slate-400"}`} />
                             </div>
                             <span className="text-white font-medium">Custom by Service</span>
                           </div>
@@ -1477,7 +1477,7 @@ export default function DiscountSchedulesPage() {
                     </button>
                     <button 
                       onClick={handleSave}
-                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
                       Add Provider Rate

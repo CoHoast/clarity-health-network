@@ -587,7 +587,7 @@ function CommunicationsContent() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className={cn("text-2xl font-bold flex items-center gap-3", isDark ? "text-white" : "text-slate-900")}>
-            <Mail className="w-7 h-7 text-teal-500" />
+            <Mail className="w-7 h-7 text-blue-500" />
             Communications
           </h1>
           <p className={cn("mt-1", isDark ? "text-slate-400" : "text-slate-500")}>Message providers and recruit new network partners</p>
@@ -601,7 +601,7 @@ function CommunicationsContent() {
           className={cn(
             "px-4 py-2 font-medium rounded-lg transition-colors flex items-center gap-2",
             activeTab === "messages" 
-              ? "bg-teal-600 text-white" 
+              ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" 
               : isDark ? "text-slate-400 hover:text-white hover:bg-slate-700" : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
           )}
         >
@@ -613,7 +613,7 @@ function CommunicationsContent() {
           className={cn(
             "px-4 py-2 font-medium rounded-lg transition-colors flex items-center gap-2",
             activeTab === "outreach" 
-              ? "bg-teal-600 text-white" 
+              ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" 
               : isDark ? "text-slate-400 hover:text-white hover:bg-slate-700" : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
           )}
         >
@@ -645,7 +645,7 @@ function CommunicationsContent() {
                   <div key={provider.id} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg hover:bg-slate-700/50 transition-colors">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-teal-500/20 rounded-lg flex items-center justify-center">
-                        <Building2 className="w-5 h-5 text-teal-400" />
+                        <Building2 className="w-5 h-5 text-blue-400" />
                       </div>
                       <div>
                         <p className="text-white font-medium">{provider.name}</p>
@@ -654,7 +654,7 @@ function CommunicationsContent() {
                     </div>
                     <button
                       onClick={() => openComposeModal(provider)}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
                     >
                       <Mail className="w-4 h-4" />
                       Message
@@ -741,7 +741,7 @@ function CommunicationsContent() {
                       <p className="text-slate-400 text-sm mb-4">{template.description}</p>
                       <button
                         onClick={() => openOutreachModal(template)}
-                        className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                        className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
                       >
                         <Send className="w-4 h-4" />
                         Use This Template
@@ -842,7 +842,7 @@ function CommunicationsContent() {
                         <div className="flex items-center gap-2 ml-4">
                           <button
                             onClick={(e) => { e.stopPropagation(); openReplyModal(response); }}
-                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
                           >
                             <Reply className="w-4 h-4" />
                             Reply
@@ -876,7 +876,7 @@ function CommunicationsContent() {
                   </div>
                   <button
                     onClick={() => setShowNewTemplateModal(true)}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                     New Template
@@ -990,7 +990,7 @@ function CommunicationsContent() {
                 <div>
                   <label className="block text-sm font-medium text-slate-400 mb-2">Recipient</label>
                   <div className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg">
-                    <Building2 className="w-5 h-5 text-teal-400" />
+                    <Building2 className="w-5 h-5 text-blue-400" />
                     <div>
                       <p className="text-white">{selectedProvider.contact}</p>
                       <p className="text-slate-400 text-sm">{selectedProvider.email}</p>
@@ -1028,7 +1028,7 @@ function CommunicationsContent() {
                 <button
                   onClick={handleSendMessage}
                   disabled={!messageSubject || !messageBody}
-                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {sendSuccess ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
                   {sendSuccess ? "Sent!" : "Send Message"}
@@ -1163,7 +1163,7 @@ function CommunicationsContent() {
                 <button
                   onClick={handleSendOutreach}
                   disabled={!outreachForm.practiceName || !outreachForm.providerName || !outreachForm.email}
-                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {sendSuccess ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
                   {sendSuccess ? "Sent!" : "Send Outreach Email"}
@@ -1264,7 +1264,7 @@ function CommunicationsContent() {
                     </button>
                     <button
                       onClick={handleSaveTemplate}
-                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
                     >
                       <Check className="w-4 h-4" />
                       Save Changes
@@ -1387,7 +1387,7 @@ function CommunicationsContent() {
                     <button
                       onClick={handleCreateTemplate}
                       disabled={!newTemplateForm.name || !newTemplateForm.subject || !newTemplateForm.body}
-                      className="px-6 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Plus className="w-4 h-4" />
                       Create Template
@@ -1459,7 +1459,7 @@ function CommunicationsContent() {
                     setShowPreviewModal(false);
                     openEditTemplateModal(selectedTemplate);
                   }}
-                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
                 >
                   <Edit className="w-4 h-4" />
                   Edit Template
@@ -1552,7 +1552,7 @@ function CommunicationsContent() {
                       setShowResponseModal(false);
                       openReplyModal(selectedResponse);
                     }}
-                    className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
                   >
                     <Reply className="w-4 h-4" />
                     Reply
@@ -1650,7 +1650,7 @@ function CommunicationsContent() {
                 <button
                   onClick={handleSendReply}
                   disabled={!replyBody}
-                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {sendSuccess ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
                   {sendSuccess ? "Sent!" : "Send Reply"}

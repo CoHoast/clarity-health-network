@@ -305,7 +305,7 @@ export default function ClaimDetail({ id }: { id: string }) {
                 </button>
                 <button
                   onClick={() => { setShowRepriceModal(true); handleReprice(); }}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-sm rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white text-sm rounded-lg transition-colors"
                 >
                   <Calculator className="w-4 h-4" />
                   Reprice
@@ -361,7 +361,7 @@ export default function ClaimDetail({ id }: { id: string }) {
               <button onClick={() => setShowApproveModal(true)} className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-2"><CheckCircle className="w-4 h-4" />Approve Claim</button>
               <button onClick={() => setShowDenyModal(true)} className="w-full px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 flex items-center justify-center gap-2"><X className="w-4 h-4" />Deny Claim</button>
               <button onClick={() => { setShowValidateModal(true); handleValidate(); }} className="w-full px-4 py-2 bg-emerald-600/20 text-emerald-400 rounded-lg hover:bg-emerald-600/30 flex items-center justify-center gap-2"><ClipboardCheck className="w-4 h-4" />Validate Claim</button>
-              <button onClick={() => { setShowRepriceModal(true); handleReprice(); }} className="w-full px-4 py-2 bg-teal-600/20 text-blue-500 rounded-lg hover:bg-teal-600/30 flex items-center justify-center gap-2"><Calculator className="w-4 h-4" />Reprice Claim</button>
+              <button onClick={() => { setShowRepriceModal(true); handleReprice(); }} className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500/20 text-blue-500 rounded-lg hover:bg-gradient-to-r from-blue-500 to-indigo-500/30 flex items-center justify-center gap-2"><Calculator className="w-4 h-4" />Reprice Claim</button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Request More Info</button>
               <button className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">View EOB Preview</button>
             </div>
@@ -541,7 +541,7 @@ export default function ClaimDetail({ id }: { id: string }) {
               {!isRepricing && repricingResult && (
                 <div className="flex gap-2 p-4 border-t border-slate-700 sticky bottom-0 bg-slate-800">
                   <button onClick={() => setShowRepriceModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                  <button onClick={applyRepricingResult} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
+                  <button onClick={applyRepricingResult} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
                     Apply Repriced Amounts
                   </button>
@@ -730,7 +730,7 @@ export default function ClaimDetail({ id }: { id: string }) {
                 <div className="flex gap-2 p-4 border-t border-slate-700 sticky bottom-0 bg-slate-800">
                   <button onClick={() => setShowValidateModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
                   {validationResult.status === 'approved' || validationResult.status === 'accepted' ? (
-                    <button onClick={() => { setShowValidateModal(false); setShowRepriceModal(true); handleReprice(); }} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2">
+                    <button onClick={() => { setShowValidateModal(false); setShowRepriceModal(true); handleReprice(); }} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 flex items-center justify-center gap-2">
                       <Calculator className="w-4 h-4" />
                       Continue to Reprice
                     </button>

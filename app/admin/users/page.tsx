@@ -257,7 +257,7 @@ export default function UsersPage() {
                   "w-10 h-10 rounded-lg flex items-center justify-center",
                   isDark ? "bg-teal-500/20" : "bg-teal-50"
                 )}>
-                  <Shield className={cn("w-5 h-5", isDark ? "text-teal-400" : "text-teal-600")} />
+                  <Shield className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
                 </div>
                 <div className="flex items-center gap-1">
                   <IconButton 
@@ -404,7 +404,7 @@ export default function UsersPage() {
                     "w-10 h-10 rounded-lg flex items-center justify-center",
                     isDark ? "bg-teal-500/20" : "bg-teal-50"
                   )}>
-                    <Shield className={cn("w-5 h-5", isDark ? "text-teal-400" : "text-teal-600")} />
+                    <Shield className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
                   </div>
                   <div>
                     <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>

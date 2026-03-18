@@ -95,7 +95,7 @@ export default function ExpiringContractsPage() {
             key={stat.label} 
             className={`rounded-xl p-5 shadow-lg ${
               isDark 
-                ? "bg-gradient-to-br from-blue-900/30 to-teal-900/30 border border-blue-800/30" 
+                ? "bg-gradient-to-br from-blue-900/30 to-indigo-900/30 border border-blue-800/30" 
                 : "bg-slate-900 border border-slate-700"
             }`}
           >
@@ -177,7 +177,7 @@ export default function ExpiringContractsPage() {
                       {contract.status === "not_started" && (
                         <button
                           onClick={() => openRenewalModal(contract)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
                         >
                           <Send className="w-4 h-4" />
                           Send Renewal
@@ -264,7 +264,7 @@ export default function ExpiringContractsPage() {
                     setShowRenewalModal(false);
                     // Show success toast
                   }}
-                  className="px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
                 >
                   <Send className="w-4 h-4" />
                   Send Renewal Notice

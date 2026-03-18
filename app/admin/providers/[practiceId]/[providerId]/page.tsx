@@ -353,7 +353,7 @@ export default function ProviderDetailPage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-500 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors disabled:opacity-50"
               >
                 {saving ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -383,7 +383,7 @@ export default function ProviderDetailPage() {
             onClick={() => setActiveSection(section.id)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
               activeSection === section.id
-                ? "bg-teal-600 text-white"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
                 : "text-slate-500 hover:text-slate-900 hover:bg-slate-200"
             }`}
           >
@@ -399,7 +399,7 @@ export default function ProviderDetailPage() {
         {activeSection === "overview" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-              <User className="w-5 h-5 text-teal-400" />
+              <User className="w-5 h-5 text-blue-400" />
               Provider Overview
             </h2>
 
@@ -500,7 +500,7 @@ export default function ProviderDetailPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                  <Stethoscope className="w-4 h-4 text-teal-400" />
+                  <Stethoscope className="w-4 h-4 text-blue-400" />
                   Taxonomy Codes
                 </h3>
                 <div className="space-y-3">
@@ -521,12 +521,12 @@ export default function ProviderDetailPage() {
 
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                  <Languages className="w-4 h-4 text-teal-400" />
+                  <Languages className="w-4 h-4 text-blue-400" />
                   Languages Spoken
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {provider.languages.map((lang: string) => (
-                    <span key={lang} className="px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-full">
+                    <span key={lang} className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-full">
                       {languageNames[lang] || lang}
                     </span>
                   ))}
@@ -540,7 +540,7 @@ export default function ProviderDetailPage() {
         {activeSection === "credentials" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-teal-400" />
+              <GraduationCap className="w-5 h-5 text-blue-400" />
               Credentials & Licenses
             </h2>
 
@@ -671,7 +671,7 @@ export default function ProviderDetailPage() {
         {activeSection === "malpractice" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-              <Shield className="w-5 h-5 text-teal-400" />
+              <Shield className="w-5 h-5 text-blue-400" />
               Malpractice Insurance
             </h2>
 
@@ -749,11 +749,11 @@ export default function ProviderDetailPage() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-teal-400" />
+                <Building2 className="w-5 h-5 text-blue-400" />
                 Hospital Affiliations
               </h2>
               {isEditing && (
-                <button className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors">
+                <button className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors">
                   <Plus className="w-4 h-4" />
                   Add Affiliation
                 </button>
@@ -802,7 +802,7 @@ export default function ProviderDetailPage() {
         {activeSection === "location" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-teal-400" />
+              <MapPin className="w-5 h-5 text-blue-400" />
               Office Location
             </h2>
 
@@ -919,7 +919,7 @@ export default function ProviderDetailPage() {
         {activeSection === "education" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-              <Briefcase className="w-5 h-5 text-teal-400" />
+              <Briefcase className="w-5 h-5 text-blue-400" />
               Education & Training
             </h2>
 
@@ -980,7 +980,7 @@ export default function ProviderDetailPage() {
         {activeSection === "schedule" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-teal-400" />
+              <Calendar className="w-5 h-5 text-blue-400" />
               Clinic Schedule
             </h2>
 
@@ -1016,7 +1016,7 @@ export default function ProviderDetailPage() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-teal-400" />
+                <DollarSign className="w-5 h-5 text-blue-400" />
                 Provider Discount Rates
               </h2>
             </div>
@@ -1030,7 +1030,7 @@ export default function ProviderDetailPage() {
               <button
                 onClick={() => setUseCustomRates(!useCustomRates)}
                 className={`w-14 h-8 rounded-full transition-colors relative ${
-                  useCustomRates ? "bg-teal-600" : "bg-slate-600"
+                  useCustomRates ? "bg-gradient-to-r from-blue-500 to-indigo-500" : "bg-slate-600"
                 }`}
               >
                 <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-transform ${
@@ -1049,7 +1049,7 @@ export default function ProviderDetailPage() {
                       onClick={() => setDiscountBasis("medicare")}
                       className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
                         discountBasis === "medicare" 
-                          ? "bg-teal-600 border-teal-600 text-white" 
+                          ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-teal-600 text-white" 
                           : "bg-white border-slate-300 text-slate-600 hover:border-slate-400"
                       }`}
                     >
@@ -1059,7 +1059,7 @@ export default function ProviderDetailPage() {
                       onClick={() => setDiscountBasis("billed")}
                       className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
                         discountBasis === "billed" 
-                          ? "bg-teal-600 border-teal-600 text-white" 
+                          ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-teal-600 text-white" 
                           : "bg-white border-slate-300 text-slate-600 hover:border-slate-400"
                       }`}
                     >
@@ -1078,7 +1078,7 @@ export default function ProviderDetailPage() {
                   <button
                     onClick={() => setRateType("flat")}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      rateType === "flat" ? "bg-teal-600 text-white" : "bg-slate-200 text-slate-600"
+                      rateType === "flat" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-200 text-slate-600"
                     }`}
                   >
                     Flat Rate
@@ -1086,7 +1086,7 @@ export default function ProviderDetailPage() {
                   <button
                     onClick={() => setRateType("custom")}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      rateType === "custom" ? "bg-teal-600 text-white" : "bg-slate-200 text-slate-600"
+                      rateType === "custom" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-200 text-slate-600"
                     }`}
                   >
                     Custom by Category
@@ -1094,7 +1094,7 @@ export default function ProviderDetailPage() {
                   <button
                     onClick={() => setRateType("cpt")}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      rateType === "cpt" ? "bg-teal-600 text-white" : "bg-slate-200 text-slate-600"
+                      rateType === "cpt" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-200 text-slate-600"
                     }`}
                   >
                     Custom by CPT Code
@@ -1122,7 +1122,7 @@ export default function ProviderDetailPage() {
                         </p>
                       </div>
                       <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 flex-1">
-                        <p className="text-sm text-teal-700">
+                        <p className="text-sm text-indigo-700">
                           {discountBasis === "medicare" 
                             ? `Example: For a $100 Medicare allowable, you pay $${parseFloat(flatRate) || 0}`
                             : `Example: For a $100 billed charge, you pay $${100 - (parseFloat(flatRate) || 0)}`
@@ -1179,7 +1179,7 @@ export default function ProviderDetailPage() {
                         </button>
                         <button
                           onClick={() => setCptRates([...cptRates, { code: "", description: "", rate: "" }])}
-                          className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors"
+                          className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
                         >
                           <Plus className="w-4 h-4" />
                           Add CPT Code
@@ -1284,7 +1284,7 @@ export default function ProviderDetailPage() {
             <div className="flex justify-end">
               <button
                 onClick={handleSave}
-                className="flex items-center gap-2 px-6 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-500 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
               >
                 <Save className="w-4 h-4" />
                 Save Rates
@@ -1298,7 +1298,7 @@ export default function ProviderDetailPage() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-                <Globe className="w-5 h-5 text-teal-400" />
+                <Globe className="w-5 h-5 text-blue-400" />
                 Network Memberships ({provider.networks?.length || 0})
               </h2>
               <button className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors">

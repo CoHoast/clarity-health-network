@@ -104,7 +104,7 @@ export default function BillReviewPage() {
       </div>
 
       {/* AI Engine Status Card */}
-      <div className="bg-gradient-to-br from-teal-700 to-blue-700 rounded-xl p-6 shadow-lg">
+      <div className="bg-gradient-to-br from-indigo-700 to-blue-700 rounded-xl p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <Brain className="w-6 h-6" style={{ color: 'white' }}/>

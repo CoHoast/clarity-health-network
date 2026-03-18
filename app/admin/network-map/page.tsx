@@ -105,7 +105,7 @@ export default function NetworkMapPage() {
           <p className="text-sm text-slate-400">Total Providers</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
-          <p className="text-2xl font-bold text-teal-400">{filteredProviders.length}</p>
+          <p className="text-2xl font-bold text-blue-400">{filteredProviders.length}</p>
           <p className="text-sm text-slate-400">Locations Shown</p>
         </div>
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
@@ -331,7 +331,7 @@ export default function NetworkMapPage() {
                 <button className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">
                   View Contracts
                 </button>
-                <button onClick={() => setSelectedProvider(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">
+                <button onClick={() => setSelectedProvider(null)} className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">
                   Close
                 </button>
               </div>

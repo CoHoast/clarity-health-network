@@ -67,7 +67,7 @@ export default function PaymentsPage() {
             <Download className="w-4 h-4" />
             Export
           </a>
-          <button onClick={() => setShowBatchModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+          <button onClick={() => setShowBatchModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
             <Send className="w-4 h-4" />
             Create Batch
           </button>
@@ -224,7 +224,7 @@ export default function PaymentsPage() {
                   </Link>
                   <button className="inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm"><Printer className="w-4 h-4" />Print</button>
                 </div>
-                <button onClick={() => setSelectedPayment(null)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Close</button>
+                <button onClick={() => setSelectedPayment(null)} className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">Close</button>
               </div>
             </motion.div>
           </>
@@ -265,7 +265,7 @@ export default function PaymentsPage() {
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => setShowBatchModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                      <button onClick={handleCreateBatch} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Create Batch</button>
+                      <button onClick={handleCreateBatch} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Create Batch</button>
                     </div>
                   </>
                 ) : batchStep === 1 ? (

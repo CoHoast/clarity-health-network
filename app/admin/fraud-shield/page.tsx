@@ -167,7 +167,7 @@ export default function FraudShieldPage() {
         </div>
         <button
           onClick={() => setShowScoringModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
         >
           <Zap className="w-4 h-4" />
           Score Claim
@@ -242,7 +242,7 @@ export default function FraudShieldPage() {
               <div className="flex items-center gap-2">
                 <button onClick={() => setSelectedAlert(alert)} className="px-3 py-1.5 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">View Details</button>
                 {alert.status !== "resolved" && (
-                  <button onClick={() => { setSelectedAlert(alert); setShowActionModal(true); }} className="px-3 py-1.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Take Action</button>
+                  <button onClick={() => { setSelectedAlert(alert); setShowActionModal(true); }} className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">Take Action</button>
                 )}
               </div>
             </div>
@@ -325,7 +325,7 @@ export default function FraudShieldPage() {
                 <div className="flex gap-2">
                   <button onClick={() => setSelectedAlert(null)} className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 text-sm">Close</button>
                   {selectedAlert.status !== "resolved" && (
-                    <button onClick={() => setShowActionModal(true)} className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">Take Action</button>
+                    <button onClick={() => setShowActionModal(true)} className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">Take Action</button>
                   )}
                 </div>
               </div>
@@ -362,7 +362,7 @@ export default function FraudShieldPage() {
                 </div>
                 <div className="flex gap-3">
                   <button onClick={() => setShowActionModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                  <button onClick={handleAction} disabled={!actionType} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50">Confirm</button>
+                  <button onClick={handleAction} disabled={!actionType} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 disabled:opacity-50">Confirm</button>
                 </div>
               </div>
             </motion.div>
@@ -586,7 +586,7 @@ export default function FraudShieldPage() {
               {fraudScore && (
                 <div className="flex gap-2 p-4 border-t border-slate-700 sticky bottom-0 bg-slate-800">
                   <button onClick={() => { setFraudScore(null); setSelectedClaim(null); }} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Score Another</button>
-                  <button onClick={() => { setShowScoringModal(false); setFraudScore(null); setSelectedClaim(null); }} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Close</button>
+                  <button onClick={() => { setShowScoringModal(false); setFraudScore(null); setSelectedClaim(null); }} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Close</button>
                 </div>
               )}
             </motion.div>

@@ -37,7 +37,7 @@ export default function ClaimsIntakePage() {
           <h1 className="text-2xl font-bold text-white">Claims Intake</h1>
           <p className="text-slate-400">Incoming 837 files and processing queue</p>
         </div>
-        <button onClick={() => setShowUploadModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+        <button onClick={() => setShowUploadModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
           <Upload className="w-4 h-4" />Manual Upload
         </button>
       </div>
@@ -153,7 +153,7 @@ export default function ClaimsIntakePage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setSelectedBatch(null)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Close</button>
-                <button className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">View Claims</button>
+                <button className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">View Claims</button>
               </div>
             </motion.div>
           </>
@@ -178,7 +178,7 @@ export default function ClaimsIntakePage() {
               </div>
               <div className="flex gap-2 p-4 border-t border-slate-700">
                 <button onClick={() => setShowUploadModal(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowUploadModal(false)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Upload</button>
+                <button onClick={() => setShowUploadModal(false)} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Upload</button>
               </div>
             </motion.div>
           </>

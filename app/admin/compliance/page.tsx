@@ -107,7 +107,7 @@ export default function CompliancePage() {
             <Download className="w-4 h-4" />
             Export Report
           </button>
-          <button onClick={() => setShowNewIssue(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+          <button onClick={() => setShowNewIssue(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
             <AlertTriangle className="w-4 h-4" />
             Report Issue
           </button>
@@ -261,7 +261,7 @@ export default function CompliancePage() {
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
           <div className="p-4 border-b border-slate-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">Audit History</h2>
-            <button className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">
+            <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">
               Schedule Audit
             </button>
           </div>
@@ -311,7 +311,7 @@ export default function CompliancePage() {
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
           <div className="p-4 border-b border-slate-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">Policy Documents</h2>
-            <button className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">
+            <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">
               Upload Policy
             </button>
           </div>
@@ -352,7 +352,7 @@ export default function CompliancePage() {
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
           <div className="p-4 border-b border-slate-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">Training Compliance</h2>
-            <button className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm">
+            <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm">
               Assign Training
             </button>
           </div>
@@ -427,7 +427,7 @@ export default function CompliancePage() {
               </div>
               <div className="flex gap-3 p-4 border-t border-slate-700">
                 <button className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">View History</button>
-                <button onClick={() => setSelectedItem(null)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Close</button>
+                <button onClick={() => setSelectedItem(null)} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Close</button>
               </div>
             </motion.div>
           </>
@@ -528,7 +528,7 @@ export default function CompliancePage() {
                   <Download className="w-4 h-4" />
                   Download Report
                 </button>
-                <button onClick={() => setSelectedAudit(null)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Close</button>
+                <button onClick={() => setSelectedAudit(null)} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Close</button>
               </div>
             </motion.div>
           </>
@@ -577,7 +577,7 @@ export default function CompliancePage() {
               </div>
               <div className="flex gap-3 p-4 border-t border-slate-700">
                 <button onClick={() => setShowNewIssue(false)} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                <button onClick={() => setShowNewIssue(false)} className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Submit Issue</button>
+                <button onClick={() => setShowNewIssue(false)} className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">Submit Issue</button>
               </div>
             </motion.div>
           </>

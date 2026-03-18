@@ -256,7 +256,7 @@ export default function FeeSchedulesPage() {
             </div>
             <button
               onClick={() => setShowAddScheduleModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600"
             >
               <Plus className="w-4 h-4" />
               Add Fee Schedule
@@ -348,7 +348,7 @@ export default function FeeSchedulesPage() {
             </div>
             <button
               onClick={() => setShowAddCodeModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600"
             >
               <Plus className="w-4 h-4" />
               Add Code
@@ -434,7 +434,7 @@ export default function FeeSchedulesPage() {
             </div>
             <button
               onClick={() => setShowAddContractModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600"
             >
               <Plus className="w-4 h-4" />
               Add Contract
@@ -517,7 +517,7 @@ export default function FeeSchedulesPage() {
             </div>
             <button
               onClick={() => setShowAddModifierModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600"
             >
               <Plus className="w-4 h-4" />
               Add Modifier Rule
@@ -652,7 +652,7 @@ export default function FeeSchedulesPage() {
                       }}
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                         testModifiers.includes(mod.code)
-                          ? "bg-teal-600 text-white"
+                          ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
                           : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                       }`}
                     >
@@ -670,7 +670,7 @@ export default function FeeSchedulesPage() {
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={calculateRepricing}
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600"
                 >
                   <Play className="w-4 h-4" />
                   Calculate
@@ -830,7 +830,7 @@ export default function FeeSchedulesPage() {
                 </div>
                 <div className="flex gap-2 pt-2">
                   <button type="button" onClick={() => { setShowAddScheduleModal(false); setEditingSchedule(null); }} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                  <button type="submit" className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+                  <button type="submit" className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
                     {editingSchedule ? "Save Changes" : "Add Schedule"}
                   </button>
                 </div>
@@ -927,7 +927,7 @@ export default function FeeSchedulesPage() {
                 </div>
                 <div className="flex gap-2 pt-2">
                   <button type="button" onClick={() => { setShowAddCodeModal(false); setEditingCode(null); }} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                  <button type="submit" className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+                  <button type="submit" className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
                     {editingCode ? "Save Changes" : "Add Code"}
                   </button>
                 </div>
@@ -1052,7 +1052,7 @@ export default function FeeSchedulesPage() {
                 </div>
                 <div className="flex gap-2 pt-2">
                   <button type="button" onClick={() => { setShowAddContractModal(false); setEditingContract(null); }} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                  <button type="submit" className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+                  <button type="submit" className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
                     {editingContract ? "Save Changes" : "Add Contract"}
                   </button>
                 </div>
@@ -1147,7 +1147,7 @@ export default function FeeSchedulesPage() {
                 </div>
                 <div className="flex gap-2 pt-2">
                   <button type="button" onClick={() => { setShowAddModifierModal(false); setEditingModifier(null); }} className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">Cancel</button>
-                  <button type="submit" className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+                  <button type="submit" className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600">
                     {editingModifier ? "Save Changes" : "Add Modifier"}
                   </button>
                 </div>

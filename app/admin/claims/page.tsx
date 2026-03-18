@@ -106,7 +106,7 @@ function ClaimsContent() {
           </div>
           <button 
             onClick={() => setMemberFilter(null)}
-            className="px-3 py-1 bg-teal-600 text-white rounded-lg hover:bg-teal-700 text-sm"
+            className="px-3 py-1 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 text-sm"
           >
             Show All Claims
           </button>
@@ -152,7 +152,7 @@ function ClaimsContent() {
                 key={status}
                 onClick={() => setStatusFilter(status)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  statusFilter === status ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                  statusFilter === status ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                 }`}
               >
                 {status}

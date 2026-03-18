@@ -313,7 +313,7 @@ export default function PracticeDetailPage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-500 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors disabled:opacity-50"
               >
                 {saving ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -343,7 +343,7 @@ export default function PracticeDetailPage() {
             onClick={() => setActiveSection(section.id)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
               activeSection === section.id
-                ? "bg-teal-600 text-white"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
                 : "text-slate-400 hover:text-white hover:bg-slate-700"
             }`}
           >
@@ -359,7 +359,7 @@ export default function PracticeDetailPage() {
         {activeSection === "overview" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-teal-400" />
+              <Building2 className="w-5 h-5 text-blue-400" />
               Practice Overview
             </h2>
 
@@ -415,7 +415,7 @@ export default function PracticeDetailPage() {
                 <p className="text-sm text-slate-400">Providers</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                <p className="text-3xl font-bold text-teal-400">{practice.networks?.length || 0}</p>
+                <p className="text-3xl font-bold text-blue-400">{practice.networks?.length || 0}</p>
                 <p className="text-sm text-slate-400">Networks</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
@@ -436,7 +436,7 @@ export default function PracticeDetailPage() {
         {activeSection === "contact" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-teal-400" />
+              <MapPin className="w-5 h-5 text-blue-400" />
               Contact & Location
             </h2>
 
@@ -610,7 +610,7 @@ export default function PracticeDetailPage() {
         {activeSection === "billing" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-teal-400" />
+              <CreditCard className="w-5 h-5 text-blue-400" />
               Billing Information
             </h2>
 
@@ -900,7 +900,7 @@ export default function PracticeDetailPage() {
         {activeSection === "contract" && (
           <div className="space-y-6">
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <FileSignature className="w-5 h-5 text-teal-400" />
+              <FileSignature className="w-5 h-5 text-blue-400" />
               Contract Details
             </h2>
 
@@ -987,7 +987,7 @@ export default function PracticeDetailPage() {
                         className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
                       />
                     ) : (
-                      <p className="text-2xl font-bold text-teal-400">{practice.discountRate}</p>
+                      <p className="text-2xl font-bold text-blue-400">{practice.discountRate}</p>
                     )}
                   </div>
                 </div>
@@ -1014,7 +1014,7 @@ export default function PracticeDetailPage() {
                   onClick={() => setDiscountBasis("medicare")}
                   className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
                     discountBasis === "medicare" 
-                      ? "bg-teal-600 border-teal-600 text-white" 
+                      ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-teal-600 text-white" 
                       : "bg-slate-700 border-slate-600 text-slate-400 hover:border-slate-500"
                   }`}
                 >
@@ -1024,7 +1024,7 @@ export default function PracticeDetailPage() {
                   onClick={() => setDiscountBasis("billed")}
                   className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
                     discountBasis === "billed" 
-                      ? "bg-teal-600 border-teal-600 text-white" 
+                      ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-teal-600 text-white" 
                       : "bg-slate-700 border-slate-600 text-slate-400 hover:border-slate-500"
                   }`}
                 >
@@ -1041,14 +1041,14 @@ export default function PracticeDetailPage() {
 
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-teal-400" />
+                <DollarSign className="w-5 h-5 text-blue-400" />
                 Default Discount Rate
               </h2>
               <div className="flex gap-2">
                 <button
                   onClick={() => setRateType("flat")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    rateType === "flat" ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-400"
+                    rateType === "flat" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-700 text-slate-400"
                   }`}
                 >
                   Flat Rate
@@ -1056,7 +1056,7 @@ export default function PracticeDetailPage() {
                 <button
                   onClick={() => setRateType("custom")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    rateType === "custom" ? "bg-teal-600 text-white" : "bg-slate-700 text-slate-400"
+                    rateType === "custom" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-700 text-slate-400"
                   }`}
                 >
                   Custom by Category
@@ -1088,7 +1088,7 @@ export default function PracticeDetailPage() {
                     </p>
                   </div>
                   <div className="bg-teal-500/20 border border-teal-500/30 rounded-lg p-4 flex-1">
-                    <p className="text-sm text-teal-400">
+                    <p className="text-sm text-blue-400">
                       {discountBasis === "medicare" 
                         ? `Example: For a $100 Medicare allowable, you pay $${parseFloat(flatRate) || 0}`
                         : `Example: For a $100 billed charge, you pay $${100 - (parseFloat(flatRate) || 0)}`
@@ -1127,7 +1127,7 @@ export default function PracticeDetailPage() {
             <div className="flex justify-end">
               <button
                 onClick={handleSave}
-                className="flex items-center gap-2 px-6 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-500 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
               >
                 <Save className="w-4 h-4" />
                 Save Rates
@@ -1141,7 +1141,7 @@ export default function PracticeDetailPage() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <Users className="w-5 h-5 text-teal-400" />
+                <Users className="w-5 h-5 text-blue-400" />
                 Affiliated Providers ({practice.providers?.length || 0})
               </h2>
               <div className="flex items-center gap-2">
@@ -1163,7 +1163,7 @@ export default function PracticeDetailPage() {
                 </button>
                 <button 
                   onClick={() => setShowAddProvider(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   Add Provider
@@ -1232,7 +1232,7 @@ export default function PracticeDetailPage() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <Globe className="w-5 h-5 text-teal-400" />
+                <Globe className="w-5 h-5 text-blue-400" />
                 Network Memberships ({practice.networks?.length || 0})
               </h2>
               <button 
@@ -1547,7 +1547,7 @@ export default function PracticeDetailPage() {
                   setTimeout(() => setSaved(false), 2000);
                 }}
                 disabled={!newProvider.firstName || !newProvider.lastName || !newProvider.npi || newProvider.npi.length !== 10}
-                className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <Users className="w-4 h-4" />
                 Add Provider
