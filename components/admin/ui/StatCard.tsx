@@ -25,7 +25,7 @@ export function StatCard({
   delay = 0,
   className,
 }: StatCardProps) {
-  const { isDark } = useTheme();
+  const { isDark, mounted } = useTheme();
   
   const trendColors = {
     up: isDark 
@@ -43,6 +43,24 @@ export function StatCard({
   };
   
   const TrendIcon = trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
+
+  // Prevent theme flash by not rendering until mounted
+  if (!mounted) {
+    return (
+      <div className={cn(
+        "rounded-xl p-5 animate-pulse",
+        "bg-slate-200 border border-slate-300",
+        className
+      )}>
+        <div className="flex items-start justify-between mb-4">
+          <div className="w-11 h-11 rounded-xl bg-slate-300" />
+          <div className="w-16 h-6 rounded-full bg-slate-300" />
+        </div>
+        <div className="h-8 w-20 bg-slate-300 rounded mb-2" />
+        <div className="h-4 w-24 bg-slate-300 rounded" />
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -112,7 +130,18 @@ export function StatCardCompact({
   highlight = false,
   className,
 }: StatCardCompactProps) {
-  const { isDark } = useTheme();
+  const { isDark, mounted } = useTheme();
+  
+  // Prevent theme flash
+  if (!mounted) {
+    return (
+      <div className={cn("rounded-lg p-4 text-center animate-pulse bg-slate-200 border border-slate-300", className)}>
+        <div className="h-5 w-5 mx-auto mb-2 bg-slate-300 rounded" />
+        <div className="h-6 w-12 mx-auto bg-slate-300 rounded mb-1" />
+        <div className="h-3 w-16 mx-auto bg-slate-300 rounded" />
+      </div>
+    );
+  }
   
   return (
     <div className={cn(

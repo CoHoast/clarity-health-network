@@ -5,11 +5,13 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 interface ThemeContextType {
   isDark: boolean;
   setIsDark: (value: boolean) => void;
+  mounted: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   isDark: false,
   setIsDark: () => {},
+  mounted: false,
 });
 
 export function ThemeProvider({ 

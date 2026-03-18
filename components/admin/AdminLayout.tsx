@@ -141,6 +141,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
   const [isDark, setIsDark] = useState(false); // Default to light theme
+  const [mounted, setMounted] = useState(false); // Prevent hydration flash
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const handleSignOut = () => {
@@ -174,6 +175,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setIsDark(false);
       localStorage.setItem("admin-theme", "light");
     }
+    // Mark as mounted after theme is loaded to prevent flash
+    setMounted(true);
   }, []);
 
   // Auto-expand section if current page is in it
@@ -535,7 +538,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Page content - pass theme context */}
         <main className="p-4 lg:p-8" data-theme={isDark ? "dark" : "light"}>
-          <ThemeProvider value={{ isDark, setIsDark }}>
+          <ThemeProvider value={{ isDark, setIsDark, mounted }}>
             <ToastProvider>
               <div className={isDark ? "admin-dark" : "admin-light"}>
                 {children}
