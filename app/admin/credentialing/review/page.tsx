@@ -37,6 +37,448 @@ import { Badge } from "@/components/admin/ui/Badge";
 import { Button, IconButton } from "@/components/admin/ui/Button";
 import { cn } from "@/lib/utils";
 
+// Sample document metadata with realistic content
+const sampleDocuments: Record<string, { title: string; type: string; issuer: string; date: string; expires?: string; size: string }> = {
+  license: {
+    title: "Medical License",
+    type: "PDF",
+    issuer: "Ohio State Medical Board",
+    date: "2024-01-15",
+    expires: "2026-08-31",
+    size: "245 KB",
+  },
+  dea: {
+    title: "DEA Registration Certificate",
+    type: "PDF",
+    issuer: "U.S. Drug Enforcement Administration",
+    date: "2023-09-01",
+    expires: "2025-09-30",
+    size: "189 KB",
+  },
+  board_cert: {
+    title: "Board Certification",
+    type: "PDF",
+    issuer: "American Board of Medical Specialties",
+    date: "2022-06-15",
+    size: "312 KB",
+  },
+  malpractice_coi: {
+    title: "Certificate of Insurance",
+    type: "PDF",
+    issuer: "Medical Protective Company",
+    date: "2024-03-01",
+    expires: "2025-03-01",
+    size: "156 KB",
+  },
+  cv: {
+    title: "Curriculum Vitae",
+    type: "PDF",
+    issuer: "Provider Submitted",
+    date: "2024-03-08",
+    size: "89 KB",
+  },
+  w9: {
+    title: "W-9 Tax Form",
+    type: "PDF",
+    issuer: "Provider Submitted",
+    date: "2024-03-08",
+    size: "124 KB",
+  },
+  accreditation: {
+    title: "Facility Accreditation",
+    type: "PDF",
+    issuer: "AAAHC",
+    date: "2024-02-20",
+    expires: "2027-02-20",
+    size: "478 KB",
+  },
+};
+
+// Document Viewer Modal Component
+function DocumentViewerModal({
+  document,
+  docKey,
+  providerName,
+  onClose,
+  isDark,
+}: {
+  document: typeof sampleDocuments[string];
+  docKey: string;
+  providerName: string;
+  onClose: () => void;
+  isDark: boolean;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        className={cn(
+          "w-full max-w-4xl rounded-xl overflow-hidden max-h-[90vh] flex flex-col",
+          isDark ? "bg-slate-800" : "bg-white"
+        )}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className={cn(
+          "p-4 border-b flex items-center justify-between",
+          isDark ? "border-slate-700" : "border-slate-200"
+        )}>
+          <div>
+            <h3 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+              {document.title}
+            </h3>
+            <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+              {providerName} • {document.issuer}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" size="sm">
+              <Download className="w-4 h-4 mr-1" />
+              Download
+            </Button>
+            <IconButton icon={<X className="w-5 h-5" />} onClick={onClose} />
+          </div>
+        </div>
+
+        {/* Document Info Bar */}
+        <div className={cn(
+          "px-4 py-2 flex items-center gap-4 text-sm border-b",
+          isDark ? "bg-slate-700/50 border-slate-700 text-slate-300" : "bg-slate-50 border-slate-200 text-slate-600"
+        )}>
+          <span className="flex items-center gap-1">
+            <FileText className="w-4 h-4" />
+            {document.type}
+          </span>
+          <span>|</span>
+          <span>Size: {document.size}</span>
+          <span>|</span>
+          <span>Uploaded: {new Date(document.date).toLocaleDateString()}</span>
+          {document.expires && (
+            <>
+              <span>|</span>
+              <span className="text-amber-600 dark:text-amber-400">
+                Expires: {document.expires}
+              </span>
+            </>
+          )}
+        </div>
+
+        {/* Document Preview Area */}
+        <div className="flex-1 overflow-auto p-6 bg-slate-100 dark:bg-slate-900 min-h-[500px]">
+          {/* Simulated Document */}
+          <div className={cn(
+            "max-w-2xl mx-auto rounded-lg shadow-lg p-8",
+            isDark ? "bg-slate-800" : "bg-white"
+          )}>
+            {docKey === "license" && (
+              <LicenseDocument providerName={providerName} isDark={isDark} />
+            )}
+            {docKey === "dea" && (
+              <DEADocument providerName={providerName} isDark={isDark} />
+            )}
+            {docKey === "board_cert" && (
+              <BoardCertDocument providerName={providerName} isDark={isDark} />
+            )}
+            {docKey === "malpractice_coi" && (
+              <MalpracticeDocument providerName={providerName} isDark={isDark} />
+            )}
+            {docKey === "cv" && (
+              <CVDocument providerName={providerName} isDark={isDark} />
+            )}
+            {docKey === "w9" && (
+              <W9Document providerName={providerName} isDark={isDark} />
+            )}
+            {docKey === "accreditation" && (
+              <AccreditationDocument providerName={providerName} isDark={isDark} />
+            )}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// Sample Document Components
+function LicenseDocument({ providerName, isDark }: { providerName: string; isDark: boolean }) {
+  return (
+    <div className="text-center space-y-6">
+      <div className={cn("border-b-2 pb-4", isDark ? "border-blue-500" : "border-blue-600")}>
+        <div className="flex justify-center mb-2">
+          <Shield className="w-12 h-12 text-blue-600" />
+        </div>
+        <h2 className="text-xl font-bold text-blue-800 dark:text-blue-400">STATE OF OHIO</h2>
+        <h3 className="text-lg font-semibold text-blue-700 dark:text-blue-300">STATE MEDICAL BOARD</h3>
+      </div>
+      <div className="py-4">
+        <p className={cn("text-sm uppercase tracking-wider mb-2", isDark ? "text-slate-400" : "text-slate-500")}>
+          License to Practice Medicine
+        </p>
+        <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>
+          {providerName}
+        </p>
+        <p className={cn("text-lg mt-2", isDark ? "text-slate-300" : "text-slate-600")}>
+          is hereby licensed to practice Medicine and Surgery
+        </p>
+      </div>
+      <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>License Number</p>
+          <p className={cn("font-mono font-bold", isDark ? "text-white" : "text-slate-900")}>35-087654</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Expiration Date</p>
+          <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>August 31, 2026</p>
+        </div>
+      </div>
+      <div className={cn("mt-6 pt-4 border-t text-xs", isDark ? "border-slate-700 text-slate-400" : "border-slate-200 text-slate-500")}>
+        <p>Issued: January 15, 2024 • Columbus, Ohio</p>
+        <p className="mt-1 italic">This license must be renewed biennially</p>
+      </div>
+    </div>
+  );
+}
+
+function DEADocument({ providerName, isDark }: { providerName: string; isDark: boolean }) {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-700">
+        <div>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">U.S. DEPARTMENT OF JUSTICE</h2>
+          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-300">Drug Enforcement Administration</h3>
+        </div>
+        <div className="w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+          <Shield className="w-8 h-8 text-amber-600" />
+        </div>
+      </div>
+      <div className="text-center py-4">
+        <p className={cn("text-sm font-semibold uppercase tracking-wider", isDark ? "text-blue-400" : "text-blue-600")}>
+          DEA Registration Certificate
+        </p>
+        <p className={cn("text-xl font-bold mt-2", isDark ? "text-white" : "text-slate-900")}>{providerName}</p>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>DEA Number</p>
+          <p className={cn("font-mono font-bold", isDark ? "text-white" : "text-slate-900")}>BW1234567</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Schedules</p>
+          <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>2, 2N, 3, 3N, 4, 5</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Business Activity</p>
+          <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>Practitioner</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Expiration</p>
+          <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>September 30, 2025</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BoardCertDocument({ providerName, isDark }: { providerName: string; isDark: boolean }) {
+  return (
+    <div className="text-center space-y-6">
+      <div className="border-b-2 border-green-600 pb-4">
+        <h2 className="text-xl font-bold text-green-800 dark:text-green-400">AMERICAN BOARD OF MEDICAL SPECIALTIES</h2>
+      </div>
+      <div className="py-6">
+        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>This is to certify that</p>
+        <p className={cn("text-2xl font-bold my-3", isDark ? "text-white" : "text-slate-900")}>{providerName}</p>
+        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+          having completed the prescribed requirements, is hereby certified by the
+        </p>
+        <p className={cn("text-lg font-semibold text-green-700 dark:text-green-400 mt-2", isDark ? "text-green-400" : "text-green-700")}>
+          American Board of Orthopedic Surgery
+        </p>
+      </div>
+      <div className={cn("p-4 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Certificate Number</p>
+        <p className={cn("font-mono font-bold", isDark ? "text-white" : "text-slate-900")}>ABOS-2022-087654</p>
+      </div>
+      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+        Certified: June 15, 2022 • Valid through participation in MOC Program
+      </p>
+    </div>
+  );
+}
+
+function MalpracticeDocument({ providerName, isDark }: { providerName: string; isDark: boolean }) {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-700">
+        <div>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">MEDICAL PROTECTIVE COMPANY</h2>
+          <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>A Berkshire Hathaway Company</p>
+        </div>
+        <Badge variant="success">Active Coverage</Badge>
+      </div>
+      <div className="text-center py-2">
+        <p className={cn("text-lg font-semibold uppercase", isDark ? "text-blue-400" : "text-blue-600")}>
+          Certificate of Insurance
+        </p>
+      </div>
+      <div className={cn("p-4 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+        <p className={cn("text-sm mb-1", isDark ? "text-slate-400" : "text-slate-500")}>Named Insured</p>
+        <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>{providerName}</p>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Policy Number</p>
+          <p className={cn("font-mono font-bold", isDark ? "text-white" : "text-slate-900")}>MPL-2024-789012</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Coverage Type</p>
+          <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>Claims-Made</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Per Claim / Aggregate</p>
+          <p className={cn("font-bold text-green-600", isDark ? "text-green-400" : "text-green-600")}>$1,000,000 / $3,000,000</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Policy Period</p>
+          <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>03/01/24 - 03/01/25</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CVDocument({ providerName, isDark }: { providerName: string; isDark: boolean }) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center border-b pb-4 border-slate-200 dark:border-slate-700">
+        <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>{providerName}</h1>
+        <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
+          Board Certified Orthopedic Surgeon
+        </p>
+      </div>
+      <div>
+        <h3 className={cn("font-semibold border-b pb-1 mb-2", isDark ? "text-blue-400 border-blue-800" : "text-blue-600 border-blue-200")}>
+          Education
+        </h3>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className={isDark ? "text-slate-300" : "text-slate-700"}>Ohio State University College of Medicine</span>
+            <span className={isDark ? "text-slate-400" : "text-slate-500"}>2008-2012</span>
+          </div>
+          <div className="flex justify-between">
+            <span className={isDark ? "text-slate-300" : "text-slate-700"}>Residency - Cleveland Clinic</span>
+            <span className={isDark ? "text-slate-400" : "text-slate-500"}>2012-2017</span>
+          </div>
+          <div className="flex justify-between">
+            <span className={isDark ? "text-slate-300" : "text-slate-700"}>Fellowship - Sports Medicine</span>
+            <span className={isDark ? "text-slate-400" : "text-slate-500"}>2017-2018</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 className={cn("font-semibold border-b pb-1 mb-2", isDark ? "text-blue-400 border-blue-800" : "text-blue-600 border-blue-200")}>
+          Work History
+        </h3>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className={isDark ? "text-slate-300" : "text-slate-700"}>Wilson Orthopedics - Founder</span>
+            <span className={isDark ? "text-slate-400" : "text-slate-500"}>2018-Present</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 className={cn("font-semibold border-b pb-1 mb-2", isDark ? "text-blue-400 border-blue-800" : "text-blue-600 border-blue-200")}>
+          Certifications
+        </h3>
+        <ul className={cn("text-sm space-y-1", isDark ? "text-slate-300" : "text-slate-700")}>
+          <li>• American Board of Orthopedic Surgery</li>
+          <li>• BLS/ACLS Certified</li>
+          <li>• Ohio Medical License #35-087654</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function W9Document({ providerName, isDark }: { providerName: string; isDark: boolean }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className={cn("text-lg font-bold", isDark ? "text-white" : "text-slate-900")}>Form W-9</h2>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Request for Taxpayer Identification Number</p>
+        </div>
+        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Rev. October 2018</p>
+      </div>
+      <div className={cn("border-t border-b py-4", isDark ? "border-slate-700" : "border-slate-200")}>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Name</p>
+            <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>{providerName}</p>
+          </div>
+          <div>
+            <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Business Name</p>
+            <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>Wilson Orthopedics LLC</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Federal Tax Classification</p>
+          <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>Limited Liability Company (S)</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>TIN (masked)</p>
+          <p className={cn("font-mono font-bold", isDark ? "text-white" : "text-slate-900")}>**-***4567</p>
+        </div>
+      </div>
+      <div className={cn("text-xs text-center pt-4", isDark ? "text-slate-400" : "text-slate-500")}>
+        Signed and dated: March 8, 2024
+      </div>
+    </div>
+  );
+}
+
+function AccreditationDocument({ providerName, isDark }: { providerName: string; isDark: boolean }) {
+  return (
+    <div className="text-center space-y-6">
+      <div className="border-b-2 border-purple-600 pb-4">
+        <h2 className="text-xl font-bold text-purple-800 dark:text-purple-400">AAAHC</h2>
+        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+          Accreditation Association for Ambulatory Health Care
+        </p>
+      </div>
+      <div className="py-6">
+        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>This certifies that</p>
+        <p className={cn("text-2xl font-bold my-3", isDark ? "text-white" : "text-slate-900")}>{providerName}</p>
+        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+          has achieved AAAHC accreditation and demonstrated compliance with nationally recognized standards
+        </p>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Certificate Number</p>
+          <p className={cn("font-mono font-bold", isDark ? "text-white" : "text-slate-900")}>AAAHC-2024-12345</p>
+        </div>
+        <div className={cn("p-3 rounded", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+          <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Accreditation Term</p>
+          <p className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>3 Years</p>
+        </div>
+      </div>
+      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+        Effective: February 20, 2024 through February 20, 2027
+      </p>
+    </div>
+  );
+}
+
 // Live Verification Display Component
 function LiveVerificationDisplay({ results, isDark }: { results: Record<string, unknown>; isDark: boolean }) {
   const summary = results.summary as { passed: number; failed: number; needsReview: number; recommendation: string } | undefined;
@@ -260,6 +702,7 @@ export default function ReviewQueuePage() {
   const [verificationResults, setVerificationResults] = useState<Record<string, unknown> | null>(null);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "flagged">("pending");
+  const [viewingDocument, setViewingDocument] = useState<string | null>(null);
 
   const stats = calculateStats(applications);
 
@@ -735,23 +1178,57 @@ export default function ReviewQueuePage() {
                       Documents on File ({selectedApp.documents.length})
                     </h3>
                     <div className="grid grid-cols-2 gap-3">
-                      {selectedApp.documents.map((doc) => (
-                        <div
-                          key={doc}
-                          className={cn(
-                            "p-4 rounded-lg flex items-center justify-between cursor-pointer hover:opacity-80",
-                            isDark ? "bg-slate-700/50" : "bg-slate-50"
-                          )}
-                        >
-                          <div className="flex items-center gap-3">
-                            <FileText className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
-                            <span className={cn("text-sm font-medium capitalize", isDark ? "text-white" : "text-slate-900")}>
-                              {doc.replace(/_/g, " ")}
-                            </span>
+                      {selectedApp.documents.map((doc) => {
+                        const docInfo = sampleDocuments[doc];
+                        return (
+                          <div
+                            key={doc}
+                            onClick={() => setViewingDocument(doc)}
+                            className={cn(
+                              "p-4 rounded-lg cursor-pointer transition-all border group",
+                              isDark 
+                                ? "bg-slate-700/50 border-slate-600 hover:border-blue-500 hover:bg-slate-700" 
+                                : "bg-slate-50 border-slate-200 hover:border-blue-400 hover:bg-blue-50"
+                            )}
+                          >
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-3">
+                                <div className={cn(
+                                  "w-10 h-10 rounded-lg flex items-center justify-center",
+                                  isDark ? "bg-blue-900/50" : "bg-blue-100"
+                                )}>
+                                  <FileText className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
+                                </div>
+                                <div>
+                                  <span className={cn("text-sm font-medium capitalize block", isDark ? "text-white" : "text-slate-900")}>
+                                    {doc.replace(/_/g, " ")}
+                                  </span>
+                                  {docInfo && (
+                                    <span className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                                      {docInfo.type} • {docInfo.size}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <Eye className={cn(
+                                "w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity",
+                                isDark ? "text-blue-400" : "text-blue-600"
+                              )} />
+                            </div>
+                            {docInfo?.expires && (
+                              <div className={cn(
+                                "text-xs mt-2 flex items-center gap-1",
+                                new Date(docInfo.expires) < new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
+                                  ? "text-amber-500"
+                                  : isDark ? "text-slate-400" : "text-slate-500"
+                              )}>
+                                <Calendar className="w-3 h-3" />
+                                Expires: {docInfo.expires}
+                              </div>
+                            )}
                           </div>
-                          <ExternalLink className={cn("w-4 h-4", isDark ? "text-slate-500" : "text-slate-400")} />
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                     <Button variant="secondary" size="sm">
                       <Download className="w-4 h-4 mr-2" />
@@ -835,6 +1312,19 @@ export default function ReviewQueuePage() {
           )}
         </div>
       </div>
+
+      {/* Document Viewer Modal */}
+      <AnimatePresence>
+        {viewingDocument && selectedApp && sampleDocuments[viewingDocument] && (
+          <DocumentViewerModal
+            document={sampleDocuments[viewingDocument]}
+            docKey={viewingDocument}
+            providerName={selectedApp.provider}
+            onClose={() => setViewingDocument(null)}
+            isDark={isDark}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Decision Modal */}
       <AnimatePresence>
