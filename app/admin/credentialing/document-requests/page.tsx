@@ -321,20 +321,20 @@ export default function DocumentRequestsPage() {
                   By: {req.sentBy}
                 </span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 {req.status === "pending" || req.status === "partial" ? (
                   <Button variant="secondary" size="sm">
-                    <Mail className="w-4 h-4 mr-1" />
+                    <Mail className="w-4 h-4 mr-2" />
                     Send Reminder
                   </Button>
                 ) : req.status === "expired" ? (
                   <Button variant="secondary" size="sm">
-                    <RefreshCw className="w-4 h-4 mr-1" />
+                    <RefreshCw className="w-4 h-4 mr-2" />
                     Resend Request
                   </Button>
                 ) : null}
-                <Button variant="ghost" size="sm">
-                  <Upload className="w-4 h-4 mr-1" />
+                <Button variant="secondary" size="sm">
+                  <Upload className="w-4 h-4 mr-2" />
                   Upload Manually
                 </Button>
               </div>
@@ -586,12 +586,12 @@ export default function DocumentRequestsPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
-                  <Button variant="secondary" className="flex-1">
+                <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                  <Button variant="secondary" size="sm" className="flex-1">
                     <Mail className="w-4 h-4 mr-2" />
                     Resend Email
                   </Button>
-                  <Button variant="secondary" className="flex-1">
+                  <Button variant="secondary" size="sm" className="flex-1">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload Manually
                   </Button>
