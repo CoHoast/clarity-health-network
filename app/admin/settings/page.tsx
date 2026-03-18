@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, Building2, Bell, Shield, Globe, Save, Check, Key, Clock, Users, AlertTriangle } from "lucide-react";
+import { Settings, Building2, Bell, Shield, Globe, Save, Check, Key, Clock, Users, AlertTriangle, Mail, Plus, Edit, Trash2 } from "lucide-react";
 
 export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
@@ -138,33 +138,88 @@ export default function SettingsPage() {
           )}
 
           {activeTab === "notifications" && (
-            <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
-              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Bell className="w-5 h-5 text-amber-400" />
-                Notification Preferences
-              </h2>
-              <div className="space-y-4">
-                {[
-                  { label: "Contract expiration alerts", description: "30, 60, and 90 days before expiration", default: true },
-                  { label: "Provider credential expiration", description: "When credentials are expiring soon", default: true },
-                  { label: "New provider applications", description: "When providers apply to join the network", default: true },
-                  { label: "Contract renewal confirmations", description: "When providers sign renewals", default: true },
-                  { label: "Credentialing status changes", description: "Verification updates and completions", default: true },
-                  { label: "Weekly network summary", description: "Overview of network activity", default: false },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between py-3 border-b border-slate-700 last:border-0">
-                    <div>
-                      <p className="font-medium text-white">{item.label}</p>
-                      <p className="text-sm text-slate-400">{item.description}</p>
+            <>
+              {/* Email Recipients Section */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-cyan-400" />
+                    Notification Recipients
+                  </h2>
+                  <button className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors">
+                    <Plus className="w-4 h-4" />
+                    Add Recipient
+                  </button>
+                </div>
+                <p className="text-slate-400 text-sm mb-4">Configure which email addresses receive different types of notifications.</p>
+                
+                <div className="space-y-3">
+                  {[
+                    { email: "admin@truecare.health", name: "Admin Team", types: ["All Notifications"] },
+                    { email: "contracts@truecare.health", name: "Contracts Team", types: ["Contract Alerts", "Renewals"] },
+                    { email: "credentialing@truecare.health", name: "Credentialing Dept", types: ["Credential Expiration", "Applications", "Status Changes"] },
+                    { email: "network@truecare.health", name: "Network Operations", types: ["Weekly Summary", "Provider Updates"] },
+                  ].map((recipient, i) => (
+                    <div key={i} className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                          <Mail className="w-5 h-5 text-cyan-400" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-white">{recipient.name}</p>
+                          <p className="text-sm text-slate-400">{recipient.email}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-wrap gap-1 max-w-xs">
+                          {recipient.types.map((type, j) => (
+                            <span key={j} className="px-2 py-1 bg-slate-600 text-slate-300 text-xs rounded-full">
+                              {type}
+                            </span>
+                          ))}
+                        </div>
+                        <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-600 rounded-lg transition-colors">
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" defaultChecked={item.default} className="sr-only peer" />
-                      <div className="w-11 h-6 bg-slate-600 peer-focus:ring-4 peer-focus:ring-teal-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-                    </label>
-                  </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Notification Types */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Bell className="w-5 h-5 text-amber-400" />
+                  Notification Types
+                </h2>
+                <p className="text-slate-400 text-sm mb-4">Enable or disable specific notification categories.</p>
+                <div className="space-y-4">
+                  {[
+                    { label: "Contract expiration alerts", description: "30, 60, and 90 days before expiration", default: true },
+                    { label: "Provider credential expiration", description: "When credentials are expiring soon", default: true },
+                    { label: "New provider applications", description: "When providers apply to join the network", default: true },
+                    { label: "Contract renewal confirmations", description: "When providers sign renewals", default: true },
+                    { label: "Credentialing status changes", description: "Verification updates and completions", default: true },
+                    { label: "Weekly network summary", description: "Overview of network activity", default: false },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center justify-between py-3 border-b border-slate-700 last:border-0">
+                      <div>
+                        <p className="font-medium text-white">{item.label}</p>
+                        <p className="text-sm text-slate-400">{item.description}</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked={item.default} className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-600 peer-focus:ring-4 peer-focus:ring-teal-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                      </label>
+                    </div>
                 ))}
               </div>
             </div>
+            </>
           )}
 
           {activeTab === "security" && (
