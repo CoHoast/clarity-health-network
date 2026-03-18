@@ -347,12 +347,9 @@ export default function RecredentialingPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/admin/credentialing">
-            <Button variant="ghost" size="sm">
-              <ChevronLeft className="w-4 h-4 mr-1" />
-              Back
-            </Button>
-          </Link>
+          <Button variant="ghost" size="sm" icon={<ChevronLeft className="w-4 h-4" />} href="/admin/credentialing">
+            Back
+          </Button>
           <div>
             <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>
               Re-Credentialing
@@ -363,12 +360,10 @@ export default function RecredentialingPage() {
           </div>
         </div>
         <div className="flex gap-3">
-          <Button variant="secondary" onClick={() => setShowSettingsModal(true)}>
-            <Settings className="w-4 h-4 mr-2" />
+          <Button variant="secondary" icon={<Settings className="w-4 h-4" />} onClick={() => setShowSettingsModal(true)}>
             Settings
           </Button>
-          <Button variant="primary">
-            <Mail className="w-4 h-4 mr-2" />
+          <Button variant="primary" icon={<Mail className="w-4 h-4" />}>
             Send Bulk Reminders
           </Button>
         </div>
@@ -631,33 +626,27 @@ export default function RecredentialingPage() {
 
                 <div className="flex flex-wrap gap-2">
                   {!item.applicationStarted && (
-                    <Button variant="primary" size="sm">
-                      <RefreshCw className="w-4 h-4 mr-2" />
+                    <Button variant="primary" size="sm" icon={<RefreshCw className="w-4 h-4" />}>
                       Start Re-Credential
                     </Button>
                   )}
                   {item.applicationStarted && (
-                    <Button variant="primary" size="sm" onClick={() => handleViewApplication(item)}>
-                      <Eye className="w-4 h-4 mr-2" />
+                    <Button variant="primary" size="sm" icon={<Eye className="w-4 h-4" />} onClick={() => handleViewApplication(item)}>
                       View Application
                     </Button>
                   )}
                   {item.eligibleForAbbreviated && !item.applicationStarted && (
-                    <Button variant="secondary" size="sm">
-                      <Zap className="w-4 h-4 mr-2" />
+                    <Button variant="secondary" size="sm" icon={<Zap className="w-4 h-4" />}>
                       Auto-Approve (Abbreviated)
                     </Button>
                   )}
-                  <Button variant="secondary" size="sm" onClick={() => handleSendReminder(item)}>
-                    <Mail className="w-4 h-4 mr-2" />
+                  <Button variant="secondary" size="sm" icon={<Mail className="w-4 h-4" />} onClick={() => handleSendReminder(item)}>
                     Send Reminder
                   </Button>
-                  <Button variant="secondary" size="sm" onClick={() => handleRequestDocs(item)}>
-                    <Send className="w-4 h-4 mr-2" />
+                  <Button variant="secondary" size="sm" icon={<Send className="w-4 h-4" />} onClick={() => handleRequestDocs(item)}>
                     Request Documents
                   </Button>
-                  <Button variant="secondary" size="sm" onClick={() => setSelectedProvider(item)}>
-                    <History className="w-4 h-4 mr-2" />
+                  <Button variant="secondary" size="sm" icon={<History className="w-4 h-4" />} onClick={() => setSelectedProvider(item)}>
                     View Timeline
                   </Button>
                 </div>
@@ -1017,12 +1006,10 @@ export default function RecredentialingPage() {
                 <Button variant="secondary" onClick={() => { setShowApplicationModal(false); setSelectedProvider(null); }}>
                   Close
                 </Button>
-                <Button variant="secondary">
-                  <Send className="w-4 h-4 mr-2" />
+                <Button variant="secondary" icon={<Send className="w-4 h-4" />}>
                   Request Missing Docs
                 </Button>
-                <Button variant="primary">
-                  <Eye className="w-4 h-4 mr-2" />
+                <Button variant="primary" icon={<Eye className="w-4 h-4" />}>
                   Full Review
                 </Button>
               </div>
@@ -1090,18 +1077,13 @@ export default function RecredentialingPage() {
                 <Button variant="secondary" onClick={() => { setShowReminderModal(false); setSelectedProvider(null); }}>
                   Cancel
                 </Button>
-                <Button onClick={confirmSendReminder} disabled={isProcessing}>
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Mail className="w-4 h-4 mr-2" />
-                      Send Reminder
-                    </>
-                  )}
+                <Button 
+                  variant="primary"
+                  icon={isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
+                  onClick={confirmSendReminder} 
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? "Sending..." : "Send Reminder"}
                 </Button>
               </div>
             </motion.div>
@@ -1179,18 +1161,13 @@ export default function RecredentialingPage() {
                 <Button variant="secondary" onClick={() => { setShowRequestDocsModal(false); setSelectedProvider(null); }}>
                   Cancel
                 </Button>
-                <Button onClick={confirmRequestDocs} disabled={isProcessing || selectedDocs.length === 0}>
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Send Request ({selectedDocs.length})
-                    </>
-                  )}
+                <Button 
+                  variant="primary"
+                  icon={isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  onClick={confirmRequestDocs} 
+                  disabled={isProcessing || selectedDocs.length === 0}
+                >
+                  {isProcessing ? "Sending..." : `Send Request (${selectedDocs.length})`}
                 </Button>
               </div>
             </motion.div>
