@@ -1169,12 +1169,12 @@ export default function PracticeDetailPage() {
             </div>
 
             {/* CSV format hint */}
-            <div className="p-3 bg-slate-700/30 border border-slate-600 rounded-lg">
-              <p className="text-xs text-slate-400">
-                <strong className="text-slate-300">CSV Format:</strong> First Name, Last Name, Title, NPI, Specialty, Email, Phone, License State, License Number
+            <div className="py-2">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                <strong className="text-slate-700 dark:text-slate-300">CSV Format:</strong> First Name, Last Name, Title, NPI, Specialty, Email, Phone, License State, License Number
               </p>
-              <p className="text-xs text-slate-500 mt-1">
-                Example: <code className="bg-slate-600 px-1 rounded">John, Smith, MD, 1234567890, Family Medicine, john@clinic.com, 555-123-4567, OH, MD-123456</code>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Example: <span className="text-cyan-600 dark:text-cyan-400 font-mono">John, Smith, MD, 1234567890, Family Medicine, john@clinic.com, 555-123-4567, OH, MD-123456</span>
               </p>
             </div>
 
