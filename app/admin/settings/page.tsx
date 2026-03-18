@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, Building2, Bell, Shield, Globe, Save, Check, Key, Clock, Users, AlertTriangle, Mail, Plus, Edit, Trash2 } from "lucide-react";
+import { Settings, Building2, Bell, Shield, Globe, Save, Check, Key, Clock, Users, AlertTriangle, Mail, Plus, Edit, Trash2, FileText, Eye, Copy } from "lucide-react";
 
 export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState("organization");
+  const [editingTemplate, setEditingTemplate] = useState<string | null>(null);
 
   const handleSave = () => {
     setSaved(true);
@@ -15,7 +16,119 @@ export default function SettingsPage() {
   const tabs = [
     { id: "organization", label: "Organization", icon: Building2 },
     { id: "notifications", label: "Notifications", icon: Bell },
+    { id: "email-templates", label: "Email Templates", icon: Mail },
     { id: "security", label: "Security", icon: Shield },
+  ];
+
+  const emailTemplates = [
+    {
+      id: "welcome",
+      name: "Welcome Email",
+      subject: "Welcome to TrueCare Health Network!",
+      description: "Sent when a provider is activated after contract signing",
+      lastModified: "Mar 10, 2024",
+      body: `Dear {{provider_name}},
+
+Welcome to TrueCare Health Network! Your participation agreement has been fully executed, and you are now an active network provider.
+
+**Your Provider Details:**
+- NPI: {{provider_npi}}
+- Effective Date: {{effective_date}}
+- Contract ID: {{contract_id}}
+
+**Next Steps:**
+1. Review your fee schedule in the Provider Portal
+2. Update your practice information if needed
+3. Ensure your staff is aware of claim submission procedures
+
+If you have any questions, please contact our Provider Relations team at providers@truecarehealth.com or call 1-800-555-0199.
+
+We look forward to working with you!
+
+Best regards,
+TrueCare Health Network
+Provider Relations Team`,
+    },
+    {
+      id: "contract-sent",
+      name: "Contract Sent for Signature",
+      subject: "Your TrueCare Participation Agreement is Ready",
+      description: "Sent when a contract is emailed to a provider for signature",
+      lastModified: "Mar 8, 2024",
+      body: `Dear {{provider_name}},
+
+Your TrueCare Health Network Participation Agreement is ready for your review and signature.
+
+**Agreement Details:**
+- Contract ID: {{contract_id}}
+- Effective Date: {{effective_date}}
+- Term: {{term_length}} years
+- Fee Schedule: {{rate_schedule}}
+
+Please review the attached agreement and return a signed copy within 30 days.
+
+[View & Sign Agreement]
+
+If you have questions about the agreement, please contact our Contracting team at contracts@truecarehealth.com.
+
+Best regards,
+TrueCare Health Network
+Contracting Department`,
+    },
+    {
+      id: "document-request",
+      name: "Document Request",
+      subject: "Document Request - TrueCare Credentialing",
+      description: "Sent when requesting documents via secure upload link",
+      lastModified: "Mar 5, 2024",
+      body: `Dear {{provider_name}},
+
+TrueCare Health Network is processing your credentialing application and requires the following documents:
+
+{{document_list}}
+
+Please upload your documents using the secure link below:
+
+[Upload Documents]
+
+This link will expire on {{expiration_date}}.
+
+{{custom_message}}
+
+Questions? Contact credentialing@truecarehealth.com
+
+— TrueCare Credentialing Team`,
+    },
+    {
+      id: "recredentialing-reminder",
+      name: "Re-Credentialing Reminder",
+      subject: "Action Required: Re-Credentialing Due",
+      description: "Sent 90/60/30 days before credentialing expires",
+      lastModified: "Feb 28, 2024",
+      body: `Dear {{provider_name}},
+
+Your TrueCare network participation is due for re-credentialing.
+
+**Current Status:**
+- Credential Expiration: {{expiration_date}}
+- Days Remaining: {{days_remaining}}
+
+Please submit your re-credentialing application to maintain your active network status.
+
+[Complete Re-Credentialing]
+
+Required documents:
+- Updated CV
+- Current license verification
+- Malpractice insurance certificate
+- Board certification (if applicable)
+
+Failure to complete re-credentialing before {{expiration_date}} may result in suspension of network participation.
+
+Questions? Contact credentialing@truecarehealth.com
+
+— TrueCare Credentialing Team`,
+    },
   ];
 
   return (
@@ -219,6 +332,198 @@ export default function SettingsPage() {
                 ))}
               </div>
             </div>
+            </>
+          )}
+
+          {activeTab === "email-templates" && (
+            <>
+              {/* Email Templates List */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-cyan-400" />
+                    Email Templates
+                  </h2>
+                </div>
+                <p className="text-slate-400 text-sm mb-6">
+                  Customize email templates sent during the credentialing and contracting process. Use merge fields like {"{{provider_name}}"} for dynamic content.
+                </p>
+
+                <div className="space-y-4">
+                  {emailTemplates.map((template) => (
+                    <div
+                      key={template.id}
+                      className="bg-slate-700/30 rounded-lg border border-slate-600/50 overflow-hidden"
+                    >
+                      <div className="flex items-center justify-between p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-cyan-400" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-white">{template.name}</p>
+                            <p className="text-sm text-slate-400">{template.description}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-500">Modified {template.lastModified}</span>
+                          <button
+                            onClick={() => setEditingTemplate(editingTemplate === template.id ? null : template.id)}
+                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-600 rounded-lg transition-colors"
+                            title="Edit Template"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-600 rounded-lg transition-colors"
+                            title="Preview"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {editingTemplate === template.id && (
+                        <div className="border-t border-slate-600/50 p-4 space-y-4 bg-slate-800/50">
+                          <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-1">Subject Line</label>
+                            <input
+                              type="text"
+                              defaultValue={template.subject}
+                              className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-1">Email Body</label>
+                            <textarea
+                              rows={12}
+                              defaultValue={template.body}
+                              className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white font-mono text-sm"
+                            />
+                          </div>
+                          <div className="flex items-center justify-between pt-2">
+                            <div className="flex flex-wrap gap-2">
+                              <span className="text-xs text-slate-500">Available fields:</span>
+                              {["{{provider_name}}", "{{provider_npi}}", "{{effective_date}}", "{{contract_id}}"].map((field) => (
+                                <button
+                                  key={field}
+                                  onClick={() => navigator.clipboard.writeText(field)}
+                                  className="px-2 py-0.5 bg-slate-700 hover:bg-slate-600 text-cyan-400 text-xs rounded cursor-pointer transition-colors"
+                                  title="Click to copy"
+                                >
+                                  {field}
+                                </button>
+                              ))}
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => setEditingTemplate(null)}
+                                className="px-3 py-1.5 bg-slate-600 text-white rounded hover:bg-slate-500 text-sm"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setEditingTemplate(null);
+                                  handleSave();
+                                }}
+                                className="px-3 py-1.5 bg-teal-600 text-white rounded hover:bg-teal-500 text-sm"
+                              >
+                                Save Template
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Merge Fields Reference */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-purple-400" />
+                  Merge Field Reference
+                </h2>
+                <p className="text-slate-400 text-sm mb-4">
+                  Use these merge fields in your templates. They will be replaced with actual values when emails are sent.
+                </p>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[
+                    { group: "Provider", fields: ["provider_name", "provider_npi", "provider_specialty", "provider_license", "provider_email"] },
+                    { group: "Practice", fields: ["practice_name", "practice_address", "practice_phone", "practice_tax_id"] },
+                    { group: "Contract", fields: ["contract_id", "effective_date", "term_date", "rate_schedule", "term_length"] },
+                    { group: "Credentialing", fields: ["application_id", "expiration_date", "days_remaining", "document_list"] },
+                    { group: "Network", fields: ["network_name", "network_phone", "network_email", "network_address"] },
+                    { group: "System", fields: ["current_date", "custom_message", "support_email", "portal_url"] },
+                  ].map((group) => (
+                    <div key={group.group} className="bg-slate-700/30 rounded-lg p-3">
+                      <p className="text-xs font-medium text-slate-400 uppercase mb-2">{group.group}</p>
+                      <div className="space-y-1">
+                        {group.fields.map((field) => (
+                          <button
+                            key={field}
+                            onClick={() => navigator.clipboard.writeText(`{{${field}}}`)}
+                            className="block w-full text-left px-2 py-1 text-sm font-mono text-cyan-400 hover:bg-slate-600 rounded transition-colors"
+                            title="Click to copy"
+                          >
+                            {`{{${field}}}`}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Email Sending Settings */}
+              <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-6">
+                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Settings className="w-5 h-5 text-amber-400" />
+                  Email Settings
+                </h2>
+                <div className="space-y-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1">From Name</label>
+                      <input
+                        type="text"
+                        defaultValue="TrueCare Health Network"
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-1">Reply-To Email</label>
+                      <input
+                        type="email"
+                        defaultValue="providers@truecarehealth.com"
+                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between py-3 border-b border-slate-700">
+                    <div>
+                      <p className="font-medium text-white">Include network logo in emails</p>
+                      <p className="text-sm text-slate-400">Add your organization logo to email headers</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" defaultChecked className="sr-only peer" />
+                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                    </label>
+                  </div>
+                  <div className="flex items-center justify-between py-3">
+                    <div>
+                      <p className="font-medium text-white">BCC admin on contract emails</p>
+                      <p className="text-sm text-slate-400">Send a copy to contracts@truecarehealth.com</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" defaultChecked className="sr-only peer" />
+                      <div className="w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                    </label>
+                  </div>
+                </div>
+              </div>
             </>
           )}
 
