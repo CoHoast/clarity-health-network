@@ -99,17 +99,17 @@ export default function VerificationStatusPage() {
             <div key={i} className={`rounded-xl p-5 shadow-lg ${
               isDark 
                 ? "bg-gradient-to-br from-cyan-900/30 to-teal-900/30 border border-cyan-800/30" 
-                : "bg-slate-900 border border-slate-700"
+                : "bg-white border border-slate-200"
             }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  isDark ? "bg-cyan-500/20 border border-cyan-500/30" : "bg-white/20"
+                  isDark ? "bg-cyan-500/20 border border-cyan-500/30" : "bg-teal-50"
                 }`}>
-                  <Icon className="w-5 h-5" style={{ color: 'white' }} />
+                  <Icon className={`w-5 h-5 ${isDark ? "text-white" : "text-teal-600"}`} />
                 </div>
                 <div>
-                  <p className="text-3xl font-bold" style={{ color: 'white' }}>{stat.value}</p>
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
+                  <p className={`text-3xl font-bold ${isDark ? "text-white" : "text-slate-900"}`}>{stat.value}</p>
+                  <p className={`text-sm ${isDark ? "text-white/80" : "text-slate-500"}`}>{stat.label}</p>
                 </div>
               </div>
             </div>
@@ -126,13 +126,21 @@ export default function VerificationStatusPage() {
             placeholder="Search by provider or NPI..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className={`w-full pl-10 pr-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+              isDark 
+                ? "bg-slate-800 border border-slate-600 text-white placeholder:text-slate-400" 
+                : "bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400"
+            }`}
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className={`px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+            isDark 
+              ? "bg-slate-800 border border-slate-600 text-white" 
+              : "bg-white border border-slate-300 text-slate-900"
+          }`}
         >
           {statusOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
@@ -141,7 +149,11 @@ export default function VerificationStatusPage() {
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className={`px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+            isDark 
+              ? "bg-slate-800 border border-slate-600 text-white" 
+              : "bg-white border border-slate-300 text-slate-900"
+          }`}
         >
           {typeOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
@@ -150,7 +162,9 @@ export default function VerificationStatusPage() {
       </div>
 
       {/* Verifications Table */}
-      <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
+      <div className={`rounded-xl overflow-hidden ${
+        isDark ? "bg-slate-800/50 border border-slate-700" : "bg-white border border-slate-200"
+      }`}>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
