@@ -15,6 +15,19 @@ import {
   Activity,
   Search,
   Filter,
+  Settings,
+  Play,
+  Pause,
+  Bell,
+  X,
+  User,
+  FileText,
+  Ban,
+  Undo,
+  History,
+  TrendingUp,
+  BarChart3,
+  Zap,
 } from "lucide-react";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { StatCard } from "@/components/admin/ui/StatCard";
@@ -23,77 +36,148 @@ import { Button } from "@/components/admin/ui/Button";
 import { SearchInput } from "@/components/admin/ui/SearchInput";
 import { cn } from "@/lib/utils";
 
+// Monitoring schedule
+const monitoringSchedule = [
+  { type: "OIG Exclusion", frequency: "Daily", time: "2:00 AM", source: "OIG LEIE", autoAction: "Auto-suspend", enabled: true },
+  { type: "SAM Exclusion", frequency: "Daily", time: "2:00 AM", source: "SAM.gov", autoAction: "Auto-suspend", enabled: true },
+  { type: "License Status", frequency: "Weekly", time: "Saturday 3:00 AM", source: "State Boards", autoAction: "Alert", enabled: true },
+  { type: "DEA Status", frequency: "Weekly", time: "Saturday 3:00 AM", source: "DEA", autoAction: "Alert", enabled: true },
+  { type: "NPI Status", frequency: "Weekly", time: "Saturday 3:00 AM", source: "NPPES", autoAction: "Alert", enabled: true },
+  { type: "Medicare Opt-Out", frequency: "Monthly", time: "1st @ 4:00 AM", source: "CMS", autoAction: "Alert", enabled: true },
+  { type: "Death Master File", frequency: "Monthly", time: "1st @ 4:00 AM", source: "SSA DMF", autoAction: "Auto-suspend", enabled: false },
+];
+
 const alerts = [
   {
     id: 1,
     severity: "critical",
     provider: "Dr. Michael Brown",
+    providerId: "prov-123",
     practice: "Brown Medical Associates",
+    npi: "1234567890",
     type: "OIG Exclusion",
+    checkType: "oig",
     description: "Provider found on OIG LEIE exclusion list",
+    details: "Exclusion effective date: March 1, 2024. Reason: Patient abuse/neglect (1128(a)(2)). Minimum exclusion period: 5 years.",
     detected: "2024-03-18T08:00:00",
     status: "open",
     autoAction: "Suspended pending review",
+    providerSuspended: true,
+    actionRequired: "Review case, confirm exclusion, notify provider, terminate if confirmed",
   },
   {
     id: 2,
     severity: "high",
     provider: "Dr. Robert Kim",
+    providerId: "prov-456",
     practice: "Skin Care Associates",
+    npi: "2345678901",
     type: "License Suspended",
+    checkType: "license",
     description: "State medical license suspended by OH Medical Board",
+    details: "License OH-MD-789012 suspended effective March 15, 2024. Board action pending investigation.",
     detected: "2024-03-17T14:30:00",
     status: "acknowledged",
     acknowledgedBy: "Jane Smith",
     acknowledgedAt: "2024-03-17T16:00:00",
+    providerSuspended: false,
+    actionRequired: "Contact provider, verify status, consider suspension",
   },
   {
     id: 3,
     severity: "medium",
     provider: "Dr. Sarah Chen",
+    providerId: "prov-789",
     practice: "Lakeside Family Medicine",
+    npi: "3456789012",
     type: "License Expiring",
+    checkType: "license",
     description: "State license expires in 28 days (April 15, 2024)",
+    details: "License OH-MD-456789 set to expire. Provider has not submitted renewal documentation.",
     detected: "2024-03-18T02:00:00",
     status: "open",
+    providerSuspended: false,
+    actionRequired: "Send reminder to provider, request updated license",
   },
   {
     id: 4,
     severity: "medium",
     provider: "Valley Health Center",
+    providerId: "prov-012",
     practice: "Valley Health Center",
+    npi: "4567890123",
     type: "Malpractice Expiring",
+    checkType: "malpractice",
     description: "Malpractice COI expires in 21 days (April 8, 2024)",
+    details: "Policy PLM-456789 with ABC Insurance expires April 8. Minimum required coverage: $1M/$3M.",
     detected: "2024-03-18T02:00:00",
     status: "open",
+    providerSuspended: false,
+    actionRequired: "Request updated COI from provider",
   },
   {
     id: 5,
     severity: "low",
     provider: "Dr. Emily Watson",
+    providerId: "prov-345",
     practice: "Watson Pediatrics",
+    npi: "5678901234",
     type: "Address Change",
+    checkType: "npi",
     description: "NPPES address differs from records - verify update",
+    details: "NPPES shows new address: 456 Medical Drive, Cleveland, OH 44102. Current records show: 123 Health St.",
     detected: "2024-03-15T02:00:00",
     status: "resolved",
     resolvedBy: "Mike Johnson",
     resolvedAt: "2024-03-16T10:00:00",
+    resolution: "Verified address change with provider, records updated",
+    providerSuspended: false,
+  },
+  {
+    id: 6,
+    severity: "critical",
+    provider: "Dr. James Anderson",
+    providerId: "prov-678",
+    practice: "Anderson Family Practice",
+    npi: "6789012345",
+    type: "SAM Exclusion",
+    checkType: "sam",
+    description: "Provider found on SAM.gov debarment list",
+    details: "Debarred from federal contracts effective February 15, 2024. Cross-listed with OIG exclusion.",
+    detected: "2024-03-18T02:15:00",
+    status: "open",
+    autoAction: "Suspended pending review",
+    providerSuspended: true,
+    actionRequired: "Immediate termination required for federal exclusion",
   },
 ];
 
 const recentScans = [
-  { date: "2024-03-18", type: "OIG/SAM Daily", providers: 487, issues: 1, duration: "2m 34s" },
-  { date: "2024-03-17", type: "OIG/SAM Daily", providers: 487, issues: 0, duration: "2m 28s" },
-  { date: "2024-03-16", type: "License Weekly", providers: 487, issues: 3, duration: "8m 12s" },
-  { date: "2024-03-16", type: "OIG/SAM Daily", providers: 485, issues: 0, duration: "2m 31s" },
-  { date: "2024-03-15", type: "OIG/SAM Daily", providers: 485, issues: 0, duration: "2m 25s" },
+  { id: 1, date: "2024-03-18T02:00:00", type: "OIG/SAM Daily", providers: 487, issues: 2, duration: "2m 34s", status: "completed" },
+  { id: 2, date: "2024-03-17T02:00:00", type: "OIG/SAM Daily", providers: 487, issues: 0, duration: "2m 28s", status: "completed" },
+  { id: 3, date: "2024-03-16T03:00:00", type: "License Weekly", providers: 487, issues: 3, duration: "8m 12s", status: "completed" },
+  { id: 4, date: "2024-03-16T02:00:00", type: "OIG/SAM Daily", providers: 485, issues: 0, duration: "2m 31s", status: "completed" },
+  { id: 5, date: "2024-03-15T02:00:00", type: "OIG/SAM Daily", providers: 485, issues: 0, duration: "2m 25s", status: "completed" },
+  { id: 6, date: "2024-03-09T03:00:00", type: "License Weekly", providers: 483, issues: 1, duration: "7m 58s", status: "completed" },
+  { id: 7, date: "2024-03-01T04:00:00", type: "Medicare Opt-Out", providers: 480, issues: 0, duration: "3m 45s", status: "completed" },
+];
+
+// Weekly verification stats for chart
+const weeklyStats = [
+  { day: "Mon", oig: 487, sam: 487, license: 0, issues: 0 },
+  { day: "Tue", oig: 487, sam: 487, license: 0, issues: 1 },
+  { day: "Wed", oig: 487, sam: 487, license: 0, issues: 0 },
+  { day: "Thu", oig: 487, sam: 487, license: 0, issues: 0 },
+  { day: "Fri", oig: 487, sam: 487, license: 0, issues: 0 },
+  { day: "Sat", oig: 487, sam: 487, license: 487, issues: 3 },
+  { day: "Sun", oig: 487, sam: 487, license: 0, issues: 2 },
 ];
 
 const stats = [
   { label: "Providers Monitored", value: "487", trend: "up" as const, change: "+12 this month", icon: <Shield className="w-5 h-5" /> },
-  { label: "Active Alerts", value: "4", trend: "warning" as const, change: "Needs attention", icon: <AlertTriangle className="w-5 h-5" /> },
-  { label: "Critical Issues", value: "1", trend: "warning" as const, change: "Immediate action", icon: <XCircle className="w-5 h-5" /> },
-  { label: "Last Scan", value: "2:00 AM", trend: "up" as const, change: "Today", icon: <Clock className="w-5 h-5" /> },
+  { label: "Active Alerts", value: "5", trend: "warning" as const, change: "Needs attention", icon: <AlertTriangle className="w-5 h-5" /> },
+  { label: "Critical Issues", value: "2", trend: "warning" as const, change: "Immediate action", icon: <XCircle className="w-5 h-5" /> },
+  { label: "Auto-Suspended", value: "2", trend: "neutral" as const, change: "Pending review", icon: <Ban className="w-5 h-5" /> },
 ];
 
 const getSeverityBadge = (severity: string) => {
@@ -139,11 +223,29 @@ const getSeverityColor = (severity: string) => {
   }
 };
 
+const getSeverityIcon = (severity: string) => {
+  switch (severity) {
+    case "critical":
+      return "🔴";
+    case "high":
+      return "🟠";
+    case "medium":
+      return "🟡";
+    case "low":
+      return "🔵";
+    default:
+      return "⚪";
+  }
+};
+
 export default function MonitoringPage() {
   const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [severityFilter, setSeverityFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [activeTab, setActiveTab] = useState<"alerts" | "history" | "settings">("alerts");
+  const [selectedAlert, setSelectedAlert] = useState<typeof alerts[0] | null>(null);
+  const [showRunModal, setShowRunModal] = useState(false);
 
   const filteredAlerts = alerts.filter((alert) => {
     const matchesSearch =
@@ -155,6 +257,7 @@ export default function MonitoringPage() {
   });
 
   const openAlerts = alerts.filter((a) => a.status === "open" || a.status === "acknowledged");
+  const criticalAlerts = alerts.filter((a) => a.severity === "critical" && a.status !== "resolved");
 
   return (
     <div className="space-y-6">
@@ -172,15 +275,47 @@ export default function MonitoringPage() {
               Compliance Monitoring
             </h1>
             <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
-              Daily/weekly automated verification scans and alerts
+              Automated verification scans and real-time alerts
             </p>
           </div>
         </div>
-        <Button variant="primary">
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Run Manual Scan
-        </Button>
+        <div className="flex gap-3">
+          <Button variant="secondary" onClick={() => setActiveTab("settings")}>
+            <Settings className="w-4 h-4 mr-2" />
+            Configure
+          </Button>
+          <Button variant="primary" onClick={() => setShowRunModal(true)}>
+            <Play className="w-4 h-4 mr-2" />
+            Run Manual Scan
+          </Button>
+        </div>
       </div>
+
+      {/* Critical Alert Banner */}
+      {criticalAlerts.length > 0 && (
+        <div className={cn(
+          "rounded-xl border-2 border-red-500 bg-red-50 dark:bg-red-900/20 p-4"
+        )}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center">
+                <AlertTriangle className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <p className="font-semibold text-red-700 dark:text-red-400">
+                  {criticalAlerts.length} Critical Alert{criticalAlerts.length > 1 ? 's' : ''} Require Immediate Action
+                </p>
+                <p className="text-sm text-red-600 dark:text-red-400/80">
+                  {criticalAlerts.filter(a => a.providerSuspended).length} provider(s) auto-suspended
+                </p>
+              </div>
+            </div>
+            <Button variant="primary" size="sm" onClick={() => setActiveTab("alerts")}>
+              Review Now
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -196,279 +331,729 @@ export default function MonitoringPage() {
         ))}
       </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Alerts */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className={cn(
-            "flex flex-col sm:flex-row gap-4 p-4 rounded-xl border",
-            isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
-          )}>
-            <div className="flex-1">
-              <SearchInput
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder="Search alerts..."
-              />
+      {/* Tabs */}
+      <div className={cn(
+        "flex gap-1 p-1 rounded-lg w-fit",
+        isDark ? "bg-slate-800" : "bg-slate-100"
+      )}>
+        {[
+          { id: "alerts", label: "Active Alerts", icon: AlertTriangle, count: openAlerts.length },
+          { id: "history", label: "Scan History", icon: History },
+          { id: "settings", label: "Configuration", icon: Settings },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors",
+              activeTab === tab.id
+                ? isDark
+                  ? "bg-slate-700 text-white"
+                  : "bg-white text-slate-900 shadow-sm"
+                : isDark
+                ? "text-slate-400 hover:text-white"
+                : "text-slate-600 hover:text-slate-900"
+            )}
+          >
+            <tab.icon className="w-4 h-4" />
+            {tab.label}
+            {tab.count !== undefined && (
+              <span className={cn(
+                "px-2 py-0.5 rounded-full text-xs",
+                activeTab === tab.id
+                  ? "bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-400"
+                  : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
+              )}>
+                {tab.count}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Alerts Tab */}
+      {activeTab === "alerts" && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Alerts List */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className={cn(
+              "flex flex-col sm:flex-row gap-4 p-4 rounded-xl border",
+              isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+            )}>
+              <div className="flex-1">
+                <SearchInput
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Search alerts..."
+                />
+              </div>
+              <div className="flex gap-3">
+                <select
+                  value={severityFilter}
+                  onChange={(e) => setSeverityFilter(e.target.value)}
+                  className={cn(
+                    "px-3 py-2 rounded-lg border text-sm",
+                    isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+                  )}
+                >
+                  <option value="">All Severity</option>
+                  <option value="critical">Critical</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className={cn(
+                    "px-3 py-2 rounded-lg border text-sm",
+                    isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+                  )}
+                >
+                  <option value="">All Status</option>
+                  <option value="open">Open</option>
+                  <option value="acknowledged">Acknowledged</option>
+                  <option value="resolved">Resolved</option>
+                </select>
+              </div>
             </div>
-            <div className="flex gap-3">
-              <select
-                value={severityFilter}
-                onChange={(e) => setSeverityFilter(e.target.value)}
-                className={cn(
-                  "px-3 py-2 rounded-lg border text-sm",
-                  isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
-                )}
-              >
-                <option value="">All Severity</option>
-                <option value="critical">Critical</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className={cn(
-                  "px-3 py-2 rounded-lg border text-sm",
-                  isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
-                )}
-              >
-                <option value="">All Status</option>
-                <option value="open">Open</option>
-                <option value="acknowledged">Acknowledged</option>
-                <option value="resolved">Resolved</option>
-              </select>
+
+            <div className="space-y-3">
+              {filteredAlerts.map((alert) => (
+                <div
+                  key={alert.id}
+                  className={cn(
+                    "rounded-xl border border-l-4 p-4 cursor-pointer transition-colors",
+                    getSeverityColor(alert.severity),
+                    isDark ? "bg-slate-800 border-slate-700 hover:bg-slate-750" : "bg-white border-slate-200 hover:bg-slate-50"
+                  )}
+                  onClick={() => setSelectedAlert(alert)}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span>{getSeverityIcon(alert.severity)}</span>
+                        {getSeverityBadge(alert.severity)}
+                        {getStatusBadge(alert.status)}
+                        {alert.providerSuspended && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs rounded-full">
+                            <Ban className="w-3 h-3" />
+                            Suspended
+                          </span>
+                        )}
+                      </div>
+                      <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                        {alert.provider}
+                      </h3>
+                      <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                        {alert.practice} • {alert.type}
+                      </p>
+                    </div>
+                    <span className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>
+                      {new Date(alert.detected).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <p className={cn("text-sm mb-3", isDark ? "text-slate-300" : "text-slate-600")}>
+                    {alert.description}
+                  </p>
+
+                  {alert.autoAction && (
+                    <p className="text-sm text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-1">
+                      <Zap className="w-4 h-4" />
+                      Auto-action: {alert.autoAction}
+                    </p>
+                  )}
+
+                  <div className="flex gap-2">
+                    {alert.status === "open" && (
+                      <>
+                        <Button variant="secondary" size="sm" onClick={(e) => { e.stopPropagation(); }}>
+                          Acknowledge
+                        </Button>
+                        <Button variant="primary" size="sm" onClick={(e) => { e.stopPropagation(); }}>
+                          Take Action
+                        </Button>
+                      </>
+                    )}
+                    {alert.status === "acknowledged" && (
+                      <Button variant="primary" size="sm" onClick={(e) => { e.stopPropagation(); }}>
+                        Resolve
+                      </Button>
+                    )}
+                    {alert.providerSuspended && (
+                      <Button variant="secondary" size="sm" onClick={(e) => { e.stopPropagation(); }}>
+                        <Undo className="w-4 h-4 mr-1" />
+                        Reinstate
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {filteredAlerts.length === 0 && (
+                <div className={cn(
+                  "rounded-xl border p-12 text-center",
+                  isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+                )}>
+                  <CheckCircle className={cn("w-12 h-12 mx-auto mb-4", "text-green-500")} />
+                  <h3 className={cn("text-lg font-medium mb-2", isDark ? "text-white" : "text-slate-900")}>
+                    All Clear!
+                  </h3>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    No alerts match your current filters.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="space-y-3">
-            {filteredAlerts.map((alert) => (
-              <div
-                key={alert.id}
-                className={cn(
-                  "rounded-xl border border-l-4 p-4",
-                  getSeverityColor(alert.severity),
-                  isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
-                )}
-              >
-                <div className="flex items-start justify-between mb-3">
+          {/* Right Sidebar */}
+          <div className="space-y-6">
+            {/* Next Scans */}
+            <div className={cn(
+              "rounded-xl border p-6",
+              isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+            )}>
+              <h2 className={cn("text-lg font-semibold mb-4 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                <Clock className="w-5 h-5 text-cyan-500" />
+                Next Scheduled Scans
+              </h2>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800">
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      {getSeverityBadge(alert.severity)}
-                      {getStatusBadge(alert.status)}
-                      <span className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
-                        {alert.type}
-                      </span>
-                    </div>
-                    <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
-                      {alert.provider}
-                    </h3>
-                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                      {alert.practice}
-                    </p>
+                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>OIG/SAM Daily</p>
+                    <p className="text-xs text-cyan-600 dark:text-cyan-400">487 providers</p>
                   </div>
-                  <span className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>
-                    {new Date(alert.detected).toLocaleString()}
+                  <span className="text-sm font-medium text-cyan-700 dark:text-cyan-400">
+                    Tomorrow 2:00 AM
                   </span>
                 </div>
-
-                <p className={cn("text-sm mb-3", isDark ? "text-slate-300" : "text-slate-600")}>
-                  {alert.description}
-                </p>
-
-                {alert.autoAction && (
-                  <p className="text-sm text-amber-600 dark:text-amber-400 mb-3">
-                    ⚡ Auto-action taken: {alert.autoAction}
-                  </p>
-                )}
-
-                {alert.status === "acknowledged" && alert.acknowledgedBy && (
-                  <p className={cn("text-xs mb-3", isDark ? "text-slate-500" : "text-slate-400")}>
-                    Acknowledged by {alert.acknowledgedBy} on {new Date(alert.acknowledgedAt!).toLocaleString()}
-                  </p>
-                )}
-
-                {alert.status === "resolved" && alert.resolvedBy && (
-                  <p className={cn("text-xs mb-3", isDark ? "text-slate-500" : "text-slate-400")}>
-                    Resolved by {alert.resolvedBy} on {new Date(alert.resolvedAt!).toLocaleString()}
-                  </p>
-                )}
-
-                <div className="flex gap-2">
-                  {alert.status === "open" && (
-                    <>
-                      <Button variant="secondary" size="sm">
-                        Acknowledge
-                      </Button>
-                      <Button variant="primary" size="sm">
-                        Take Action
-                      </Button>
-                    </>
-                  )}
-                  {alert.status === "acknowledged" && (
-                    <Button variant="primary" size="sm">
-                      Resolve
-                    </Button>
-                  )}
-                  <Button variant="ghost" size="sm">
-                    <Eye className="w-4 h-4 mr-1" />
-                    View Provider
-                  </Button>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                  <div>
+                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>License/DEA Weekly</p>
+                    <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>487 providers</p>
+                  </div>
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    Saturday 3:00 AM
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                  <div>
+                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>Medicare Opt-Out</p>
+                    <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>487 providers</p>
+                  </div>
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    April 1 @ 4:00 AM
+                  </span>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Quick Stats */}
+            <div className={cn(
+              "rounded-xl border p-6",
+              isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+            )}>
+              <h2 className={cn("text-lg font-semibold mb-4 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                <BarChart3 className="w-5 h-5 text-purple-500" />
+                This Week
+              </h2>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>OIG Checks</span>
+                    <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>3,409</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full">
+                    <div className="h-2 bg-green-500 rounded-full" style={{ width: "100%" }} />
+                  </div>
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-1">1 issue found</p>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>SAM Checks</span>
+                    <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>3,409</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full">
+                    <div className="h-2 bg-green-500 rounded-full" style={{ width: "100%" }} />
+                  </div>
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-1">1 issue found</p>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>License Checks</span>
+                    <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>487</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full">
+                    <div className="h-2 bg-yellow-500 rounded-full" style={{ width: "99%" }} />
+                  </div>
+                  <p className="text-xs text-yellow-600 dark:text-yellow-400 mt-1">3 issues found</p>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>NPI Checks</span>
+                    <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>487</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full">
+                    <div className="h-2 bg-green-500 rounded-full" style={{ width: "100%" }} />
+                  </div>
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-1">0 issues</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Response Times */}
+            <div className={cn(
+              "rounded-xl border p-6",
+              isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+            )}>
+              <h2 className={cn("text-lg font-semibold mb-4 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                <TrendingUp className="w-5 h-5 text-green-500" />
+                Response Metrics
+              </h2>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Avg. Response Time</span>
+                  <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>4.2 hours</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Avg. Resolution Time</span>
+                  <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>18 hours</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Issues This Month</span>
+                  <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>7</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Resolved</span>
+                  <span className="font-medium text-green-600">5 (71%)</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Right Sidebar */}
-        <div className="space-y-6">
-          {/* Scan Schedule */}
-          <div className={cn(
-            "rounded-xl border p-6",
-            isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
-          )}>
-            <h2 className={cn("text-lg font-semibold mb-4", isDark ? "text-white" : "text-slate-900")}>
-              Scan Schedule
-            </h2>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
-                    OIG/SAM Exclusion
-                  </span>
-                </div>
-                <span className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
-                  Daily @ 2:00 AM
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
-                    License Status
-                  </span>
-                </div>
-                <span className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
-                  Weekly (Sat)
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
-                    DEA Status
-                  </span>
-                </div>
-                <span className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
-                  Weekly (Sat)
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
-                    Medicare Opt-Out
-                  </span>
-                </div>
-                <span className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
-                  Monthly (1st)
-                </span>
-              </div>
-            </div>
+      {/* History Tab */}
+      {activeTab === "history" && (
+        <div className={cn(
+          "rounded-xl border overflow-hidden",
+          isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+        )}>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className={cn("border-b", isDark ? "border-slate-700 bg-slate-700/50" : "border-slate-200 bg-slate-50")}>
+                  <th className="text-left px-4 py-3 text-sm font-medium">Date/Time</th>
+                  <th className="text-left px-4 py-3 text-sm font-medium">Scan Type</th>
+                  <th className="text-left px-4 py-3 text-sm font-medium">Providers</th>
+                  <th className="text-left px-4 py-3 text-sm font-medium">Duration</th>
+                  <th className="text-left px-4 py-3 text-sm font-medium">Result</th>
+                  <th className="text-right px-4 py-3 text-sm font-medium">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentScans.map((scan) => (
+                  <tr
+                    key={scan.id}
+                    className={cn("border-b", isDark ? "border-slate-700 hover:bg-slate-700/50" : "border-slate-100 hover:bg-slate-50")}
+                  >
+                    <td className="px-4 py-3">
+                      {new Date(scan.date).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 font-medium">{scan.type}</td>
+                    <td className="px-4 py-3">{scan.providers}</td>
+                    <td className="px-4 py-3">{scan.duration}</td>
+                    <td className="px-4 py-3">
+                      {scan.issues > 0 ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs rounded-full">
+                          <AlertTriangle className="w-3 h-3" />
+                          {scan.issues} issue(s)
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full">
+                          <CheckCircle className="w-3 h-3" />
+                          Clear
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Button variant="ghost" size="sm">
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+        </div>
+      )}
 
-          {/* Recent Scans */}
+      {/* Settings Tab */}
+      {activeTab === "settings" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Scan Configuration */}
           <div className={cn(
             "rounded-xl border p-6",
             isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
           )}>
             <h2 className={cn("text-lg font-semibold mb-4", isDark ? "text-white" : "text-slate-900")}>
-              Recent Scans
+              Monitoring Schedule
             </h2>
-            <div className="space-y-3">
-              {recentScans.map((scan, index) => (
+            <p className={cn("text-sm mb-6", isDark ? "text-slate-400" : "text-slate-500")}>
+              Configure automated verification scan schedules and auto-actions.
+            </p>
+
+            <div className="space-y-4">
+              {monitoringSchedule.map((item, index) => (
                 <div
                   key={index}
                   className={cn(
-                    "p-3 rounded-lg",
-                    isDark ? "bg-slate-700/50" : "bg-slate-50"
+                    "flex items-center justify-between p-4 rounded-lg border",
+                    isDark ? "bg-slate-700/50 border-slate-600" : "bg-slate-50 border-slate-200"
                   )}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
-                      {scan.type}
-                    </span>
-                    <span className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
-                      {scan.date}
-                    </span>
+                  <div className="flex items-center gap-4">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" defaultChecked={item.enabled} className="sr-only peer" />
+                      <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                    </label>
+                    <div>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                        {item.type}
+                      </p>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                        {item.source} • {item.frequency} @ {item.time}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
-                      {scan.providers} providers • {scan.duration}
-                    </span>
-                    {scan.issues > 0 ? (
-                      <span className="text-xs text-red-500 font-medium">
-                        {scan.issues} issue(s)
+                  <div className="flex items-center gap-3">
+                    {item.autoAction === "Auto-suspend" ? (
+                      <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs rounded-full">
+                        Auto-suspend
                       </span>
                     ) : (
-                      <span className="text-xs text-green-500 font-medium flex items-center gap-1">
-                        <CheckCircle className="w-3 h-3" />
-                        Clear
+                      <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-xs rounded-full">
+                        Alert Only
                       </span>
                     )}
+                    <Button variant="ghost" size="sm">
+                      <Settings className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Quick Stats */}
+          {/* Auto-Action Rules */}
           <div className={cn(
             "rounded-xl border p-6",
             isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
           )}>
             <h2 className={cn("text-lg font-semibold mb-4", isDark ? "text-white" : "text-slate-900")}>
-              This Month
+              Auto-Action Rules
             </h2>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                  Total Scans
-                </span>
-                <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                  52
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                  Issues Detected
-                </span>
-                <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                  7
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                  Issues Resolved
-                </span>
-                <span className={cn("font-medium text-green-600", isDark ? "" : "")}>
-                  5
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                  Avg. Resolution Time
-                </span>
-                <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                  18 hours
-                </span>
+            <p className={cn("text-sm mb-6", isDark ? "text-slate-400" : "text-slate-500")}>
+              Configure automatic actions taken when issues are detected.
+            </p>
+
+            <div className="space-y-4">
+              {[
+                { severity: "🔴 Critical", action: "Auto-suspend provider", description: "OIG exclusion, license revoked, SAM debarment", enabled: true },
+                { severity: "🟠 High", action: "Alert team immediately", description: "License suspended, DEA revoked", enabled: true },
+                { severity: "🟡 Medium", action: "Alert within 24 hours", description: "License expiring, malpractice expiring", enabled: true },
+                { severity: "🔵 Low", action: "Log for review", description: "Address changes, minor updates", enabled: true },
+              ].map((rule, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "p-4 rounded-lg border",
+                    isDark ? "bg-slate-700/50 border-slate-600" : "bg-slate-50 border-slate-200"
+                  )}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                      {rule.severity}
+                    </span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" defaultChecked={rule.enabled} className="sr-only peer" />
+                      <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                    </label>
+                  </div>
+                  <p className={cn("text-sm font-medium text-cyan-600 dark:text-cyan-400 mb-1")}>
+                    {rule.action}
+                  </p>
+                  <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {rule.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 pt-6 border-t" style={{ borderColor: isDark ? '#334155' : '#e2e8f0' }}>
+              <h3 className={cn("font-medium mb-4", isDark ? "text-white" : "text-slate-900")}>
+                Notification Settings
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                    Email alerts for critical issues
+                  </span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" defaultChecked className="sr-only peer" />
+                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                  </label>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                    Daily scan summary email
+                  </span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" defaultChecked className="sr-only peer" />
+                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                  </label>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                    Weekly compliance report
+                  </span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" defaultChecked className="sr-only peer" />
+                    <div className="w-9 h-5 bg-slate-300 peer-checked:bg-cyan-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Alert Detail Modal */}
+      {selectedAlert && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className={cn(
+            "w-full max-w-2xl rounded-xl max-h-[90vh] overflow-y-auto",
+            isDark ? "bg-slate-800" : "bg-white"
+          )}>
+            <div className={cn("flex items-center justify-between p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">{getSeverityIcon(selectedAlert.severity)}</span>
+                <div>
+                  <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedAlert.type}
+                  </h2>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    Alert #{selectedAlert.id}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedAlert(null)}
+                className={cn("p-2 rounded-lg", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Status Banner */}
+              {selectedAlert.providerSuspended && (
+                <div className="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                  <div className="flex items-center gap-3">
+                    <Ban className="w-5 h-5 text-red-600" />
+                    <div>
+                      <p className="font-medium text-red-700 dark:text-red-400">Provider Auto-Suspended</p>
+                      <p className="text-sm text-red-600 dark:text-red-400/80">
+                        Claims processing halted. Review and take action.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Provider Info */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className={cn("text-xs uppercase tracking-wider", isDark ? "text-slate-500" : "text-slate-400")}>
+                    Provider
+                  </label>
+                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedAlert.provider}
+                  </p>
+                </div>
+                <div>
+                  <label className={cn("text-xs uppercase tracking-wider", isDark ? "text-slate-500" : "text-slate-400")}>
+                    Practice
+                  </label>
+                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedAlert.practice}
+                  </p>
+                </div>
+                <div>
+                  <label className={cn("text-xs uppercase tracking-wider", isDark ? "text-slate-500" : "text-slate-400")}>
+                    NPI
+                  </label>
+                  <p className={cn("font-mono", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedAlert.npi}
+                  </p>
+                </div>
+                <div>
+                  <label className={cn("text-xs uppercase tracking-wider", isDark ? "text-slate-500" : "text-slate-400")}>
+                    Detected
+                  </label>
+                  <p className={cn("", isDark ? "text-white" : "text-slate-900")}>
+                    {new Date(selectedAlert.detected).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              {/* Details */}
+              <div>
+                <label className={cn("text-xs uppercase tracking-wider block mb-2", isDark ? "text-slate-500" : "text-slate-400")}>
+                  Details
+                </label>
+                <div className={cn(
+                  "p-4 rounded-lg",
+                  isDark ? "bg-slate-700/50" : "bg-slate-50"
+                )}>
+                  <p className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                    {selectedAlert.details}
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Required */}
+              <div>
+                <label className={cn("text-xs uppercase tracking-wider block mb-2", isDark ? "text-slate-500" : "text-slate-400")}>
+                  Action Required
+                </label>
+                <div className={cn(
+                  "p-4 rounded-lg border-l-4 border-amber-500",
+                  isDark ? "bg-amber-900/20" : "bg-amber-50"
+                )}>
+                  <p className={cn("text-sm", isDark ? "text-amber-300" : "text-amber-800")}>
+                    {selectedAlert.actionRequired}
+                  </p>
+                </div>
+              </div>
+
+              {/* Resolution (if resolved) */}
+              {selectedAlert.status === "resolved" && selectedAlert.resolution && (
+                <div>
+                  <label className={cn("text-xs uppercase tracking-wider block mb-2", isDark ? "text-slate-500" : "text-slate-400")}>
+                    Resolution
+                  </label>
+                  <div className={cn(
+                    "p-4 rounded-lg border-l-4 border-green-500",
+                    isDark ? "bg-green-900/20" : "bg-green-50"
+                  )}>
+                    <p className={cn("text-sm", isDark ? "text-green-300" : "text-green-800")}>
+                      {selectedAlert.resolution}
+                    </p>
+                    <p className={cn("text-xs mt-2", isDark ? "text-green-400" : "text-green-600")}>
+                      Resolved by {selectedAlert.resolvedBy} on {new Date(selectedAlert.resolvedAt!).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className={cn("flex justify-between gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+              <Button variant="secondary" onClick={() => setSelectedAlert(null)}>
+                Close
+              </Button>
+              <div className="flex gap-3">
+                {selectedAlert.providerSuspended && (
+                  <Button variant="secondary">
+                    <Undo className="w-4 h-4 mr-2" />
+                    Reinstate Provider
+                  </Button>
+                )}
+                {selectedAlert.status === "open" && (
+                  <>
+                    <Button variant="secondary">Acknowledge</Button>
+                    <Button variant="primary">Take Action</Button>
+                  </>
+                )}
+                {selectedAlert.status === "acknowledged" && (
+                  <Button variant="primary">Mark Resolved</Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Run Manual Scan Modal */}
+      {showRunModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className={cn(
+            "w-full max-w-md rounded-xl",
+            isDark ? "bg-slate-800" : "bg-white"
+          )}>
+            <div className={cn("flex items-center justify-between p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+              <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                Run Manual Scan
+              </h2>
+              <button
+                onClick={() => setShowRunModal(false)}
+                className={cn("p-2 rounded-lg", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                Select the verification checks to run immediately:
+              </p>
+
+              <div className="space-y-2">
+                {["OIG Exclusion Check", "SAM.gov Debarment Check", "License Status Verification", "DEA Status Verification", "NPI Status Check"].map((check) => (
+                  <label
+                    key={check}
+                    className={cn(
+                      "flex items-center gap-3 p-3 rounded-lg cursor-pointer border",
+                      isDark ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700" : "bg-slate-50 border-slate-200 hover:bg-slate-100"
+                    )}
+                  >
+                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded" />
+                    <span className={cn("text-sm", isDark ? "text-white" : "text-slate-900")}>{check}</span>
+                  </label>
+                ))}
+              </div>
+
+              <div>
+                <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                  Scope
+                </label>
+                <select className={cn(
+                  "w-full px-3 py-2 rounded-lg border text-sm",
+                  isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+                )}>
+                  <option>All Active Providers (487)</option>
+                  <option>Providers with expiring credentials</option>
+                  <option>Recently added providers (last 30 days)</option>
+                  <option>Specific provider...</option>
+                </select>
+              </div>
+            </div>
+
+            <div className={cn("flex justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+              <Button variant="secondary" onClick={() => setShowRunModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={() => setShowRunModal(false)}>
+                <Play className="w-4 h-4 mr-2" />
+                Start Scan
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
