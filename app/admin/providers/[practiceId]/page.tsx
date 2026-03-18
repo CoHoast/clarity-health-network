@@ -45,6 +45,7 @@ const practicesData: Record<string, any> = {
     payToZip: "44101",
     payToCountry: "USA",
     status: "active",
+    w9Collected: true,
     contractStart: "2024-01-15",
     contractEnd: "2027-01-14",
     discountType: "% Off Billed",
@@ -92,6 +93,7 @@ const practicesData: Record<string, any> = {
     payToZip: "44122",
     payToCountry: "USA",
     status: "active",
+    w9Collected: false,
     contractStart: "2024-09-01",
     contractEnd: "2027-08-31",
     discountType: "% Off Billed",
@@ -553,6 +555,47 @@ export default function PracticeDetailPage() {
               <CreditCard className="w-5 h-5 text-teal-400" />
               Billing Information
             </h2>
+
+            {/* W9 Status */}
+            <div className={`rounded-xl p-4 flex items-center justify-between ${
+              practice.w9Collected 
+                ? "bg-green-500/20 border border-green-500/30" 
+                : "bg-red-500/20 border border-red-500/30"
+            }`}>
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  practice.w9Collected ? "bg-green-500" : "bg-red-500"
+                }`}>
+                  {practice.w9Collected ? (
+                    <CheckCircle className="w-6 h-6 text-white" />
+                  ) : (
+                    <X className="w-6 h-6 text-white" />
+                  )}
+                </div>
+                <div>
+                  <p className={`font-semibold ${practice.w9Collected ? "text-green-400" : "text-red-400"}`}>
+                    W-9 {practice.w9Collected ? "Collected" : "Not Collected"}
+                  </p>
+                  <p className="text-slate-400 text-sm">
+                    {practice.w9Collected 
+                      ? "Tax documentation on file" 
+                      : "Required for payment processing"}
+                  </p>
+                </div>
+              </div>
+              {isEditing && (
+                <button
+                  onClick={() => setEditData({ ...editData, w9Collected: !editData.w9Collected })}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    editData.w9Collected 
+                      ? "bg-red-600 hover:bg-red-700 text-white" 
+                      : "bg-green-600 hover:bg-green-700 text-white"
+                  }`}
+                >
+                  {editData.w9Collected ? "Mark as Not Collected" : "Mark as Collected"}
+                </button>
+              )}
+            </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               {/* Billing Contact */}
