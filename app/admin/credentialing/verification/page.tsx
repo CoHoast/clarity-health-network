@@ -4,6 +4,8 @@ import { useState } from "react";
 import { UserCheck, Search, CheckCircle, XCircle, Clock, AlertTriangle, RefreshCw, Eye, ExternalLink, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/admin/ThemeContext";
+import { Button } from "@/components/admin/ui/Button";
+import { cn } from "@/lib/utils";
 
 interface VerificationRecord {
   id: string;
@@ -74,16 +76,16 @@ export default function VerificationStatusPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-            <UserCheck className="w-7 h-7 text-teal-500" />
+          <h1 className={cn("text-2xl font-bold flex items-center gap-3", isDark ? "text-white" : "text-slate-900")}>
+            <UserCheck className="w-7 h-7 text-blue-500" />
             Verification Status
           </h1>
-          <p className="text-slate-400 mt-1">Track credential verification status for all providers</p>
+          <p className={isDark ? "text-slate-400 mt-1" : "text-slate-500 mt-1"}>Track credential verification status for all providers</p>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 font-medium rounded-lg hover:bg-teal-700 transition-colors" style={{ color: 'white' }}>
-          <RefreshCw className="w-4 h-4" />
+        <Button variant="primary">
+          <RefreshCw className="w-4 h-4 mr-2" />
           Run Batch Verification
-        </button>
+        </Button>
       </div>
 
       {/* Stats */}
