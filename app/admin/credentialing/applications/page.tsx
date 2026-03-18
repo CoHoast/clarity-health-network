@@ -266,24 +266,39 @@ export default function ApplicationsPage() {
                   )}
                 >
                   <td className="px-6 py-4">
-                    <div>
-                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    <button
+                      onClick={() => setSelectedApplication(app)}
+                      className="text-left group"
+                    >
+                      <p className={cn(
+                        "font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors",
+                        isDark ? "text-white" : "text-slate-900"
+                      )}>
                         {app.id}
                       </p>
                       <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
                         NPI: {app.npi}
                       </p>
-                    </div>
+                    </button>
                   </td>
                   <td className="px-6 py-4">
-                    <div>
-                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    <button
+                      onClick={() => setSelectedApplication(app)}
+                      className="text-left group"
+                    >
+                      <p className={cn(
+                        "font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors",
+                        isDark ? "text-white" : "text-slate-900"
+                      )}>
                         {app.provider}
                       </p>
-                      <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                      <p className={cn(
+                        "text-sm group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors",
+                        isDark ? "text-slate-400" : "text-slate-500"
+                      )}>
                         {app.practice} • {app.specialty}
                       </p>
-                    </div>
+                    </button>
                   </td>
                   <td className="px-6 py-4">
                     {getTypeBadge(app.type)}
