@@ -102,6 +102,19 @@ export default function ApplicationsPage() {
   const [typeFilter, setTypeFilter] = useState("");
   const [selectedApplication, setSelectedApplication] = useState<typeof applications[0] | null>(null);
   const [showNewAppModal, setShowNewAppModal] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationComplete, setVerificationComplete] = useState(false);
+
+  const handleRunVerification = async (app: typeof applications[0]) => {
+    setIsVerifying(true);
+    // Simulate verification process
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setIsVerifying(false);
+    setVerificationComplete(true);
+    setTimeout(() => setVerificationComplete(false), 3000);
+  };
 
   const filteredApplications = applications.filter((app) => {
     const matchesSearch =
@@ -435,29 +448,37 @@ export default function ApplicationsPage() {
                 )}
 
                 {/* Actions */}
-                <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
                   {selectedApplication.status === "verification" && (
                     <>
-                      <Button variant="secondary" className="flex-1">
-                        <Upload className="w-4 h-4 mr-2" />
+                      <Button 
+                        variant="secondary" 
+                        icon={<Upload className="w-4 h-4" />}
+                        onClick={() => setShowUploadModal(true)}
+                      >
                         Upload Documents
                       </Button>
-                      <Button variant="secondary" className="flex-1">
-                        <Send className="w-4 h-4 mr-2" />
+                      <Button 
+                        variant="secondary" 
+                        icon={<Send className="w-4 h-4" />}
+                        onClick={() => setShowRequestModal(true)}
+                      >
                         Request from Provider
                       </Button>
                     </>
                   )}
                   {selectedApplication.status === "review" && (
-                    <Link href="/admin/credentialing/review" className="flex-1">
-                      <Button variant="primary" className="w-full">
-                        <Eye className="w-4 h-4 mr-2" />
+                    <Link href="/admin/credentialing/review">
+                      <Button variant="primary" icon={<Eye className="w-4 h-4" />}>
                         Go to Review
                       </Button>
                     </Link>
                   )}
-                  <Button variant="secondary">
-                    <RefreshCw className="w-4 h-4 mr-2" />
+                  <Button 
+                    variant="primary" 
+                    icon={<RefreshCw className="w-4 h-4" />}
+                    onClick={() => handleRunVerification(selectedApplication)}
+                  >
                     Run Verification
                   </Button>
                 </div>
@@ -574,6 +595,200 @@ export default function ApplicationsPage() {
                 </div>
               </form>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Upload Documents Modal */}
+      <AnimatePresence>
+        {showUploadModal && selectedApplication && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => setShowUploadModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-lg rounded-xl p-6",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className={cn("text-xl font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    Upload Documents
+                  </h2>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedApplication.provider}
+                  </p>
+                </div>
+                <IconButton icon={<X className="w-5 h-5" />} onClick={() => setShowUploadModal(false)} />
+              </div>
+
+              <div className={cn(
+                "border-2 border-dashed rounded-xl p-8 text-center mb-6",
+                isDark ? "border-slate-600 hover:border-blue-500" : "border-slate-300 hover:border-blue-500"
+              )}>
+                <Upload className={cn("w-12 h-12 mx-auto mb-4", isDark ? "text-slate-500" : "text-slate-400")} />
+                <p className={cn("font-medium mb-1", isDark ? "text-white" : "text-slate-900")}>
+                  Drop files here or click to upload
+                </p>
+                <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                  PDF, JPG, PNG up to 10MB each
+                </p>
+                <input type="file" className="hidden" multiple accept=".pdf,.jpg,.jpeg,.png" />
+              </div>
+
+              <div className="space-y-2 mb-6">
+                <p className={cn("text-sm font-medium", isDark ? "text-slate-300" : "text-slate-700")}>
+                  Required Documents:
+                </p>
+                <div className="space-y-2">
+                  {["Medical License", "DEA Certificate", "Board Certification", "Malpractice Insurance", "CV/Resume"].map((doc) => (
+                    <div key={doc} className={cn(
+                      "flex items-center justify-between p-3 rounded-lg",
+                      isDark ? "bg-slate-700/50" : "bg-slate-50"
+                    )}>
+                      <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>{doc}</span>
+                      <span className="text-xs text-amber-500">Pending</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Button variant="secondary" className="flex-1" onClick={() => setShowUploadModal(false)}>
+                  Cancel
+                </Button>
+                <Button variant="primary" className="flex-1" icon={<Upload className="w-4 h-4" />}>
+                  Upload Files
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Request from Provider Modal */}
+      <AnimatePresence>
+        {showRequestModal && selectedApplication && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => setShowRequestModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-lg rounded-xl p-6",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className={cn("text-xl font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    Request Documents from Provider
+                  </h2>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedApplication.provider} • {selectedApplication.email}
+                  </p>
+                </div>
+                <IconButton icon={<X className="w-5 h-5" />} onClick={() => setShowRequestModal(false)} />
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Select Documents to Request
+                  </label>
+                  <div className="space-y-2">
+                    {["Medical License", "DEA Certificate", "Board Certification", "Malpractice Insurance COI", "CV/Resume", "W-9 Form", "CAQH Profile"].map((doc) => (
+                      <label key={doc} className={cn(
+                        "flex items-center gap-3 p-3 rounded-lg cursor-pointer",
+                        isDark ? "bg-slate-700/50 hover:bg-slate-700" : "bg-slate-50 hover:bg-slate-100"
+                      )}>
+                        <input type="checkbox" className="rounded border-slate-300" />
+                        <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>{doc}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Link Expiration
+                  </label>
+                  <select className={cn(
+                    "w-full px-3 py-2 rounded-lg border text-sm",
+                    isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+                  )}>
+                    <option>7 days</option>
+                    <option>14 days</option>
+                    <option>30 days</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Custom Message (optional)
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder="Add a personal message to the request email..."
+                    className={cn(
+                      "w-full px-3 py-2 rounded-lg border text-sm resize-none",
+                      isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400" : "bg-white border-slate-200 text-slate-900 placeholder-slate-400"
+                    )}
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Button variant="secondary" className="flex-1" onClick={() => setShowRequestModal(false)}>
+                  Cancel
+                </Button>
+                <Button variant="primary" className="flex-1" icon={<Send className="w-4 h-4" />}>
+                  Send Request
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Verification Toast */}
+      <AnimatePresence>
+        {isVerifying && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50"
+          >
+            <RefreshCw className="w-5 h-5 animate-spin" />
+            Running verification checks...
+          </motion.div>
+        )}
+        {verificationComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-6 right-6 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50"
+          >
+            <CheckCircle className="w-5 h-5" />
+            Verification complete!
           </motion.div>
         )}
       </AnimatePresence>
