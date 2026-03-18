@@ -122,6 +122,21 @@ export default function DocumentRequestsPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [showNewRequestModal, setShowNewRequestModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<typeof documentRequests[0] | null>(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadTarget, setUploadTarget] = useState<typeof documentRequests[0] | null>(null);
+  const [showReminderToast, setShowReminderToast] = useState(false);
+  const [reminderSentTo, setReminderSentTo] = useState("");
+
+  const handleSendReminder = (req: typeof documentRequests[0]) => {
+    setReminderSentTo(req.provider);
+    setShowReminderToast(true);
+    setTimeout(() => setShowReminderToast(false), 3000);
+  };
+
+  const handleUploadManually = (req: typeof documentRequests[0]) => {
+    setUploadTarget(req);
+    setShowUploadModal(true);
+  };
 
   // New request form state
   const [newRequest, setNewRequest] = useState({
@@ -175,8 +190,11 @@ export default function DocumentRequestsPage() {
             </p>
           </div>
         </div>
-        <Button variant="primary" onClick={() => setShowNewRequestModal(true)}>
-          <Plus className="w-4 h-4 mr-2" />
+        <Button 
+          variant="primary" 
+          icon={<Plus className="w-4 h-4" />}
+          onClick={() => setShowNewRequestModal(true)}
+        >
           New Request
         </Button>
       </div>
@@ -323,18 +341,30 @@ export default function DocumentRequestsPage() {
               </div>
               <div className="flex items-center gap-2">
                 {req.status === "pending" || req.status === "partial" ? (
-                  <Button variant="secondary" size="sm">
-                    <Mail className="w-4 h-4 mr-2" />
+                  <Button 
+                    variant="secondary" 
+                    size="sm"
+                    icon={<Mail className="w-4 h-4" />}
+                    onClick={() => handleSendReminder(req)}
+                  >
                     Send Reminder
                   </Button>
                 ) : req.status === "expired" ? (
-                  <Button variant="secondary" size="sm">
-                    <RefreshCw className="w-4 h-4 mr-2" />
+                  <Button 
+                    variant="secondary" 
+                    size="sm"
+                    icon={<RefreshCw className="w-4 h-4" />}
+                    onClick={() => handleSendReminder(req)}
+                  >
                     Resend Request
                   </Button>
                 ) : null}
-                <Button variant="secondary" size="sm">
-                  <Upload className="w-4 h-4 mr-2" />
+                <Button 
+                  variant="secondary" 
+                  size="sm"
+                  icon={<Upload className="w-4 h-4" />}
+                  onClick={() => handleUploadManually(req)}
+                >
                   Upload Manually
                 </Button>
               </div>
@@ -474,8 +504,18 @@ export default function DocumentRequestsPage() {
                   <Button variant="secondary" className="flex-1" onClick={() => setShowNewRequestModal(false)}>
                     Cancel
                   </Button>
-                  <Button variant="primary" className="flex-1" disabled={!newRequest.email || newRequest.selectedDocs.length === 0}>
-                    <Send className="w-4 h-4 mr-2" />
+                  <Button 
+                    variant="primary" 
+                    className="flex-1" 
+                    icon={<Send className="w-4 h-4" />}
+                    disabled={!newRequest.email || newRequest.selectedDocs.length === 0}
+                    onClick={() => {
+                      setShowNewRequestModal(false);
+                      setReminderSentTo(newRequest.providerName || newRequest.email);
+                      setShowReminderToast(true);
+                      setTimeout(() => setShowReminderToast(false), 3000);
+                    }}
+                  >
                     Send Request
                   </Button>
                 </div>
@@ -587,17 +627,144 @@ export default function DocumentRequestsPage() {
                 </div>
 
                 <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
-                  <Button variant="secondary" size="sm" className="flex-1">
-                    <Mail className="w-4 h-4 mr-2" />
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    className="flex-1"
+                    icon={<Mail className="w-4 h-4" />}
+                    onClick={() => {
+                      handleSendReminder(selectedRequest);
+                      setSelectedRequest(null);
+                    }}
+                  >
                     Resend Email
                   </Button>
-                  <Button variant="secondary" size="sm" className="flex-1">
-                    <Upload className="w-4 h-4 mr-2" />
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    className="flex-1"
+                    icon={<Upload className="w-4 h-4" />}
+                    onClick={() => {
+                      setSelectedRequest(null);
+                      handleUploadManually(selectedRequest);
+                    }}
+                  >
                     Upload Manually
                   </Button>
                 </div>
               </div>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Upload Manually Modal */}
+      <AnimatePresence>
+        {showUploadModal && uploadTarget && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => setShowUploadModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-lg rounded-xl p-6",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className={cn("text-xl font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    Upload Documents
+                  </h2>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {uploadTarget.provider}
+                  </p>
+                </div>
+                <IconButton icon={<X className="w-5 h-5" />} onClick={() => setShowUploadModal(false)} />
+              </div>
+
+              <div className={cn(
+                "border-2 border-dashed rounded-xl p-8 text-center mb-6 cursor-pointer transition-colors",
+                isDark 
+                  ? "border-slate-600 hover:border-blue-500 hover:bg-slate-700/50" 
+                  : "border-slate-300 hover:border-blue-500 hover:bg-blue-50"
+              )}>
+                <Upload className={cn("w-12 h-12 mx-auto mb-4", isDark ? "text-slate-500" : "text-slate-400")} />
+                <p className={cn("font-medium mb-1", isDark ? "text-white" : "text-slate-900")}>
+                  Drop files here or click to upload
+                </p>
+                <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                  PDF, JPG, PNG up to 10MB each
+                </p>
+                <input type="file" className="hidden" multiple accept=".pdf,.jpg,.jpeg,.png" />
+              </div>
+
+              <div className="space-y-2 mb-6">
+                <p className={cn("text-sm font-medium", isDark ? "text-slate-300" : "text-slate-700")}>
+                  Missing Documents:
+                </p>
+                <div className="space-y-2">
+                  {uploadTarget.requestedDocs
+                    .filter(doc => !uploadTarget.uploadedDocs.includes(doc))
+                    .map((doc) => (
+                      <div key={doc} className={cn(
+                        "flex items-center justify-between p-3 rounded-lg",
+                        isDark ? "bg-slate-700/50" : "bg-slate-50"
+                      )}>
+                        <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                          {getDocLabel(doc)}
+                        </span>
+                        <span className="text-xs text-amber-500 flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          Pending
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Button variant="secondary" className="flex-1" onClick={() => setShowUploadModal(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  variant="primary" 
+                  className="flex-1" 
+                  icon={<Upload className="w-4 h-4" />}
+                  onClick={() => {
+                    setShowUploadModal(false);
+                    // Show success toast
+                    setReminderSentTo("Documents uploaded for " + uploadTarget.provider);
+                    setShowReminderToast(true);
+                    setTimeout(() => setShowReminderToast(false), 3000);
+                  }}
+                >
+                  Upload Files
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Toast Notifications */}
+      <AnimatePresence>
+        {showReminderToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-6 right-6 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50"
+          >
+            <CheckCircle className="w-5 h-5" />
+            {reminderSentTo.includes("Documents") ? reminderSentTo : `Reminder sent to ${reminderSentTo}`}
           </motion.div>
         )}
       </AnimatePresence>
