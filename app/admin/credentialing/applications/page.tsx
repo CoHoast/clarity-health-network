@@ -326,15 +326,25 @@ export default function ApplicationsPage() {
                         <Eye className="w-4 h-4" />
                       </Button>
                       {app.status === "review" && (
-                        <Link href="/admin/credentialing/review">
-                          <Button variant="primary" size="sm">
-                            Review
-                          </Button>
-                        </Link>
+                        <Button 
+                          variant="primary" 
+                          size="sm"
+                          icon={<Eye className="w-4 h-4" />}
+                          href="/admin/credentialing/review"
+                        >
+                          Review
+                        </Button>
                       )}
                       {app.status === "verification" && (
-                        <Button variant="secondary" size="sm">
-                          <Send className="w-4 h-4 mr-1" />
+                        <Button 
+                          variant="secondary" 
+                          size="sm"
+                          icon={<Send className="w-4 h-4" />}
+                          onClick={() => {
+                            setSelectedApplication(app);
+                            setShowRequestModal(true);
+                          }}
+                        >
                           Request Docs
                         </Button>
                       )}
