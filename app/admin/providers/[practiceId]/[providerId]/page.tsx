@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, User, MapPin, Phone, Mail, FileText, DollarSign, Edit, Save, X,
   CheckCircle, Clock, Briefcase, GraduationCap, Globe, Calendar, Stethoscope,
-  CreditCard, Building2, Languages, Shield, Plus, Trash2
+  CreditCard, Building2, Languages, Shield, Plus, Trash2, Upload
 } from "lucide-react";
 
 // Provider data (in real app, this would come from API)
@@ -221,6 +221,46 @@ export default function ProviderDetailPage() {
     { code: "99213", description: "Office visit, established patient, low complexity", rate: "145" },
     { code: "99214", description: "Office visit, established patient, moderate complexity", rate: "150" },
   ]);
+  const cptFileInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle CSV upload for CPT rates
+  const handleCptCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      const lines = text.split("\n").filter(line => line.trim());
+      
+      // Skip header row if present
+      const startIndex = lines[0].toLowerCase().includes("cpt") || 
+                         lines[0].toLowerCase().includes("code") ? 1 : 0;
+      
+      const newRates: { code: string; description: string; rate: string }[] = [];
+      
+      for (let i = startIndex; i < lines.length; i++) {
+        const parts = lines[i].split(",").map(p => p.trim().replace(/^"|"$/g, ""));
+        if (parts.length >= 3) {
+          newRates.push({
+            code: parts[0],
+            description: parts[1],
+            rate: parts[2].replace("%", ""),
+          });
+        }
+      }
+      
+      if (newRates.length > 0) {
+        setCptRates([...cptRates, ...newRates]);
+      }
+    };
+    reader.readAsText(file);
+    
+    // Reset input so same file can be uploaded again
+    if (cptFileInputRef.current) {
+      cptFileInputRef.current.value = "";
+    }
+  };
 
   const handleSave = () => {
     setSaving(true);
@@ -1117,13 +1157,38 @@ export default function ProviderDetailPage() {
                         <h3 className="text-sm font-semibold text-slate-900">Custom Rates by CPT Code</h3>
                         <p className="text-slate-400 text-xs mt-1">Set specific rates for individual procedure codes</p>
                       </div>
-                      <button
-                        onClick={() => setCptRates([...cptRates, { code: "", description: "", rate: "" }])}
-                        className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors"
-                      >
-                        <span className="text-lg leading-none">+</span>
-                        Add CPT Code
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {/* Hidden file input for CSV upload */}
+                        <input
+                          ref={cptFileInputRef}
+                          type="file"
+                          accept=".csv"
+                          onChange={handleCptCsvUpload}
+                          className="hidden"
+                        />
+                        <button
+                          onClick={() => cptFileInputRef.current?.click()}
+                          className="flex items-center gap-2 px-3 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-500 transition-colors"
+                          title="Upload CSV with columns: CPT Code, Description, Rate %"
+                        >
+                          <Upload className="w-4 h-4" />
+                          Upload CSV
+                        </button>
+                        <button
+                          onClick={() => setCptRates([...cptRates, { code: "", description: "", rate: "" }])}
+                          className="flex items-center gap-2 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Add CPT Code
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* CSV format hint */}
+                    <div className="mb-4 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                      <p className="text-xs text-slate-500">
+                        <strong>CSV Format:</strong> CPT Code, Description, Rate % (e.g., <code className="bg-slate-200 px-1 rounded">99213, Office visit low complexity, 145</code>)
+                      </p>
                     </div>
                     
                     <div className="space-y-3">
