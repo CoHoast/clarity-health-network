@@ -260,7 +260,7 @@ export default function NotificationsPage() {
                   <div className="flex items-center gap-3">
                     <div className="flex flex-wrap gap-1 max-w-xs">
                       {recipient.types.map((type, j) => (
-                        <span key={j} className="px-2 py-1 bg-slate-600 text-slate-300 text-xs rounded-full">
+                        <span key={j} className="px-2 py-1 bg-teal-100 text-teal-700 text-xs font-medium rounded-full">
                           {type}
                         </span>
                       ))}
