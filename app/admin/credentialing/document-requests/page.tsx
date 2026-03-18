@@ -531,12 +531,24 @@ export default function DocumentRequestsPage() {
                       "flex-1 px-3 py-2 rounded text-sm font-mono truncate",
                       isDark ? "bg-slate-800 text-cyan-400" : "bg-white text-cyan-600"
                     )}>
-                      https://upload.solidarityhealthnetwork.com/d/{selectedRequest.id.toLowerCase()}
+                      {typeof window !== 'undefined' ? `${window.location.origin}/upload/demo123` : `/upload/demo123`}
                     </code>
-                    <Button variant="ghost" size="sm">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => {
+                        const url = `${window.location.origin}/upload/demo123`;
+                        navigator.clipboard.writeText(url);
+                        // Could add toast notification here
+                      }}
+                      title="Copy link to clipboard"
+                    >
                       <Copy className="w-4 h-4" />
                     </Button>
                   </div>
+                  <p className={cn("text-xs mt-2", isDark ? "text-slate-500" : "text-slate-400")}>
+                    Share this link with the provider to upload documents
+                  </p>
                 </div>
 
                 <div>
