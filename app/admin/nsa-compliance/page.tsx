@@ -1,5 +1,8 @@
 "use client";
 
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Scale, Calculator, FileText, AlertTriangle, CheckCircle, Clock, X, DollarSign, Calendar, Building2 } from "lucide-react";

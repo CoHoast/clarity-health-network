@@ -1,5 +1,8 @@
 "use client";
 
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Database, Search, Download, X, FileText, Hash, Pill, Stethoscope } from "lucide-react";
