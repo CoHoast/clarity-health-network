@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   RefreshCw,
   Calendar,
@@ -24,6 +25,12 @@ import {
   Shield,
   TrendingUp,
   ChevronRight,
+  FileText,
+  Phone,
+  MapPin,
+  Building,
+  Loader2,
+  XCircle,
 } from "lucide-react";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { StatCard } from "@/components/admin/ui/StatCard";
@@ -251,6 +258,71 @@ export default function RecredentialingPage() {
   const [activeTab, setActiveTab] = useState<"upcoming" | "completed" | "settings">("upcoming");
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<typeof recredentialingList[0] | null>(null);
+  const [showApplicationModal, setShowApplicationModal] = useState(false);
+  const [showReminderModal, setShowReminderModal] = useState(false);
+  const [showRequestDocsModal, setShowRequestDocsModal] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
+
+  // Document types for request
+  const documentTypes = [
+    { value: "license", label: "State Medical License" },
+    { value: "dea", label: "DEA Certificate" },
+    { value: "board_cert", label: "Board Certification" },
+    { value: "malpractice_coi", label: "Malpractice Insurance (COI)" },
+    { value: "cv", label: "CV / Resume" },
+  ];
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleViewApplication = (provider: typeof recredentialingList[0]) => {
+    setSelectedProvider(provider);
+    setShowApplicationModal(true);
+  };
+
+  const handleSendReminder = (provider: typeof recredentialingList[0]) => {
+    setSelectedProvider(provider);
+    setShowReminderModal(true);
+  };
+
+  const handleRequestDocs = (provider: typeof recredentialingList[0]) => {
+    setSelectedProvider(provider);
+    setSelectedDocs([]);
+    setShowRequestDocsModal(true);
+  };
+
+  const confirmSendReminder = async () => {
+    setIsProcessing(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsProcessing(false);
+    setShowReminderModal(false);
+    showToast(`Reminder sent to ${selectedProvider?.provider}`);
+    setSelectedProvider(null);
+  };
+
+  const confirmRequestDocs = async () => {
+    if (selectedDocs.length === 0) {
+      showToast('Please select at least one document type', 'error');
+      return;
+    }
+    setIsProcessing(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsProcessing(false);
+    setShowRequestDocsModal(false);
+    showToast(`Document request sent to ${selectedProvider?.provider}`);
+    setSelectedProvider(null);
+    setSelectedDocs([]);
+  };
+
+  const toggleDocSelection = (doc: string) => {
+    setSelectedDocs(prev => 
+      prev.includes(doc) ? prev.filter(d => d !== doc) : [...prev, doc]
+    );
+  };
 
   const filteredList = recredentialingList
     .filter((item) => {
@@ -560,32 +632,32 @@ export default function RecredentialingPage() {
                 <div className="flex flex-wrap gap-2">
                   {!item.applicationStarted && (
                     <Button variant="primary" size="sm">
-                      <RefreshCw className="w-4 h-4 mr-1" />
+                      <RefreshCw className="w-4 h-4 mr-2" />
                       Start Re-Credential
                     </Button>
                   )}
                   {item.applicationStarted && (
-                    <Button variant="primary" size="sm">
-                      <Eye className="w-4 h-4 mr-1" />
+                    <Button variant="primary" size="sm" onClick={() => handleViewApplication(item)}>
+                      <Eye className="w-4 h-4 mr-2" />
                       View Application
                     </Button>
                   )}
                   {item.eligibleForAbbreviated && !item.applicationStarted && (
                     <Button variant="secondary" size="sm">
-                      <Zap className="w-4 h-4 mr-1" />
+                      <Zap className="w-4 h-4 mr-2" />
                       Auto-Approve (Abbreviated)
                     </Button>
                   )}
-                  <Button variant="secondary" size="sm">
-                    <Mail className="w-4 h-4 mr-1" />
+                  <Button variant="secondary" size="sm" onClick={() => handleSendReminder(item)}>
+                    <Mail className="w-4 h-4 mr-2" />
                     Send Reminder
                   </Button>
-                  <Button variant="secondary" size="sm">
-                    <Send className="w-4 h-4 mr-1" />
+                  <Button variant="secondary" size="sm" onClick={() => handleRequestDocs(item)}>
+                    <Send className="w-4 h-4 mr-2" />
                     Request Documents
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => setSelectedProvider(item)}>
-                    <History className="w-4 h-4 mr-1" />
+                  <Button variant="secondary" size="sm" onClick={() => setSelectedProvider(item)}>
+                    <History className="w-4 h-4 mr-2" />
                     View Timeline
                   </Button>
                 </div>
@@ -733,8 +805,401 @@ export default function RecredentialingPage() {
         </div>
       )}
 
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={cn(
+              "fixed top-4 right-4 z-[60] px-4 py-3 rounded-lg shadow-lg flex items-center gap-2",
+              toast.type === 'success' ? "bg-green-600 text-white" : "bg-red-600 text-white"
+            )}
+          >
+            {toast.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+            {toast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Application Detail Modal */}
+      <AnimatePresence>
+        {showApplicationModal && selectedProvider && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => { setShowApplicationModal(false); setSelectedProvider(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-2xl rounded-xl max-h-[90vh] overflow-y-auto",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("flex items-center justify-between p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <div>
+                  <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    Re-Credentialing Application
+                  </h2>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedProvider.provider}
+                  </p>
+                </div>
+                <button
+                  onClick={() => { setShowApplicationModal(false); setSelectedProvider(null); }}
+                  className={cn("p-2 rounded-lg", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Status Banner */}
+                <div className={cn(
+                  "p-4 rounded-lg border",
+                  isDark ? "bg-blue-900/20 border-blue-800" : "bg-blue-50 border-blue-200"
+                )}>
+                  <div className="flex items-center gap-3">
+                    <RefreshCw className="w-5 h-5 text-blue-500" />
+                    <div>
+                      <p className={cn("font-medium", isDark ? "text-blue-300" : "text-blue-700")}>
+                        Application In Progress
+                      </p>
+                      <p className={cn("text-sm", isDark ? "text-blue-400" : "text-blue-600")}>
+                        Started on {new Date().toLocaleDateString()} • Pending review
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Provider Information */}
+                <div>
+                  <h3 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                    <User className="w-4 h-4" />
+                    Provider Information
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>Name</p>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{selectedProvider.provider}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>NPI</p>
+                      <p className={cn("font-mono font-medium", isDark ? "text-white" : "text-slate-900")}>{selectedProvider.npi}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>Specialty</p>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{selectedProvider.specialty}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>Provider Type</p>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{selectedProvider.providerType}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Practice Information */}
+                <div>
+                  <h3 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                    <Building className="w-4 h-4" />
+                    Practice Information
+                  </h3>
+                  <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                    <p className={cn("font-medium mb-2", isDark ? "text-white" : "text-slate-900")}>{selectedProvider.practice}</p>
+                    <div className="space-y-1">
+                      <p className={cn("text-sm flex items-center gap-2", isDark ? "text-slate-400" : "text-slate-600")}>
+                        <MapPin className="w-4 h-4" />
+                        123 Medical Plaza, Cleveland, OH 44114
+                      </p>
+                      <p className={cn("text-sm flex items-center gap-2", isDark ? "text-slate-400" : "text-slate-600")}>
+                        <Phone className="w-4 h-4" />
+                        (555) 123-4567
+                      </p>
+                      <p className={cn("text-sm flex items-center gap-2", isDark ? "text-slate-400" : "text-slate-600")}>
+                        <Mail className="w-4 h-4" />
+                        {selectedProvider.provider.toLowerCase().replace(/[^a-z]/g, '').slice(0, 10)}@practice.com
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Documents Status */}
+                <div>
+                  <h3 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                    <FileText className="w-4 h-4" />
+                    Required Documents
+                  </h3>
+                  <div className="space-y-2">
+                    {[
+                      { doc: "State Medical License", status: "uploaded" },
+                      { doc: "DEA Certificate", status: "uploaded" },
+                      { doc: "Board Certification", status: "pending" },
+                      { doc: "Malpractice Insurance (COI)", status: "uploaded" },
+                      { doc: "CV / Resume", status: "pending" },
+                    ].map((item, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "flex items-center justify-between p-3 rounded-lg",
+                          isDark ? "bg-slate-700/50" : "bg-slate-50"
+                        )}
+                      >
+                        <span className={cn("text-sm", isDark ? "text-white" : "text-slate-900")}>{item.doc}</span>
+                        {item.status === "uploaded" ? (
+                          <span className="flex items-center gap-1 text-green-600 dark:text-green-400 text-sm">
+                            <CheckCircle className="w-4 h-4" />
+                            Uploaded
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 text-sm">
+                            <Clock className="w-4 h-4" />
+                            Pending
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Verification Status */}
+                <div>
+                  <h3 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                    <Shield className="w-4 h-4" />
+                    Verification Status
+                  </h3>
+                  <div className="grid grid-cols-3 gap-3">
+                    {[
+                      { name: "NPPES", status: "passed" },
+                      { name: "OIG", status: "passed" },
+                      { name: "SAM", status: "passed" },
+                      { name: "License", status: "passed" },
+                      { name: "DEA", status: "pending" },
+                      { name: "Board Cert", status: "pending" },
+                    ].map((v, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "p-2 rounded-lg text-center",
+                          v.status === "passed"
+                            ? "bg-green-100 dark:bg-green-900/30"
+                            : "bg-slate-100 dark:bg-slate-700/50"
+                        )}
+                      >
+                        <div className="flex items-center justify-center gap-1">
+                          {v.status === "passed" ? (
+                            <CheckCircle className="w-3 h-3 text-green-600 dark:text-green-400" />
+                          ) : (
+                            <Clock className="w-3 h-3 text-slate-400" />
+                          )}
+                          <span className={cn(
+                            "text-xs font-medium",
+                            v.status === "passed"
+                              ? "text-green-700 dark:text-green-400"
+                              : isDark ? "text-slate-300" : "text-slate-600"
+                          )}>
+                            {v.name}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className={cn("flex items-center justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button variant="secondary" onClick={() => { setShowApplicationModal(false); setSelectedProvider(null); }}>
+                  Close
+                </Button>
+                <Button variant="secondary">
+                  <Send className="w-4 h-4 mr-2" />
+                  Request Missing Docs
+                </Button>
+                <Button variant="primary">
+                  <Eye className="w-4 h-4 mr-2" />
+                  Full Review
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Send Reminder Modal */}
+      <AnimatePresence>
+        {showReminderModal && selectedProvider && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => { setShowReminderModal(false); setSelectedProvider(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn("w-full max-w-md rounded-xl", isDark ? "bg-slate-800" : "bg-white")}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                  Send Re-Credentialing Reminder
+                </h2>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedProvider.provider}
+                  </p>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {selectedProvider.practice}
+                  </p>
+                  <div className="mt-2 flex items-center gap-4 text-sm">
+                    <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>
+                      Expires: {new Date(selectedProvider.currentExpires).toLocaleDateString()}
+                    </span>
+                    <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>
+                      Reminders sent: {selectedProvider.remindersSent}
+                    </span>
+                  </div>
+                </div>
+
+                <p className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                  This will send an email reminder to the provider about their upcoming re-credentialing deadline.
+                </p>
+
+                <div className={cn("p-3 rounded-lg text-sm", isDark ? "bg-blue-900/20 border border-blue-800" : "bg-blue-50 border border-blue-200")}>
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-blue-500" />
+                    <span className={isDark ? "text-blue-300" : "text-blue-700"}>
+                      Email will include re-credentialing link and deadline
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={cn("flex items-center justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button variant="secondary" onClick={() => { setShowReminderModal(false); setSelectedProvider(null); }}>
+                  Cancel
+                </Button>
+                <Button onClick={confirmSendReminder} disabled={isProcessing}>
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="w-4 h-4 mr-2" />
+                      Send Reminder
+                    </>
+                  )}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Request Documents Modal */}
+      <AnimatePresence>
+        {showRequestDocsModal && selectedProvider && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => { setShowRequestDocsModal(false); setSelectedProvider(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn("w-full max-w-md rounded-xl", isDark ? "bg-slate-800" : "bg-white")}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                  Request Documents
+                </h2>
+                <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                  {selectedProvider.provider}
+                </p>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <p className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                  Select the documents you need from this provider:
+                </p>
+
+                <div className="space-y-2">
+                  {documentTypes.map((doc) => (
+                    <label
+                      key={doc.value}
+                      className={cn(
+                        "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors border",
+                        selectedDocs.includes(doc.value)
+                          ? isDark
+                            ? "bg-blue-900/30 border-blue-700"
+                            : "bg-blue-50 border-blue-300"
+                          : isDark
+                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700"
+                          : "bg-slate-50 border-slate-200 hover:bg-slate-100"
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedDocs.includes(doc.value)}
+                        onChange={() => toggleDocSelection(doc.value)}
+                        className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className={cn("text-sm", isDark ? "text-white" : "text-slate-900")}>
+                        {doc.label}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+
+                <div className={cn("p-3 rounded-lg text-sm", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                  <p className={cn(isDark ? "text-slate-400" : "text-slate-500")}>
+                    Provider will receive a secure link to upload the requested documents.
+                  </p>
+                </div>
+              </div>
+
+              <div className={cn("flex items-center justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button variant="secondary" onClick={() => { setShowRequestDocsModal(false); setSelectedProvider(null); }}>
+                  Cancel
+                </Button>
+                <Button onClick={confirmRequestDocs} disabled={isProcessing || selectedDocs.length === 0}>
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Send Request ({selectedDocs.length})
+                    </>
+                  )}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Provider Timeline Modal */}
-      {selectedProvider && (
+      {selectedProvider && !showApplicationModal && !showReminderModal && !showRequestDocsModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className={cn(
             "w-full max-w-lg rounded-xl max-h-[90vh] overflow-y-auto",
