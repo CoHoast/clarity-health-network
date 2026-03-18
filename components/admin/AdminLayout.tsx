@@ -31,6 +31,7 @@ import {
   BadgeCheck,
   MessageSquare,
   Send,
+  RefreshCw,
 } from "lucide-react";
 import AdminPulseChat from "@/components/pulse/AdminPulseChat";
 import { ThemeProvider } from "@/components/admin/ThemeContext";
@@ -91,8 +92,12 @@ const navigationGroups: NavGroup[] = [
     icon: BadgeCheck,
     collapsible: true,
     items: [
-      { name: "Applications", href: "/admin/credentialing", icon: BadgeCheck },
-      { name: "Verification Status", href: "/admin/credentialing/verification", icon: UserCheck },
+      { name: "Dashboard", href: "/admin/credentialing", icon: BadgeCheck },
+      { name: "Applications", href: "/admin/credentialing/applications", icon: FileText },
+      { name: "Review Queue", href: "/admin/credentialing/review", icon: UserCheck },
+      { name: "Document Requests", href: "/admin/credentialing/document-requests", icon: Send },
+      { name: "Re-Credentialing", href: "/admin/credentialing/recredentialing", icon: RefreshCw },
+      { name: "Monitoring", href: "/admin/credentialing/monitoring", icon: Shield },
     ],
   },
   {
