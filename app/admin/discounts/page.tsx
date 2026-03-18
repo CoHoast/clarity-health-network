@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X, Check, AlertTriangle, User, Percent, FileText, Filter, Upload, FileSpreadsheet } from "lucide-react";
-import { useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
 
 interface DiscountSchedule {
   id: string;
@@ -277,6 +278,7 @@ const serviceCategories = [
 ];
 
 export default function DiscountSchedulesPage() {
+  const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<"schedules" | "providers">("schedules");
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("All Types");
@@ -464,11 +466,11 @@ export default function DiscountSchedulesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+          <h1 className={cn("text-2xl font-bold flex items-center gap-3", isDark ? "text-white" : "text-slate-900")}>
             <DollarSign className="w-7 h-7 text-green-500" />
             Rates &amp; Discounts
           </h1>
-          <p className="text-slate-400 mt-1">
+          <p className={cn("mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
             {activeTab === "schedules" 
               ? `${discountSchedules.length} schedules • ${totalProviders.toLocaleString()} providers assigned`
               : `${providerRates.length} custom provider rates`
@@ -486,7 +488,7 @@ export default function DiscountSchedulesPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 bg-slate-800 rounded-lg w-fit">
+      <div className={cn("flex gap-1 p-1 rounded-lg w-fit", isDark ? "bg-slate-800" : "bg-slate-100")}>
         <button
           onClick={() => setActiveTab("schedules")}
           className={`px-4 py-2 rounded-md font-medium text-sm transition-colors flex items-center gap-2 ${

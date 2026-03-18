@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { Settings, Building2, Bell, Shield, Globe, Save, Check, Key, Clock, Users, AlertTriangle, Mail, Plus, Edit, Trash2, FileText, Eye, Copy } from "lucide-react";
+import { useTheme } from "@/components/admin/ThemeContext";
+import { cn } from "@/lib/utils";
 
 export default function SettingsPage() {
+  const { isDark } = useTheme();
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState("organization");
   const [editingTemplate, setEditingTemplate] = useState<string | null>(null);
@@ -136,8 +139,8 @@ Questions? Contact credentialing@truecarehealth.com
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Settings</h1>
-          <p className="text-slate-400">Configure system preferences and options</p>
+          <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>Settings</h1>
+          <p className={isDark ? "text-slate-400" : "text-slate-500"}>Configure system preferences and options</p>
         </div>
         <button onClick={handleSave} className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
           {saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
