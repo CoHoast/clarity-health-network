@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Building2, User, MapPin, FileText, DollarSign, CheckCircle, Plus, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -39,7 +40,9 @@ const titleOptions = ["MD", "DO", "PhD", "NP", "PA", "DPM", "DC", "PT", "OT", "D
 
 export default function AddProviderPage() {
   const { isDark } = useTheme();
+  const router = useRouter();
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [addMode, setAddMode] = useState<"new" | "existing">("new");
   const [formData, setFormData] = useState({
     // Practice Info
@@ -119,11 +122,90 @@ export default function AddProviderPage() {
     }));
   };
 
-  const handleSubmit = () => {
-    setShowSuccess(true);
-    setTimeout(() => {
-      // Would navigate to providers list
-    }, 2000);
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      // First, create or get the practice
+      let practiceId = formData.existingPracticeId;
+      
+      if (addMode === "new" && formData.practiceName) {
+        // Create new practice
+        const practiceRes = await fetch('/api/practices', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.practiceName,
+            taxId: formData.taxId,
+            npi: formData.orgNpi,
+            address1: formData.address,
+            address2: formData.suite,
+            city: formData.city,
+            state: formData.state,
+            zip: formData.zip,
+            phone: formData.phone,
+          }),
+        });
+        
+        if (practiceRes.ok) {
+          const practiceData = await practiceRes.json();
+          practiceId = practiceData.practice.id;
+        }
+      }
+      
+      // Create the provider
+      const providerData = {
+        firstName: formData.providerFirstName,
+        lastName: formData.providerLastName,
+        credentials: formData.providerTitle,
+        npi: formData.providerNpi || formData.servicingNpi,
+        gender: formData.providerGender === 'Male' ? 'M' : formData.providerGender === 'Female' ? 'F' : '',
+        specialty: formData.specialty,
+        acceptingNewPatients: true,
+        directoryDisplay: true,
+        practiceId: practiceId,
+        billing: {
+          npi: formData.orgNpi,
+          taxId: formData.taxId,
+          name: formData.practiceName,
+          address1: formData.address,
+          address2: formData.suite,
+          city: formData.city,
+          state: formData.state,
+          zip: formData.zip,
+          phone: formData.phone,
+        },
+        locations: [{
+          address1: formData.address,
+          address2: formData.suite,
+          city: formData.city,
+          state: formData.state,
+          zip: formData.zip,
+          phone: formData.phone,
+        }],
+        contractStartDate: formData.contractStart,
+        contractEndDate: formData.contractEnd,
+        networks: formData.networks,
+      };
+      
+      const providerRes = await fetch('/api/providers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(providerData),
+      });
+      
+      if (!providerRes.ok) {
+        throw new Error('Failed to create provider');
+      }
+      
+      setShowSuccess(true);
+      setTimeout(() => {
+        router.push('/admin/providers');
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to add provider:', error);
+      alert('Failed to add provider. Please try again.');
+      setIsSubmitting(false);
+    }
   };
 
   const steps = [
