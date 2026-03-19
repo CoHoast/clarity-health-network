@@ -19,6 +19,7 @@ const providersData: Record<string, any> = {
     id: "PRV-001",
     practiceId: "PRC-001",
     practiceName: "Cleveland Family Medicine",
+    contractNumber: "CF1001",
     firstName: "Robert",
     lastName: "Smith",
     title: "MD",
@@ -91,6 +92,7 @@ const providersData: Record<string, any> = {
     id: "PRV-002",
     practiceId: "PRC-001",
     practiceName: "Cleveland Family Medicine",
+    contractNumber: "CF1002",
     firstName: "Jennifer",
     lastName: "Adams",
     title: "MD",
@@ -471,6 +473,21 @@ export default function ProviderDetailPage() {
                   />
                 ) : (
                   <p className="text-slate-900 font-mono">{provider.npi}</p>
+                )}
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Contract Number</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.contractNumber || ""}
+                    onChange={(e) => setEditData({ ...editData, contractNumber: e.target.value.toUpperCase().slice(0, 6) })}
+                    maxLength={6}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono uppercase"
+                    placeholder="ABC123"
+                  />
+                ) : (
+                  <p className="text-slate-900 font-mono font-bold text-blue-600">{provider.contractNumber || "—"}</p>
                 )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
