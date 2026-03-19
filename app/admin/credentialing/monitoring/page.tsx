@@ -248,6 +248,41 @@ export default function MonitoringPage() {
   const [showRunModal, setShowRunModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState<typeof monitoringSchedule[0] | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'info' | 'warning' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleAcknowledge = (e: React.MouseEvent, alert: typeof alerts[0]) => {
+    e.stopPropagation();
+    showToast(`Alert acknowledged for ${alert.provider}`, 'info');
+  };
+
+  const handleTakeAction = (e: React.MouseEvent, alert: typeof alerts[0]) => {
+    e.stopPropagation();
+    setSelectedAlert(alert);
+  };
+
+  const handleResolve = (e: React.MouseEvent, alert: typeof alerts[0]) => {
+    e.stopPropagation();
+    showToast(`Alert resolved for ${alert.provider}`, 'success');
+  };
+
+  const handleReinstate = (e: React.MouseEvent, alert: typeof alerts[0]) => {
+    e.stopPropagation();
+    showToast(`Provider ${alert.provider} has been reinstated`, 'success');
+  };
+
+  const handleReviewCritical = () => {
+    setActiveTab("alerts");
+    setSeverityFilter("critical");
+    // Open the first critical alert
+    if (criticalAlerts.length > 0) {
+      setSelectedAlert(criticalAlerts[0]);
+    }
+  };
 
   const filteredAlerts = alerts.filter((alert) => {
     const matchesSearch =
@@ -307,7 +342,7 @@ export default function MonitoringPage() {
                 </p>
               </div>
             </div>
-            <Button variant="primary" size="sm" onClick={() => setActiveTab("alerts")}>
+            <Button variant="primary" size="sm" onClick={handleReviewCritical}>
               Review Now
             </Button>
           </div>
@@ -465,21 +500,21 @@ export default function MonitoringPage() {
                   <div className="flex gap-2">
                     {alert.status === "open" && (
                       <>
-                        <Button variant="secondary" size="sm" onClick={(e) => { e.stopPropagation(); }}>
+                        <Button variant="secondary" size="sm" onClick={(e) => handleAcknowledge(e, alert)}>
                           Acknowledge
                         </Button>
-                        <Button variant="primary" size="sm" onClick={(e) => { e.stopPropagation(); }}>
+                        <Button variant="primary" size="sm" onClick={(e) => handleTakeAction(e, alert)}>
                           Take Action
                         </Button>
                       </>
                     )}
                     {alert.status === "acknowledged" && (
-                      <Button variant="primary" size="sm" onClick={(e) => { e.stopPropagation(); }}>
+                      <Button variant="primary" size="sm" onClick={(e) => handleResolve(e, alert)}>
                         Resolve
                       </Button>
                     )}
                     {alert.providerSuspended && (
-                      <Button variant="secondary" size="sm" icon={<Undo className="w-4 h-4" />} onClick={(e) => { e.stopPropagation(); }}>
+                      <Button variant="secondary" size="sm" icon={<Undo className="w-4 h-4" />} onClick={(e) => handleReinstate(e, alert)}>
                         Reinstate
                       </Button>
                     )}
@@ -970,18 +1005,49 @@ export default function MonitoringPage() {
               </Button>
               <div className="flex gap-3">
                 {selectedAlert.providerSuspended && (
-                  <Button variant="secondary" icon={<Undo className="w-4 h-4" />}>
+                  <Button 
+                    variant="secondary" 
+                    icon={<Undo className="w-4 h-4" />}
+                    onClick={() => {
+                      showToast(`Provider ${selectedAlert.provider} has been reinstated`, 'success');
+                      setSelectedAlert(null);
+                    }}
+                  >
                     Reinstate Provider
                   </Button>
                 )}
                 {selectedAlert.status === "open" && (
                   <>
-                    <Button variant="secondary">Acknowledge</Button>
-                    <Button variant="primary">Take Action</Button>
+                    <Button 
+                      variant="secondary"
+                      onClick={() => {
+                        showToast(`Alert acknowledged for ${selectedAlert.provider}`, 'info');
+                        setSelectedAlert(null);
+                      }}
+                    >
+                      Acknowledge
+                    </Button>
+                    <Button 
+                      variant="primary"
+                      onClick={() => {
+                        showToast(`Action taken for ${selectedAlert.provider} - Provider notified`, 'success');
+                        setSelectedAlert(null);
+                      }}
+                    >
+                      Take Action
+                    </Button>
                   </>
                 )}
                 {selectedAlert.status === "acknowledged" && (
-                  <Button variant="primary">Mark Resolved</Button>
+                  <Button 
+                    variant="primary"
+                    onClick={() => {
+                      showToast(`Alert resolved for ${selectedAlert.provider}`, 'success');
+                      setSelectedAlert(null);
+                    }}
+                  >
+                    Mark Resolved
+                  </Button>
                 )}
               </div>
             </div>
@@ -1196,12 +1262,38 @@ export default function MonitoringPage() {
                 <Button 
                   variant="primary" 
                   icon={<CheckCircle className="w-4 h-4" />}
-                  onClick={() => { setShowScheduleModal(false); setSelectedSchedule(null); }}
+                  onClick={() => { 
+                    showToast('Schedule settings saved', 'success');
+                    setShowScheduleModal(false); 
+                    setSelectedSchedule(null); 
+                  }}
                 >
                   Save Settings
                 </Button>
               </div>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className={cn(
+              "fixed bottom-6 right-6 px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50",
+              toast.type === 'success' && "bg-green-600 text-white",
+              toast.type === 'info' && "bg-blue-600 text-white",
+              toast.type === 'warning' && "bg-amber-600 text-white"
+            )}
+          >
+            {toast.type === 'success' && <CheckCircle className="w-5 h-5" />}
+            {toast.type === 'info' && <AlertCircle className="w-5 h-5" />}
+            {toast.type === 'warning' && <AlertTriangle className="w-5 h-5" />}
+            {toast.message}
           </motion.div>
         )}
       </AnimatePresence>
