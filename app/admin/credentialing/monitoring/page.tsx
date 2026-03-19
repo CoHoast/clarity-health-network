@@ -280,12 +280,10 @@ export default function MonitoringPage() {
           </div>
         </div>
         <div className="flex gap-3">
-          <Button variant="secondary" onClick={() => setActiveTab("settings")}>
-            <Settings className="w-4 h-4 mr-2" />
+          <Button variant="secondary" icon={<Settings className="w-4 h-4" />} onClick={() => setActiveTab("settings")}>
             Configure
           </Button>
-          <Button variant="primary" onClick={() => setShowRunModal(true)}>
-            <Play className="w-4 h-4 mr-2" />
+          <Button variant="primary" icon={<Play className="w-4 h-4" />} onClick={() => setShowRunModal(true)}>
             Run Manual Scan
           </Button>
         </div>
@@ -967,8 +965,7 @@ export default function MonitoringPage() {
               </Button>
               <div className="flex gap-3">
                 {selectedAlert.providerSuspended && (
-                  <Button variant="secondary">
-                    <Undo className="w-4 h-4 mr-2" />
+                  <Button variant="secondary" icon={<Undo className="w-4 h-4" />}>
                     Reinstate Provider
                   </Button>
                 )}
@@ -1046,8 +1043,7 @@ export default function MonitoringPage() {
               <Button variant="secondary" onClick={() => setShowRunModal(false)}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={() => setShowRunModal(false)}>
-                <Play className="w-4 h-4 mr-2" />
+              <Button variant="primary" icon={<Play className="w-4 h-4" />} onClick={() => setShowRunModal(false)}>
                 Start Scan
               </Button>
             </div>

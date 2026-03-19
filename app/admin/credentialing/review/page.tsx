@@ -1109,20 +1109,11 @@ export default function ReviewQueuePage() {
                       <Button
                         variant="secondary"
                         size="sm"
+                        icon={isVerifying ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
                         onClick={runVerification}
                         disabled={isVerifying}
                       >
-                        {isVerifying ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Verifying...
-                          </>
-                        ) : (
-                          <>
-                            <RefreshCw className="w-4 h-4 mr-2" />
-                            Run Live Check
-                          </>
-                        )}
+                        {isVerifying ? "Verifying..." : "Run Live Check"}
                       </Button>
                     </div>
 
@@ -1230,8 +1221,7 @@ export default function ReviewQueuePage() {
                         );
                       })}
                     </div>
-                    <Button variant="secondary" size="sm">
-                      <Download className="w-4 h-4 mr-2" />
+                    <Button variant="secondary" size="sm" icon={<Download className="w-4 h-4" />}>
                       Download All Documents
                     </Button>
                   </div>

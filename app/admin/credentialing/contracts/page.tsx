@@ -272,14 +272,10 @@ export default function CredentialingContractsPage() {
           </p>
         </div>
         <div className="flex gap-3">
-          <Link href="/admin/credentialing/contracts/templates">
-            <Button variant="secondary">
-              <FileText className="w-4 h-4 mr-2" />
-              Templates
-            </Button>
-          </Link>
-          <Button onClick={() => setShowGenerateModal(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+          <Button variant="secondary" icon={<FileText className="w-4 h-4" />} href="/admin/credentialing/contracts/templates">
+            Templates
+          </Button>
+          <Button variant="primary" icon={<Plus className="w-4 h-4" />} onClick={() => setShowGenerateModal(true)}>
             Generate Contract
           </Button>
         </div>
@@ -594,22 +590,18 @@ export default function CredentialingContractsPage() {
               </Button>
               <Button
                 variant="secondary"
-                onClick={() => {
-                  setShowPdfModal(true);
-                }}
+                icon={<Download className="w-4 h-4" />}
+                onClick={() => setShowPdfModal(true)}
               >
-                <Download className="w-4 h-4 mr-2" />
                 Download PDF
               </Button>
               {selectedContract.status === "draft" && (
-                <Button onClick={() => setShowSendModal(true)}>
-                  <Send className="w-4 h-4 mr-2" />
+                <Button variant="primary" icon={<Send className="w-4 h-4" />} onClick={() => setShowSendModal(true)}>
                   Send for Signature
                 </Button>
               )}
               {selectedContract.status === "pending_signature" && (
-                <Button onClick={() => setShowUploadModal(true)}>
-                  <Upload className="w-4 h-4 mr-2" />
+                <Button variant="primary" icon={<Upload className="w-4 h-4" />} onClick={() => setShowUploadModal(true)}>
                   Upload Signed Copy
                 </Button>
               )}
@@ -830,18 +822,13 @@ export default function CredentialingContractsPage() {
                 <Button variant="secondary" onClick={() => { setShowSendModal(false); setSelectedContract(null); }}>
                   Cancel
                 </Button>
-                <Button onClick={confirmSendForSignature} disabled={isProcessing}>
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Send Contract
-                    </>
-                  )}
+                <Button 
+                  variant="primary"
+                  icon={isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  onClick={confirmSendForSignature} 
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? "Sending..." : "Send Contract"}
                 </Button>
               </div>
             </motion.div>
@@ -1021,18 +1008,13 @@ export default function CredentialingContractsPage() {
                 >
                   Cancel
                 </Button>
-                <Button onClick={confirmUpload} disabled={isProcessing || !uploadedFile || !signerName || !signatureDate}>
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Confirm & {activateProvider ? 'Activate' : 'Save'}
-                    </>
-                  )}
+                <Button 
+                  variant="primary"
+                  icon={isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
+                  onClick={confirmUpload} 
+                  disabled={isProcessing || !uploadedFile || !signerName || !signatureDate}
+                >
+                  {isProcessing ? "Processing..." : `Confirm & ${activateProvider ? 'Activate' : 'Save'}`}
                 </Button>
               </div>
             </motion.div>
@@ -1354,6 +1336,7 @@ function GenerateContractModal({
             </Button>
             {step < 4 ? (
               <Button
+                variant="primary"
                 onClick={() => setStep(step + 1)}
                 disabled={
                   (step === 1 && !selectedApplication) ||
@@ -1364,8 +1347,7 @@ function GenerateContractModal({
                 Continue
               </Button>
             ) : (
-              <Button onClick={onClose}>
-                <FileSignature className="w-4 h-4 mr-2" />
+              <Button variant="primary" icon={<FileSignature className="w-4 h-4" />} onClick={onClose}>
                 Generate Contract
               </Button>
             )}

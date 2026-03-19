@@ -199,12 +199,10 @@ export default function ContractTemplatesPage() {
           </div>
         </div>
         <div className="flex gap-3">
-          <Button variant="secondary">
-            <Upload className="w-4 h-4 mr-2" />
+          <Button variant="secondary" icon={<Upload className="w-4 h-4" />}>
             Import Template
           </Button>
-          <Button onClick={() => setShowNewModal(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+          <Button variant="primary" icon={<Plus className="w-4 h-4" />} onClick={() => setShowNewModal(true)}>
             New Template
           </Button>
         </div>
@@ -330,10 +328,11 @@ export default function ContractTemplatesPage() {
 
                 <div className="pt-4 border-t" style={{ borderColor: isDark ? '#334155' : '#e2e8f0' }}>
                   <Button
+                    variant="primary"
                     className="w-full"
+                    icon={<Edit className="w-4 h-4" />}
                     onClick={() => setShowEditor(true)}
                   >
-                    <Edit className="w-4 h-4 mr-2" />
                     Edit Template
                   </Button>
                 </div>
@@ -417,12 +416,10 @@ export default function ContractTemplatesPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Button variant="secondary">
-                  <Eye className="w-4 h-4 mr-2" />
+                <Button variant="secondary" icon={<Eye className="w-4 h-4" />}>
                   Preview
                 </Button>
-                <Button>
-                  <Save className="w-4 h-4 mr-2" />
+                <Button variant="primary" icon={<Save className="w-4 h-4" />}>
                   Save Template
                 </Button>
               </div>

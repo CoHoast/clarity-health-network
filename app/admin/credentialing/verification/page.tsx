@@ -82,8 +82,7 @@ export default function VerificationStatusPage() {
           </h1>
           <p className={isDark ? "text-slate-400 mt-1" : "text-slate-500 mt-1"}>Track credential verification status for all providers</p>
         </div>
-        <Button variant="primary">
-          <RefreshCw className="w-4 h-4 mr-2" />
+        <Button variant="primary" icon={<RefreshCw className="w-4 h-4" />}>
           Run Batch Verification
         </Button>
       </div>

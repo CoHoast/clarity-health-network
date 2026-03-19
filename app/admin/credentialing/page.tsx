@@ -166,14 +166,10 @@ export default function CredentialingDashboardPage() {
           </p>
         </div>
         <div className="flex gap-3">
-          <Link href="/admin/credentialing/applications">
-            <Button variant="secondary">
-              <FileText className="w-4 h-4 mr-2" />
-              View All Applications
-            </Button>
-          </Link>
-          <Button variant="primary">
-            <BadgeCheck className="w-4 h-4 mr-2" />
+          <Button variant="secondary" icon={<FileText className="w-4 h-4" />} href="/admin/credentialing/applications">
+            View All Applications
+          </Button>
+          <Button variant="primary" icon={<BadgeCheck className="w-4 h-4" />}>
             New Application
           </Button>
         </div>
@@ -498,12 +494,9 @@ export default function CredentialingDashboardPage() {
                 </span>
               </div>
               <div className="pt-2">
-                <Link href="/admin/credentialing/monitoring">
-                  <Button variant="secondary" size="sm" className="w-full">
-                    <Shield className="w-4 h-4 mr-2" />
-                    View Monitoring Details
-                  </Button>
-                </Link>
+                <Button variant="secondary" size="sm" className="w-full" icon={<Shield className="w-4 h-4" />} href="/admin/credentialing/monitoring">
+                  View Monitoring Details
+                </Button>
               </div>
             </div>
           </div>
@@ -592,18 +585,13 @@ export default function CredentialingDashboardPage() {
                 <Button variant="secondary" onClick={() => { setShowReminderModal(false); setSelectedAlert(null); }}>
                   Cancel
                 </Button>
-                <Button onClick={confirmSendReminder} disabled={isProcessing}>
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Mail className="w-4 h-4 mr-2" />
-                      Send Reminder
-                    </>
-                  )}
+                <Button 
+                  variant="primary"
+                  icon={isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
+                  onClick={confirmSendReminder} 
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? "Sending..." : "Send Reminder"}
                 </Button>
               </div>
             </motion.div>
@@ -676,18 +664,13 @@ export default function CredentialingDashboardPage() {
                 <Button variant="secondary" onClick={() => { setShowRequestDocModal(false); setSelectedAlert(null); }}>
                   Cancel
                 </Button>
-                <Button onClick={confirmRequestDoc} disabled={isProcessing}>
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Send Request
-                    </>
-                  )}
+                <Button 
+                  variant="primary"
+                  icon={isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  onClick={confirmRequestDoc} 
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? "Sending..." : "Send Request"}
                 </Button>
               </div>
             </motion.div>

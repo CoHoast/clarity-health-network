@@ -149,11 +149,11 @@ export default function ApplicationsPage() {
         </div>
         <div className="flex gap-3">
           <Button variant="secondary">
-            <Download className="w-4 h-4 mr-2" />
+            icon={<Download className="w-4 h-4" />}
             Export
           </Button>
           <Button variant="primary" onClick={() => setShowNewAppModal(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            icon={<Plus className="w-4 h-4" />}
             New Application
           </Button>
         </div>
