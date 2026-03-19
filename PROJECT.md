@@ -123,3 +123,72 @@ Always use the `icon` prop, never inline children with `mr-2`:
 - **Primary Buttons**: `from-blue-500 to-indigo-500` gradient with blue shadow
 - **Light Theme Default**: New visitors see light theme
 - **Active Nav**: 3px blue bar on left + `bg-blue-500/10 text-blue-400`
+
+## Theme Support Status (Mar 18, 2026)
+**All 43 admin pages now have `isDark` context!**
+
+### Fully Themed Pages (with cn() conditionals)
+- `networks/page.tsx` - 90+ conditionals (stats, filters, grid, modals)
+- `members/page.tsx` - 28 conditionals (header, table, modal)
+- `credentialing/monitoring/page.tsx` - 116 conditionals (alerts, settings, history)
+- `contracts/expiring/page.tsx` - Full theme support
+
+### Theme Pattern
+```tsx
+const { isDark } = useTheme();
+
+// Container
+className={cn("rounded-xl border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}
+
+// Text
+className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}
+className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}
+
+// Input
+className={cn("px-4 py-2 rounded-lg border", 
+  isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+)}
+```
+
+## Document Viewing (Mar 18, 2026)
+**Document Audit Complete**
+
+| Page | Status | Notes |
+|------|--------|-------|
+| `credentialing/review` | ✅ Full | License, DEA, Board Cert, Malpractice, CV, W9 |
+| `credentialing/document-requests` | ✅ Added | Modal + clickable badges |
+| `providers/[providerId]` | ✅ Full | Provider credentials |
+| `contracts` | ✅ Link | Opens contract document |
+| `members` | ✅ Links | View ID Card & EOB |
+
+### Document Viewer Pattern
+```tsx
+const [viewingDocument, setViewingDocument] = useState<{ doc: string; provider: string } | null>(null);
+
+// Trigger
+onClick={() => setViewingDocument({ doc, provider: req.provider })}
+
+// Modal
+<AnimatePresence>
+  {viewingDocument && (
+    <motion.div className="fixed inset-0 bg-black/60 ...">
+      {/* Header with Download button */}
+      {/* Preview area */}
+      {/* Document details */}
+    </motion.div>
+  )}
+</AnimatePresence>
+```
+
+## Commits Log (Mar 18, 2026)
+- `f26236e` - Document viewing for Document Requests page
+- `f0d3995` - isDark support to all admin pages
+- `b084bbd` - isDark to provider detail pages
+- `5ca030d` - Theme support for Members page
+- `a4469fc` - Full theme support for Networks page
+- `db50635` - Button patterns documentation
+- `aa77a4f` - AnimatePresence imports fix
+- `ba37ad7` - Monitoring alert action buttons
+- `9a97c4a` - Monitoring schedule settings modal
+- `2b6b128` - Applications page modal state fix
+- `0120733` - Inline icon button fixes
