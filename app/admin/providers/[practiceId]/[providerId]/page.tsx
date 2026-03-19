@@ -203,6 +203,7 @@ const serviceCategories = [
 ];
 
 export default function ProviderDetailPage() {
+  const { isDark } = useTheme();
   const params = useParams();
   const practiceId = params.practiceId as string;
   const providerId = params.providerId as string;

@@ -133,6 +133,7 @@ const serviceCategories = [
 ];
 
 export default function PracticeDetailPage() {
+  const { isDark } = useTheme();
   const params = useParams();
   const searchParams = useSearchParams();
   const practiceId = params.practiceId as string;
