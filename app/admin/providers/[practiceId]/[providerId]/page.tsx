@@ -185,11 +185,6 @@ const languageNames: Record<string, string> = {
 
 const networkNames: Record<string, string> = {
   "NET-001": "Arizona Antidote",
-  "NET-001": "Arizona Antidote",
-  "NET-003": "Northeast Ohio Specialists",
-  "NET-004": "Ohio Hospital Alliance",
-  "NET-001": "Midwest Regional Network",
-  "NET-006": "TrueCare Value Network",
 };
 
 const titleOptions = ["MD", "DO", "PhD", "NP", "PA", "DPM", "DC", "PT", "OT", "DDS", "DMD", "PharmD", "PsyD"];

@@ -40,3 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 memory/
+
+# OIG LEIE Database (downloaded from HHS, ~30MB)
+data/oig-leie.csv
+data/oig-leie.json
+data/oig-npi-index.json
+data/oig-name-index.json
