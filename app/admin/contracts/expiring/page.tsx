@@ -23,7 +23,7 @@ const filterOptions = ["All", "30 Days", "60 Days", "90 Days"];
 const statusOptions = ["All Statuses", "Not Started", "Renewal Sent", "Pending Review", "Negotiating"];
 
 export default function ExpiringContractsPage() {
-  const { isDark } = useTheme();
+  const { isDark, mounted } = useTheme();
   const [filter, setFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,19 +47,20 @@ export default function ExpiringContractsPage() {
   });
 
   const getStatusBadge = (status: string) => {
+    const baseClasses = "inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full";
     switch (status) {
-      case "renewal_sent": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-medium rounded-full"><Send className="w-3 h-3" />Renewal Sent</span>;
-      case "pending_review": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full"><Clock className="w-3 h-3" />Pending Review</span>;
-      case "negotiating": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded-full"><FileText className="w-3 h-3" />Negotiating</span>;
-      case "not_started": return <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-500/20 text-slate-400 text-xs font-medium rounded-full"><AlertTriangle className="w-3 h-3" />Not Started</span>;
+      case "renewal_sent": return <span className={`${baseClasses} ${isDark ? "bg-blue-500/20 text-blue-400" : "bg-blue-100 text-blue-700"}`}><Send className="w-3 h-3" />Renewal Sent</span>;
+      case "pending_review": return <span className={`${baseClasses} ${isDark ? "bg-amber-500/20 text-amber-400" : "bg-amber-100 text-amber-700"}`}><Clock className="w-3 h-3" />Pending Review</span>;
+      case "negotiating": return <span className={`${baseClasses} ${isDark ? "bg-purple-500/20 text-purple-400" : "bg-purple-100 text-purple-700"}`}><FileText className="w-3 h-3" />Negotiating</span>;
+      case "not_started": return <span className={`${baseClasses} ${isDark ? "bg-slate-500/20 text-slate-400" : "bg-slate-100 text-slate-600"}`}><AlertTriangle className="w-3 h-3" />Not Started</span>;
       default: return null;
     }
   };
 
   const getDaysLeftColor = (days: number) => {
-    if (days <= 14) return "text-red-400";
-    if (days <= 30) return "text-amber-400";
-    return "text-slate-300";
+    if (days <= 14) return isDark ? "text-red-400" : "text-red-600";
+    if (days <= 30) return isDark ? "text-amber-400" : "text-amber-600";
+    return isDark ? "text-slate-300" : "text-slate-600";
   };
 
   const openRenewalModal = (contract: typeof expiringContracts[0]) => {
@@ -75,52 +76,72 @@ export default function ExpiringContractsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+          <h1 className={`text-2xl font-bold flex items-center gap-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
             <AlertTriangle className="w-7 h-7 text-amber-500" />
             Expiring Contracts
           </h1>
-          <p className="text-slate-400 mt-1">{urgentCount} contracts expiring within 30 days • {notStartedCount} need attention</p>
+          <p className={isDark ? "text-slate-400" : "text-slate-500"} style={{ marginTop: '0.25rem' }}>{urgentCount} contracts expiring within 30 days • {notStartedCount} need attention</p>
         </div>
       </div>
 
       {/* Stats - Theme Aware */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: "Next 14 Days", count: expiringContracts.filter(c => c.daysLeft <= 14).length },
-          { label: "15-30 Days", count: expiringContracts.filter(c => c.daysLeft > 14 && c.daysLeft <= 30).length },
-          { label: "31-60 Days", count: expiringContracts.filter(c => c.daysLeft > 30 && c.daysLeft <= 60).length },
-          { label: "61-90 Days", count: expiringContracts.filter(c => c.daysLeft > 60 && c.daysLeft <= 90).length },
-        ].map((stat) => (
-          <div 
-            key={stat.label} 
-            className={`rounded-xl p-5 shadow-lg ${
-              isDark 
-                ? "bg-gradient-to-br from-blue-900/30 to-indigo-900/30 border border-blue-800/30" 
-                : "bg-slate-900 border border-slate-700"
-            }`}
-          >
-            <p className="text-3xl font-bold" style={{ color: 'white' }}>{stat.count}</p>
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</p>
-          </div>
-        ))}
+        {!mounted ? (
+          // Skeleton loading state
+          <>
+            {[1,2,3,4].map(i => (
+              <div key={i} className="rounded-xl p-5 animate-pulse bg-slate-200 border border-slate-300">
+                <div className="h-8 w-12 bg-slate-300 rounded mb-2" />
+                <div className="h-4 w-20 bg-slate-300 rounded" />
+              </div>
+            ))}
+          </>
+        ) : (
+          [
+            { label: "Next 14 Days", count: expiringContracts.filter(c => c.daysLeft <= 14).length },
+            { label: "15-30 Days", count: expiringContracts.filter(c => c.daysLeft > 14 && c.daysLeft <= 30).length },
+            { label: "31-60 Days", count: expiringContracts.filter(c => c.daysLeft > 30 && c.daysLeft <= 60).length },
+            { label: "61-90 Days", count: expiringContracts.filter(c => c.daysLeft > 60 && c.daysLeft <= 90).length },
+          ].map((stat) => (
+            <div 
+              key={stat.label} 
+              className={`rounded-xl p-5 shadow-sm ${
+                isDark 
+                  ? "bg-slate-800 border border-slate-700" 
+                  : "bg-white border border-slate-200"
+              }`}
+            >
+              <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{stat.count}</p>
+              <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{stat.label}</p>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+          <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`} />
           <input
             type="text"
             placeholder="Search by provider or NPI..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className={`w-full pl-10 pr-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              isDark 
+                ? "bg-slate-800 border border-slate-600 text-white placeholder:text-slate-400" 
+                : "bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400"
+            }`}
           />
         </div>
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className={`px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            isDark 
+              ? "bg-slate-800 border border-slate-600 text-white" 
+              : "bg-white border border-slate-200 text-slate-900"
+          }`}
         >
           {filterOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
@@ -129,7 +150,11 @@ export default function ExpiringContractsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className={`px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            isDark 
+              ? "bg-slate-800 border border-slate-600 text-white" 
+              : "bg-white border border-slate-200 text-slate-900"
+          }`}
         >
           {statusOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
@@ -138,30 +163,30 @@ export default function ExpiringContractsPage() {
       </div>
 
       {/* Contracts Table */}
-      <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
+      <div className={`rounded-xl border overflow-hidden ${isDark ? "bg-slate-800/50 border-slate-700" : "bg-white border-slate-200"}`}>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-slate-700">
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Provider</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Expires</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Days Left</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Current Discount</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</th>
+              <tr className={isDark ? "border-b border-slate-700" : "border-b border-slate-200 bg-slate-50"}>
+                <th className={`px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>Provider</th>
+                <th className={`px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>Expires</th>
+                <th className={`px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>Days Left</th>
+                <th className={`px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>Current Discount</th>
+                <th className={`px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>Status</th>
+                <th className={`px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className={isDark ? "divide-y divide-slate-700" : "divide-y divide-slate-100"}>
               {filteredContracts.map((contract) => (
-                <tr key={contract.id} className="hover:bg-slate-700/30 transition-colors">
+                <tr key={contract.id} className={isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50"} style={{ transition: 'background-color 0.15s' }}>
                   <td className="px-6 py-4">
                     <div>
-                      <p className="text-white font-medium">{contract.provider}</p>
-                      <p className="text-slate-400 text-sm">{contract.specialty} • NPI: {contract.npi}</p>
+                      <p className={`font-medium ${isDark ? "text-white" : "text-slate-900"}`}>{contract.provider}</p>
+                      <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}`}>{contract.specialty} • NPI: {contract.npi}</p>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-slate-300">{contract.expires}</span>
+                    <span className={isDark ? "text-slate-300" : "text-slate-600"}>{contract.expires}</span>
                   </td>
                   <td className="px-6 py-4">
                     <span className={`font-semibold ${getDaysLeftColor(contract.daysLeft)}`}>
@@ -169,7 +194,7 @@ export default function ExpiringContractsPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-green-400 font-medium">{contract.discount}</span>
+                    <span className={isDark ? "text-green-400" : "text-green-600"} style={{ fontWeight: 500 }}>{contract.discount}</span>
                   </td>
                   <td className="px-6 py-4">{getStatusBadge(contract.status)}</td>
                   <td className="px-6 py-4 text-right">

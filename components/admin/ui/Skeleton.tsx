@@ -95,21 +95,36 @@ export function CardSkeleton({ lines = 3 }: { lines?: number }) {
 
 // Stat Card Skeleton
 export function StatCardSkeleton() {
-  const { isDark } = useTheme();
+  const { isDark, mounted } = useTheme();
+  
+  // Always show light skeleton until mounted to prevent flash
+  const showDark = mounted && isDark;
   
   return (
     <div className={cn(
-      "rounded-xl p-5",
-      isDark 
-        ? "bg-gradient-to-br from-slate-800 to-slate-800/50 border border-slate-700/50" 
-        : "bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700/30"
+      "rounded-xl p-5 animate-pulse",
+      showDark 
+        ? "bg-slate-800 border border-slate-700" 
+        : "bg-slate-100 border border-slate-200"
     )}>
       <div className="flex items-start justify-between mb-4">
-        <Skeleton variant="rectangular" width={44} height={44} className="rounded-xl" />
-        <Skeleton width={80} height={24} className="rounded-full" />
+        <div className={cn(
+          "w-11 h-11 rounded-xl",
+          showDark ? "bg-slate-700" : "bg-slate-200"
+        )} />
+        <div className={cn(
+          "w-20 h-6 rounded-full",
+          showDark ? "bg-slate-700" : "bg-slate-200"
+        )} />
       </div>
-      <Skeleton width={100} height={32} className="mb-2" />
-      <Skeleton width={120} height={16} />
+      <div className={cn(
+        "w-24 h-8 rounded mb-2",
+        showDark ? "bg-slate-700" : "bg-slate-200"
+      )} />
+      <div className={cn(
+        "w-28 h-4 rounded",
+        showDark ? "bg-slate-700" : "bg-slate-200"
+      )} />
     </div>
   );
 }
