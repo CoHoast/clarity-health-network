@@ -86,6 +86,7 @@ interface Provider {
   primaryTaxonomyDesc: string;
   secondaryTaxonomy: string;
   secondaryTaxonomyDesc: string;
+  tertiaryTaxonomy?: string;
   licenseState: string;
   licenseNumber: string;
   acceptingNewPatients: boolean;
@@ -100,6 +101,20 @@ interface Provider {
     saturday: string;
     sunday: string;
   };
+  // Arizona provider fields
+  referenceNumber?: string; // Entity #
+  contractNumber?: string; // Contract #
+  taxId?: string;
+  practiceNpi?: string;
+  isPrimaryCare?: boolean;
+  isBehavioralHealth?: boolean;
+  phone?: string;
+  address?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  visible?: boolean;
 }
 
 // Helper to parse names - handles both new and legacy formats
@@ -364,7 +379,9 @@ export default function ProvidersPage() {
     reader.onload = (e) => {
       const text = e.target?.result as string;
       const lines = text.split('\n');
-      const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, '_'));
+      // Handle quoted CSV headers
+      const headerLine = lines[0];
+      const headers = headerLine.split(',').map(h => h.trim().toLowerCase().replace(/^"|"$/g, '').replace(/\s+/g, '_').replace(/#/g, ''));
 
       const errors: string[] = [];
       const parsed: Partial<Provider>[] = [];
@@ -372,44 +389,68 @@ export default function ProvidersPage() {
       for (let i = 1; i < lines.length; i++) {
         if (!lines[i].trim()) continue;
 
-        const values = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
-        const row: any = {};
+        // Parse CSV line (handle commas in quoted values)
+        const values: string[] = [];
+        let current = '';
+        let inQuotes = false;
+        for (const char of lines[i]) {
+          if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            values.push(current.trim().replace(/^"|"$/g, ''));
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        values.push(current.trim().replace(/^"|"$/g, ''));
 
+        const row: any = {};
         headers.forEach((header, index) => {
           row[header] = values[index] || '';
         });
 
-        // Map CSV columns to Provider fields
+        // Map CSV columns to Provider fields (Arizona format)
+        const firstName = row.first_name || row.firstname || '';
+        const lastName = row.last_name || row.lastname || '';
+        const fullName = row.name || row.provider_name || row.full_name || '';
+        const name = fullName || `${firstName} ${lastName}`.trim();
+
         const provider: Partial<Provider> = {
-          name: row.name || row.provider_name || row.full_name || '',
-          credential: row.credential || row.credentials || 'MD',
+          name,
+          firstName,
+          lastName,
+          credential: row.credentials || row.credential || '',
           npi: row.npi || row.provider_npi || '',
           gender: row.gender || '',
-          specialty: row.specialty || row.speciality || '',
-          primaryTaxonomy: row.primary_taxonomy || row.taxonomy_code || '',
-          primaryTaxonomyDesc: row.primary_taxonomy_desc || row.taxonomy_description || '',
-          secondaryTaxonomy: row.secondary_taxonomy || '',
+          specialty: row.primary_spc_code || row.specialty || row.speciality || '',
+          referenceNumber: row.entity_ || row.entity || row.reference_number || '',
+          contractNumber: row.contract_ || row.contract || row.contract_number || '',
+          taxId: row.tax_id || row.taxid || '',
+          practiceNpi: row.practice_npi || row.practicenpi || '',
+          primaryTaxonomy: row.primary_spc_code || row.primary_taxonomy || '',
+          primaryTaxonomyDesc: row.primary_taxonomy_desc || '',
+          secondaryTaxonomy: row.secondary_spc_code || row.secondary_taxonomy || '',
           secondaryTaxonomyDesc: row.secondary_taxonomy_desc || '',
-          licenseState: row.license_state || row.state_license || '',
-          licenseNumber: row.license_number || row.license_no || '',
-          acceptingNewPatients: row.accepting_new_patients?.toLowerCase() === 'yes' || row.accepting_new_patients?.toLowerCase() === 'true',
-          languages: row.languages ? row.languages.split(';').map((l: string) => l.trim()) : ['eng'],
-          clinicHours: {
-            monday: row.monday || row.mon || '8:00 AM - 5:00 PM',
-            tuesday: row.tuesday || row.tue || '8:00 AM - 5:00 PM',
-            wednesday: row.wednesday || row.wed || '8:00 AM - 5:00 PM',
-            thursday: row.thursday || row.thu || '8:00 AM - 5:00 PM',
-            friday: row.friday || row.fri || '8:00 AM - 5:00 PM',
-            saturday: row.saturday || row.sat || 'Closed',
-            sunday: row.sunday || row.sun || 'Closed',
-          },
+          tertiaryTaxonomy: row.tertiary_spc_code || row.tertiary_taxonomy || '',
+          isPrimaryCare: row.primary_care_flag === 'P' || row.primary_care === 'Y' || row.primary_care === 'true',
+          isBehavioralHealth: row.behavioral_health_flag === 'B' || row.behavioral_health === 'Y' || row.behavioral_health === 'true',
+          phone: row.phone || row.phone_number || '',
+          address: row.address_1 || row.address1 || row.address || '',
+          address2: row.address_2 || row.address2 || '',
+          city: row.city || '',
+          state: row.state || '',
+          zip: row.zip || row.zipcode || row.zip_code || '',
+          acceptingNewPatients: row.accept_new_patients === 'Y' || row.accept_new_patients === 'Yes' || row.accepting_new_patients?.toLowerCase() === 'yes' || row.accepting_new_patients?.toLowerCase() === 'true',
+          languages: row.languages ? row.languages.split(';').map((l: string) => l.trim()) : ['English'],
+          visible: row.visible === 'Y' || row.visible === 'Yes' || row.visible === 'true' || row.visible === '1',
         };
 
-        // Validate required fields
-        if (!provider.name) errors.push(`Row ${i}: Missing provider name`);
+        // Validate required fields (only NPI and Name required)
+        if (!name) errors.push(`Row ${i}: Missing provider name (First Name + Last Name or Name)`);
         if (!provider.npi) errors.push(`Row ${i}: Missing NPI`);
 
-        if (provider.name && provider.npi) {
+        if (name && provider.npi) {
           parsed.push(provider);
         }
       }
@@ -1521,22 +1562,59 @@ export default function ProvidersPage() {
                 {/* CSV Template Info */}
                 {csvData.length === 0 && (
                   <div className="bg-slate-700/30 rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3">Expected CSV Columns</h3>
-                    <div className="grid grid-cols-3 gap-2 text-sm">
-                      <div className="text-blue-400">name *</div>
-                      <div className="text-blue-400">npi *</div>
-                      <div className="text-slate-400">credential</div>
-                      <div className="text-slate-400">gender</div>
-                      <div className="text-slate-400">specialty</div>
-                      <div className="text-slate-400">primary_taxonomy</div>
-                      <div className="text-slate-400">primary_taxonomy_desc</div>
-                      <div className="text-slate-400">license_state</div>
-                      <div className="text-slate-400">license_number</div>
-                      <div className="text-slate-400">accepting_new_patients</div>
-                      <div className="text-slate-400">languages (semicolon sep)</div>
-                      <div className="text-slate-400">monday, tuesday, etc.</div>
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-semibold text-white">CSV Format</h3>
+                      <button
+                        onClick={() => {
+                          const headers = [
+                            'NPI', 'Last Name', 'First Name', 'Credentials', 'Gender',
+                            'Entity #', 'Contract #', 'Tax ID', 'Practice NPI',
+                            'Primary Spc Code', 'Secondary Spc Code', 'Tertiary Spc Code',
+                            'Primary Care Flag', 'Behavioral Health Flag',
+                            'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip',
+                            'Accept New Patients', 'Languages', 'Visible'
+                          ];
+                          const csv = headers.join(',') + '\n';
+                          const blob = new Blob([csv], { type: 'text/csv' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = 'provider-import-template.csv';
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        }}
+                        className="flex items-center gap-2 px-3 py-1.5 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-500 transition-colors"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download Template
+                      </button>
                     </div>
-                    <p className="text-xs text-slate-500 mt-3">* Required fields. Column names are case-insensitive.</p>
+                    <div className="grid grid-cols-4 gap-2 text-sm">
+                      <div className="text-blue-400 font-medium">NPI *</div>
+                      <div className="text-blue-400 font-medium">Last Name *</div>
+                      <div className="text-blue-400 font-medium">First Name *</div>
+                      <div className="text-slate-400">Credentials</div>
+                      <div className="text-slate-400">Gender</div>
+                      <div className="text-slate-400">Entity #</div>
+                      <div className="text-slate-400">Contract #</div>
+                      <div className="text-slate-400">Tax ID</div>
+                      <div className="text-slate-400">Practice NPI</div>
+                      <div className="text-slate-400">Primary Spc Code</div>
+                      <div className="text-slate-400">Secondary Spc Code</div>
+                      <div className="text-slate-400">Tertiary Spc Code</div>
+                      <div className="text-slate-400">Primary Care Flag</div>
+                      <div className="text-slate-400">Behavioral Health Flag</div>
+                      <div className="text-slate-400">Phone</div>
+                      <div className="text-slate-400">Address 1</div>
+                      <div className="text-slate-400">Address 2</div>
+                      <div className="text-slate-400">City</div>
+                      <div className="text-slate-400">State</div>
+                      <div className="text-slate-400">Zip</div>
+                      <div className="text-slate-400">Accept New Patients</div>
+                      <div className="text-slate-400">Languages</div>
+                      <div className="text-slate-400">Visible</div>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-3">* Required fields. Only NPI and Name are required - all other columns are optional.</p>
                   </div>
                 )}
 
