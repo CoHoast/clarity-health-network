@@ -70,6 +70,7 @@ const providersData: Record<string, any> = {
       sunday: "Closed",
     },
     status: "active",
+    pricingTier: 1,
     // Individual rates (can override practice rates)
     useCustomRates: false,
     rateType: "flat",
@@ -141,6 +142,7 @@ const providersData: Record<string, any> = {
       sunday: "Closed",
     },
     status: "active",
+    pricingTier: 2,
     useCustomRates: true,
     rateType: "custom",
     flatRate: "140",
@@ -505,6 +507,23 @@ export default function ProviderDetailPage() {
                       : "bg-red-500/20 text-red-400"
                   }`}>
                     {provider.acceptingNewPatients ? "Yes" : "No"}
+                  </span>
+                )}
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Pricing Tier</p>
+                {isEditing ? (
+                  <select
+                    value={editData.pricingTier || 1}
+                    onChange={(e) => setEditData({ ...editData, pricingTier: parseInt(e.target.value) })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                  </select>
+                ) : (
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-lg">
+                    {provider.pricingTier || 1}
                   </span>
                 )}
               </div>
