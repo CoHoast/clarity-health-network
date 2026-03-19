@@ -1,5 +1,92 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logAudit } from '@/lib/audit';
 import practicesData from '@/data/arizona-practices.json';
+import fs from 'fs';
+import path from 'path';
+
+// Create new practice
+export async function POST(request: NextRequest) {
+  try {
+    const data = await request.json();
+    
+    // Validate required fields
+    if (!data.name || !data.taxId) {
+      await logAudit({
+        action: 'create',
+        resource: 'practice',
+        success: false,
+        errorMessage: 'Missing required fields: name, taxId',
+      });
+      return NextResponse.json(
+        { error: 'Missing required fields: name, taxId' },
+        { status: 400 }
+      );
+    }
+    
+    const practices = [...practicesData] as any[];
+    
+    // Check for duplicate Tax ID
+    const existing = practices.find((p: any) => p.taxId === data.taxId);
+    if (existing) {
+      await logAudit({
+        action: 'create',
+        resource: 'practice',
+        resourceId: data.taxId,
+        success: false,
+        errorMessage: 'Practice with this Tax ID already exists',
+      });
+      return NextResponse.json(
+        { error: 'Practice with this Tax ID already exists' },
+        { status: 409 }
+      );
+    }
+    
+    const newPractice = {
+      id: `practice-${data.taxId}`,
+      name: data.name,
+      taxId: data.taxId,
+      npi: data.npi || '',
+      address1: data.address1 || '',
+      address2: data.address2 || '',
+      city: data.city || '',
+      state: data.state || 'AZ',
+      zip: data.zip || '',
+      phone: data.phone || '',
+      fax: data.fax || '',
+      providerCount: data.providerCount || 0,
+      providerIds: data.providerIds || [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    
+    practices.push(newPractice);
+    
+    // Save to JSON file
+    const filePath = path.join(process.cwd(), 'data', 'arizona-practices.json');
+    fs.writeFileSync(filePath, JSON.stringify(practices, null, 2));
+    
+    await logAudit({
+      action: 'create',
+      resource: 'practice',
+      resourceId: newPractice.id,
+      resourceName: newPractice.name,
+      newValue: newPractice,
+    });
+    
+    return NextResponse.json({ 
+      practice: newPractice,
+      message: 'Practice created successfully',
+    }, { status: 201 });
+  } catch (error) {
+    await logAudit({
+      action: 'create',
+      resource: 'practice',
+      success: false,
+      errorMessage: error instanceof Error ? error.message : 'Unknown error',
+    });
+    return NextResponse.json({ error: 'Failed to create practice' }, { status: 500 });
+  }
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

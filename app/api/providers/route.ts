@@ -1,5 +1,131 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logAudit } from '@/lib/audit';
 import providersData from '@/data/arizona-providers.json';
+import fs from 'fs';
+import path from 'path';
+
+// Create new provider
+export async function POST(request: NextRequest) {
+  try {
+    const data = await request.json();
+    
+    // Validate required fields
+    if (!data.npi || !data.firstName || !data.lastName) {
+      await logAudit({
+        action: 'create',
+        resource: 'provider',
+        success: false,
+        errorMessage: 'Missing required fields: npi, firstName, lastName',
+      });
+      return NextResponse.json(
+        { error: 'Missing required fields: npi, firstName, lastName' },
+        { status: 400 }
+      );
+    }
+    
+    // Check for duplicate NPI
+    const providers = [...providersData] as any[];
+    const existing = providers.find((p: any) => p.npi === data.npi);
+    if (existing) {
+      await logAudit({
+        action: 'create',
+        resource: 'provider',
+        resourceId: data.npi,
+        success: false,
+        errorMessage: 'Provider with this NPI already exists',
+      });
+      return NextResponse.json(
+        { error: 'Provider with this NPI already exists' },
+        { status: 409 }
+      );
+    }
+    
+    // Create new provider
+    const newProvider = {
+      id: `prov-${data.npi}`,
+      npi: data.npi,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      middleInitial: data.middleInitial || '',
+      credentials: data.credentials || data.title || '',
+      gender: data.gender || 'U',
+      specialty: data.specialty || 'General Practice',
+      specialtyCode: data.specialtyCode || '',
+      taxonomyCode: data.taxonomyCode || '',
+      secondarySpecialtyCode: data.secondarySpecialtyCode || '',
+      secondaryTaxonomyCode: data.secondaryTaxonomyCode || '',
+      facilityType: data.facilityType || 'INDIVIDUAL',
+      isPrimaryCare: data.isPrimaryCare || false,
+      isBehavioralHealth: data.isBehavioralHealth || false,
+      acceptingNewPatients: data.acceptingNewPatients ?? true,
+      directoryDisplay: data.directoryDisplay ?? true,
+      languages: data.languages || ['English'],
+      pricingTier: data.pricingTier || '',
+      networkOrg: data.networkOrg || '',
+      networkId: data.networkId || 'arizona-antidote',
+      contractNumber: data.contractNumber || '',
+      referenceNumber: data.referenceNumber || '',
+      contractStartDate: data.contractStartDate || '',
+      contractEndDate: data.contractEndDate || '',
+      correspondingAddress: data.correspondingAddress || {
+        address1: '', address2: '', city: '', state: '', zip: '', fax: '', contactName: ''
+      },
+      billing: data.billing || {
+        npi: '', taxId: '', name: '', address1: '', address2: '', city: '', state: '', zip: '', phone: '', fax: ''
+      },
+      locations: data.locations || [{
+        id: `loc-${data.npi}-0`,
+        address1: data.address1 || '',
+        address2: data.address2 || '',
+        city: data.city || '',
+        state: data.state || 'AZ',
+        zip: data.zip || '',
+        county: data.county || '',
+        phone: data.phone || '',
+        fax: data.fax || '',
+        email: data.email || '',
+        isPrimary: true,
+        hours: data.hours || {},
+      }],
+      status: 'active',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    
+    // Add to array
+    providers.push(newProvider);
+    
+    // Save to JSON file (will be replaced with database)
+    const filePath = path.join(process.cwd(), 'data', 'arizona-providers.json');
+    fs.writeFileSync(filePath, JSON.stringify(providers, null, 2));
+    
+    // Log the creation
+    await logAudit({
+      action: 'create',
+      resource: 'provider',
+      resourceId: newProvider.npi,
+      resourceName: `${newProvider.firstName} ${newProvider.lastName}`,
+      newValue: newProvider,
+      details: {
+        specialty: newProvider.specialty,
+        network: newProvider.networkId,
+      },
+    });
+    
+    return NextResponse.json({ 
+      provider: newProvider,
+      message: 'Provider created successfully',
+    }, { status: 201 });
+  } catch (error) {
+    await logAudit({
+      action: 'create',
+      resource: 'provider',
+      success: false,
+      errorMessage: error instanceof Error ? error.message : 'Unknown error',
+    });
+    return NextResponse.json({ error: 'Failed to create provider' }, { status: 500 });
+  }
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
