@@ -103,3 +103,23 @@ All updated to use cyan-600 on light theme:
 - Rebranded to "MedCare" then "TrueCare"
 - Pivoted from full claims platform to PPO Network Manager (Mar 2026)
 - Theme toggle added Mar 16, 2026
+- Button icon layout fixes (Mar 18, 2026) - All buttons now use `icon` prop
+- Theme flash fix (Mar 18, 2026) - StatCardSkeleton uses `mounted` check
+- Monitoring page fully wired (Mar 18, 2026) - Gear icons + alert actions
+
+## Button Pattern (IMPORTANT)
+Always use the `icon` prop, never inline children with `mr-2`:
+```tsx
+// ✅ CORRECT
+<Button icon={<Send className="w-4 h-4" />}>Send</Button>
+
+// ❌ WRONG - causes icon above text
+<Button><Send className="w-4 h-4 mr-2" />Send</Button>
+```
+
+## DOKit Design System (Updated Mar 18, 2026)
+- **Sidebar**: Always dark `#0F172A` (Slate 900)
+- **Signature Blue**: `#3B82F6` (Blue 500)
+- **Primary Buttons**: `from-blue-500 to-indigo-500` gradient with blue shadow
+- **Light Theme Default**: New visitors see light theme
+- **Active Nav**: 3px blue bar on left + `bg-blue-500/10 text-blue-400`
