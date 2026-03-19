@@ -126,6 +126,7 @@ export default function DocumentRequestsPage() {
   const [uploadTarget, setUploadTarget] = useState<typeof documentRequests[0] | null>(null);
   const [showReminderToast, setShowReminderToast] = useState(false);
   const [reminderSentTo, setReminderSentTo] = useState("");
+  const [viewingDocument, setViewingDocument] = useState<{ doc: string; provider: string } | null>(null);
 
   const handleSendReminder = (req: typeof documentRequests[0]) => {
     setReminderSentTo(req.provider);
@@ -302,18 +303,20 @@ export default function DocumentRequestsPage() {
               {req.requestedDocs.map((doc) => {
                 const uploaded = req.uploadedDocs.includes(doc);
                 return (
-                  <span
+                  <button
                     key={doc}
+                    onClick={() => uploaded && setViewingDocument({ doc, provider: req.provider })}
+                    disabled={!uploaded}
                     className={cn(
-                      "px-2 py-1 rounded text-xs font-medium flex items-center gap-1",
+                      "px-2 py-1 rounded text-xs font-medium flex items-center gap-1 transition-colors",
                       uploaded
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                        : "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 cursor-pointer"
+                        : "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 cursor-default"
                     )}
                   >
-                    {uploaded && <CheckCircle className="w-3 h-3" />}
+                    {uploaded && <Eye className="w-3 h-3" />}
                     {getDocLabel(doc)}
-                  </span>
+                  </button>
                 );
               })}
             </div>
@@ -607,10 +610,21 @@ export default function DocumentRequestsPage() {
                             {getDocLabel(doc)}
                           </span>
                           {uploaded ? (
-                            <span className="flex items-center gap-1 text-green-600 dark:text-green-400 text-sm">
-                              <CheckCircle className="w-4 h-4" />
-                              Uploaded
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => {
+                                  setSelectedRequest(null);
+                                  setViewingDocument({ doc, provider: selectedRequest.provider });
+                                }}
+                                className="flex items-center gap-1 text-blue-600 dark:text-blue-400 text-sm hover:underline"
+                              >
+                                <Eye className="w-4 h-4" />
+                                View
+                              </button>
+                              <span className="flex items-center gap-1 text-green-600 dark:text-green-400 text-sm">
+                                <CheckCircle className="w-4 h-4" />
+                              </span>
+                            </div>
                           ) : (
                             <span className="flex items-center gap-1 text-slate-400 text-sm">
                               <Clock className="w-4 h-4" />
@@ -762,6 +776,114 @@ export default function DocumentRequestsPage() {
           >
             <CheckCircle className="w-5 h-5" />
             {reminderSentTo.includes("Documents") ? reminderSentTo : `Reminder sent to ${reminderSentTo}`}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Document Viewer Modal */}
+      <AnimatePresence>
+        {viewingDocument && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+            onClick={() => setViewingDocument(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-3xl rounded-xl overflow-hidden max-h-[85vh] flex flex-col",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className={cn(
+                "p-4 border-b flex items-center justify-between",
+                isDark ? "border-slate-700" : "border-slate-200"
+              )}>
+                <div>
+                  <h3 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    {getDocLabel(viewingDocument.doc)}
+                  </h3>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    Uploaded by {viewingDocument.provider}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="secondary" size="sm" icon={<Upload className="w-4 h-4" />}>
+                    Download
+                  </Button>
+                  <IconButton icon={<X className="w-5 h-5" />} onClick={() => setViewingDocument(null)} />
+                </div>
+              </div>
+
+              {/* Document Preview */}
+              <div className={cn("flex-1 overflow-auto p-6 min-h-[400px]", isDark ? "bg-slate-900" : "bg-slate-100")}>
+                <div className={cn(
+                  "max-w-xl mx-auto rounded-lg shadow-lg p-8 text-center",
+                  isDark ? "bg-slate-800" : "bg-white"
+                )}>
+                  <FileText className={cn("w-16 h-16 mx-auto mb-4", isDark ? "text-blue-400" : "text-blue-600")} />
+                  <h4 className={cn("text-xl font-semibold mb-2", isDark ? "text-white" : "text-slate-900")}>
+                    {getDocLabel(viewingDocument.doc)}
+                  </h4>
+                  <p className={cn("text-sm mb-4", isDark ? "text-slate-400" : "text-slate-500")}>
+                    Document uploaded on {new Date().toLocaleDateString()}
+                  </p>
+                  <div className={cn(
+                    "border-2 border-dashed rounded-lg p-8 mb-4",
+                    isDark ? "border-slate-600" : "border-slate-300"
+                  )}>
+                    <p className={cn("text-sm", isDark ? "text-slate-500" : "text-slate-400")}>
+                      PDF Document Preview
+                    </p>
+                    <p className={cn("text-xs mt-2", isDark ? "text-slate-600" : "text-slate-300")}>
+                      (Document preview would render here in production)
+                    </p>
+                  </div>
+                  <div className={cn(
+                    "text-left p-4 rounded-lg",
+                    isDark ? "bg-slate-700/50" : "bg-slate-50"
+                  )}>
+                    <p className={cn("text-xs uppercase tracking-wider mb-2", isDark ? "text-slate-400" : "text-slate-500")}>
+                      Document Details
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>Type: </span>
+                        <span className={cn(isDark ? "text-white" : "text-slate-900")}>{getDocLabel(viewingDocument.doc)}</span>
+                      </div>
+                      <div>
+                        <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>Size: </span>
+                        <span className={cn(isDark ? "text-white" : "text-slate-900")}>1.2 MB</span>
+                      </div>
+                      <div>
+                        <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>Format: </span>
+                        <span className={cn(isDark ? "text-white" : "text-slate-900")}>PDF</span>
+                      </div>
+                      <div>
+                        <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>Status: </span>
+                        <span className="text-green-600 dark:text-green-400">Verified</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className={cn(
+                "p-4 border-t flex justify-end gap-3",
+                isDark ? "border-slate-700" : "border-slate-200"
+              )}>
+                <Button variant="secondary" onClick={() => setViewingDocument(null)}>
+                  Close
+                </Button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
