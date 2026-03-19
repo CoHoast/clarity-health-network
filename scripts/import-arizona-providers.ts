@@ -384,24 +384,30 @@ async function main() {
 
     providers.push(provider);
 
-    // Track practice by billing org
-    const taxId = primary['Billing Tax ID'];
-    const billingName = primary['Billing Name']?.replace(/^"|"$/g, '') || '';
+    // Track practice by billing org - check ALL locations for different Tax IDs
+    const seenTaxIds = new Set<string>();
     
-    if (taxId && billingName) {
+    for (const loc of locations) {
+      const taxId = loc['Billing Tax ID'];
+      const billingName = loc['Billing Name']?.replace(/^"|"$/g, '') || '';
+      
+      // Skip if we've already added this provider to this practice
+      if (!taxId || !billingName || seenTaxIds.has(taxId)) continue;
+      seenTaxIds.add(taxId);
+      
       if (!practicesByTaxId.has(taxId)) {
         practicesByTaxId.set(taxId, {
           id: `practice-${taxId}`,
           name: billingName,
           taxId,
-          npi: primary['Billing NPI'] || '',
-          address1: primary['Billing Addr 1'] || '',
-          address2: primary['Billing Addr 2'] || '',
-          city: primary['Billing City'] || '',
-          state: primary['Billing State'] || '',
-          zip: primary['Billing Zip'] || '',
-          phone: formatPhone(primary['Billing Phone'] || ''),
-          fax: formatPhone(primary['Billing Fax'] || ''),
+          npi: loc['Billing NPI'] || '',
+          address1: loc['Billing Addr 1'] || '',
+          address2: loc['Billing Addr 2'] || '',
+          city: loc['Billing City'] || '',
+          state: loc['Billing State'] || '',
+          zip: loc['Billing Zip'] || '',
+          phone: formatPhone(loc['Billing Phone'] || ''),
+          fax: formatPhone(loc['Billing Fax'] || ''),
           providerCount: 0,
           providerIds: [],
         });

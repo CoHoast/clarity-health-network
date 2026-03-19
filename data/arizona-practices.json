@@ -64,33 +64,39 @@
     "zip": "55486",
     "phone": "",
     "fax": "",
-    "providerCount": 597,
+    "providerCount": 612,
     "providerIds": [
       "prov-1952834228",
       "prov-1144684671",
       "prov-1154856128",
+      "prov-1275580573",
       "prov-1144410127",
       "prov-1104152685",
       "prov-1639400740",
+      "prov-1205040011",
       "prov-1437133378",
       "prov-1043579170",
       "prov-1164463907",
       "prov-1164884573",
       "prov-1073803417",
+      "prov-1356877781",
       "prov-1902462286",
       "prov-1013346261",
       "prov-1013327501",
       "prov-1477012862",
       "prov-1508196320",
       "prov-1225561384",
+      "prov-1215279104",
       "prov-1285833137",
       "prov-1053971903",
       "prov-1710954847",
       "prov-1972037034",
       "prov-1528086501",
       "prov-1962071209",
+      "prov-1659993897",
       "prov-1134016546",
       "prov-1700144011",
+      "prov-1801259361",
       "prov-1932575883",
       "prov-1942270327",
       "prov-1871532697",
@@ -123,6 +129,7 @@
       "prov-1316401219",
       "prov-1245895390",
       "prov-1023535580",
+      "prov-1356307839",
       "prov-1902847379",
       "prov-1639468465",
       "prov-1033430343",
@@ -134,6 +141,7 @@
       "prov-1952458838",
       "prov-1447442892",
       "prov-1538261953",
+      "prov-1316100977",
       "prov-1467186791",
       "prov-1710695234",
       "prov-1316233869",
@@ -157,6 +165,7 @@
       "prov-1710057104",
       "prov-1518914365",
       "prov-1104993500",
+      "prov-1164494746",
       "prov-1740420041",
       "prov-1760079479",
       "prov-1033557632",
@@ -178,6 +187,7 @@
       "prov-1396037248",
       "prov-1063127397",
       "prov-1386387199",
+      "prov-1336185685",
       "prov-1841788056",
       "prov-1972546331",
       "prov-1174061873",
@@ -192,6 +202,7 @@
       "prov-1083290944",
       "prov-1003437013",
       "prov-1487114179",
+      "prov-1174146476",
       "prov-1053629816",
       "prov-1184010571",
       "prov-1245763010",
@@ -267,9 +278,11 @@
       "prov-1801009949",
       "prov-1699235424",
       "prov-1902483662",
+      "prov-1831630037",
       "prov-1811666597",
       "prov-1760744460",
       "prov-1326054933",
+      "prov-1134385156",
       "prov-1831696384",
       "prov-1033747050",
       "prov-1265416838",
@@ -310,9 +323,11 @@
       "prov-1760801823",
       "prov-1841829611",
       "prov-1184967515",
+      "prov-1902095094",
       "prov-1710489034",
       "prov-1518524925",
       "prov-1881011773",
+      "prov-1780116673",
       "prov-1013448943",
       "prov-1720018195",
       "prov-1982138855",
@@ -677,7 +692,7 @@
     "zip": "04915",
     "phone": "",
     "fax": "",
-    "providerCount": 203,
+    "providerCount": 209,
     "providerIds": [
       "prov-1629251343",
       "prov-1003206749",
@@ -688,7 +703,10 @@
       "prov-1306163258",
       "prov-1386827244",
       "prov-1356759039",
+      "prov-1083608913",
+      "prov-1477908994",
       "prov-1578533238",
+      "prov-1831183870",
       "prov-1194161174",
       "prov-1154583227",
       "prov-1407240641",
@@ -730,6 +748,7 @@
       "prov-1225852932",
       "prov-1932532322",
       "prov-1932799152",
+      "prov-1366435869",
       "prov-1063072502",
       "prov-1760460323",
       "prov-1639433691",
@@ -767,6 +786,7 @@
       "prov-1316331549",
       "prov-1699088864",
       "prov-1578294559",
+      "prov-1447742127",
       "prov-1679012017",
       "prov-1821446048",
       "prov-1184156531",
@@ -781,6 +801,7 @@
       "prov-1831103159",
       "prov-1639832553",
       "prov-1548469273",
+      "prov-1740375757",
       "prov-1871573493",
       "prov-1881049500",
       "prov-1922575067",
@@ -955,7 +976,7 @@
     "zip": "75373",
     "phone": "",
     "fax": "",
-    "providerCount": 580,
+    "providerCount": 581,
     "providerIds": [
       "prov-1043840028",
       "prov-1114324977",
@@ -1195,6 +1216,7 @@
       "prov-1154715076",
       "prov-1174616742",
       "prov-1912365479",
+      "prov-1629516786",
       "prov-1902120215",
       "prov-1962940205",
       "prov-1972899078",
@@ -1659,7 +1681,7 @@
     "zip": "04915",
     "phone": "",
     "fax": "",
-    "providerCount": 172,
+    "providerCount": 178,
     "providerIds": [
       "prov-1164123725",
       "prov-1659617850",
@@ -1682,6 +1704,7 @@
       "prov-1437592102",
       "prov-1881651362",
       "prov-1790245520",
+      "prov-1447678917",
       "prov-1114920618",
       "prov-1760055099",
       "prov-1639133903",
@@ -1697,6 +1720,7 @@
       "prov-1568427219",
       "prov-1497751283",
       "prov-1174526677",
+      "prov-1750810404",
       "prov-1821599036",
       "prov-1841269313",
       "prov-1174817720",
@@ -1710,11 +1734,13 @@
       "prov-1962453803",
       "prov-1558728196",
       "prov-1992577530",
+      "prov-1598981979",
       "prov-1962049759",
       "prov-1982071429",
       "prov-1629456769",
       "prov-1730262882",
       "prov-1548749690",
+      "prov-1932532322",
       "prov-1700886512",
       "prov-1366435869",
       "prov-1184930786",
@@ -1728,6 +1754,7 @@
       "prov-1396851044",
       "prov-1205047297",
       "prov-1790191039",
+      "prov-1144373739",
       "prov-1871650564",
       "prov-1306996228",
       "prov-1881777613",
@@ -1739,6 +1766,7 @@
       "prov-1770834798",
       "prov-1902854276",
       "prov-1407805229",
+      "prov-1720124084",
       "prov-1215111422",
       "prov-1265496665",
       "prov-1366122525",
@@ -1985,7 +2013,7 @@
     "zip": "85733",
     "phone": "",
     "fax": "",
-    "providerCount": 69,
+    "providerCount": 70,
     "providerIds": [
       "prov-1558334300",
       "prov-1831400597",
@@ -1994,6 +2022,7 @@
       "prov-1386956720",
       "prov-1326241175",
       "prov-1891744231",
+      "prov-1427511898",
       "prov-1114282225",
       "prov-1174938757",
       "prov-1124480470",
@@ -2978,7 +3007,7 @@
     "zip": "85202",
     "phone": "",
     "fax": "",
-    "providerCount": 124,
+    "providerCount": 125,
     "providerIds": [
       "prov-1073388526",
       "prov-1093483711",
@@ -2987,6 +3016,7 @@
       "prov-1114586039",
       "prov-1689441636",
       "prov-1467053553",
+      "prov-1245284660",
       "prov-1912614611",
       "prov-1144567264",
       "prov-1124227111",
@@ -3646,6 +3676,28 @@
     ]
   },
   {
+    "id": "practice-860675905",
+    "name": "Deborah D Wilson MD",
+    "taxId": "860675905",
+    "npi": "1811266331",
+    "address1": "10250 N 92nd St",
+    "address2": "Ste 102",
+    "city": "Scottsdale",
+    "state": "AZ",
+    "zip": "85258",
+    "phone": "",
+    "fax": "",
+    "providerCount": 6,
+    "providerIds": [
+      "prov-1700144011",
+      "prov-1932325073",
+      "prov-1891742094",
+      "prov-1730449430",
+      "prov-1386803542",
+      "prov-1811266331"
+    ]
+  },
+  {
     "id": "practice-030485872",
     "name": "Cardiojost PLLC",
     "taxId": "030485872",
@@ -3724,6 +3776,28 @@
       "prov-1912294653",
       "prov-1164732442",
       "prov-1518004290"
+    ]
+  },
+  {
+    "id": "practice-464936919",
+    "name": "Chan Heart Rhythm Institute, PLLC",
+    "taxId": "464936919",
+    "npi": "1174949754",
+    "address1": "7529 E Broadway Rd",
+    "address2": "Ste 101",
+    "city": "Mesa",
+    "state": "AZ",
+    "zip": "85208",
+    "phone": "",
+    "fax": "",
+    "providerCount": 6,
+    "providerIds": [
+      "prov-1306338736",
+      "prov-1174791636",
+      "prov-1659349512",
+      "prov-1437679701",
+      "prov-1275582132",
+      "prov-1174949754"
     ]
   },
   {
@@ -3851,25 +3925,6 @@
     ]
   },
   {
-    "id": "practice-464936919",
-    "name": "Chan Heart Rhythm Institute, PLLC",
-    "taxId": "464936919",
-    "npi": "1174949754",
-    "address1": "7529 E Broadway Rd",
-    "address2": "Ste 101",
-    "city": "Mesa",
-    "state": "AZ",
-    "zip": "85208",
-    "phone": "",
-    "fax": "",
-    "providerCount": 3,
-    "providerIds": [
-      "prov-1174791636",
-      "prov-1275582132",
-      "prov-1174949754"
-    ]
-  },
-  {
     "id": "practice-043768660",
     "name": "Pioneer Cardiovascular Consultants, PC",
     "taxId": "043768660",
@@ -3938,10 +3993,11 @@
     "zip": "85038",
     "phone": "",
     "fax": "",
-    "providerCount": 40,
+    "providerCount": 41,
     "providerIds": [
       "prov-1457604506",
       "prov-1326742396",
+      "prov-1508864638",
       "prov-1235303298",
       "prov-1457098634",
       "prov-1508265968",
@@ -4032,7 +4088,7 @@
     "zip": "85038",
     "phone": "",
     "fax": "",
-    "providerCount": 28,
+    "providerCount": 30,
     "providerIds": [
       "prov-1104690064",
       "prov-1770808503",
@@ -4041,6 +4097,7 @@
       "prov-1669967220",
       "prov-1952834921",
       "prov-1023403276",
+      "prov-1760021042",
       "prov-1891220257",
       "prov-1780659029",
       "prov-1396839429",
@@ -4055,6 +4112,7 @@
       "prov-1447609474",
       "prov-1801225073",
       "prov-1265665467",
+      "prov-1033624317",
       "prov-1780993048",
       "prov-1679518211",
       "prov-1174030936",
@@ -4177,14 +4235,38 @@
     "zip": "75320",
     "phone": "",
     "fax": "",
-    "providerCount": 6,
+    "providerCount": 9,
     "providerIds": [
       "prov-1154312858",
+      "prov-1659473197",
       "prov-1245934868",
+      "prov-1730734922",
+      "prov-1306898846",
       "prov-1760839211",
       "prov-1003349242",
       "prov-1679207914",
       "prov-1922762699"
+    ]
+  },
+  {
+    "id": "practice-860379167",
+    "name": "Arizona Asthma & Allergy Institute",
+    "taxId": "860379167",
+    "npi": "1922099498",
+    "address1": "13965 N 75th Ave",
+    "address2": "",
+    "city": "Peoria",
+    "state": "AZ",
+    "zip": "85381",
+    "phone": "",
+    "fax": "",
+    "providerCount": 5,
+    "providerIds": [
+      "prov-1154312858",
+      "prov-1659473197",
+      "prov-1730734922",
+      "prov-1306898846",
+      "prov-1922099498"
     ]
   },
   {
@@ -4334,26 +4416,6 @@
       "prov-1932467727",
       "prov-1174264295",
       "prov-1851018360"
-    ]
-  },
-  {
-    "id": "practice-860379167",
-    "name": "Arizona Asthma & Allergy Institute",
-    "taxId": "860379167",
-    "npi": "1922099498",
-    "address1": "13965 N 75th Ave",
-    "address2": "",
-    "city": "Peoria",
-    "state": "AZ",
-    "zip": "85381",
-    "phone": "",
-    "fax": "",
-    "providerCount": 4,
-    "providerIds": [
-      "prov-1659473197",
-      "prov-1730734922",
-      "prov-1306898846",
-      "prov-1922099498"
     ]
   },
   {
@@ -4563,6 +4625,24 @@
     ]
   },
   {
+    "id": "practice-992987989",
+    "name": "Az Skin Cancer Treatment Center LLC",
+    "taxId": "992987989",
+    "npi": "1992547616",
+    "address1": "6535 N Arizona Biltmore Cir",
+    "address2": "",
+    "city": "Phoenix",
+    "state": "AZ",
+    "zip": "85016",
+    "phone": "",
+    "fax": "",
+    "providerCount": 2,
+    "providerIds": [
+      "prov-1588610422",
+      "prov-1992547616"
+    ]
+  },
+  {
     "id": "practice-863838230",
     "name": "RD Integrated Health PLLC",
     "taxId": "863838230",
@@ -4578,6 +4658,24 @@
     "providerIds": [
       "prov-1295216190",
       "prov-1912575093"
+    ]
+  },
+  {
+    "id": "practice-332123350",
+    "name": "RD Medical PLLC",
+    "taxId": "332123350",
+    "npi": "1023834595",
+    "address1": "5310 W Thunderbird Rd",
+    "address2": "Ste 202",
+    "city": "Glendale",
+    "state": "AZ",
+    "zip": "85306",
+    "phone": "",
+    "fax": "",
+    "providerCount": 2,
+    "providerIds": [
+      "prov-1295216190",
+      "prov-1023834595"
     ]
   },
   {
@@ -4872,11 +4970,12 @@
     "zip": "04915",
     "phone": "",
     "fax": "",
-    "providerCount": 5,
+    "providerCount": 6,
     "providerIds": [
       "prov-1629079876",
       "prov-1063077006",
       "prov-1821456864",
+      "prov-1255326963",
       "prov-1245216779",
       "prov-1326438276"
     ]
@@ -5242,27 +5341,6 @@
     ]
   },
   {
-    "id": "practice-860675905",
-    "name": "Deborah D Wilson MD PC",
-    "taxId": "860675905",
-    "npi": "1811266331",
-    "address1": "10250 N 92nd St",
-    "address2": "Ste 102",
-    "city": "Scottsdale",
-    "state": "AZ",
-    "zip": "85258",
-    "phone": "",
-    "fax": "",
-    "providerCount": 5,
-    "providerIds": [
-      "prov-1932325073",
-      "prov-1891742094",
-      "prov-1730449430",
-      "prov-1386803542",
-      "prov-1811266331"
-    ]
-  },
-  {
     "id": "practice-860704747",
     "name": "Bradley J. Folkestad, M.D., Ltd.",
     "taxId": "860704747",
@@ -5511,6 +5589,24 @@
     ]
   },
   {
+    "id": "practice-371878576",
+    "name": "Evolution Healthcare Management LLC",
+    "taxId": "371878576",
+    "npi": "1770951980",
+    "address1": "99 S Gold Dr",
+    "address2": "Ste 6",
+    "city": "Apache Junction",
+    "state": "AZ",
+    "zip": "85120",
+    "phone": "",
+    "fax": "",
+    "providerCount": 2,
+    "providerIds": [
+      "prov-1558916247",
+      "prov-1770951980"
+    ]
+  },
+  {
     "id": "practice-990421406",
     "name": "Cranes For Change Corp",
     "taxId": "990421406",
@@ -5527,6 +5623,27 @@
       "prov-1558134353",
       "prov-1598418352",
       "prov-1760251169"
+    ]
+  },
+  {
+    "id": "practice-813084282",
+    "name": "Paper Cranes Healthcare, LLC",
+    "taxId": "813084282",
+    "npi": "1437604113",
+    "address1": "5980 S Cooper Rd",
+    "address2": "Ste 3",
+    "city": "Chandler",
+    "state": "AZ",
+    "zip": "85249",
+    "phone": "",
+    "fax": "",
+    "providerCount": 5,
+    "providerIds": [
+      "prov-1558134353",
+      "prov-1265080477",
+      "prov-1598418352",
+      "prov-1962077024",
+      "prov-1437604113"
     ]
   },
   {
@@ -5798,6 +5915,23 @@
     ]
   },
   {
+    "id": "practice-200362808",
+    "name": "Arizona Heart & Vascular Institute",
+    "taxId": "200362808",
+    "npi": "1487701496",
+    "address1": "PO Box 43130",
+    "address2": "",
+    "city": "Tucson",
+    "state": "AZ",
+    "zip": "85733",
+    "phone": "",
+    "fax": "",
+    "providerCount": 1,
+    "providerIds": [
+      "prov-1316942170"
+    ]
+  },
+  {
     "id": "practice-263895971",
     "name": "Gerard B. Chamberlin, MD, MPH, PC",
     "taxId": "263895971",
@@ -5907,6 +6041,25 @@
     ]
   },
   {
+    "id": "practice-871715710",
+    "name": "Higa Bariatrics LLC",
+    "taxId": "871715710",
+    "npi": "1770324642",
+    "address1": "1712 W Anklam Rd",
+    "address2": "Ste 101",
+    "city": "Tucson",
+    "state": "AZ",
+    "zip": "85745",
+    "phone": "",
+    "fax": "",
+    "providerCount": 3,
+    "providerIds": [
+      "prov-1326873589",
+      "prov-1316314420",
+      "prov-1770324642"
+    ]
+  },
+  {
     "id": "practice-934759952",
     "name": "Eye Consultants and Surgeons of Arizona LLC",
     "taxId": "934759952",
@@ -5923,6 +6076,24 @@
       "prov-1316508708",
       "prov-1417147141",
       "prov-1942078969"
+    ]
+  },
+  {
+    "id": "practice-860438407",
+    "name": "Desert Heart Center",
+    "taxId": "860438407",
+    "npi": "1225089014",
+    "address1": "3815 E Bell Rd",
+    "address2": "Ste 3400",
+    "city": "Phoenix",
+    "state": "AZ",
+    "zip": "85032",
+    "phone": "",
+    "fax": "",
+    "providerCount": 2,
+    "providerIds": [
+      "prov-1245216779",
+      "prov-1225089014"
     ]
   },
   {
@@ -6099,6 +6270,26 @@
     ]
   },
   {
+    "id": "practice-842536027",
+    "name": "Avant Dermatology & Aesthetics, PLLC",
+    "taxId": "842536027",
+    "npi": "1598310559",
+    "address1": "8580 N Oracle Rd",
+    "address2": "Ste 140",
+    "city": "Oro Valley",
+    "state": "AZ",
+    "zip": "85704",
+    "phone": "",
+    "fax": "",
+    "providerCount": 4,
+    "providerIds": [
+      "prov-1689087348",
+      "prov-1376904888",
+      "prov-1891287025",
+      "prov-1598310559"
+    ]
+  },
+  {
     "id": "practice-271788432",
     "name": "Sammy A Zakhary, MD, PC",
     "taxId": "271788432",
@@ -6110,9 +6301,10 @@
     "zip": "85306",
     "phone": "",
     "fax": "",
-    "providerCount": 1,
+    "providerCount": 2,
     "providerIds": [
-      "prov-1447291893"
+      "prov-1447291893",
+      "prov-1659316008"
     ]
   },
   {
@@ -6133,25 +6325,6 @@
       "prov-1417949470",
       "prov-1629473236",
       "prov-1972767242"
-    ]
-  },
-  {
-    "id": "practice-842536027",
-    "name": "Avant Dermatology & Aesthetics, PLLC",
-    "taxId": "842536027",
-    "npi": "1598310559",
-    "address1": "8580 N Oracle Rd",
-    "address2": "Ste 140",
-    "city": "Oro Valley",
-    "state": "AZ",
-    "zip": "85704",
-    "phone": "",
-    "fax": "",
-    "providerCount": 3,
-    "providerIds": [
-      "prov-1376904888",
-      "prov-1891287025",
-      "prov-1598310559"
     ]
   },
   {
@@ -6426,6 +6599,42 @@
     ]
   },
   {
+    "id": "practice-202109091",
+    "name": "Michael F Esber DPM, PC",
+    "taxId": "202109091",
+    "npi": "1902907504",
+    "address1": "202 E Earll Dr",
+    "address2": "Ste 360",
+    "city": "Phoenix",
+    "state": "AZ",
+    "zip": "85012",
+    "phone": "",
+    "fax": "",
+    "providerCount": 2,
+    "providerIds": [
+      "prov-1144457110",
+      "prov-1902907504"
+    ]
+  },
+  {
+    "id": "practice-333251658",
+    "name": "Desert Oasis Dermatology, PLLC",
+    "taxId": "333251658",
+    "npi": "1780489526",
+    "address1": "13835 N Tatum Blvd",
+    "address2": "Ste 9-268",
+    "city": "Phoenix",
+    "state": "AZ",
+    "zip": "85032",
+    "phone": "",
+    "fax": "",
+    "providerCount": 2,
+    "providerIds": [
+      "prov-1801327309",
+      "prov-1780489526"
+    ]
+  },
+  {
     "id": "practice-475288893",
     "name": "mental health",
     "taxId": "475288893",
@@ -6477,25 +6686,6 @@
       "prov-1285635888",
       "prov-1669812855",
       "prov-1124112180"
-    ]
-  },
-  {
-    "id": "practice-813084282",
-    "name": "Paper Cranes Healthcare, LLC",
-    "taxId": "813084282",
-    "npi": "1437604113",
-    "address1": "5980 S Cooper Rd",
-    "address2": "Ste 4",
-    "city": "Chandler",
-    "state": "AZ",
-    "zip": "85249",
-    "phone": "",
-    "fax": "",
-    "providerCount": 3,
-    "providerIds": [
-      "prov-1265080477",
-      "prov-1962077024",
-      "prov-1437604113"
     ]
   },
   {
@@ -6951,24 +7141,6 @@
     ]
   },
   {
-    "id": "practice-871715710",
-    "name": "Higa Bariatrics LLC",
-    "taxId": "871715710",
-    "npi": "1770324642",
-    "address1": "1712 W Anklam Rd",
-    "address2": "Ste 101",
-    "city": "Tucson",
-    "state": "AZ",
-    "zip": "85745",
-    "phone": "",
-    "fax": "",
-    "providerCount": 2,
-    "providerIds": [
-      "prov-1316314420",
-      "prov-1770324642"
-    ]
-  },
-  {
     "id": "practice-931751374",
     "name": "Heelex 2 LLC",
     "taxId": "931751374",
@@ -7271,108 +7443,6 @@
     "providerCount": 1,
     "providerIds": [
       "prov-1811984255"
-    ]
-  },
-  {
-    "id": "practice-371878576",
-    "name": "Evolution Healthcare Management LLC",
-    "taxId": "371878576",
-    "npi": "1770951980",
-    "address1": "99 S Gold Dr",
-    "address2": "Ste 6",
-    "city": "Apache Junction",
-    "state": "AZ",
-    "zip": "85120",
-    "phone": "",
-    "fax": "",
-    "providerCount": 1,
-    "providerIds": [
-      "prov-1770951980"
-    ]
-  },
-  {
-    "id": "practice-992987989",
-    "name": "Az Skin Cancer Treatment Center LLC",
-    "taxId": "992987989",
-    "npi": "1992547616",
-    "address1": "6535 N Arizona Biltmore Cir",
-    "address2": "",
-    "city": "Phoenix",
-    "state": "AZ",
-    "zip": "85016",
-    "phone": "",
-    "fax": "",
-    "providerCount": 1,
-    "providerIds": [
-      "prov-1992547616"
-    ]
-  },
-  {
-    "id": "practice-202109091",
-    "name": "Michael F Esber DPM, PC",
-    "taxId": "202109091",
-    "npi": "1902907504",
-    "address1": "202 E Earll Dr",
-    "address2": "Ste 360",
-    "city": "Phoenix",
-    "state": "AZ",
-    "zip": "85012",
-    "phone": "",
-    "fax": "",
-    "providerCount": 1,
-    "providerIds": [
-      "prov-1902907504"
-    ]
-  },
-  {
-    "id": "practice-333251658",
-    "name": "Desert Oasis Dermatology, PLLC",
-    "taxId": "333251658",
-    "npi": "1780489526",
-    "address1": "13835 N Tatum Blvd",
-    "address2": "Ste 9-268",
-    "city": "Phoenix",
-    "state": "AZ",
-    "zip": "85032",
-    "phone": "",
-    "fax": "",
-    "providerCount": 1,
-    "providerIds": [
-      "prov-1780489526"
-    ]
-  },
-  {
-    "id": "practice-860438407",
-    "name": "Desert Heart Center",
-    "taxId": "860438407",
-    "npi": "1225089014",
-    "address1": "3815 E Bell Rd",
-    "address2": "Ste 3400",
-    "city": "Phoenix",
-    "state": "AZ",
-    "zip": "85032",
-    "phone": "",
-    "fax": "",
-    "providerCount": 1,
-    "providerIds": [
-      "prov-1225089014"
-    ]
-  },
-  {
-    "id": "practice-332123350",
-    "name": "RD Medical PLLC",
-    "taxId": "332123350",
-    "npi": "1023834595",
-    "address1": "5310 W Thunderbird Rd",
-    "address2": "Ste 202",
-    "city": "Glendale",
-    "state": "AZ",
-    "zip": "85306",
-    "phone": "",
-    "fax": "",
-    "providerCount": 1,
-    "providerIds": [
-      "prov-1023834595"
     ]
   }
 ]
