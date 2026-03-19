@@ -1137,19 +1137,63 @@ export default function ProviderDetailPage() {
                   <Stethoscope className="w-4 h-4 text-blue-400" />
                   Taxonomy Codes
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div>
-                    <p className="text-xs text-slate-500">Primary</p>
-                    <p className="text-slate-900">{provider.primaryTaxonomyDesc}</p>
-                    <p className="text-slate-400 text-sm font-mono">{provider.primaryTaxonomy}</p>
+                    <p className="text-xs text-slate-500 mb-1">Primary Taxonomy Description</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.primaryTaxonomyDesc || ""}
+                        onChange={(e) => setEditData({ ...editData, primaryTaxonomyDesc: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                        placeholder="e.g., Family Medicine"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.primaryTaxonomyDesc || "—"}</p>
+                    )}
                   </div>
-                  {provider.secondaryTaxonomy && (
-                    <div>
-                      <p className="text-xs text-slate-500">Secondary</p>
-                      <p className="text-slate-900">{provider.secondaryTaxonomyDesc}</p>
-                      <p className="text-slate-400 text-sm font-mono">{provider.secondaryTaxonomy}</p>
-                    </div>
-                  )}
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Primary Taxonomy Code</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.primaryTaxonomy || ""}
+                        onChange={(e) => setEditData({ ...editData, primaryTaxonomy: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+                        placeholder="e.g., 207Q00000X"
+                      />
+                    ) : (
+                      <p className="text-slate-400 text-sm font-mono">{provider.primaryTaxonomy || "—"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Secondary Taxonomy Description</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.secondaryTaxonomyDesc || ""}
+                        onChange={(e) => setEditData({ ...editData, secondaryTaxonomyDesc: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                        placeholder="e.g., Internal Medicine"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.secondaryTaxonomyDesc || "—"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Secondary Taxonomy Code</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.secondaryTaxonomy || ""}
+                        onChange={(e) => setEditData({ ...editData, secondaryTaxonomy: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+                        placeholder="e.g., 207RA0000X"
+                      />
+                    ) : (
+                      <p className="text-slate-400 text-sm font-mono">{provider.secondaryTaxonomy || "—"}</p>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -1158,13 +1202,63 @@ export default function ProviderDetailPage() {
                   <Languages className="w-4 h-4 text-blue-400" />
                   Languages Spoken
                 </h3>
-                <div className="flex flex-wrap gap-2">
-                  {provider.languages.map((lang: string) => (
-                    <span key={lang} className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-full">
-                      {languageNames[lang] || lang}
-                    </span>
-                  ))}
-                </div>
+                {isEditing ? (
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap gap-2">
+                      {(editData.languages || []).map((lang: string, idx: number) => (
+                        <span key={idx} className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-full flex items-center gap-2">
+                          {languageNames[lang] || lang}
+                          <button
+                            type="button"
+                            onClick={() => setEditData({ 
+                              ...editData, 
+                              languages: editData.languages.filter((_: string, i: number) => i !== idx) 
+                            })}
+                            className="hover:text-red-200"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <select
+                        className="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                        onChange={(e) => {
+                          if (e.target.value && !editData.languages?.includes(e.target.value)) {
+                            setEditData({ 
+                              ...editData, 
+                              languages: [...(editData.languages || []), e.target.value] 
+                            });
+                          }
+                          e.target.value = "";
+                        }}
+                        defaultValue=""
+                      >
+                        <option value="">Add language...</option>
+                        {Object.entries(languageNames)
+                          .filter(([code]) => !editData.languages?.includes(code))
+                          .map(([code, name]) => (
+                            <option key={code} value={code}>{name}</option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                    <p className="text-xs text-slate-500">Click × to remove, or select from dropdown to add</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {(provider.languages || []).length > 0 ? (
+                      provider.languages.map((lang: string) => (
+                        <span key={lang} className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium rounded-full">
+                          {languageNames[lang] || lang}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-slate-500">No languages specified</span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
