@@ -231,56 +231,66 @@ export default function ExpiringContractsPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-800 rounded-xl max-w-lg w-full border border-slate-700"
+              className={`rounded-xl max-w-lg w-full ${isDark ? "bg-slate-800 border border-slate-700" : "bg-white border border-slate-200"}`}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6 border-b border-slate-700">
-                <h2 className="text-xl font-bold text-white">Send Renewal Notice</h2>
-                <p className="text-slate-400 mt-1">Send contract renewal to {renewalContract.provider}</p>
+              <div className={`p-6 border-b ${isDark ? "border-slate-700" : "border-slate-200"}`}>
+                <h2 className={`text-xl font-bold ${isDark ? "text-white" : "text-slate-900"}`}>Send Renewal Notice</h2>
+                <p className={isDark ? "text-slate-400" : "text-slate-500"} style={{ marginTop: '0.25rem' }}>Send contract renewal to {renewalContract.provider}</p>
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Recipient Email</label>
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-slate-400" : "text-slate-600"}`}>Recipient Email</label>
                   <input
                     type="email"
                     defaultValue={renewalContract.contactEmail}
-                    className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className={`w-full px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      isDark ? "bg-slate-700 border border-slate-600 text-white" : "bg-white border border-slate-200 text-slate-900"
+                    }`}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Proposed New Terms</label>
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-slate-400" : "text-slate-600"}`}>Proposed New Terms</label>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs text-slate-500 mb-1">New End Date</label>
+                      <label className={`block text-xs mb-1 ${isDark ? "text-slate-500" : "text-slate-400"}`}>New End Date</label>
                       <input
                         type="date"
                         defaultValue="2029-04-01"
-                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className={`w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                          isDark ? "bg-slate-700 border border-slate-600 text-white" : "bg-white border border-slate-200 text-slate-900"
+                        }`}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-slate-500 mb-1">New Discount</label>
+                      <label className={`block text-xs mb-1 ${isDark ? "text-slate-500" : "text-slate-400"}`}>New Discount</label>
                       <input
                         type="text"
                         defaultValue={renewalContract.discount}
-                        className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className={`w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                          isDark ? "bg-slate-700 border border-slate-600 text-white" : "bg-white border border-slate-200 text-slate-900"
+                        }`}
                       />
                     </div>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Additional Message (Optional)</label>
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-slate-400" : "text-slate-600"}`}>Additional Message (Optional)</label>
                   <textarea
                     rows={3}
                     placeholder="Add a personal note to the renewal notice..."
-                    className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className={`w-full px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      isDark ? "bg-slate-700 border border-slate-600 text-white placeholder:text-slate-500" : "bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400"
+                    }`}
                   />
                 </div>
               </div>
-              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+              <div className={`p-6 border-t flex justify-end gap-3 ${isDark ? "border-slate-700" : "border-slate-200"}`}>
                 <button
                   onClick={() => setShowRenewalModal(false)}
-                  className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                  className={`px-4 py-2 font-medium rounded-lg transition-colors ${
+                    isDark ? "bg-slate-700 text-slate-300 hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  }`}
                 >
                   Cancel
                 </button>
@@ -289,7 +299,7 @@ export default function ExpiringContractsPage() {
                     setShowRenewalModal(false);
                     // Show success toast
                   }}
-                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2 shadow-[0_2px_8px_rgba(59,130,246,0.3)]"
                 >
                   <Send className="w-4 h-4" />
                   Send Renewal Notice
