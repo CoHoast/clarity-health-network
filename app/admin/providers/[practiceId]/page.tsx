@@ -137,11 +137,15 @@ export default function PracticeDetailPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const practiceId = params.practiceId as string;
-  const practice = practicesData[practiceId] || practicesData["PRC-001"];
+  
+  // Practice data state - load from API
+  const [practice, setPractice] = useState<any>(null);
+  const [practiceProviders, setPracticeProviders] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [activeSection, setActiveSection] = useState("overview");
   const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState(practice);
+  const [editData, setEditData] = useState<any>({});
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   
@@ -154,16 +158,116 @@ export default function PracticeDetailPage() {
     lastName: "",
     title: "MD",
     npi: "",
-    specialty: practice.specialty || "",
+    specialty: "",
     email: "",
     phone: "",
-    licenseState: "OH",
+    licenseState: "AZ",
     licenseNumber: "",
   });
 
+  // Load practice data from API
+  useEffect(() => {
+    async function loadPractice() {
+      try {
+        // Fetch practice details
+        const res = await fetch(`/api/practices?id=${practiceId}`);
+        const data = await res.json();
+        
+        if (data.practice) {
+          const p = data.practice;
+          // Convert API data to page format
+          const practiceData = {
+            id: p.id,
+            name: p.name || 'Unknown Practice',
+            type: 'Group Practice',
+            specialty: 'Multi-Specialty',
+            npi: p.npi || '',
+            taxId: p.taxId || '',
+            address: p.address1 || '',
+            address2: p.address2 || '',
+            city: p.city || '',
+            state: p.state || 'AZ',
+            zip: p.zip || '',
+            country: 'USA',
+            phone: p.phone || '',
+            fax: p.fax || '',
+            email: '',
+            contactName: '',
+            contactTitle: '',
+            status: 'active',
+            w9Collected: false,
+            providerCount: p.providerCount || 0,
+            providerIds: p.providerIds || [],
+            networks: ['arizona-antidote'],
+            // Pay-to info
+            payToNpi: p.npi || '',
+            payToName: p.name || '',
+            payToTaxId: p.taxId || '',
+            payToAddress: p.address1 || '',
+            payToCity: p.city || '',
+            payToState: p.state || 'AZ',
+            payToZip: p.zip || '',
+            payToCountry: 'USA',
+            // Contract info (defaults)
+            contractStart: '2026-01-01',
+            contractEnd: '2029-12-31',
+            discountType: '% Off Billed',
+            discountRate: '25%',
+            providers: [], // Will be loaded separately
+          };
+          setPractice(practiceData);
+          setEditData(practiceData);
+          setNewProvider(prev => ({ ...prev, specialty: practiceData.specialty }));
+          
+          // Load providers for this practice using the providerIds
+          if (p.providerIds && p.providerIds.length > 0) {
+            // Fetch providers with NPI filter (first 50)
+            const providerPromises = p.providerIds.slice(0, 50).map(async (pid: string) => {
+              const npi = pid.replace('prov-', '');
+              const provRes = await fetch(`/api/providers?search=${npi}&limit=1`);
+              const provData = await provRes.json();
+              return provData.providers?.[0];
+            });
+            
+            const providers = await Promise.all(providerPromises);
+            const validProviders = providers.filter(Boolean).map((prov: any) => ({
+              id: `PRV-${prov.npi}`,
+              name: `${prov.firstName || ''} ${prov.lastName || ''}`.trim() || 'Unknown',
+              firstName: prov.firstName,
+              lastName: prov.lastName,
+              title: prov.credential || 'MD',
+              specialty: prov.specialty || 'General Practice',
+              npi: prov.npi,
+              status: 'active',
+              useCustomRates: false,
+              isPrimaryCare: prov.isPrimaryCare,
+              isBehavioralHealth: prov.isBehavioralHealth,
+            }));
+            
+            setPracticeProviders(validProviders);
+            setPractice((prev: any) => prev ? { ...prev, providers: validProviders } : null);
+          }
+        } else {
+          // Fallback to mock data if practice not found
+          setPractice(practicesData["PRC-001"]);
+          setEditData(practicesData["PRC-001"]);
+        }
+      } catch (error) {
+        console.error('Failed to load practice:', error);
+        // Fallback to mock data on error
+        setPractice(practicesData["PRC-001"]);
+        setEditData(practicesData["PRC-001"]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    loadPractice();
+  }, [practiceId]);
+
   // Available networks (not already assigned to this practice)
   const availableNetworks = Object.entries(networkNames).filter(
-    ([id]) => !practice.networks?.includes(id)
+    ([id]) => !practice?.networks?.includes(id)
   );
 
   // Provider CSV upload
@@ -269,6 +373,41 @@ export default function PracticeDetailPage() {
     pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
     inactive: "bg-slate-500/20 text-slate-400 border-slate-500/30",
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 bg-slate-700 rounded-lg animate-pulse" />
+          <div>
+            <div className="h-8 w-64 bg-slate-700 rounded animate-pulse mb-2" />
+            <div className="h-4 w-48 bg-slate-700 rounded animate-pulse" />
+          </div>
+        </div>
+        <div className="grid grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="h-24 bg-slate-800 rounded-xl animate-pulse" />
+          ))}
+        </div>
+        <div className="h-96 bg-slate-800 rounded-xl animate-pulse" />
+      </div>
+    );
+  }
+
+  // Not found state
+  if (!practice) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96">
+        <Building2 className="w-16 h-16 text-slate-600 mb-4" />
+        <h2 className="text-xl font-semibold text-white mb-2">Practice Not Found</h2>
+        <p className="text-slate-400 mb-4">The practice with ID "{practiceId}" could not be found.</p>
+        <Link href="/admin/providers" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+          Back to Providers
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

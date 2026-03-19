@@ -282,64 +282,76 @@ export default function ProvidersPage() {
 
   // Load Arizona providers from API
   useEffect(() => {
-    async function loadProviders() {
+    async function loadData() {
       try {
-        // Fetch first page of providers (with a larger limit for the demo)
-        const response = await fetch('/api/providers?limit=100');
-        const data = await response.json();
+        // Fetch practices and providers in parallel
+        const [practicesRes, providersRes] = await Promise.all([
+          fetch('/api/practices?limit=500'),
+          fetch('/api/providers?limit=100'),
+        ]);
         
-        if (data.providers && Array.isArray(data.providers)) {
-          // Group providers by billing taxId to create practices
-          const practiceMap = new Map<string, { practice: Practice; providers: Provider[] }>();
+        const practicesData = await practicesRes.json();
+        const providersData = await providersRes.json();
+        
+        // Load practices from API
+        if (practicesData.practices && Array.isArray(practicesData.practices)) {
+          const loadedPractices: Practice[] = practicesData.practices.map((p: any) => ({
+            id: p.id,
+            name: p.name || 'Unknown Practice',
+            type: 'Group Practice' as const,
+            npi: p.npi || '',
+            taxId: p.taxId || '',
+            specialty: 'Multi-Specialty',
+            status: 'active' as const,
+            address: p.address1 || '',
+            city: p.city || '',
+            state: p.state || '',
+            zip: p.zip || '',
+            country: 'USA',
+            phone: p.phone || '',
+            fax: p.fax || '',
+            providerCount: p.providerCount || 0,
+            providerIds: p.providerIds || [],
+            // Pay-to defaults to same as practice
+            payToName: p.name || '',
+            payToAddress: p.address1 || '',
+            payToCity: p.city || '',
+            payToState: p.state || '',
+            payToZip: p.zip || '',
+            payToCountry: 'USA',
+          }));
+          setPractices(loadedPractices);
+        }
+        
+        // Load providers from API
+        if (providersData.providers && Array.isArray(providersData.providers)) {
+          const loadedProviders: Provider[] = providersData.providers.map((p: any) => 
+            convertApiProvider(p, `practice-${p.billing?.taxId || p.npi}`)
+          );
+          setProviders(loadedProviders);
           
-          for (const apiProvider of data.providers) {
-            const taxId = apiProvider.billing?.taxId || apiProvider.npi;
-            const practiceId = `practice-${taxId}`;
-            
-            if (!practiceMap.has(taxId)) {
-              const practice = convertApiProviderToPractice(apiProvider);
-              practice.id = practiceId;
-              practiceMap.set(taxId, { practice, providers: [] });
-            }
-            
-            const provider = convertApiProvider(apiProvider, practiceId);
-            practiceMap.get(taxId)!.providers.push(provider);
-          }
-          
-          // Extract practices and providers
-          const newPractices: Practice[] = [];
-          const newProviders: Provider[] = [];
-          
-          for (const [, { practice, providers: pracs }] of practiceMap) {
-            newPractices.push(practice);
-            newProviders.push(...pracs);
-          }
-          
-          setPractices(newPractices);
-          setProviders(newProviders);
-          
-          // Update stats
+          // Update stats from the full provider dataset
           setApiStats({
-            total: data.pagination?.total || newProviders.length,
-            primaryCare: data.providers.filter((p: any) => p.isPrimaryCare).length,
-            behavioralHealth: data.providers.filter((p: any) => p.isBehavioralHealth).length,
-            acceptingNew: data.providers.filter((p: any) => p.acceptingNewPatients).length,
+            total: providersData.pagination?.total || loadedProviders.length,
+            primaryCare: providersData.providers.filter((p: any) => p.isPrimaryCare).length,
+            behavioralHealth: providersData.providers.filter((p: any) => p.isBehavioralHealth).length,
+            acceptingNew: providersData.providers.filter((p: any) => p.acceptingNewPatients).length,
           });
           
           // Update network provider count
           setNetworks(prev => prev.map(n => ({
             ...n,
-            providerCount: data.pagination?.total || newProviders.length,
+            providerCount: providersData.pagination?.total || loadedProviders.length,
           })));
         }
       } catch (error) {
-        console.error('Failed to load providers:', error);
+        console.error('Failed to load data:', error);
       } finally {
         setIsLoading(false);
       }
     }
     
-    loadProviders();
+    loadData();
   }, []);
 
   // New practice form
