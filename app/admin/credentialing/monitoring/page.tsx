@@ -246,6 +246,8 @@ export default function MonitoringPage() {
   const [activeTab, setActiveTab] = useState<"alerts" | "history" | "settings">("alerts");
   const [selectedAlert, setSelectedAlert] = useState<typeof alerts[0] | null>(null);
   const [showRunModal, setShowRunModal] = useState(false);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState<typeof monitoringSchedule[0] | null>(null);
 
   const filteredAlerts = alerts.filter((alert) => {
     const matchesSearch =
@@ -733,7 +735,14 @@ export default function MonitoringPage() {
                         Alert Only
                       </span>
                     )}
-                    <Button variant="ghost" size="sm">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => {
+                        setSelectedSchedule(item);
+                        setShowScheduleModal(true);
+                      }}
+                    >
                       <Settings className="w-4 h-4" />
                     </Button>
                   </div>
@@ -1046,6 +1055,156 @@ export default function MonitoringPage() {
           </div>
         </div>
       )}
+
+      {/* Schedule Settings Modal */}
+      <AnimatePresence>
+        {showScheduleModal && selectedSchedule && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => { setShowScheduleModal(false); setSelectedSchedule(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-md rounded-xl",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={cn("p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                  Configure {selectedSchedule.type} Scan
+                </h2>
+                <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                  Source: {selectedSchedule.source}
+                </p>
+              </div>
+
+              <div className="p-6 space-y-5">
+                {/* Enable/Disable */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                      Enable Scan
+                    </p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                      Run this verification check automatically
+                    </p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" defaultChecked={selectedSchedule.enabled} className="sr-only peer" />
+                    <div className="w-11 h-6 bg-slate-300 peer-checked:bg-blue-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                  </label>
+                </div>
+
+                {/* Frequency */}
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Frequency
+                  </label>
+                  <select 
+                    defaultValue={selectedSchedule.frequency}
+                    className={cn(
+                      "w-full px-3 py-2 rounded-lg border text-sm",
+                      isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+                    )}
+                  >
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                  </select>
+                </div>
+
+                {/* Time */}
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Run Time
+                  </label>
+                  <input
+                    type="time"
+                    defaultValue="02:00"
+                    className={cn(
+                      "w-full px-3 py-2 rounded-lg border text-sm",
+                      isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+                    )}
+                  />
+                  <p className={cn("text-xs mt-1", isDark ? "text-slate-500" : "text-slate-400")}>
+                    Scans run during off-peak hours to minimize system load
+                  </p>
+                </div>
+
+                {/* Auto Action */}
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    When Issue Detected
+                  </label>
+                  <select 
+                    defaultValue={selectedSchedule.autoAction}
+                    className={cn(
+                      "w-full px-3 py-2 rounded-lg border text-sm",
+                      isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+                    )}
+                  >
+                    <option value="Auto-suspend">Auto-suspend provider</option>
+                    <option value="Alert">Alert team only</option>
+                    <option value="Log">Log for review</option>
+                  </select>
+                  {selectedSchedule.autoAction === "Auto-suspend" && (
+                    <p className={cn("text-xs mt-2 p-2 rounded", isDark ? "bg-red-900/30 text-red-400" : "bg-red-50 text-red-600")}>
+                      ⚠️ Auto-suspend will immediately halt claims processing for flagged providers
+                    </p>
+                  )}
+                </div>
+
+                {/* Notification Settings */}
+                <div className={cn("pt-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                  <p className={cn("font-medium mb-3", isDark ? "text-white" : "text-slate-900")}>
+                    Notifications
+                  </p>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3">
+                      <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-slate-300 text-blue-500 focus:ring-blue-500" />
+                      <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                        Email alerts when issues found
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-3">
+                      <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-slate-300 text-blue-500 focus:ring-blue-500" />
+                      <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                        Dashboard notification badge
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-3">
+                      <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-blue-500 focus:ring-blue-500" />
+                      <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                        SMS alerts for critical issues
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div className={cn("flex justify-end gap-3 p-4 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button variant="secondary" onClick={() => { setShowScheduleModal(false); setSelectedSchedule(null); }}>
+                  Cancel
+                </Button>
+                <Button 
+                  variant="primary" 
+                  icon={<CheckCircle className="w-4 h-4" />}
+                  onClick={() => { setShowScheduleModal(false); setSelectedSchedule(null); }}
+                >
+                  Save Settings
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
