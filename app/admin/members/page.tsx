@@ -84,11 +84,11 @@ export default function MembersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Member Management</h1>
-          <p className="text-slate-400">View and manage all enrolled members</p>
+          <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>Member Management</h1>
+          <p className={cn(isDark ? "text-slate-400" : "text-slate-500")}>View and manage all enrolled members</p>
         </div>
         <div className="flex gap-3">
-          <a href="/docs/member-census.pdf" download className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 border border-slate-600">
+          <a href="/docs/member-census.pdf" download className={cn("inline-flex items-center gap-2 px-4 py-2 rounded-lg border", isDark ? "bg-slate-700 text-white hover:bg-slate-600 border-slate-600" : "bg-white text-slate-700 hover:bg-slate-50 border-slate-200")}>
             <Download className="w-4 h-4" />
             Export Census
           </a>
@@ -120,16 +120,16 @@ export default function MembersPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4">
+      <div className={cn("rounded-xl border p-4", isDark ? "bg-slate-800/50 border-slate-700" : "bg-white border-slate-200")}>
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
               placeholder="Search by name, ID, or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600"
+              className={cn("w-full pl-10 pr-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-blue-600", isDark ? "bg-slate-700 border-slate-600 text-white placeholder:text-slate-500" : "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400")}
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -138,7 +138,7 @@ export default function MembersPage() {
                 key={status}
                 onClick={() => setStatusFilter(status)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  statusFilter === status ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                  statusFilter === status ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : (isDark ? "bg-slate-700 text-slate-300 hover:bg-slate-600" : "bg-slate-100 text-slate-600 hover:bg-slate-200")
                 }`}
               >
                 {status}
@@ -149,33 +149,33 @@ export default function MembersPage() {
       </div>
 
       {/* Members Table */}
-      <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
+      <div className={cn("rounded-xl border overflow-hidden", isDark ? "bg-slate-800/50 border-slate-700" : "bg-white border-slate-200")}>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-800 border-b border-slate-700">
+            <thead className={cn("border-b", isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-200")}>
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Member</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Plan</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Group</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">PCP</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold text-slate-400 uppercase">Claims</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Status</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Actions</th>
+                <th className={cn("px-4 py-3 text-left text-xs font-semibold uppercase", isDark ? "text-slate-400" : "text-slate-500")}>Member</th>
+                <th className={cn("px-4 py-3 text-left text-xs font-semibold uppercase", isDark ? "text-slate-400" : "text-slate-500")}>Plan</th>
+                <th className={cn("px-4 py-3 text-left text-xs font-semibold uppercase", isDark ? "text-slate-400" : "text-slate-500")}>Group</th>
+                <th className={cn("px-4 py-3 text-left text-xs font-semibold uppercase", isDark ? "text-slate-400" : "text-slate-500")}>PCP</th>
+                <th className={cn("px-4 py-3 text-center text-xs font-semibold uppercase", isDark ? "text-slate-400" : "text-slate-500")}>Claims</th>
+                <th className={cn("px-4 py-3 text-left text-xs font-semibold uppercase", isDark ? "text-slate-400" : "text-slate-500")}>Status</th>
+                <th className={cn("px-4 py-3 text-right text-xs font-semibold uppercase", isDark ? "text-slate-400" : "text-slate-500")}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className={cn("divide-y", isDark ? "divide-slate-700" : "divide-slate-100")}>
               {filteredMembers.map((member) => (
-                <tr key={member.id} className="hover:bg-slate-700/50 transition-colors">
+                <tr key={member.id} className={cn("transition-colors", isDark ? "hover:bg-slate-700/50" : "hover:bg-slate-50")}>
                   <td className="px-4 py-3">
                     <div>
-                      <p className="font-medium text-white">{member.name}</p>
-                      <p className="text-xs text-slate-500">{member.id}</p>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{member.name}</p>
+                      <p className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>{member.id}</p>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-slate-300">{member.plan}</td>
-                  <td className="px-4 py-3 text-slate-300">{member.group}</td>
-                  <td className="px-4 py-3 text-slate-400 text-sm">{member.pcp}</td>
-                  <td className="px-4 py-3 text-center text-slate-300">{member.claims}</td>
+                  <td className={cn("px-4 py-3", isDark ? "text-slate-300" : "text-slate-600")}>{member.plan}</td>
+                  <td className={cn("px-4 py-3", isDark ? "text-slate-300" : "text-slate-600")}>{member.group}</td>
+                  <td className={cn("px-4 py-3 text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{member.pcp}</td>
+                  <td className={cn("px-4 py-3 text-center", isDark ? "text-slate-300" : "text-slate-600")}>{member.claims}</td>
                   <td className="px-4 py-3">{getStatusBadge(member.status)}</td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={() => setSelectedMember(member)} className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-600/20 rounded">
@@ -194,18 +194,18 @@ export default function MembersPage() {
         {selectedMember && (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedMember(null)} className="fixed inset-0 bg-black/60 z-50" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b border-slate-700">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className={cn("fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] rounded-xl shadow-2xl z-50 overflow-hidden border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}>
+              <div className={cn("flex items-center justify-between p-4 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-blue-600/20 rounded-full flex items-center justify-center">
                     <User className="w-6 h-6 text-blue-500" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-white">{selectedMember.name}</h2>
-                    <p className="text-sm text-slate-400">{selectedMember.id} • {selectedMember.plan}</p>
+                    <h2 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>{selectedMember.name}</h2>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{selectedMember.id} • {selectedMember.plan}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedMember(null)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
+                <button onClick={() => setSelectedMember(null)} className={cn("p-2 rounded-lg", isDark ? "text-slate-400 hover:text-white hover:bg-slate-700" : "text-slate-500 hover:text-slate-700 hover:bg-slate-100")}>
                   <X className="w-5 h-5" />
                 </button>
               </div>
