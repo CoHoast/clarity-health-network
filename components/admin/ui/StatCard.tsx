@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 interface StatCardProps {
   label: string;
   value: string | number;
+  subtitle?: string;
   change?: string;
   trend?: "up" | "down" | "neutral" | "warning";
   icon: ReactNode;
@@ -19,6 +20,7 @@ interface StatCardProps {
 export function StatCard({ 
   label, 
   value, 
+  subtitle,
   change, 
   trend = "neutral",
   icon,
@@ -110,6 +112,14 @@ export function StatCard({
         "text-sm mt-1 font-medium",
         isDark ? "text-slate-400" : "text-slate-500"
       )}>{label}</p>
+      
+      {/* Subtitle */}
+      {subtitle && (
+        <p className={cn(
+          "text-xs mt-0.5",
+          isDark ? "text-slate-500" : "text-slate-400"
+        )}>{subtitle}</p>
+      )}
     </motion.div>
   );
 }
