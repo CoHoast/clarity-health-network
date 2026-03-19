@@ -3,7 +3,7 @@
 import { useTheme } from "@/components/admin/ThemeContext";
 import { cn } from "@/lib/utils";
 
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -212,25 +212,133 @@ export default function ProviderDetailPage() {
   const params = useParams();
   const practiceId = params.practiceId as string;
   const providerId = params.providerId as string;
-  const provider = providersData[providerId] || providersData["PRV-001"];
+  
+  // Provider data state - load from API
+  const [provider, setProvider] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [activeSection, setActiveSection] = useState("overview");
   const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState(provider);
+  const [editData, setEditData] = useState<any>({});
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   // Rates
-  const [useCustomRates, setUseCustomRates] = useState(provider.useCustomRates);
+  const [useCustomRates, setUseCustomRates] = useState(false);
   const [discountBasis, setDiscountBasis] = useState<"medicare" | "billed">("medicare");
-  const [rateType, setRateType] = useState<"flat" | "custom" | "cpt">(provider.rateType);
-  const [flatRate, setFlatRate] = useState(provider.flatRate);
-  const [serviceRates, setServiceRates] = useState(provider.serviceRates);
+  const [rateType, setRateType] = useState<"flat" | "custom" | "cpt">("flat");
+  const [flatRate, setFlatRate] = useState("135");
+  const [serviceRates, setServiceRates] = useState<Record<string, string>>({});
   const [cptRates, setCptRates] = useState<{ code: string; description: string; rate: string }[]>([
     { code: "99213", description: "Office visit, established patient, low complexity", rate: "145" },
     { code: "99214", description: "Office visit, established patient, moderate complexity", rate: "150" },
   ]);
   const cptFileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load provider data from API
+  React.useEffect(() => {
+    async function loadProvider() {
+      try {
+        // Extract NPI from providerId (format: prov-XXXXXXXXXX or PRV-XXXXXXXXXX)
+        const npi = providerId.replace(/^(prov-|PRV-)/i, '');
+        
+        // Fetch provider by NPI
+        const res = await fetch(`/api/providers?search=${npi}&limit=1`);
+        const data = await res.json();
+        
+        if (data.providers && data.providers.length > 0) {
+          const p = data.providers[0];
+          const providerData = {
+            id: providerId,
+            practiceId: practiceId,
+            practiceName: '', // Will be loaded separately if needed
+            contractNumber: p.contractNumber || '',
+            referenceNumber: p.referenceNumber || '',
+            isPrimaryCare: p.isPrimaryCare || false,
+            isBehavioralHealth: p.isBehavioralHealth || false,
+            firstName: p.firstName || '',
+            lastName: p.lastName || '',
+            title: p.credentials || p.credential || 'MD',
+            npi: p.npi || npi,
+            gender: p.gender === 'M' ? 'Male' : p.gender === 'F' ? 'Female' : '',
+            specialty: p.specialty || 'General Practice',
+            primaryTaxonomy: p.taxonomyCode || '',
+            primaryTaxonomyDesc: p.specialty || '',
+            secondaryTaxonomy: p.secondaryTaxonomyCode || '',
+            secondaryTaxonomyDesc: '',
+            licenseState: p.locations?.[0]?.state || 'AZ',
+            licenseNumber: '',
+            licenseExpiration: '',
+            deaNumber: '',
+            deaExpiration: '',
+            acceptingNewPatients: p.acceptingNewPatients || false,
+            languages: p.languages || ['English'],
+            boardCertified: false,
+            boardCertification: '',
+            medicalSchool: '',
+            graduationYear: '',
+            residency: '',
+            malpracticeCarrier: '',
+            malpracticePolicyNumber: '',
+            malpracticeExpiration: '',
+            malpracticeCoverage: '',
+            hospitalAffiliations: [],
+            officeAddress: p.locations?.[0]?.address1 || '',
+            officeAddress2: p.locations?.[0]?.address2 || '',
+            officeCity: p.locations?.[0]?.city || '',
+            officeState: p.locations?.[0]?.state || 'AZ',
+            officeZip: p.locations?.[0]?.zip || '',
+            officePhone: p.locations?.[0]?.phone || '',
+            officeFax: p.locations?.[0]?.fax || '',
+            networks: ['arizona-antidote'],
+            clinicHours: p.locations?.[0]?.hours || {
+              monday: '',
+              tuesday: '',
+              wednesday: '',
+              thursday: '',
+              friday: '',
+              saturday: '',
+              sunday: '',
+            },
+            status: 'active',
+            pricingTier: p.pricingTier || 1,
+            useCustomRates: false,
+            rateType: 'flat',
+            flatRate: '135',
+            serviceRates: {
+              professional: '140',
+              inpatient: '125',
+              outpatient: '130',
+              urgentCare: '145',
+              labServices: '110',
+              imaging: '120',
+              mentalHealth: '135',
+              physicalTherapy: '130',
+              dme: '100',
+            },
+            // Additional locations
+            locations: p.locations || [],
+          };
+          setProvider(providerData);
+          setEditData(providerData);
+          setUseCustomRates(providerData.useCustomRates);
+          setServiceRates(providerData.serviceRates);
+        } else {
+          // Fallback to mock data if not found
+          setProvider(providersData["PRV-001"]);
+          setEditData(providersData["PRV-001"]);
+        }
+      } catch (error) {
+        console.error('Failed to load provider:', error);
+        setProvider(providersData["PRV-001"]);
+        setEditData(providersData["PRV-001"]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    loadProvider();
+  }, [providerId, practiceId]);
 
   // Handle CSV upload for CPT rates
   const handleCptCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -311,6 +419,42 @@ export default function ProviderDetailPage() {
     pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
     inactive: "bg-slate-500/20 text-slate-400 border-slate-500/30",
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 bg-slate-700 rounded-lg animate-pulse" />
+          <div className="w-14 h-14 bg-slate-700 rounded-full animate-pulse" />
+          <div>
+            <div className="h-8 w-64 bg-slate-700 rounded animate-pulse mb-2" />
+            <div className="h-4 w-48 bg-slate-700 rounded animate-pulse" />
+          </div>
+        </div>
+        <div className="grid grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="h-24 bg-slate-800 rounded-xl animate-pulse" />
+          ))}
+        </div>
+        <div className="h-96 bg-slate-800 rounded-xl animate-pulse" />
+      </div>
+    );
+  }
+
+  // Not found state
+  if (!provider) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96">
+        <User className="w-16 h-16 text-slate-600 mb-4" />
+        <h2 className="text-xl font-semibold text-white mb-2">Provider Not Found</h2>
+        <p className="text-slate-400 mb-4">The provider with ID &quot;{providerId}&quot; could not be found.</p>
+        <Link href={`/admin/providers/${practiceId}`} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+          Back to Practice
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
