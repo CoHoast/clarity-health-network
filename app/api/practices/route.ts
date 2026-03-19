@@ -1,16 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-// Load Arizona practices from JSON
-function loadPractices() {
-  const filePath = path.join(process.cwd(), 'data', 'arizona-practices.json');
-  if (fs.existsSync(filePath)) {
-    const data = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(data);
-  }
-  return [];
-}
+import practicesData from '@/data/arizona-practices.json';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -20,7 +9,7 @@ export async function GET(request: NextRequest) {
   const search = searchParams.get('search') || '';
   const id = searchParams.get('id') || '';
   
-  let practices = loadPractices();
+  let practices = [...practicesData] as any[];
   
   // Get single practice by ID
   if (id) {

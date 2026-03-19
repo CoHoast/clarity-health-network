@@ -1,16 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-// Load Arizona providers from JSON
-function loadProviders() {
-  const filePath = path.join(process.cwd(), 'data', 'arizona-providers.json');
-  if (fs.existsSync(filePath)) {
-    const data = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(data);
-  }
-  return [];
-}
+import providersData from '@/data/arizona-providers.json';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -24,7 +13,7 @@ export async function GET(request: NextRequest) {
   const isBehavioralHealth = searchParams.get('isBehavioralHealth');
   const acceptingNew = searchParams.get('acceptingNew');
   
-  let providers = loadProviders();
+  let providers = [...providersData] as any[];
   
   // Apply filters
   if (search) {
