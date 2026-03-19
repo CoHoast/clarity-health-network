@@ -293,11 +293,13 @@ export default function CredentialingDashboardPage() {
                     <Button 
                       variant="secondary" 
                       size="sm"
+                      icon={
+                        alert.action === "Send Renewal Reminder" ? <Mail className="w-3 h-3" /> :
+                        alert.action === "Request Updated COI" ? <Send className="w-3 h-3" /> :
+                        alert.action === "Immediate Review Required" ? <Eye className="w-3 h-3" /> : undefined
+                      }
                       onClick={() => handleAlertAction(alert)}
                     >
-                      {alert.action === "Send Renewal Reminder" && <Mail className="w-3 h-3 mr-1" />}
-                      {alert.action === "Request Updated COI" && <Send className="w-3 h-3 mr-1" />}
-                      {alert.action === "Immediate Review Required" && <Eye className="w-3 h-3 mr-1" />}
                       {alert.action}
                     </Button>
                   </div>
@@ -358,24 +360,30 @@ export default function CredentialingDashboardPage() {
               Quick Actions
             </h2>
             <div className="space-y-2">
-              <Link href="/admin/credentialing/applications" className="block">
-                <Button variant="secondary" className="w-full justify-start">
-                  <FileText className="w-4 h-4 mr-3" />
-                  New Application
-                </Button>
-              </Link>
-              <Link href="/admin/credentialing/review" className="block">
-                <Button variant="secondary" className="w-full justify-start">
-                  <Eye className="w-4 h-4 mr-3" />
-                  Review Queue (12)
-                </Button>
-              </Link>
-              <Link href="/admin/credentialing/document-requests" className="block">
-                <Button variant="secondary" className="w-full justify-start">
-                  <Send className="w-4 h-4 mr-3" />
-                  Request Documents
-                </Button>
-              </Link>
+              <Button 
+                variant="secondary" 
+                className="w-full justify-start" 
+                icon={<FileText className="w-4 h-4" />}
+                href="/admin/credentialing/applications"
+              >
+                New Application
+              </Button>
+              <Button 
+                variant="secondary" 
+                className="w-full justify-start" 
+                icon={<Eye className="w-4 h-4" />}
+                href="/admin/credentialing/review"
+              >
+                Review Queue (12)
+              </Button>
+              <Button 
+                variant="secondary" 
+                className="w-full justify-start" 
+                icon={<Send className="w-4 h-4" />}
+                href="/admin/credentialing/document-requests"
+              >
+                Request Documents
+              </Button>
             </div>
           </div>
 
