@@ -110,7 +110,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
         {/* Logo */}
         <div className="h-20 flex items-center justify-between px-4 border-b border-gray-200">
           <Link href="/" className="flex items-center">
-            <img src="/truecare-logo.png" alt="TrueCare Health Network" className="h-12 w-auto" />
+            <img src="/solidarity-logo.png" alt="Solidarity Health Network" className="h-12 w-auto" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}

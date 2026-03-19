@@ -11,7 +11,7 @@ export default function MarketingFooter() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <img src="/truecare-logo.png" alt="TrueCare Health Network" className="h-12 w-auto" />
+              <img src="/solidarity-logo.png" alt="Solidarity Health Network" className="h-12 w-auto" />
             </div>
             <p className="text-sky-300 mb-6 max-w-sm">
               Quality healthcare made affordable. Join our network of 50,000+ providers 

@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <img 
-            src="/truecare-logo.png" 
+            src="/solidarity-logo.png" 
             alt="TrueCare Health Network" 
             className="h-14 w-auto mx-auto mb-4"
           />

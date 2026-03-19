@@ -77,7 +77,7 @@ export default function LoginForm() {
           {/* Logo */}
           <Link href="/" className="block mb-8">
             <img 
-              src="/truecare-logo.png" 
+              src="/solidarity-logo.png" 
               alt="TrueCare Health Network" 
               className="h-14 w-auto"
             />
@@ -221,7 +221,7 @@ export default function LoginForm() {
         
         <div className="relative text-white text-center max-w-md">
           <img 
-            src="/truecare-logo.png" 
+            src="/solidarity-logo.png" 
             alt="TrueCare Health Network" 
             className="h-16 w-auto mx-auto mb-8"
           />

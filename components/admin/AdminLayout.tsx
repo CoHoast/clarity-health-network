@@ -252,7 +252,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Logo */}
         <div className="h-20 flex items-center justify-between px-4 border-b border-[#334155] bg-[#0F172A]">
           <Link href="/admin" className="flex items-center hover:opacity-80 transition-opacity">
-            <img src="/truecare-logo-dark.png" alt="TrueCare Health Network" className="h-12 w-auto" />
+            <img src="/solidarity-logo.png" alt="Solidarity Health Network" className="h-12 w-auto" />
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
