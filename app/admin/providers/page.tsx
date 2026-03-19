@@ -56,6 +56,8 @@ interface Practice {
   contractEnd: string;
   discountType: string;
   discountRate: string;
+  // Provider count from API
+  providerCount: number;
 }
 
 // Network Organization
@@ -253,6 +255,7 @@ function convertApiProviderToPractice(apiProvider: any): Practice {
     contractEnd: '2027-12-31',
     discountType: apiProvider.pricingTier || 'Tier1',
     discountRate: '35%',
+    providerCount: 1, // Single provider converted to practice
   };
 }
 
@@ -774,7 +777,7 @@ export default function ProvidersPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <Users className={cn("w-4 h-4", isDark ? "text-blue-400" : "text-blue-600")} />
-                      <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{practiceProviders.length}</span>
+                      <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{practice.providerCount || 0}</span>
                       <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>providers</span>
                     </div>
                   </td>
