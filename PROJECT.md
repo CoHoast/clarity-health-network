@@ -192,3 +192,45 @@ onClick={() => setViewingDocument({ doc, provider: req.provider })}
 - `9a97c4a` - Monitoring schedule settings modal
 - `2b6b128` - Applications page modal state fix
 - `0120733` - Inline icon button fixes
+
+## Commits Log (Mar 19, 2026)
+- `cc6fb74` - Complete provider edit mode - add Taxonomy & Languages editing
+- `7ad651f` - Wire provider save to API - updates now persist to JSON data
+- `35e3508` - Wire Add Provider form to API - new providers now persist
+- `6ef7315` - Wire Practice edit to API - practice updates now persist
+
+## API Persistence Status (Mar 19, 2026)
+All provider/practice CRUD operations now persist to JSON files:
+
+| Endpoint | Method | Status | Notes |
+|----------|--------|--------|-------|
+| `/api/providers` | GET | ✅ | List/search providers |
+| `/api/providers` | POST | ✅ | Create new provider |
+| `/api/providers/[id]` | GET | ✅ | Get single provider |
+| `/api/providers/[id]` | PUT | ✅ | Update provider |
+| `/api/providers/[id]` | DELETE | ✅ | Delete provider |
+| `/api/practices` | GET | ✅ | List/search practices |
+| `/api/practices` | POST | ✅ | Create new practice |
+| `/api/practices/[id]` | GET | ✅ | Get single practice |
+| `/api/practices/[id]` | PUT | ✅ | Update practice |
+| `/api/practices/[id]` | DELETE | ✅ | Delete practice |
+
+Data files:
+- `data/arizona-providers.json` - 3,600 providers
+- `data/arizona-practices.json` - 237 practices
+- `data/arizona-import-stats.json` - Import statistics
+
+## Provider Edit Mode (Complete)
+All sections are now editable on the provider detail page:
+- ✅ Overview (name, NPI, specialty, flags, etc.)
+- ✅ Billing Information
+- ✅ Corresponding Address
+- ✅ Taxonomy & Languages
+- ✅ Credentials & Licenses
+- ✅ Malpractice
+- ✅ Hospital Affiliations
+- ✅ Office Location
+- ✅ Education
+- ✅ Schedule
+- ✅ Rates & Discounts
+- ✅ Networks
