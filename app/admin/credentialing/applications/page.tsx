@@ -104,6 +104,7 @@ export default function ApplicationsPage() {
   const [showNewAppModal, setShowNewAppModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showRequestModal, setShowRequestModal] = useState(false);
+  const [requestModalTarget, setRequestModalTarget] = useState<typeof applications[0] | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationComplete, setVerificationComplete] = useState(false);
 
@@ -337,8 +338,9 @@ export default function ApplicationsPage() {
                           variant="secondary" 
                           size="sm"
                           icon={<Send className="w-4 h-4" />}
-                          onClick={() => {
-                            setSelectedApplication(app);
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setRequestModalTarget(app);
                             setShowRequestModal(true);
                           }}
                         >
@@ -699,13 +701,13 @@ export default function ApplicationsPage() {
 
       {/* Request from Provider Modal */}
       <AnimatePresence>
-        {showRequestModal && selectedApplication && (
+        {showRequestModal && requestModalTarget && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-            onClick={() => setShowRequestModal(false)}
+            onClick={() => { setShowRequestModal(false); setRequestModalTarget(null); }}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
@@ -723,10 +725,10 @@ export default function ApplicationsPage() {
                     Request Documents from Provider
                   </h2>
                   <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                    {selectedApplication.provider} • {selectedApplication.email}
+                    {requestModalTarget.provider} • {requestModalTarget.email}
                   </p>
                 </div>
-                <IconButton icon={<X className="w-5 h-5" />} onClick={() => setShowRequestModal(false)} />
+                <IconButton icon={<X className="w-5 h-5" />} onClick={() => { setShowRequestModal(false); setRequestModalTarget(null); }} />
               </div>
 
               <div className="space-y-4 mb-6">
@@ -777,10 +779,15 @@ export default function ApplicationsPage() {
               </div>
 
               <div className="flex gap-3">
-                <Button variant="secondary" className="flex-1" onClick={() => setShowRequestModal(false)}>
+                <Button variant="secondary" className="flex-1" onClick={() => { setShowRequestModal(false); setRequestModalTarget(null); }}>
                   Cancel
                 </Button>
-                <Button variant="primary" className="flex-1" icon={<Send className="w-4 h-4" />}>
+                <Button 
+                  variant="primary" 
+                  className="flex-1" 
+                  icon={<Send className="w-4 h-4" />}
+                  onClick={() => { setShowRequestModal(false); setRequestModalTarget(null); }}
+                >
                   Send Request
                 </Button>
               </div>
