@@ -175,12 +175,9 @@ export default function DocumentRequestsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/admin/credentialing">
-            <Button variant="ghost" size="sm">
-              <ChevronLeft className="w-4 h-4 mr-1" />
-              Back
-            </Button>
-          </Link>
+          <Button variant="ghost" size="sm" icon={<ChevronLeft className="w-4 h-4" />} href="/admin/credentialing">
+            Back
+          </Button>
           <div>
             <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>
               Document Requests

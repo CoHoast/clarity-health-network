@@ -140,8 +140,7 @@ function DocumentViewerModal({
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="secondary" size="sm">
-              <Download className="w-4 h-4 mr-1" />
+            <Button variant="secondary" size="sm" icon={<Download className="w-4 h-4" />}>
               Download
             </Button>
             <IconButton icon={<X className="w-5 h-5" />} onClick={onClose} />
@@ -850,12 +849,9 @@ export default function ReviewQueuePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/admin/credentialing">
-            <Button variant="ghost" size="sm">
-              <ChevronLeft className="w-4 h-4 mr-1" />
-              Back
-            </Button>
-          </Link>
+          <Button variant="ghost" size="sm" icon={<ChevronLeft className="w-4 h-4" />} href="/admin/credentialing">
+            Back
+          </Button>
           <div>
             <h1 className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>
               Committee Review Queue

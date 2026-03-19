@@ -666,8 +666,8 @@ export default function CredentialingContractsPage() {
                       setShowPdfModal(false);
                       setSelectedContract(null);
                     }}
+                    icon={<Download className="w-4 h-4" />}
                   >
-                    <Download className="w-4 h-4 mr-1" />
                     Download
                   </Button>
                   <button
