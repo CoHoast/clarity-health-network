@@ -600,7 +600,6 @@ export default function ProvidersPage() {
             <StatCard
               label="Total Providers"
               value={apiStats.total || providers.length}
-              subtitle={`${providers.length} loaded`}
               icon={<Users className="w-5 h-5" />}
               delay={1}
             />
