@@ -37,6 +37,7 @@ const billsInReview: BillInReview[] = [
 const statusOptions = ["All", "Processing", "Review", "Complete", "Flagged"];
 
 export default function BillReviewPage() {
+  const { isDark } = useTheme();
   const [statusFilter, setStatusFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBill, setSelectedBill] = useState<BillInReview | null>(null);

@@ -53,6 +53,7 @@ const workflowOptions = ["Claims Auto-Adjudication", "Provider Credentialing", "
 const actionOptions = ["APPROVE", "DENY", "ROUTE_TO_REVIEW", "ROUTE_TO_PHARMACY", "SEND_EMAIL", "SEND_ALERT", "ESCALATE", "HOLD"];
 
 export default function WorkflowsPage() {
+  const { isDark } = useTheme();
   const [selectedWorkflow, setSelectedWorkflow] = useState<typeof workflows[0] | null>(null);
   const [businessRules, setBusinessRules] = useState<BusinessRule[]>(initialBusinessRules);
   const [showAddRuleModal, setShowAddRuleModal] = useState(false);

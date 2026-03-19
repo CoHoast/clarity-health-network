@@ -29,6 +29,7 @@ const analytics = {
 };
 
 export default function PulseConfigPage() {
+  const { isDark } = useTheme();
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedKB, setSelectedKB] = useState<typeof knowledgeBases[0] | null>(null);
 

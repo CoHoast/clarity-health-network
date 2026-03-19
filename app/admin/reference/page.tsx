@@ -42,6 +42,7 @@ const sampleCodes = {
 };
 
 export default function ReferencePage() {
+  const { isDark } = useTheme();
   const [selectedCodeSet, setSelectedCodeSet] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 

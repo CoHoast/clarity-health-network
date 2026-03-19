@@ -20,6 +20,7 @@ const gfeRequests = [
 ];
 
 export default function NSACompliancePage() {
+  const { isDark } = useTheme();
   const [selectedCase, setSelectedCase] = useState<typeof idrCases[0] | null>(null);
   const [showCalculator, setShowCalculator] = useState(false);
 

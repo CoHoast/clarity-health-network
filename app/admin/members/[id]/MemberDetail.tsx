@@ -44,6 +44,7 @@ const mockMember = {
 };
 
 export default function MemberDetail({ id }: { id: string }) {
+  const { isDark } = useTheme();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTerminateModal, setShowTerminateModal] = useState(false);
 

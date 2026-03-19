@@ -17,6 +17,7 @@ const incomingClaims = [
 ];
 
 export default function ClaimsIntakePage() {
+  const { isDark } = useTheme();
   const [selectedBatch, setSelectedBatch] = useState<typeof incomingClaims[0] | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
 

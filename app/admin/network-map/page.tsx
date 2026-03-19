@@ -65,6 +65,7 @@ const specialtyFilters = ["All", "Multi-Specialty", "Family Medicine", "Internal
 const typeFilters = ["All Types", "Hospital", "Practice", "Facility"];
 
 export default function NetworkMapPage() {
+  const { isDark } = useTheme();
   const [selectedProvider, setSelectedProvider] = useState<typeof providers[0] | null>(null);
   const [specialtyFilter, setSpecialtyFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All Types");

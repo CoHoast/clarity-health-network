@@ -89,6 +89,7 @@ const rateTypeLabels: Record<string, string> = {
 };
 
 export default function FeeSchedulesPage() {
+  const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<TabType>("schedules");
   const [feeSchedules, setFeeSchedules] = useState(initialFeeSchedules);
   const [cptCodes, setCptCodes] = useState(initialCptCodes);

@@ -114,6 +114,7 @@ const mockClaim = {
 };
 
 export default function ClaimDetail({ id }: { id: string }) {
+  const { isDark } = useTheme();
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [showDenyModal, setShowDenyModal] = useState(false);
   const [showRepriceModal, setShowRepriceModal] = useState(false);

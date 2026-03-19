@@ -238,6 +238,7 @@ Provider shall maintain and provide evidence of the following credentials throug
 ];
 
 export default function ContractTemplatesPage() {
+  const { isDark } = useTheme();
   const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showClauseModal, setShowClauseModal] = useState(false);
