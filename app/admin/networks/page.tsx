@@ -3,7 +3,7 @@
 import { useTheme } from "@/components/admin/ThemeContext";
 import { cn } from "@/lib/utils";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Globe, Search, Plus, Edit, Trash2, Eye, Users, Building2, CheckCircle, X, Check, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -20,8 +20,8 @@ interface Network {
   contractType: string;
 }
 
-// Arizona Antidote Network - ready for Solidarity provider import
-const networks: Network[] = [
+// Default network data - will be updated with API counts
+const defaultNetworks: Network[] = [
   { id: "NET-001", name: "Arizona Antidote", description: "Solidarity Health Network PPO - Arizona providers", states: ["AZ"], providerCount: 0, practiceCount: 0, status: "active", createdDate: "2026-03-19", contractType: "% Off Billed" },
 ];
 
@@ -29,6 +29,8 @@ const stateOptions = ["AZ", "CA", "NV", "NM", "CO", "UT", "TX"];
 
 export default function NetworksPage() {
   const { isDark } = useTheme();
+  const [networks, setNetworks] = useState<Network[]>(defaultNetworks);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [stateFilter, setStateFilter] = useState("All States");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
@@ -39,6 +41,37 @@ export default function NetworksPage() {
   const [saved, setSaved] = useState(false);
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [providerSearchQuery, setProviderSearchQuery] = useState("");
+
+  // Load provider and practice counts from API
+  useEffect(() => {
+    async function loadCounts() {
+      try {
+        const [providersRes, practicesRes] = await Promise.all([
+          fetch('/api/providers?limit=1'),
+          fetch('/api/practices?limit=1'),
+        ]);
+        
+        const providersData = await providersRes.json();
+        const practicesData = await practicesRes.json();
+        
+        const providerCount = providersData.pagination?.total || 0;
+        const practiceCount = practicesData.pagination?.total || 0;
+        
+        // Update Arizona Antidote network with real counts
+        setNetworks(prev => prev.map(n => 
+          n.id === "NET-001" 
+            ? { ...n, providerCount, practiceCount }
+            : n
+        ));
+      } catch (error) {
+        console.error('Failed to load network counts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    loadCounts();
+  }, []);
 
   // Sample providers for bulk add
   const availableProviders = [
