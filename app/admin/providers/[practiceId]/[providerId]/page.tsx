@@ -399,14 +399,81 @@ export default function ProviderDetailPage() {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setSaving(true);
-    setTimeout(() => {
-      setSaving(false);
+    try {
+      // Prepare update payload
+      const updateData = {
+        firstName: editData.firstName,
+        lastName: editData.lastName,
+        middleInitial: editData.middleInitial,
+        credentials: editData.title,
+        npi: editData.npi,
+        gender: editData.gender === 'Male' ? 'M' : editData.gender === 'Female' ? 'F' : '',
+        specialty: editData.specialty,
+        specialtyCode: editData.specialtyCode,
+        secondarySpecialtyCode: editData.secondarySpecialtyCode,
+        facilityType: editData.facilityType,
+        taxonomyCode: editData.primaryTaxonomy,
+        secondaryTaxonomyCode: editData.secondaryTaxonomy,
+        acceptingNewPatients: editData.acceptingNewPatients,
+        directoryDisplay: editData.directoryDisplay,
+        isPrimaryCare: editData.isPrimaryCare,
+        isBehavioralHealth: editData.isBehavioralHealth,
+        pricingTier: editData.pricingTier,
+        networkOrg: editData.networkOrg,
+        contractNumber: editData.contractNumber,
+        referenceNumber: editData.referenceNumber,
+        contractStartDate: editData.contractStartDate,
+        contractEndDate: editData.contractEndDate,
+        languages: editData.languages,
+        billing: editData.billing,
+        correspondingAddress: editData.correspondingAddress,
+        // Credentials
+        licenseState: editData.licenseState,
+        licenseNumber: editData.licenseNumber,
+        licenseExpiration: editData.licenseExpiration,
+        deaNumber: editData.deaNumber,
+        deaExpiration: editData.deaExpiration,
+        boardCertified: editData.boardCertified,
+        boardCertification: editData.boardCertification,
+        // Education
+        medicalSchool: editData.medicalSchool,
+        graduationYear: editData.graduationYear,
+        residency: editData.residency,
+        // Malpractice
+        malpracticeCarrier: editData.malpracticeCarrier,
+        malpracticePolicyNumber: editData.malpracticePolicyNumber,
+        malpracticeExpiration: editData.malpracticeExpiration,
+        malpracticeCoverage: editData.malpracticeCoverage,
+        // Hospital affiliations
+        hospitalAffiliations: editData.hospitalAffiliations,
+      };
+
+      // Call API to update provider
+      const res = await fetch(`/api/providers/${provider.npi}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updateData),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to update provider');
+      }
+
+      const result = await res.json();
+      
+      // Update local state with saved data
+      setProvider({ ...provider, ...editData });
       setSaved(true);
       setIsEditing(false);
       setTimeout(() => setSaved(false), 2000);
-    }, 1000);
+    } catch (error) {
+      console.error('Failed to save provider:', error);
+      alert('Failed to save changes. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const sections = [
