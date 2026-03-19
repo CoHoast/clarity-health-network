@@ -316,8 +316,7 @@ export default function ReportsPage() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="secondary" size="sm" onClick={() => handleDownload(previewingReport)}>
-                    <Download className="w-4 h-4 mr-2" />
+                  <Button variant="secondary" size="sm" icon={<Download className="w-4 h-4" />} onClick={() => handleDownload(previewingReport)}>
                     Download
                   </Button>
                   <IconButton icon={<X className="w-5 h-5" />} onClick={() => setPreviewingReport(null)} />
