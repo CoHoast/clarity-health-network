@@ -20,6 +20,7 @@ const providersData: Record<string, any> = {
     practiceId: "PRC-001",
     practiceName: "Cleveland Family Medicine",
     contractNumber: "CF1001",
+    referenceNumber: "", // Entity # from Solidarity
     firstName: "Robert",
     lastName: "Smith",
     title: "MD",
@@ -93,6 +94,7 @@ const providersData: Record<string, any> = {
     practiceId: "PRC-001",
     practiceName: "Cleveland Family Medicine",
     contractNumber: "CF1002",
+    referenceNumber: "", // Entity # from Solidarity
     firstName: "Jennifer",
     lastName: "Adams",
     title: "MD",
@@ -483,6 +485,21 @@ export default function ProviderDetailPage() {
                   />
                 ) : (
                   <p className="text-slate-900 font-mono font-bold text-blue-600">{provider.contractNumber || "—"}</p>
+                )}
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Reference Number</p>
+                <p className="text-[10px] text-slate-400 mb-1">(Entity #)</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.referenceNumber || ""}
+                    onChange={(e) => setEditData({ ...editData, referenceNumber: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+                    placeholder="Entity #"
+                  />
+                ) : (
+                  <p className="text-slate-900 font-mono font-bold text-emerald-600">{provider.referenceNumber || "—"}</p>
                 )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
