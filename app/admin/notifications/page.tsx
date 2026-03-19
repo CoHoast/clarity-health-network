@@ -42,6 +42,7 @@ const notificationSettings = [
 const filterOptions = ["All", "Unread", "Contracts", "Credentialing", "Providers", "System"];
 
 export default function NotificationsPage() {
+  const { isDark } = useTheme();
   const [filter, setFilter] = useState("All");
   const [activeTab, setActiveTab] = useState<"notifications" | "settings">("notifications");
   const [notificationList, setNotificationList] = useState(notifications);

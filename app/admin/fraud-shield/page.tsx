@@ -57,6 +57,7 @@ const riskOptions = ["All", "High", "Medium", "Low"];
 const statusOptions = ["All", "Open", "Investigating", "Resolved"];
 
 export default function FraudShieldPage() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [riskFilter, setRiskFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");

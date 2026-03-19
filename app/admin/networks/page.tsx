@@ -36,6 +36,7 @@ const networks: Network[] = [
 const stateOptions = ["OH", "PA", "MI", "IN", "WV", "KY", "NY", "IL"];
 
 export default function NetworksPage() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [stateFilter, setStateFilter] = useState("All States");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
@@ -126,16 +127,15 @@ export default function NetworksPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+          <h1 className={cn("text-2xl font-bold flex items-center gap-3", isDark ? "text-white" : "text-slate-900")}>
             <Globe className="w-7 h-7 text-purple-500" />
             Network Organizations
           </h1>
-          <p className="text-slate-400 mt-1">Organize and manage provider networks by region</p>
+          <p className={cn("mt-1", isDark ? "text-slate-400" : "text-slate-500")}>Organize and manage provider networks by region</p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 font-medium rounded-lg hover:bg-purple-700 transition-colors"
-          style={{ color: 'white' }}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors"
         >
           <Plus className="w-4 h-4" />
           Create Network
@@ -144,47 +144,47 @@ export default function NetworksPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+        <div className={cn("rounded-xl p-4 border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}>
           <div className="flex items-center gap-3">
             <div className="p-2 bg-purple-500/20 rounded-lg">
               <Globe className="w-5 h-5 text-purple-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{networks.length}</p>
-              <p className="text-sm text-slate-400">Total Networks</p>
+              <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>{networks.length}</p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Total Networks</p>
             </div>
           </div>
         </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+        <div className={cn("rounded-xl p-4 border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}>
           <div className="flex items-center gap-3">
             <div className="p-2 bg-green-500/20 rounded-lg">
               <CheckCircle className="w-5 h-5 text-green-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{activeNetworks}</p>
-              <p className="text-sm text-slate-400">Active Networks</p>
+              <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>{activeNetworks}</p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Active Networks</p>
             </div>
           </div>
         </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+        <div className={cn("rounded-xl p-4 border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}>
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-500/20 rounded-lg">
               <Users className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{totalProviders.toLocaleString()}</p>
-              <p className="text-sm text-slate-400">Total Providers</p>
+              <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>{totalProviders.toLocaleString()}</p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Total Providers</p>
             </div>
           </div>
         </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+        <div className={cn("rounded-xl p-4 border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}>
           <div className="flex items-center gap-3">
             <div className="p-2 bg-teal-500/20 rounded-lg">
               <Building2 className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{totalPractices.toLocaleString()}</p>
-              <p className="text-sm text-slate-400">Total Practices</p>
+              <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>{totalPractices.toLocaleString()}</p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Total Practices</p>
             </div>
           </div>
         </div>
@@ -199,13 +199,19 @@ export default function NetworksPage() {
             placeholder="Search networks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className={cn(
+              "w-full pl-10 pr-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500",
+              isDark ? "bg-slate-800 border-slate-600 text-white placeholder:text-slate-400" : "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400"
+            )}
           />
         </div>
         <select
           value={stateFilter}
           onChange={(e) => setStateFilter(e.target.value)}
-          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className={cn(
+            "px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500",
+            isDark ? "bg-slate-800 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+          )}
         >
           <option value="All States">All States</option>
           {stateOptions.map(state => (
@@ -215,7 +221,10 @@ export default function NetworksPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
-          className="px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className={cn(
+            "px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500",
+            isDark ? "bg-slate-800 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900"
+          )}
         >
           <option value="all">All Status</option>
           <option value="active">Active</option>
@@ -228,9 +237,13 @@ export default function NetworksPage() {
         {filteredNetworks.map((network) => (
           <div
             key={network.id}
-            className={`bg-slate-800/50 rounded-xl border p-6 hover:border-purple-500/50 transition-colors cursor-pointer ${
-              network.status === "active" ? "border-slate-700" : "border-slate-700/50 opacity-75"
-            }`}
+            className={cn(
+              "rounded-xl border p-6 hover:border-purple-500/50 transition-colors cursor-pointer",
+              isDark ? "bg-slate-800/50" : "bg-white",
+              network.status === "active" 
+                ? (isDark ? "border-slate-700" : "border-slate-200") 
+                : (isDark ? "border-slate-700/50 opacity-75" : "border-slate-200/50 opacity-75")
+            )}
             onClick={() => setSelectedNetwork(network)}
           >
             <div className="flex items-start justify-between mb-4">
@@ -239,24 +252,24 @@ export default function NetworksPage() {
               </div>
               <div className="flex items-center gap-2">
                 {network.states.map(state => (
-                  <span key={state} className="px-2 py-0.5 bg-slate-700 text-slate-300 text-xs font-medium rounded">
+                  <span key={state} className={cn("px-2 py-0.5 text-xs font-medium rounded", isDark ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600")}>
                     {state}
                   </span>
                 ))}
               </div>
             </div>
             
-            <h3 className="text-lg font-semibold text-white mb-1">{network.name}</h3>
-            <p className="text-slate-400 text-sm mb-4 line-clamp-2">{network.description}</p>
+            <h3 className={cn("text-lg font-semibold mb-1", isDark ? "text-white" : "text-slate-900")}>{network.name}</h3>
+            <p className={cn("text-sm mb-4 line-clamp-2", isDark ? "text-slate-400" : "text-slate-500")}>{network.description}</p>
             
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <div className="bg-slate-700/50 rounded-lg p-2 text-center">
-                <p className="text-lg font-bold text-blue-400">{network.providerCount.toLocaleString()}</p>
-                <p className="text-xs text-slate-500">Providers</p>
+              <div className={cn("rounded-lg p-2 text-center", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                <p className="text-lg font-bold text-blue-500">{network.providerCount.toLocaleString()}</p>
+                <p className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>Providers</p>
               </div>
-              <div className="bg-slate-700/50 rounded-lg p-2 text-center">
-                <p className="text-lg font-bold text-blue-400">{network.practiceCount.toLocaleString()}</p>
-                <p className="text-xs text-slate-500">Practices</p>
+              <div className={cn("rounded-lg p-2 text-center", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                <p className="text-lg font-bold text-blue-500">{network.practiceCount.toLocaleString()}</p>
+                <p className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>Practices</p>
               </div>
             </div>
 
@@ -264,20 +277,20 @@ export default function NetworksPage() {
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                 network.status === "active" 
                   ? "bg-green-500/20 text-green-400"
-                  : "bg-slate-600 text-slate-400"
+                  : (isDark ? "bg-slate-600 text-slate-400" : "bg-slate-200 text-slate-500")
               }`}>
                 {network.status === "active" ? "Active" : "Inactive"}
               </span>
-              <span className="text-xs text-slate-500">{network.contractType}</span>
+              <span className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>{network.contractType}</span>
             </div>
           </div>
         ))}
       </div>
 
       {filteredNetworks.length === 0 && (
-        <div className="text-center py-12 bg-slate-800/30 rounded-xl border border-slate-700">
-          <Globe className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-          <p className="text-slate-400">No networks found matching your filters</p>
+        <div className={cn("text-center py-12 rounded-xl border", isDark ? "bg-slate-800/30 border-slate-700" : "bg-slate-50 border-slate-200")}>
+          <Globe className={cn("w-12 h-12 mx-auto mb-3", isDark ? "text-slate-600" : "text-slate-400")} />
+          <p className={cn(isDark ? "text-slate-400" : "text-slate-500")}>No networks found matching your filters</p>
         </div>
       )}
 
@@ -289,20 +302,20 @@ export default function NetworksPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-800 rounded-xl max-w-3xl w-full max-h-[85vh] overflow-auto border border-slate-700"
+              className={cn("rounded-xl max-w-3xl w-full max-h-[85vh] overflow-auto border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6 border-b border-slate-700 flex items-start justify-between">
+              <div className={cn("p-6 border-b flex items-start justify-between", isDark ? "border-slate-700" : "border-slate-200")}>
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center">
                     <Globe className="w-7 h-7 text-purple-400" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">{selectedNetwork.name}</h2>
-                    <p className="text-slate-400">{selectedNetwork.description}</p>
+                    <h2 className={cn("text-xl font-bold", isDark ? "text-white" : "text-slate-900")}>{selectedNetwork.name}</h2>
+                    <p className={cn(isDark ? "text-slate-400" : "text-slate-500")}>{selectedNetwork.description}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedNetwork(null)} className="text-slate-400 hover:text-white">
+                <button onClick={() => setSelectedNetwork(null)} className={cn("hover:text-white", isDark ? "text-slate-400" : "text-slate-500")}>
                   <X className="w-6 h-6" />
                 </button>
               </div>
@@ -310,56 +323,56 @@ export default function NetworksPage() {
               <div className="p-6 space-y-6">
                 {/* Stats */}
                 <div className="grid grid-cols-4 gap-4">
-                  <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-blue-400">{selectedNetwork.providerCount.toLocaleString()}</p>
-                    <p className="text-sm text-slate-400">Providers</p>
+                  <div className={cn("rounded-lg p-4 text-center", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                    <p className="text-2xl font-bold text-blue-500">{selectedNetwork.providerCount.toLocaleString()}</p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Providers</p>
                   </div>
-                  <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-blue-400">{selectedNetwork.practiceCount.toLocaleString()}</p>
-                    <p className="text-sm text-slate-400">Practices</p>
+                  <div className={cn("rounded-lg p-4 text-center", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                    <p className="text-2xl font-bold text-blue-500">{selectedNetwork.practiceCount.toLocaleString()}</p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Practices</p>
                   </div>
-                  <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-purple-400">{selectedNetwork.states.length}</p>
-                    <p className="text-sm text-slate-400">States</p>
+                  <div className={cn("rounded-lg p-4 text-center", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                    <p className="text-2xl font-bold text-purple-500">{selectedNetwork.states.length}</p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>States</p>
                   </div>
-                  <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                    <p className={`text-lg font-bold ${selectedNetwork.status === "active" ? "text-green-400" : "text-slate-400"}`}>
+                  <div className={cn("rounded-lg p-4 text-center", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                    <p className={`text-lg font-bold ${selectedNetwork.status === "active" ? "text-green-500" : (isDark ? "text-slate-400" : "text-slate-500")}`}>
                       {selectedNetwork.status === "active" ? "Active" : "Inactive"}
                     </p>
-                    <p className="text-sm text-slate-400">Status</p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Status</p>
                   </div>
                 </div>
 
                 {/* Details */}
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-slate-700/30 rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-purple-400" />
+                  <div className={cn("rounded-lg p-4", isDark ? "bg-slate-700/30" : "bg-slate-50")}>
+                    <h3 className={cn("text-sm font-semibold mb-3 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                      <MapPin className="w-4 h-4 text-purple-500" />
                       Coverage States
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedNetwork.states.map(state => (
-                        <span key={state} className="px-3 py-1.5 bg-purple-500/20 text-purple-400 rounded-full text-sm font-medium">
+                        <span key={state} className="px-3 py-1.5 bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-full text-sm font-medium">
                           {state}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  <div className="bg-slate-700/30 rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3">Network Details</h3>
+                  <div className={cn("rounded-lg p-4", isDark ? "bg-slate-700/30" : "bg-slate-50")}>
+                    <h3 className={cn("text-sm font-semibold mb-3", isDark ? "text-white" : "text-slate-900")}>Network Details</h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-slate-400">Contract Type:</span>
-                        <span className="text-white">{selectedNetwork.contractType}</span>
+                        <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>Contract Type:</span>
+                        <span className={cn(isDark ? "text-white" : "text-slate-900")}>{selectedNetwork.contractType}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-400">Created:</span>
-                        <span className="text-white">{selectedNetwork.createdDate}</span>
+                        <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>Created:</span>
+                        <span className={cn(isDark ? "text-white" : "text-slate-900")}>{selectedNetwork.createdDate}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-400">Network ID:</span>
-                        <span className="text-white font-mono">{selectedNetwork.id}</span>
+                        <span className={cn(isDark ? "text-slate-400" : "text-slate-500")}>Network ID:</span>
+                        <span className={cn("font-mono", isDark ? "text-white" : "text-slate-900")}>{selectedNetwork.id}</span>
                       </div>
                     </div>
                   </div>
@@ -384,12 +397,12 @@ export default function NetworksPage() {
                 </div>
               </div>
 
-              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
-                <button className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors flex items-center gap-2">
+              <div className={cn("p-6 border-t flex justify-end gap-3", isDark ? "border-slate-700" : "border-slate-200")}>
+                <button className={cn("px-4 py-2 font-medium rounded-lg transition-colors flex items-center gap-2", isDark ? "bg-slate-700 text-slate-300 hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200")}>
                   <Edit className="w-4 h-4" />
                   Edit Network
                 </button>
-                <button className="px-4 py-2 bg-red-600/20 text-red-400 font-medium rounded-lg hover:bg-red-600/30 transition-colors flex items-center gap-2">
+                <button className="px-4 py-2 bg-red-600/20 text-red-500 font-medium rounded-lg hover:bg-red-600/30 transition-colors flex items-center gap-2">
                   <Trash2 className="w-4 h-4" />
                   Delete
                 </button>
@@ -407,24 +420,24 @@ export default function NetworksPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-800 rounded-xl max-w-lg w-full border border-slate-700"
+              className={cn("rounded-xl max-w-lg w-full border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}
               onClick={(e) => e.stopPropagation()}
             >
               {!saving && !saved ? (
                 <>
-                  <div className="p-6 border-b border-slate-700">
-                    <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                      <Globe className="w-6 h-6 text-purple-400" />
+                  <div className={cn("p-6 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                    <h2 className={cn("text-xl font-bold flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                      <Globe className="w-6 h-6 text-purple-500" />
                       Create Network Organization
                     </h2>
-                    <p className="text-slate-400 text-sm mt-1">Define a new network to organize providers</p>
+                    <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>Define a new network to organize providers</p>
                   </div>
                   <div className="p-6 space-y-5">
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Network Name *</label>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>Network Name *</label>
                       <input 
                         type="text" 
-                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                        className={cn("w-full px-4 py-2.5 rounded-lg border focus:border-purple-500 focus:ring-1 focus:ring-purple-500", isDark ? "bg-slate-700 border-slate-600 text-white placeholder:text-slate-500" : "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400")}
                         placeholder="e.g., Ohio Premier Network"
                         value={newNetwork.name}
                         onChange={(e) => setNewNetwork({...newNetwork, name: e.target.value})}
@@ -432,9 +445,9 @@ export default function NetworksPage() {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>Description</label>
                       <textarea 
-                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-purple-500 h-20 resize-none"
+                        className={cn("w-full px-4 py-2.5 rounded-lg border focus:border-purple-500 h-20 resize-none", isDark ? "bg-slate-700 border-slate-600 text-white placeholder:text-slate-500" : "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400")}
                         placeholder="Brief description of this network..."
                         value={newNetwork.description}
                         onChange={(e) => setNewNetwork({...newNetwork, description: e.target.value})}
@@ -442,7 +455,7 @@ export default function NetworksPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Coverage States</label>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>Coverage States</label>
                       <div className="flex flex-wrap gap-2">
                         {stateOptions.map(state => (
                           <button
@@ -452,7 +465,7 @@ export default function NetworksPage() {
                             className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                               newNetwork.states.includes(state)
                                 ? "bg-purple-600 text-white"
-                                : "bg-slate-700 text-slate-400 hover:bg-slate-600"
+                                : (isDark ? "bg-slate-700 text-slate-400 hover:bg-slate-600" : "bg-slate-100 text-slate-600 hover:bg-slate-200")
                             }`}
                           >
                             {state}
@@ -462,9 +475,9 @@ export default function NetworksPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Default Contract Type</label>
+                      <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>Default Contract Type</label>
                       <select 
-                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-purple-500"
+                        className={cn("w-full px-4 py-2.5 rounded-lg border focus:border-purple-500", isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-200 text-slate-900")}
                         value={newNetwork.contractType}
                         onChange={(e) => setNewNetwork({...newNetwork, contractType: e.target.value})}
                       >
@@ -475,10 +488,10 @@ export default function NetworksPage() {
                       </select>
                     </div>
                   </div>
-                  <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+                  <div className={cn("p-6 border-t flex justify-end gap-3", isDark ? "border-slate-700" : "border-slate-200")}>
                     <button
                       onClick={() => setShowCreateModal(false)}
-                      className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
+                      className={cn("px-4 py-2 transition-colors", isDark ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-700")}
                     >
                       Cancel
                     </button>
@@ -488,7 +501,7 @@ export default function NetworksPage() {
                       className={`px-6 py-2 font-medium rounded-lg flex items-center gap-2 transition-colors ${
                         newNetwork.name 
                           ? "bg-purple-600 text-white hover:bg-purple-700"
-                          : "bg-slate-700 text-slate-500 cursor-not-allowed"
+                          : (isDark ? "bg-slate-700 text-slate-500 cursor-not-allowed" : "bg-slate-100 text-slate-400 cursor-not-allowed")
                       }`}
                     >
                       <Plus className="w-4 h-4" />
@@ -499,7 +512,7 @@ export default function NetworksPage() {
               ) : saving ? (
                 <div className="p-12 text-center">
                   <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="text-white font-medium">Creating network...</p>
+                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>Creating network...</p>
                 </div>
               ) : (
                 <div className="p-12 text-center">
@@ -508,10 +521,10 @@ export default function NetworksPage() {
                     animate={{ scale: 1 }}
                     className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
                   >
-                    <Check className="w-8 h-8 text-green-400" />
+                    <Check className="w-8 h-8 text-green-500" />
                   </motion.div>
-                  <p className="text-white font-medium">Network Created!</p>
-                  <p className="text-slate-400 text-sm mt-1">You can now add providers to this network</p>
+                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>Network Created!</p>
+                  <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>You can now add providers to this network</p>
                 </div>
               )}
             </motion.div>
@@ -527,15 +540,15 @@ export default function NetworksPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[85vh] overflow-auto border border-slate-700"
+              className={cn("rounded-xl max-w-2xl w-full max-h-[85vh] overflow-auto border", isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200")}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6 border-b border-slate-700">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                  <Users className="w-6 h-6 text-purple-400" />
+              <div className={cn("p-6 border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <h2 className={cn("text-xl font-bold flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                  <Users className="w-6 h-6 text-purple-500" />
                   Add Providers to {selectedNetwork.name}
                 </h2>
-                <p className="text-slate-400 text-sm mt-1">Select providers to add to this network (bulk assignment)</p>
+                <p className={cn("text-sm mt-1", isDark ? "text-slate-400" : "text-slate-500")}>Select providers to add to this network (bulk assignment)</p>
               </div>
               
               <div className="p-6 space-y-4">
@@ -547,7 +560,7 @@ export default function NetworksPage() {
                     placeholder="Search providers by name, specialty, or NPI..."
                     value={providerSearchQuery}
                     onChange={(e) => setProviderSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-400"
+                    className={cn("w-full pl-10 pr-4 py-2.5 rounded-lg border", isDark ? "bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" : "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400")}
                   />
                 </div>
 
@@ -555,11 +568,11 @@ export default function NetworksPage() {
                 <div className="flex items-center justify-between">
                   <button
                     onClick={selectAllProviders}
-                    className="text-sm text-purple-400 hover:text-purple-300"
+                    className="text-sm text-purple-500 hover:text-purple-400"
                   >
                     {selectedProviders.length === filteredAvailableProviders.length ? "Deselect All" : "Select All"}
                   </button>
-                  <span className="text-sm text-slate-400">
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
                     {selectedProviders.length} selected
                   </span>
                 </div>
@@ -569,38 +582,39 @@ export default function NetworksPage() {
                   {filteredAvailableProviders.map(provider => (
                     <label
                       key={provider.id}
-                      className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-colors ${
+                      className={cn(
+                        "flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-colors",
                         selectedProviders.includes(provider.id)
                           ? "bg-purple-500/20 border border-purple-500/50"
-                          : "bg-slate-700/30 border border-transparent hover:bg-slate-700/50"
-                      }`}
+                          : (isDark ? "bg-slate-700/30 border border-transparent hover:bg-slate-700/50" : "bg-slate-50 border border-transparent hover:bg-slate-100")
+                      )}
                     >
                       <input
                         type="checkbox"
                         checked={selectedProviders.includes(provider.id)}
                         onChange={() => toggleProviderSelection(provider.id)}
-                        className="w-5 h-5 rounded border-slate-500 text-purple-600 focus:ring-purple-500"
+                        className="w-5 h-5 rounded border-slate-400 text-purple-600 focus:ring-purple-500"
                       />
                       <div className="flex-1">
-                        <p className="text-white font-medium">{provider.name}</p>
-                        <p className="text-slate-400 text-sm">{provider.specialty} • {provider.practice}</p>
+                        <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{provider.name}</p>
+                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{provider.specialty} • {provider.practice}</p>
                       </div>
-                      <span className="text-slate-500 font-mono text-xs">{provider.npi}</span>
+                      <span className={cn("font-mono text-xs", isDark ? "text-slate-500" : "text-slate-400")}>{provider.npi}</span>
                     </label>
                   ))}
                 </div>
 
                 {filteredAvailableProviders.length === 0 && (
-                  <div className="text-center py-8 text-slate-400">
+                  <div className={cn("text-center py-8", isDark ? "text-slate-400" : "text-slate-500")}>
                     No providers found matching your search.
                   </div>
                 )}
               </div>
 
-              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
+              <div className={cn("p-6 border-t flex justify-end gap-3", isDark ? "border-slate-700" : "border-slate-200")}>
                 <button
                   onClick={() => setShowAddProvidersModal(false)}
-                  className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
+                  className={cn("px-4 py-2 transition-colors", isDark ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-700")}
                 >
                   Cancel
                 </button>
@@ -622,7 +636,7 @@ export default function NetworksPage() {
                   className={`px-6 py-2 font-medium rounded-lg flex items-center gap-2 transition-colors ${
                     selectedProviders.length > 0
                       ? "bg-purple-600 text-white hover:bg-purple-700"
-                      : "bg-slate-700 text-slate-500 cursor-not-allowed"
+                      : (isDark ? "bg-slate-700 text-slate-500 cursor-not-allowed" : "bg-slate-100 text-slate-400 cursor-not-allowed")
                   }`}
                 >
                   <Plus className="w-4 h-4" />

@@ -35,6 +35,7 @@ const claims = [
 const statusOptions = ["All", "Pending", "Review", "Approved", "Denied"];
 
 function ClaimsContent() {
+  const { isDark } = useTheme();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");

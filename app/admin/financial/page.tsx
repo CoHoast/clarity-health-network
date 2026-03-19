@@ -31,6 +31,7 @@ const recentTransactions = [
 ];
 
 export default function FinancialPage() {
+  const { isDark } = useTheme();
   const [period, setPeriod] = useState("This Month");
   const totalRevenue = revenueData.reduce((sum, d) => sum + d.revenue, 0);
   const totalExpenses = revenueData.reduce((sum, d) => sum + d.expenses, 0);

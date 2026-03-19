@@ -34,6 +34,7 @@ const members = [
 const statusOptions = ["All", "Active", "COBRA", "Termed", "Pending"];
 
 export default function MembersPage() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedMember, setSelectedMember] = useState<typeof members[0] | null>(null);

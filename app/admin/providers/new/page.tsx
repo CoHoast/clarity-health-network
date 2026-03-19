@@ -38,6 +38,7 @@ const networkOptions = [
 const titleOptions = ["MD", "DO", "PhD", "NP", "PA", "DPM", "DC", "PT", "OT", "DDS", "DMD", "PharmD", "PsyD"];
 
 export default function AddProviderPage() {
+  const { isDark } = useTheme();
   const [step, setStep] = useState(1);
   const [addMode, setAddMode] = useState<"new" | "existing">("new");
   const [formData, setFormData] = useState({

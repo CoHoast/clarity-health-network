@@ -29,6 +29,7 @@ const pendingClaims = [
 ];
 
 export default function PaymentsPage() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPayment, setSelectedPayment] = useState<typeof payments[0] | null>(null);
   const [showBatchModal, setShowBatchModal] = useState(false);

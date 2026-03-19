@@ -25,6 +25,7 @@ const issues = [
 ];
 
 export default function EligibilityPage() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCheck, setSelectedCheck] = useState<typeof recentChecks[0] | null>(null);
   const [selectedIssue, setSelectedIssue] = useState<typeof issues[0] | null>(null);
