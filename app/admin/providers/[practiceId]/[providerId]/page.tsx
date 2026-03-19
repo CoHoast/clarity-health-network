@@ -751,45 +751,131 @@ export default function ProviderDetailPage() {
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Pricing Tier</p>
-                <p className="text-slate-900 font-medium">{provider.pricingTier || "—"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.pricingTier || ""}
+                    onChange={(e) => setEditData({ ...editData, pricingTier: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                  />
+                ) : (
+                  <p className="text-slate-900 font-medium">{provider.pricingTier || "—"}</p>
+                )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Middle Initial</p>
-                <p className="text-slate-900">{provider.middleInitial || "—"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.middleInitial || ""}
+                    onChange={(e) => setEditData({ ...editData, middleInitial: e.target.value })}
+                    maxLength={1}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                  />
+                ) : (
+                  <p className="text-slate-900">{provider.middleInitial || "—"}</p>
+                )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Specialty Code</p>
-                <p className="text-slate-900 font-mono">{provider.specialtyCode || "—"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.specialtyCode || ""}
+                    onChange={(e) => setEditData({ ...editData, specialtyCode: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+                  />
+                ) : (
+                  <p className="text-slate-900 font-mono">{provider.specialtyCode || "—"}</p>
+                )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Secondary Specialty</p>
-                <p className="text-slate-900 font-mono">{provider.secondarySpecialtyCode || "—"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.secondarySpecialtyCode || ""}
+                    onChange={(e) => setEditData({ ...editData, secondarySpecialtyCode: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+                  />
+                ) : (
+                  <p className="text-slate-900 font-mono">{provider.secondarySpecialtyCode || "—"}</p>
+                )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Facility Type</p>
-                <p className="text-slate-900">{provider.facilityType || "—"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.facilityType || ""}
+                    onChange={(e) => setEditData({ ...editData, facilityType: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                  />
+                ) : (
+                  <p className="text-slate-900">{provider.facilityType || "—"}</p>
+                )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Network Org</p>
-                <p className="text-slate-900 font-mono">{provider.networkOrg || "—"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.networkOrg || ""}
+                    onChange={(e) => setEditData({ ...editData, networkOrg: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+                  />
+                ) : (
+                  <p className="text-slate-900 font-mono">{provider.networkOrg || "—"}</p>
+                )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Contract Start</p>
-                <p className="text-slate-900">{provider.contractStartDate || "—"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.contractStartDate || ""}
+                    onChange={(e) => setEditData({ ...editData, contractStartDate: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                    placeholder="YYYY-MM-DD"
+                  />
+                ) : (
+                  <p className="text-slate-900">{provider.contractStartDate || "—"}</p>
+                )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Contract End</p>
-                <p className="text-slate-900">{provider.contractEndDate || "—"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.contractEndDate || ""}
+                    onChange={(e) => setEditData({ ...editData, contractEndDate: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                    placeholder="YYYY-MM-DD"
+                  />
+                ) : (
+                  <p className="text-slate-900">{provider.contractEndDate || "—"}</p>
+                )}
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Directory Display</p>
-                <span className={`px-2 py-1 rounded text-sm font-medium ${
-                  provider.directoryDisplay 
-                    ? "bg-green-500/20 text-green-400" 
-                    : "bg-slate-500/20 text-slate-400"
-                }`}>
-                  {provider.directoryDisplay ? "Yes" : "No"}
-                </span>
+                {isEditing ? (
+                  <select
+                    value={editData.directoryDisplay ? "yes" : "no"}
+                    onChange={(e) => setEditData({ ...editData, directoryDisplay: e.target.value === "yes" })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                  >
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                ) : (
+                  <span className={`px-2 py-1 rounded text-sm font-medium ${
+                    provider.directoryDisplay 
+                      ? "bg-green-500/20 text-green-400" 
+                      : "bg-slate-500/20 text-slate-400"
+                  }`}>
+                    {provider.directoryDisplay ? "Yes" : "No"}
+                  </span>
+                )}
               </div>
             </div>
             
@@ -801,65 +887,244 @@ export default function ProviderDetailPage() {
               </h3>
               <div className="grid md:grid-cols-4 gap-4">
                 <div>
-                  <p className="text-xs text-slate-500">Billing Name</p>
-                  <p className="text-slate-900 font-medium">{provider.billing?.name || "—"}</p>
+                  <p className="text-xs text-slate-500 mb-1">Billing Name</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editData.billing?.name || ""}
+                      onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, name: e.target.value } })}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                    />
+                  ) : (
+                    <p className="text-slate-900 font-medium">{provider.billing?.name || "—"}</p>
+                  )}
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500">Billing NPI</p>
-                  <p className="text-slate-900 font-mono">{provider.billing?.npi || "—"}</p>
+                  <p className="text-xs text-slate-500 mb-1">Billing NPI</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editData.billing?.npi || ""}
+                      onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, npi: e.target.value } })}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+                    />
+                  ) : (
+                    <p className="text-slate-900 font-mono">{provider.billing?.npi || "—"}</p>
+                  )}
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500">Tax ID</p>
-                  <p className="text-slate-900 font-mono">{provider.billing?.taxId || "—"}</p>
+                  <p className="text-xs text-slate-500 mb-1">Tax ID</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editData.billing?.taxId || ""}
+                      onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, taxId: e.target.value } })}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+                    />
+                  ) : (
+                    <p className="text-slate-900 font-mono">{provider.billing?.taxId || "—"}</p>
+                  )}
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500">Billing Phone</p>
-                  <p className="text-slate-900">{provider.billing?.phone || "—"}</p>
+                  <p className="text-xs text-slate-500 mb-1">Billing Phone</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editData.billing?.phone || ""}
+                      onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, phone: e.target.value } })}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                    />
+                  ) : (
+                    <p className="text-slate-900">{provider.billing?.phone || "—"}</p>
+                  )}
                 </div>
               </div>
-              <div className="mt-3 grid md:grid-cols-2 gap-4">
+              <div className="mt-3 grid md:grid-cols-4 gap-4">
                 <div>
-                  <p className="text-xs text-slate-500">Billing Address</p>
-                  <p className="text-slate-900">
-                    {provider.billing?.address1 || "—"}
-                    {provider.billing?.address2 && `, ${provider.billing.address2}`}
-                  </p>
-                  <p className="text-slate-600">
-                    {provider.billing?.city && `${provider.billing.city}, `}
-                    {provider.billing?.state} {provider.billing?.zip}
-                  </p>
+                  <p className="text-xs text-slate-500 mb-1">Address Line 1</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editData.billing?.address1 || ""}
+                      onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, address1: e.target.value } })}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                    />
+                  ) : (
+                    <p className="text-slate-900">{provider.billing?.address1 || "—"}</p>
+                  )}
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500">Billing Fax</p>
+                  <p className="text-xs text-slate-500 mb-1">Address Line 2</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editData.billing?.address2 || ""}
+                      onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, address2: e.target.value } })}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                    />
+                  ) : (
+                    <p className="text-slate-900">{provider.billing?.address2 || "—"}</p>
+                  )}
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">City</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editData.billing?.city || ""}
+                      onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, city: e.target.value } })}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                    />
+                  ) : (
+                    <p className="text-slate-900">{provider.billing?.city || "—"}</p>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">State</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.billing?.state || ""}
+                        onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, state: e.target.value } })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.billing?.state || "—"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">ZIP</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.billing?.zip || ""}
+                        onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, zip: e.target.value } })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.billing?.zip || "—"}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3">
+                <p className="text-xs text-slate-500 mb-1">Billing Fax</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.billing?.fax || ""}
+                    onChange={(e) => setEditData({ ...editData, billing: { ...editData.billing, fax: e.target.value } })}
+                    className="w-full md:w-1/4 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                  />
+                ) : (
                   <p className="text-slate-900">{provider.billing?.fax || "—"}</p>
-                </div>
+                )}
               </div>
             </div>
 
             {/* Corresponding Address */}
-            {provider.correspondingAddress?.address1 && (
+            {(provider.correspondingAddress?.address1 || isEditing) && (
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-blue-400" />
                   Corresponding Address
                 </h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="md:col-span-2">
-                    <p className="text-xs text-slate-500">Address</p>
-                    <p className="text-slate-900">
-                      {provider.correspondingAddress.address1}
-                      {provider.correspondingAddress.address2 && `, ${provider.correspondingAddress.address2}`}
-                    </p>
-                    <p className="text-slate-600">
-                      {provider.correspondingAddress.city && `${provider.correspondingAddress.city}, `}
-                      {provider.correspondingAddress.state} {provider.correspondingAddress.zip}
-                    </p>
+                <div className="grid md:grid-cols-4 gap-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 1</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.correspondingAddress?.address1 || ""}
+                        onChange={(e) => setEditData({ ...editData, correspondingAddress: { ...editData.correspondingAddress, address1: e.target.value } })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.correspondingAddress?.address1 || "—"}</p>
+                    )}
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500">Contact Name</p>
-                    <p className="text-slate-900">{provider.correspondingAddress.contactName || "—"}</p>
-                    <p className="text-xs text-slate-500 mt-2">Fax</p>
-                    <p className="text-slate-900">{provider.correspondingAddress.fax || "—"}</p>
+                    <p className="text-xs text-slate-500 mb-1">Address Line 2</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.correspondingAddress?.address2 || ""}
+                        onChange={(e) => setEditData({ ...editData, correspondingAddress: { ...editData.correspondingAddress, address2: e.target.value } })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.correspondingAddress?.address2 || "—"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">City</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.correspondingAddress?.city || ""}
+                        onChange={(e) => setEditData({ ...editData, correspondingAddress: { ...editData.correspondingAddress, city: e.target.value } })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.correspondingAddress?.city || "—"}</p>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">State</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.correspondingAddress?.state || ""}
+                          onChange={(e) => setEditData({ ...editData, correspondingAddress: { ...editData.correspondingAddress, state: e.target.value } })}
+                          className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                        />
+                      ) : (
+                        <p className="text-slate-900">{provider.correspondingAddress?.state || "—"}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 mb-1">ZIP</p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editData.correspondingAddress?.zip || ""}
+                          onChange={(e) => setEditData({ ...editData, correspondingAddress: { ...editData.correspondingAddress, zip: e.target.value } })}
+                          className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                        />
+                      ) : (
+                        <p className="text-slate-900">{provider.correspondingAddress?.zip || "—"}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3 grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Contact Name</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.correspondingAddress?.contactName || ""}
+                        onChange={(e) => setEditData({ ...editData, correspondingAddress: { ...editData.correspondingAddress, contactName: e.target.value } })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.correspondingAddress?.contactName || "—"}</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Fax</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.correspondingAddress?.fax || ""}
+                        onChange={(e) => setEditData({ ...editData, correspondingAddress: { ...editData.correspondingAddress, fax: e.target.value } })}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                      />
+                    ) : (
+                      <p className="text-slate-900">{provider.correspondingAddress?.fax || "—"}</p>
+                    )}
                   </div>
                 </div>
               </div>
