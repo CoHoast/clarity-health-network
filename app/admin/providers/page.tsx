@@ -154,18 +154,92 @@ const languageNames: Record<string, string> = {
 const titleOptions = ["MD", "DO", "PhD", "NP", "PA", "DPM", "DC", "PT", "OT", "DDS", "DMD", "PharmD", "PsyD"];
 
 // Network Organizations - Arizona Antidote
-const networks: Network[] = [
-  { id: "NET-001", name: "Arizona Antidote", description: "Solidarity Health Network PPO - Arizona providers", state: "AZ", providerCount: 0, status: "active", createdDate: "2026-03-19" },
+const networksData: Network[] = [
+  { id: "NET-001", name: "Arizona Antidote", description: "Solidarity Health Network PPO - Arizona providers", state: "AZ", providerCount: 3600, status: "active", createdDate: "2026-03-19" },
 ];
-
-// Practices - Empty, ready for Arizona import
-const practices: Practice[] = [];
-
-// Providers - Empty, ready for Arizona import  
-const providers: Provider[] = [];
 
 const statusOptions = ["All", "Active", "Pending", "Inactive"];
 const typeOptions = ["All Types", "Group Practice", "Facility"];
+
+// Convert API provider to internal Provider format
+function convertApiProvider(apiProvider: any, practiceId: string): Provider {
+  return {
+    id: apiProvider.id,
+    practiceId,
+    firstName: apiProvider.firstName,
+    lastName: apiProvider.lastName,
+    title: apiProvider.credentials,
+    credential: apiProvider.credentials || 'MD',
+    npi: apiProvider.npi,
+    gender: apiProvider.gender === 'M' ? 'Male' : apiProvider.gender === 'F' ? 'Female' : '',
+    specialty: apiProvider.specialty,
+    primaryTaxonomy: apiProvider.taxonomyCode || '',
+    primaryTaxonomyDesc: apiProvider.specialty,
+    secondaryTaxonomy: apiProvider.secondaryTaxonomyCode || '',
+    secondaryTaxonomyDesc: '',
+    licenseState: 'AZ',
+    licenseNumber: '',
+    acceptingNewPatients: apiProvider.acceptingNewPatients,
+    languages: apiProvider.languages || ['English'],
+    networks: ['NET-001'],
+    clinicHours: {
+      monday: '8:00 AM - 5:00 PM',
+      tuesday: '8:00 AM - 5:00 PM',
+      wednesday: '8:00 AM - 5:00 PM',
+      thursday: '8:00 AM - 5:00 PM',
+      friday: '8:00 AM - 5:00 PM',
+      saturday: 'Closed',
+      sunday: 'Closed',
+    },
+  };
+}
+
+// Convert API provider to Practice format (using billing info)
+function convertApiProviderToPractice(apiProvider: any): Practice {
+  const billing = apiProvider.billing || {};
+  const location = apiProvider.locations?.[0] || {};
+  
+  return {
+    id: `practice-${billing.taxId || apiProvider.npi}`,
+    name: billing.name || `${apiProvider.lastName}, ${apiProvider.firstName} ${apiProvider.credentials || ''}`.trim(),
+    type: 'Group Practice',
+    specialty: apiProvider.specialty,
+    address: location.address1 || '',
+    address2: location.address2 || '',
+    city: location.city || '',
+    county: '',
+    state: location.state || 'AZ',
+    zip: location.zip || '',
+    country: 'USA',
+    phone: location.phone || '',
+    fax: location.fax || '',
+    billingPhone: billing.phone || '',
+    billingFax: billing.fax || '',
+    email: location.email || '',
+    contactName: '',
+    correspondenceAddress: billing.address1 || '',
+    correspondenceAddress2: billing.address2 || '',
+    correspondenceCity: billing.city || '',
+    correspondenceState: billing.state || '',
+    correspondenceZip: billing.zip || '',
+    correspondenceCountry: 'USA',
+    correspondenceFax: billing.fax || '',
+    payToNpi: billing.npi || '',
+    payToName: billing.name || '',
+    payToTaxId: billing.taxId || '',
+    payToAddress: billing.address1 || '',
+    payToAddress2: billing.address2 || '',
+    payToCity: billing.city || '',
+    payToState: billing.state || '',
+    payToZip: billing.zip || '',
+    payToCountry: 'USA',
+    status: 'active',
+    contractStart: '2026-01-01',
+    contractEnd: '2027-12-31',
+    discountType: apiProvider.pricingTier || 'Tier1',
+    discountRate: '35%',
+  };
+}
 
 export default function ProvidersPage() {
   const { isDark } = useTheme();
@@ -175,6 +249,12 @@ export default function ProvidersPage() {
   const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
   const [activeTab, setActiveTab] = useState<"info" | "providers" | "billing" | "payto" | "contract">("info");
+  
+  // State for Arizona providers loaded from API
+  const [practices, setPractices] = useState<Practice[]>([]);
+  const [providers, setProviders] = useState<Provider[]>([]);
+  const [networks, setNetworks] = useState<Network[]>(networksData);
+  const [apiStats, setApiStats] = useState({ total: 0, primaryCare: 0, behavioralHealth: 0, acceptingNew: 0 });
   const [showAddPractice, setShowAddPractice] = useState(false);
   const [showAddProvider, setShowAddProvider] = useState(false);
   const [showCsvUpload, setShowCsvUpload] = useState(false);
@@ -185,10 +265,66 @@ export default function ProvidersPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showNetworkAssign, setShowNetworkAssign] = useState(false);
 
-  // Simulate loading
+  // Load Arizona providers from API
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
+    async function loadProviders() {
+      try {
+        // Fetch first page of providers (with a larger limit for the demo)
+        const response = await fetch('/api/providers?limit=100');
+        const data = await response.json();
+        
+        if (data.providers && Array.isArray(data.providers)) {
+          // Group providers by billing taxId to create practices
+          const practiceMap = new Map<string, { practice: Practice; providers: Provider[] }>();
+          
+          for (const apiProvider of data.providers) {
+            const taxId = apiProvider.billing?.taxId || apiProvider.npi;
+            const practiceId = `practice-${taxId}`;
+            
+            if (!practiceMap.has(taxId)) {
+              const practice = convertApiProviderToPractice(apiProvider);
+              practice.id = practiceId;
+              practiceMap.set(taxId, { practice, providers: [] });
+            }
+            
+            const provider = convertApiProvider(apiProvider, practiceId);
+            practiceMap.get(taxId)!.providers.push(provider);
+          }
+          
+          // Extract practices and providers
+          const newPractices: Practice[] = [];
+          const newProviders: Provider[] = [];
+          
+          for (const [, { practice, providers: pracs }] of practiceMap) {
+            newPractices.push(practice);
+            newProviders.push(...pracs);
+          }
+          
+          setPractices(newPractices);
+          setProviders(newProviders);
+          
+          // Update stats
+          setApiStats({
+            total: data.pagination?.total || newProviders.length,
+            primaryCare: data.providers.filter((p: any) => p.isPrimaryCare).length,
+            behavioralHealth: data.providers.filter((p: any) => p.isBehavioralHealth).length,
+            acceptingNew: data.providers.filter((p: any) => p.acceptingNewPatients).length,
+          });
+          
+          // Update network provider count
+          setNetworks(prev => prev.map(n => ({
+            ...n,
+            providerCount: data.pagination?.total || newProviders.length,
+          })));
+        }
+      } catch (error) {
+        console.error('Failed to load providers:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    loadProviders();
   }, []);
 
   // New practice form
@@ -410,21 +546,20 @@ export default function ProvidersPage() {
             />
             <StatCard
               label="Total Providers"
-              value={providers.length}
+              value={apiStats.total || providers.length}
+              subtitle={`${providers.length} loaded`}
               icon={<Users className="w-5 h-5" />}
               delay={1}
             />
             <StatCard
-              label="Active Practices"
-              value={practices.filter(p => p.status === "active").length}
-              change={`${Math.round((practices.filter(p => p.status === "active").length / practices.length) * 100)}%`}
-              trend="up"
+              label="Primary Care"
+              value={apiStats.primaryCare || providers.filter(p => p.specialty?.includes('Family') || p.specialty?.includes('Internal')).length}
               icon={<CheckCircle className="w-5 h-5" />}
               delay={2}
             />
             <StatCard
               label="Accepting Patients"
-              value={providers.filter(p => p.acceptingNewPatients).length}
+              value={apiStats.acceptingNew || providers.filter(p => p.acceptingNewPatients).length}
               icon={<User className="w-5 h-5" />}
               delay={3}
             />
