@@ -348,14 +348,45 @@ export default function PracticeDetailPage() {
     dme: "100",
   });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setSaving(true);
-    setTimeout(() => {
-      setSaving(false);
+    try {
+      // Prepare update payload
+      const updateData = {
+        name: editData.name,
+        npi: editData.npi,
+        taxId: editData.taxId,
+        address1: editData.address1,
+        address2: editData.address2,
+        city: editData.city,
+        state: editData.state,
+        zip: editData.zip,
+        phone: editData.phone,
+        fax: editData.fax,
+      };
+
+      // Call API to update practice
+      const res = await fetch(`/api/practices/${practice.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updateData),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to update practice');
+      }
+
+      // Update local state with saved data
+      setPractice({ ...practice, ...editData });
       setSaved(true);
       setIsEditing(false);
       setTimeout(() => setSaved(false), 2000);
-    }, 1000);
+    } catch (error) {
+      console.error('Failed to save practice:', error);
+      alert('Failed to save changes. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const sections = [
