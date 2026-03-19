@@ -208,13 +208,26 @@ interface Provider {
   taxonomyCode: string;
   secondarySpecialtyCode: string;
   secondaryTaxonomyCode: string;
+  facilityType: string;
   isPrimaryCare: boolean;
   isBehavioralHealth: boolean;
   acceptingNewPatients: boolean;
   directoryDisplay: boolean;
   languages: string[];
   pricingTier: string;
+  networkOrg: string;
   networkId: string;
+  contractStartDate: string;
+  contractEndDate: string;
+  correspondingAddress: {
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
+    fax: string;
+    contactName: string;
+  };
   status: 'active' | 'pending' | 'inactive';
   locations: ProviderLocation[];
   billing: BillingInfo;
@@ -228,6 +241,7 @@ interface ProviderLocation {
   city: string;
   state: string;
   zip: string;
+  county: string;
   phone: string;
   fax: string;
   email: string;
@@ -330,13 +344,26 @@ async function main() {
       taxonomyCode: primary['Primary Taxonomy Code'] || '',
       secondarySpecialtyCode: primary['Secondary Spc Code'] || '',
       secondaryTaxonomyCode: primary['Secondary Taxonomy Code'] || '',
+      facilityType: primary['Facility Type'] || '',
       isPrimaryCare: primary['Primary Care Flag'] === 'P',
       isBehavioralHealth: primary['Behavioral Health Flag'] === 'B',
       acceptingNewPatients: primary['Accepts New Patients'] === 'Y',
       directoryDisplay: primary['Directory Display'] === 'Y',
       languages: parseLanguages(primary['Language']),
-      pricingTier: primary['Pricing Tier'] || 'Tier1',
+      pricingTier: primary['Pricing Tier'] || '',
+      networkOrg: primary['Network Org'] || '',
       networkId: 'arizona-antidote',
+      contractStartDate: primary['Start Date'] || '',
+      contractEndDate: primary['End Date'] || '',
+      correspondingAddress: {
+        address1: primary['Corresponding Addr 1'] || '',
+        address2: primary['Corresponding Addr 2'] || '',
+        city: primary['Corresponding City'] || '',
+        state: primary['Corresponding State'] || '',
+        zip: primary['Corresponding Zip'] || '',
+        fax: formatPhone(primary['Corresponding Fax'] || ''),
+        contactName: primary['Contact Name'] || '',
+      },
       status: 'active',
       locations: [],
       billing: {
@@ -364,6 +391,7 @@ async function main() {
         city: loc['City'] || '',
         state: loc['State'] || '',
         zip: loc['Zip Code'] || '',
+        county: loc['County'] || '',
         phone: formatPhone(loc['Phone #'] || ''),
         fax: formatPhone(loc['Fax'] || ''),
         email: loc['Email'] || '',

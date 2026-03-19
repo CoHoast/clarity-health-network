@@ -251,27 +251,32 @@ export default function ProviderDetailPage() {
           const providerData = {
             id: providerId,
             practiceId: practiceId,
-            practiceName: '', // Will be loaded separately if needed
+            practiceName: p.billing?.name || '',
             contractNumber: p.contractNumber || '',
             referenceNumber: p.referenceNumber || '',
             isPrimaryCare: p.isPrimaryCare || false,
             isBehavioralHealth: p.isBehavioralHealth || false,
             firstName: p.firstName || '',
             lastName: p.lastName || '',
+            middleInitial: p.middleInitial || '',
             title: p.credentials || p.credential || 'MD',
             npi: p.npi || npi,
             gender: p.gender === 'M' ? 'Male' : p.gender === 'F' ? 'Female' : '',
             specialty: p.specialty || 'General Practice',
+            specialtyCode: p.specialtyCode || '',
             primaryTaxonomy: p.taxonomyCode || '',
             primaryTaxonomyDesc: p.specialty || '',
+            secondarySpecialtyCode: p.secondarySpecialtyCode || '',
             secondaryTaxonomy: p.secondaryTaxonomyCode || '',
             secondaryTaxonomyDesc: '',
+            facilityType: p.facilityType || '',
             licenseState: p.locations?.[0]?.state || 'AZ',
             licenseNumber: '',
             licenseExpiration: '',
             deaNumber: '',
             deaExpiration: '',
             acceptingNewPatients: p.acceptingNewPatients || false,
+            directoryDisplay: p.directoryDisplay || false,
             languages: p.languages || ['English'],
             boardCertified: false,
             boardCertification: '',
@@ -283,13 +288,29 @@ export default function ProviderDetailPage() {
             malpracticeExpiration: '',
             malpracticeCoverage: '',
             hospitalAffiliations: [],
+            // Primary location
             officeAddress: p.locations?.[0]?.address1 || '',
             officeAddress2: p.locations?.[0]?.address2 || '',
             officeCity: p.locations?.[0]?.city || '',
             officeState: p.locations?.[0]?.state || 'AZ',
             officeZip: p.locations?.[0]?.zip || '',
+            officeCounty: p.locations?.[0]?.county || '',
             officePhone: p.locations?.[0]?.phone || '',
             officeFax: p.locations?.[0]?.fax || '',
+            officeEmail: p.locations?.[0]?.email || '',
+            // Contract info
+            networkOrg: p.networkOrg || '',
+            contractStartDate: p.contractStartDate || '',
+            contractEndDate: p.contractEndDate || '',
+            pricingTier: p.pricingTier || '',
+            // Corresponding address
+            correspondingAddress: p.correspondingAddress || {
+              address1: '', address2: '', city: '', state: '', zip: '', fax: '', contactName: ''
+            },
+            // Billing info
+            billing: p.billing || {
+              npi: '', taxId: '', name: '', address1: '', address2: '', city: '', state: '', zip: '', phone: '', fax: ''
+            },
             networks: ['arizona-antidote'],
             clinicHours: p.locations?.[0]?.hours || {
               monday: '',
@@ -301,7 +322,6 @@ export default function ProviderDetailPage() {
               sunday: '',
             },
             status: 'active',
-            pricingTier: p.pricingTier || 1,
             useCustomRates: false,
             rateType: 'flat',
             flatRate: '135',
@@ -731,22 +751,119 @@ export default function ProviderDetailPage() {
               </div>
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Pricing Tier</p>
-                {isEditing ? (
-                  <select
-                    value={editData.pricingTier || 1}
-                    onChange={(e) => setEditData({ ...editData, pricingTier: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
-                  >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                  </select>
-                ) : (
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-lg">
-                    {provider.pricingTier || 1}
-                  </span>
-                )}
+                <p className="text-slate-900 font-medium">{provider.pricingTier || "—"}</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Middle Initial</p>
+                <p className="text-slate-900">{provider.middleInitial || "—"}</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Specialty Code</p>
+                <p className="text-slate-900 font-mono">{provider.specialtyCode || "—"}</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Secondary Specialty</p>
+                <p className="text-slate-900 font-mono">{provider.secondarySpecialtyCode || "—"}</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Facility Type</p>
+                <p className="text-slate-900">{provider.facilityType || "—"}</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Network Org</p>
+                <p className="text-slate-900 font-mono">{provider.networkOrg || "—"}</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Contract Start</p>
+                <p className="text-slate-900">{provider.contractStartDate || "—"}</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Contract End</p>
+                <p className="text-slate-900">{provider.contractEndDate || "—"}</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Directory Display</p>
+                <span className={`px-2 py-1 rounded text-sm font-medium ${
+                  provider.directoryDisplay 
+                    ? "bg-green-500/20 text-green-400" 
+                    : "bg-slate-500/20 text-slate-400"
+                }`}>
+                  {provider.directoryDisplay ? "Yes" : "No"}
+                </span>
               </div>
             </div>
+            
+            {/* Billing Information */}
+            <div className="bg-white border border-slate-200 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-blue-400" />
+                Billing Information
+              </h3>
+              <div className="grid md:grid-cols-4 gap-4">
+                <div>
+                  <p className="text-xs text-slate-500">Billing Name</p>
+                  <p className="text-slate-900 font-medium">{provider.billing?.name || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Billing NPI</p>
+                  <p className="text-slate-900 font-mono">{provider.billing?.npi || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Tax ID</p>
+                  <p className="text-slate-900 font-mono">{provider.billing?.taxId || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Billing Phone</p>
+                  <p className="text-slate-900">{provider.billing?.phone || "—"}</p>
+                </div>
+              </div>
+              <div className="mt-3 grid md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-slate-500">Billing Address</p>
+                  <p className="text-slate-900">
+                    {provider.billing?.address1 || "—"}
+                    {provider.billing?.address2 && `, ${provider.billing.address2}`}
+                  </p>
+                  <p className="text-slate-600">
+                    {provider.billing?.city && `${provider.billing.city}, `}
+                    {provider.billing?.state} {provider.billing?.zip}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Billing Fax</p>
+                  <p className="text-slate-900">{provider.billing?.fax || "—"}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Corresponding Address */}
+            {provider.correspondingAddress?.address1 && (
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-blue-400" />
+                  Corresponding Address
+                </h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                    <p className="text-xs text-slate-500">Address</p>
+                    <p className="text-slate-900">
+                      {provider.correspondingAddress.address1}
+                      {provider.correspondingAddress.address2 && `, ${provider.correspondingAddress.address2}`}
+                    </p>
+                    <p className="text-slate-600">
+                      {provider.correspondingAddress.city && `${provider.correspondingAddress.city}, `}
+                      {provider.correspondingAddress.state} {provider.correspondingAddress.zip}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Contact Name</p>
+                    <p className="text-slate-900">{provider.correspondingAddress.contactName || "—"}</p>
+                    <p className="text-xs text-slate-500 mt-2">Fax</p>
+                    <p className="text-slate-900">{provider.correspondingAddress.fax || "—"}</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Taxonomy & Languages */}
             <div className="grid md:grid-cols-2 gap-6">
@@ -1410,33 +1527,75 @@ export default function ProviderDetailPage() {
                 <div className="space-y-4">
                   <div>
                     <p className="text-xs text-slate-500 mb-1">Phone</p>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={editData.officePhone || ""}
-                        onChange={(e) => setEditData({ ...editData, officePhone: e.target.value })}
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
-                      />
-                    ) : (
-                      <p className="text-slate-900">{provider.officePhone || "—"}</p>
-                    )}
+                    <p className="text-slate-900">{provider.officePhone || "—"}</p>
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 mb-1">Fax</p>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={editData.officeFax || ""}
-                        onChange={(e) => setEditData({ ...editData, officeFax: e.target.value })}
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
-                      />
-                    ) : (
-                      <p className="text-slate-900">{provider.officeFax || "—"}</p>
-                    )}
+                    <p className="text-slate-900">{provider.officeFax || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Email</p>
+                    <p className="text-slate-900">{provider.officeEmail || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">County</p>
+                    <p className="text-slate-900">{provider.officeCounty || "—"}</p>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Additional Locations */}
+            {provider.locations && provider.locations.length > 1 && (
+              <div className="bg-white border border-slate-200 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-slate-900 mb-4">
+                  Additional Locations ({provider.locations.length - 1})
+                </h3>
+                <div className="space-y-4">
+                  {provider.locations.slice(1).map((loc: any, idx: number) => (
+                    <div key={loc.id || idx} className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                      <div className="grid md:grid-cols-3 gap-4">
+                        <div className="md:col-span-2">
+                          <p className="text-xs text-slate-500">Address</p>
+                          <p className="text-slate-900 font-medium">
+                            {loc.address1}{loc.address2 && `, ${loc.address2}`}
+                          </p>
+                          <p className="text-slate-600">
+                            {loc.city}, {loc.state} {loc.zip}
+                            {loc.county && ` (${loc.county} County)`}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-500">Phone</p>
+                          <p className="text-slate-900">{loc.phone || "—"}</p>
+                          {loc.fax && (
+                            <>
+                              <p className="text-xs text-slate-500 mt-2">Fax</p>
+                              <p className="text-slate-900">{loc.fax}</p>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Clinic Hours */}
+            {provider.clinicHours && Object.values(provider.clinicHours).some((h: any) => h) && (
+              <div className="bg-white border border-slate-200 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-slate-900 mb-4">Clinic Hours</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => (
+                    <div key={day}>
+                      <p className="text-xs text-slate-500 capitalize">{day}</p>
+                      <p className="text-slate-900">{provider.clinicHours?.[day] || "—"}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
