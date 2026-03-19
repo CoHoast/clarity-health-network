@@ -20,20 +20,12 @@ interface Network {
   contractType: string;
 }
 
+// Arizona Antidote Network - ready for Solidarity provider import
 const networks: Network[] = [
-  { id: "NET-001", name: "Ohio PPO Network", description: "Primary PPO network covering all of Ohio", states: ["OH"], providerCount: 1847, practiceCount: 312, status: "active", createdDate: "2020-01-01", contractType: "% Off Billed" },
-  { id: "NET-002", name: "Cleveland Metro Network", description: "Greater Cleveland metropolitan area providers", states: ["OH"], providerCount: 892, practiceCount: 156, status: "active", createdDate: "2021-03-15", contractType: "% of Medicare" },
-  { id: "NET-003", name: "Northeast Ohio Specialists", description: "Specialty care providers in NE Ohio", states: ["OH"], providerCount: 456, practiceCount: 89, status: "active", createdDate: "2022-06-01", contractType: "Mixed" },
-  { id: "NET-004", name: "Ohio Hospital Alliance", description: "Hospital and facility network", states: ["OH"], providerCount: 89, practiceCount: 12, status: "active", createdDate: "2019-08-20", contractType: "% of Medicare" },
-  { id: "NET-005", name: "Midwest Regional Network", description: "Multi-state network covering OH, PA, MI, IN", states: ["OH", "PA", "MI", "IN"], providerCount: 3421, practiceCount: 567, status: "active", createdDate: "2018-01-01", contractType: "Mixed" },
-  { id: "NET-006", name: "TrueCare Value Network", description: "Cost-effective care network with negotiated rates", states: ["OH", "PA"], providerCount: 1256, practiceCount: 234, status: "active", createdDate: "2023-01-15", contractType: "% Off Billed" },
-  { id: "NET-007", name: "Pennsylvania PPO", description: "Pennsylvania state network", states: ["PA"], providerCount: 2134, practiceCount: 389, status: "active", createdDate: "2020-04-01", contractType: "% Off Billed" },
-  { id: "NET-008", name: "Urgent Care Express", description: "Urgent care and walk-in clinics network", states: ["OH", "PA", "MI"], providerCount: 234, practiceCount: 67, status: "active", createdDate: "2022-09-01", contractType: "Flat Rate" },
-  { id: "NET-009", name: "Michigan Health Partners", description: "Michigan state provider network", states: ["MI"], providerCount: 1567, practiceCount: 278, status: "active", createdDate: "2021-06-01", contractType: "% of Medicare" },
-  { id: "NET-010", name: "Indiana Care Network", description: "Indiana state provider network", states: ["IN"], providerCount: 987, practiceCount: 167, status: "inactive", createdDate: "2019-03-15", contractType: "% Off Billed" },
+  { id: "NET-001", name: "Arizona Antidote", description: "Solidarity Health Network PPO - Arizona providers", states: ["AZ"], providerCount: 0, practiceCount: 0, status: "active", createdDate: "2026-03-19", contractType: "% Off Billed" },
 ];
 
-const stateOptions = ["OH", "PA", "MI", "IN", "WV", "KY", "NY", "IL"];
+const stateOptions = ["AZ", "CA", "NV", "NM", "CO", "UT", "TX"];
 
 export default function NetworksPage() {
   const { isDark } = useTheme();

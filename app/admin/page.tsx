@@ -25,23 +25,19 @@ import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { cn } from "@/lib/utils";
 
 const stats = [
-  { label: "Total Providers", value: "2,847", change: "+24", trend: "up" as const, icon: <Building2 className="w-5 h-5" /> },
-  { label: "Active Contracts", value: "2,634", change: "93%", trend: "up" as const, icon: <FileSignature className="w-5 h-5" /> },
-  { label: "Expiring Soon", value: "47", change: "30d", trend: "warning" as const, icon: <AlertTriangle className="w-5 h-5" /> },
-  { label: "Avg. Discount", value: "34%", change: "+2.1%", trend: "up" as const, icon: <DollarSign className="w-5 h-5" /> },
+  { label: "Total Providers", value: "0", change: "Import pending", trend: "up" as const, icon: <Building2 className="w-5 h-5" /> },
+  { label: "Active Contracts", value: "0", change: "—", trend: "up" as const, icon: <FileSignature className="w-5 h-5" /> },
+  { label: "Expiring Soon", value: "0", change: "—", trend: "up" as const, icon: <AlertTriangle className="w-5 h-5" /> },
+  { label: "Avg. Discount", value: "—", change: "TBD", trend: "up" as const, icon: <DollarSign className="w-5 h-5" /> },
 ];
 
-const expiringContracts = [
-  { provider: "Midwest Regional Medical", npi: "1234567890", expires: "Mar 28, 2026", discount: "35%", status: "Renewal Sent" },
-  { provider: "Summit Health Specialists", npi: "2345678901", expires: "Apr 2, 2026", discount: "30%", status: "Pending Review" },
-  { provider: "Valley Care Associates", npi: "3456789012", expires: "Apr 5, 2026", discount: "40%", status: "Not Started" },
-  { provider: "Premier Orthopedics", npi: "4567890123", expires: "Apr 12, 2026", discount: "28%", status: "Renewal Sent" },
-  { provider: "Citywide Imaging Center", npi: "5678901234", expires: "Apr 15, 2026", discount: "45%", status: "Not Started" },
+const expiringContracts: { provider: string; npi: string; expires: string; discount: string; status: string }[] = [
+  // Empty - awaiting Arizona provider import
 ];
 
 const recentActivity = [
-  { type: "provider", title: "New Provider Added", message: "Dr. Sarah Chen - Cardiology", time: "15m ago" },
-  { type: "contract", title: "Contract Renewed", message: "Lakeside Medical Group - 3 year term", time: "1h ago" },
+  { type: "network", title: "Network Created", message: "Arizona Antidote - PPO Network", time: "Just now" },
+  { type: "system", title: "Data Cleared", message: "Ready for Arizona provider import", time: "Just now" },
   { type: "discount", title: "Rate Updated", message: "Regional Hospital - 38% → 42%", time: "2h ago" },
   { type: "credentialing", title: "Credentialing Complete", message: "5 providers verified", time: "3h ago" },
   { type: "provider", title: "Provider Updated", message: "NPI 9876543210 - address change", time: "4h ago" },

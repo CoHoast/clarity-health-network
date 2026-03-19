@@ -60,7 +60,7 @@ const providersData: Record<string, any> = {
     officeZip: "44101",
     officePhone: "(555) 123-4567",
     officeFax: "(555) 123-4568",
-    networks: ["NET-001", "NET-002"],
+    networks: ["NET-001", "NET-001"],
     clinicHours: {
       monday: "8:00 AM - 5:00 PM",
       tuesday: "8:00 AM - 5:00 PM",
@@ -133,7 +133,7 @@ const providersData: Record<string, any> = {
     officeZip: "44122",
     officePhone: "(555) 234-5678",
     officeFax: "(555) 234-5679",
-    networks: ["NET-001", "NET-002", "NET-005"],
+    networks: ["NET-001", "NET-001", "NET-001"],
     clinicHours: {
       monday: "9:00 AM - 6:00 PM",
       tuesday: "9:00 AM - 6:00 PM",
@@ -184,11 +184,11 @@ const languageNames: Record<string, string> = {
 };
 
 const networkNames: Record<string, string> = {
-  "NET-001": "Ohio PPO Network",
-  "NET-002": "Cleveland Metro Network",
+  "NET-001": "Arizona Antidote",
+  "NET-001": "Arizona Antidote",
   "NET-003": "Northeast Ohio Specialists",
   "NET-004": "Ohio Hospital Alliance",
-  "NET-005": "Midwest Regional Network",
+  "NET-001": "Midwest Regional Network",
   "NET-006": "TrueCare Value Network",
 };
 
