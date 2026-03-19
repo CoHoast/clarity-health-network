@@ -21,6 +21,8 @@ const providersData: Record<string, any> = {
     practiceName: "Cleveland Family Medicine",
     contractNumber: "CF1001",
     referenceNumber: "", // Entity # from Solidarity
+    isPrimaryCare: true,
+    isBehavioralHealth: false,
     firstName: "Robert",
     lastName: "Smith",
     title: "MD",
@@ -95,6 +97,8 @@ const providersData: Record<string, any> = {
     practiceName: "Cleveland Family Medicine",
     contractNumber: "CF1002",
     referenceNumber: "", // Entity # from Solidarity
+    isPrimaryCare: true,
+    isBehavioralHealth: false,
     firstName: "Jennifer",
     lastName: "Adams",
     title: "MD",
@@ -536,6 +540,48 @@ export default function ProviderDetailPage() {
                       : "bg-red-500/20 text-red-400"
                   }`}>
                     {provider.acceptingNewPatients ? "Yes" : "No"}
+                  </span>
+                )}
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Primary Care</p>
+                {isEditing ? (
+                  <select
+                    value={editData.isPrimaryCare ? "yes" : "no"}
+                    onChange={(e) => setEditData({ ...editData, isPrimaryCare: e.target.value === "yes" })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                  >
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                ) : (
+                  <span className={`px-2 py-1 rounded text-sm font-medium ${
+                    provider.isPrimaryCare 
+                      ? "bg-blue-500/20 text-blue-400" 
+                      : "bg-slate-500/20 text-slate-400"
+                  }`}>
+                    {provider.isPrimaryCare ? "Yes" : "No"}
+                  </span>
+                )}
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs text-slate-500 mb-1">Behavioral Health</p>
+                {isEditing ? (
+                  <select
+                    value={editData.isBehavioralHealth ? "yes" : "no"}
+                    onChange={(e) => setEditData({ ...editData, isBehavioralHealth: e.target.value === "yes" })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
+                  >
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                ) : (
+                  <span className={`px-2 py-1 rounded text-sm font-medium ${
+                    provider.isBehavioralHealth 
+                      ? "bg-purple-500/20 text-purple-400" 
+                      : "bg-slate-500/20 text-slate-400"
+                  }`}>
+                    {provider.isBehavioralHealth ? "Yes" : "No"}
                   </span>
                 )}
               </div>
