@@ -274,6 +274,48 @@ export default function PracticeDetailPage() {
   const providerFileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedProviders, setUploadedProviders] = useState<any[]>([]);
   
+  // CSV headers for provider import (matches main providers page format)
+  const providerCsvHeaders = [
+    'NPI', 'Last Name', 'First Name', 'Credentials', 'Gender',
+    'Entity #', 'Contract #', 'Tax ID', 'Practice NPI',
+    'Primary Spc Code', 'Secondary Spc Code', 'Tertiary Spc Code',
+    'Primary Care Flag', 'Behavioral Health Flag',
+    'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip',
+    'Accept New Patients', 'Languages', 'Visible'
+  ];
+
+  const downloadProviderTemplate = () => {
+    const csv = providerCsvHeaders.join(',') + '\n';
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'provider-import-template.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Parse CSV line handling quoted values
+  const parseCsvLine = (line: string): string[] => {
+    const result: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        result.push(current.trim().replace(/^"|"$/g, ''));
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    result.push(current.trim().replace(/^"|"$/g, ''));
+    return result;
+  };
+
   const handleProviderCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -283,30 +325,81 @@ export default function PracticeDetailPage() {
       const text = event.target?.result as string;
       const lines = text.split("\n").filter(line => line.trim());
       
-      // Skip header row if present
-      const startIndex = lines[0].toLowerCase().includes("first") || 
-                         lines[0].toLowerCase().includes("name") ? 1 : 0;
+      if (lines.length === 0) return;
+      
+      // Parse headers to create column mapping
+      const headers = parseCsvLine(lines[0]).map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
+      
+      // Create header index map
+      const headerMap: Record<string, number> = {};
+      headers.forEach((h, i) => {
+        // Map various header names to standard fields
+        if (h.includes('npi') && !h.includes('practice')) headerMap['npi'] = i;
+        else if (h.includes('lastname') || h === 'last') headerMap['lastName'] = i;
+        else if (h.includes('firstname') || h === 'first') headerMap['firstName'] = i;
+        else if (h.includes('credential') || h.includes('title')) headerMap['credentials'] = i;
+        else if (h.includes('gender') || h === 'sex') headerMap['gender'] = i;
+        else if (h.includes('entity')) headerMap['referenceNumber'] = i;
+        else if (h.includes('contract')) headerMap['contractNumber'] = i;
+        else if (h.includes('taxid') || h.includes('tax')) headerMap['taxId'] = i;
+        else if (h.includes('practicenpi')) headerMap['practiceNpi'] = i;
+        else if (h.includes('primaryspc') || h.includes('specialty1') || (h.includes('specialty') && !h.includes('secondary'))) headerMap['specialtyCode'] = i;
+        else if (h.includes('secondaryspc') || h.includes('specialty2')) headerMap['secondarySpecialtyCode'] = i;
+        else if (h.includes('tertiaryspc') || h.includes('specialty3')) headerMap['tertiarySpecialtyCode'] = i;
+        else if (h.includes('primarycare')) headerMap['isPrimaryCare'] = i;
+        else if (h.includes('behavioral')) headerMap['isBehavioralHealth'] = i;
+        else if (h.includes('phone')) headerMap['phone'] = i;
+        else if (h.includes('address1') || h === 'address') headerMap['address1'] = i;
+        else if (h.includes('address2')) headerMap['address2'] = i;
+        else if (h.includes('city')) headerMap['city'] = i;
+        else if (h.includes('state')) headerMap['state'] = i;
+        else if (h.includes('zip')) headerMap['zip'] = i;
+        else if (h.includes('accept') || h.includes('newpatient')) headerMap['acceptingNewPatients'] = i;
+        else if (h.includes('language')) headerMap['languages'] = i;
+        else if (h.includes('visible') || h.includes('directory')) headerMap['directoryDisplay'] = i;
+      });
       
       const newProviders: any[] = [];
       
-      for (let i = startIndex; i < lines.length; i++) {
-        const parts = lines[i].split(",").map(p => p.trim().replace(/^"|"$/g, ""));
-        if (parts.length >= 4) {
-          newProviders.push({
-            id: `PRV-UPLOAD-${Date.now()}-${i}`,
-            firstName: parts[0],
-            lastName: parts[1],
-            title: parts[2] || "MD",
-            npi: parts[3],
-            specialty: parts[4] || practice.specialty,
-            email: parts[5] || "",
-            phone: parts[6] || "",
-            licenseState: parts[7] || "OH",
-            licenseNumber: parts[8] || "",
-            status: "active",
-            useCustomRates: false,
-          });
-        }
+      // Parse data rows (skip header)
+      for (let i = 1; i < lines.length; i++) {
+        const values = parseCsvLine(lines[i]);
+        if (values.length < 3) continue; // Skip empty/invalid rows
+        
+        const npi = headerMap['npi'] !== undefined ? values[headerMap['npi']] : '';
+        const lastName = headerMap['lastName'] !== undefined ? values[headerMap['lastName']] : '';
+        const firstName = headerMap['firstName'] !== undefined ? values[headerMap['firstName']] : '';
+        
+        // Require NPI and Name
+        if (!npi || (!lastName && !firstName)) continue;
+        
+        newProviders.push({
+          id: `PRV-UPLOAD-${Date.now()}-${i}`,
+          npi,
+          firstName,
+          lastName,
+          name: `${firstName} ${lastName}`.trim(),
+          title: headerMap['credentials'] !== undefined ? values[headerMap['credentials']] || 'MD' : 'MD',
+          specialty: practice?.specialty || 'General Practice',
+          specialtyCode: headerMap['specialtyCode'] !== undefined ? values[headerMap['specialtyCode']] : '',
+          secondarySpecialtyCode: headerMap['secondarySpecialtyCode'] !== undefined ? values[headerMap['secondarySpecialtyCode']] : '',
+          gender: headerMap['gender'] !== undefined ? values[headerMap['gender']] : '',
+          referenceNumber: headerMap['referenceNumber'] !== undefined ? values[headerMap['referenceNumber']] : '',
+          contractNumber: headerMap['contractNumber'] !== undefined ? values[headerMap['contractNumber']] : '',
+          isPrimaryCare: headerMap['isPrimaryCare'] !== undefined ? values[headerMap['isPrimaryCare']]?.toLowerCase() === 'y' || values[headerMap['isPrimaryCare']]?.toLowerCase() === 'true' : false,
+          isBehavioralHealth: headerMap['isBehavioralHealth'] !== undefined ? values[headerMap['isBehavioralHealth']]?.toLowerCase() === 'y' || values[headerMap['isBehavioralHealth']]?.toLowerCase() === 'true' : false,
+          phone: headerMap['phone'] !== undefined ? values[headerMap['phone']] : '',
+          address1: headerMap['address1'] !== undefined ? values[headerMap['address1']] : '',
+          address2: headerMap['address2'] !== undefined ? values[headerMap['address2']] : '',
+          city: headerMap['city'] !== undefined ? values[headerMap['city']] : '',
+          state: headerMap['state'] !== undefined ? values[headerMap['state']] : 'AZ',
+          zip: headerMap['zip'] !== undefined ? values[headerMap['zip']] : '',
+          acceptingNewPatients: headerMap['acceptingNewPatients'] !== undefined ? values[headerMap['acceptingNewPatients']]?.toLowerCase() === 'y' || values[headerMap['acceptingNewPatients']]?.toLowerCase() === 'true' : true,
+          directoryDisplay: headerMap['directoryDisplay'] !== undefined ? values[headerMap['directoryDisplay']]?.toLowerCase() !== 'n' && values[headerMap['directoryDisplay']]?.toLowerCase() !== 'false' : true,
+          languages: headerMap['languages'] !== undefined ? values[headerMap['languages']] : 'English',
+          status: "active",
+          useCustomRates: false,
+        });
       }
       
       if (newProviders.length > 0) {
@@ -314,7 +407,7 @@ export default function PracticeDetailPage() {
         // Show success message
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
-        console.log("Uploaded providers:", newProviders);
+        console.log(`Uploaded ${newProviders.length} providers`);
       }
     };
     reader.readAsText(file);
@@ -1342,13 +1435,48 @@ export default function PracticeDetailPage() {
               </div>
             </div>
 
-            {/* CSV format hint */}
-            <div className="py-2">
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                <strong className="text-slate-700 dark:text-slate-300">CSV Format:</strong> First Name, Last Name, Title, NPI, Specialty, Email, Phone, License State, License Number
-              </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Example: <span className="text-blue-600 dark:text-blue-400 font-mono">John, Smith, MD, 1234567890, Family Medicine, john@clinic.com, 555-123-4567, OH, MD-123456</span>
+            {/* CSV format info with download template */}
+            <div className={cn(
+              "p-4 rounded-xl border",
+              isDark ? "bg-slate-700/30 border-slate-600/50" : "bg-slate-50 border-slate-200"
+            )}>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className={cn("text-sm font-semibold", isDark ? "text-white" : "text-slate-900")}>CSV Format</h3>
+                <button
+                  onClick={downloadProviderTemplate}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-500 transition-colors"
+                >
+                  <Upload className="w-4 h-4 rotate-180" />
+                  Download Template
+                </button>
+              </div>
+              <div className="grid grid-cols-4 gap-2 text-xs">
+                <div className="text-blue-400 font-medium">NPI *</div>
+                <div className="text-blue-400 font-medium">Last Name *</div>
+                <div className="text-blue-400 font-medium">First Name *</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Credentials</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Gender</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Entity #</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Contract #</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Tax ID</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Practice NPI</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Spc Code</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Secondary Spc Code</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Tertiary Spc Code</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Care Flag</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Behavioral Health</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Phone</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Address 1</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Address 2</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>City</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>State</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Zip</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Accept New Patients</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Languages</div>
+                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Visible</div>
+              </div>
+              <p className={cn("text-xs mt-3", isDark ? "text-slate-500" : "text-slate-400")}>
+                * Required fields. Only NPI and Name are required - all other columns are optional.
               </p>
             </div>
 
