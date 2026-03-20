@@ -12,6 +12,7 @@ import {
   Clock,
   RefreshCw,
   ChevronLeft,
+  ChevronRight,
   Eye,
   Calendar,
   Activity,
@@ -251,6 +252,7 @@ export default function MonitoringPage() {
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState<typeof monitoringSchedule[0] | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' } | null>(null);
+  const [showCriticalAlertsModal, setShowCriticalAlertsModal] = useState(false);
 
   const showToast = (message: string, type: 'success' | 'info' | 'warning' = 'success') => {
     setToast({ message, type });
@@ -278,12 +280,15 @@ export default function MonitoringPage() {
   };
 
   const handleReviewCritical = () => {
+    // Show modal with all critical alerts
+    setShowCriticalAlertsModal(true);
+  };
+
+  const handleSelectCriticalAlert = (alert: typeof alerts[0]) => {
+    setShowCriticalAlertsModal(false);
     setActiveTab("alerts");
     setSeverityFilter("critical");
-    // Open the first critical alert
-    if (criticalAlerts.length > 0) {
-      setSelectedAlert(criticalAlerts[0]);
-    }
+    setSelectedAlert(alert);
   };
 
   const filteredAlerts = alerts.filter((alert) => {
@@ -1271,6 +1276,122 @@ export default function MonitoringPage() {
                   }}
                 >
                   Save Settings
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Critical Alerts Modal */}
+      <AnimatePresence>
+        {showCriticalAlertsModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => setShowCriticalAlertsModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-2xl rounded-xl p-6 max-h-[80vh] overflow-y-auto",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-red-100 dark:bg-red-900/30">
+                    <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
+                  </div>
+                  <div>
+                    <h2 className={cn("text-xl font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                      Critical Alerts
+                    </h2>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                      {criticalAlerts.length} alert{criticalAlerts.length !== 1 ? 's' : ''} requiring immediate attention
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowCriticalAlertsModal(false)}
+                  className={cn(
+                    "p-2 rounded-lg transition-colors",
+                    isDark ? "hover:bg-slate-700 text-slate-400" : "hover:bg-slate-100 text-slate-500"
+                  )}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Alert List */}
+              <div className="space-y-3">
+                {criticalAlerts.map((alert) => (
+                  <div
+                    key={alert.id}
+                    onClick={() => handleSelectCriticalAlert(alert)}
+                    className={cn(
+                      "p-4 rounded-lg border-2 cursor-pointer transition-all",
+                      isDark 
+                        ? "bg-slate-700/50 border-red-800 hover:border-red-600 hover:bg-slate-700" 
+                        : "bg-red-50 border-red-200 hover:border-red-400 hover:bg-red-100"
+                    )}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start gap-3">
+                        <div className={cn(
+                          "p-2 rounded-lg",
+                          isDark ? "bg-red-900/50" : "bg-red-100"
+                        )}>
+                          <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+                        </div>
+                        <div>
+                          <p className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                            {alert.provider}
+                          </p>
+                          <p className={cn("text-sm mt-1", isDark ? "text-slate-300" : "text-slate-700")}>
+                            {alert.type}
+                          </p>
+                          <p className={cn("text-xs mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                            {alert.description}
+                          </p>
+                          <div className="flex items-center gap-4 mt-2">
+                            <span className={cn("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>
+                              Detected: {new Date(alert.detected).toLocaleDateString()}
+                            </span>
+                            {alert.providerSuspended && (
+                              <span className="text-xs px-2 py-0.5 rounded bg-red-600 text-white">
+                                Auto-Suspended
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight className={cn("w-5 h-5", isDark ? "text-slate-500" : "text-slate-400")} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer */}
+              <div className="flex justify-between mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <Button 
+                  variant="secondary" 
+                  onClick={() => {
+                    setShowCriticalAlertsModal(false);
+                    setActiveTab("alerts");
+                    setSeverityFilter("critical");
+                  }}
+                >
+                  View All in Alerts Tab
+                </Button>
+                <Button variant="ghost" onClick={() => setShowCriticalAlertsModal(false)}>
+                  Close
                 </Button>
               </div>
             </motion.div>
