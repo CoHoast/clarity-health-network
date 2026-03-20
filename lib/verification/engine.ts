@@ -36,33 +36,57 @@ export async function runVerifications(
   const verificationsToRun = request.verificationsToRun || 
     DEFAULT_VERIFICATIONS[request.providerType || 'individual'];
 
-  // Run verifications in parallel
-  const verificationPromises = verificationsToRun.map(async (type) => {
+  // If we don't have name info but have NPI, get it from NPPES first
+  let enrichedRequest = { ...request };
+  
+  if (!request.firstName && !request.lastName && !request.organizationName && request.npi) {
+    // Run NPPES first to get name info
+    const npiResult = await verifyNPI(request.npi, {});
+    results['NPI_VALIDATION'] = npiResult;
+    
+    // Extract name from NPPES result
+    if (npiResult.status === 'PASSED' && npiResult.parsedData) {
+      const data = npiResult.parsedData as Record<string, any>;
+      if (data.firstName && data.lastName) {
+        enrichedRequest.firstName = data.firstName;
+        enrichedRequest.lastName = data.lastName;
+      } else if (data.organizationName) {
+        enrichedRequest.organizationName = data.organizationName;
+      }
+    }
+  }
+
+  // Run remaining verifications
+  const remainingVerifications = verificationsToRun.filter(
+    type => !results[type] // Skip if already done (like NPI_VALIDATION above)
+  );
+
+  const verificationPromises = remainingVerifications.map(async (type) => {
     let result: VerificationResult;
 
     try {
       switch (type) {
         case 'NPI_VALIDATION':
-          result = await verifyNPI(request.npi, {
-            firstName: request.firstName,
-            lastName: request.lastName,
-            organizationName: request.organizationName,
+          result = await verifyNPI(enrichedRequest.npi, {
+            firstName: enrichedRequest.firstName,
+            lastName: enrichedRequest.lastName,
+            organizationName: enrichedRequest.organizationName,
           });
           break;
 
         case 'OIG_EXCLUSION':
-          if (request.organizationName) {
+          if (enrichedRequest.organizationName) {
             // For organizations, search by org name
             result = await checkOIGExclusion(
-              request.organizationName,
+              enrichedRequest.organizationName,
               '',
-              request.npi
+              enrichedRequest.npi
             );
-          } else if (request.firstName && request.lastName) {
+          } else if (enrichedRequest.firstName && enrichedRequest.lastName) {
             result = await checkOIGExclusion(
-              request.firstName,
-              request.lastName,
-              request.npi
+              enrichedRequest.firstName,
+              enrichedRequest.lastName,
+              enrichedRequest.npi
             );
           } else {
             result = {
@@ -76,12 +100,12 @@ export async function runVerifications(
           break;
 
         case 'SAM_EXCLUSION':
-          if (request.organizationName) {
-            result = await checkSAMExclusion(request.organizationName);
-          } else if (request.firstName && request.lastName) {
+          if (enrichedRequest.organizationName) {
+            result = await checkSAMExclusion(enrichedRequest.organizationName);
+          } else if (enrichedRequest.firstName && enrichedRequest.lastName) {
             result = await checkSAMIndividualExclusion(
-              request.firstName,
-              request.lastName
+              enrichedRequest.firstName,
+              enrichedRequest.lastName
             );
           } else {
             result = {

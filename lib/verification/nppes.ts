@@ -168,6 +168,10 @@ function extractProviderData(provider: NPPESProvider): Record<string, unknown> {
     npi: provider.number,
     enumerationType: provider.enumeration_type,
     status: provider.basic.status === 'A' ? 'Active' : 'Deactivated',
+    // Include separate name fields for OIG/SAM checks
+    firstName: provider.basic.first_name || '',
+    lastName: provider.basic.last_name || '',
+    organizationName: provider.basic.organization_name || '',
     name: provider.basic.organization_name || 
           `${provider.basic.first_name || ''} ${provider.basic.last_name || ''}`.trim(),
     credential: provider.basic.credential,
