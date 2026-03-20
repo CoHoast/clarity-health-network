@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { BarChart3, TrendingUp, TrendingDown, Building2, FileText, Download, Calendar, PieChart, MapPin, CheckCircle, Clock, AlertTriangle, Users, FileSignature, Globe, Activity } from "lucide-react";
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { BarChart3, TrendingUp, TrendingDown, Building2, FileText, Download, Calendar, PieChart, MapPin, CheckCircle, Clock, AlertTriangle, Users, FileSignature, Globe, Activity, DollarSign, ShieldCheck, FileCheck, ChevronDown, Stethoscope, Heart, XCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { Card, CardHeader } from "@/components/admin/ui/Card";
 import { StatCard } from "@/components/admin/ui/StatCard";
@@ -10,6 +10,7 @@ import { Badge } from "@/components/admin/ui/Badge";
 import { Button } from "@/components/admin/ui/Button";
 import { PageHeader, Tabs } from "@/components/admin/ui/PageHeader";
 import { cn } from "@/lib/utils";
+import { exportToCSV, formatDate, formatCurrency, formatPercent } from "@/lib/export";
 
 type DateRange = "month" | "quarter" | "year";
 
@@ -91,11 +92,196 @@ const regionData = [
   { region: "Other", providers: 191, percentage: 6 },
 ];
 
+// Claims & Savings Analytics
+const claimsSavingsData = {
+  month: { totalClaims: 4523, repriced: 4218, savings: 892450, avgDiscount: 32.4 },
+  quarter: { totalClaims: 13890, repriced: 12945, savings: 2645800, avgDiscount: 31.8 },
+  year: { totalClaims: 52340, repriced: 48920, savings: 9824500, avgDiscount: 30.2 },
+};
+
+// Credentialing Pipeline
+const credentialingPipeline = [
+  { stage: "Application Review", count: 23, color: "bg-blue-500" },
+  { stage: "Document Collection", count: 18, color: "bg-amber-500" },
+  { stage: "Primary Verification", count: 31, color: "bg-purple-500" },
+  { stage: "Committee Review", count: 8, color: "bg-teal-500" },
+  { stage: "Final Approval", count: 12, color: "bg-emerald-500" },
+];
+
+// Contract Health
+const contractHealth = {
+  active: 2654,
+  expiring30: 47,
+  expiring60: 89,
+  expiring90: 134,
+  pendingRenewal: 23,
+  terminated: 12,
+};
+
+// Export report configurations
+const exportReports = [
+  { 
+    id: "network-summary", 
+    label: "Network Summary Report",
+    description: "Overview of providers, contracts, and savings",
+    icon: Building2,
+  },
+  { 
+    id: "provider-directory", 
+    label: "Provider Directory",
+    description: "Complete list of network providers",
+    icon: Users,
+  },
+  { 
+    id: "contract-status", 
+    label: "Contract Status Report",
+    description: "All contracts with expiration dates",
+    icon: FileSignature,
+  },
+  { 
+    id: "credentialing-status", 
+    label: "Credentialing Pipeline",
+    description: "Current credentialing applications",
+    icon: ShieldCheck,
+  },
+  { 
+    id: "savings-report", 
+    label: "Savings Analysis",
+    description: "Claims repricing and savings data",
+    icon: DollarSign,
+  },
+  { 
+    id: "regional-coverage", 
+    label: "Regional Coverage",
+    description: "Provider distribution by region",
+    icon: MapPin,
+  },
+];
+
 export default function AnalyticsPage() {
   const { isDark } = useTheme();
   const [dateRange, setDateRange] = useState<DateRange>("month");
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exporting, setExporting] = useState<string | null>(null);
+  const exportRef = useRef<HTMLDivElement>(null);
 
   const currentData = dataByRange[dateRange];
+  const currentSavings = claimsSavingsData[dateRange];
+
+  // Close export dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (exportRef.current && !exportRef.current.contains(event.target as Node)) {
+        setExportOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Handle export
+  const handleExport = async (reportId: string) => {
+    setExporting(reportId);
+    
+    // Simulate brief processing
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const timestamp = new Date().toISOString().split('T')[0];
+    
+    switch (reportId) {
+      case "network-summary":
+        exportToCSV([
+          { metric: "Total Providers", value: "2,891", change: "+312 YTD" },
+          { metric: "Active Contracts", value: "2,654", change: "+285 YTD" },
+          { metric: "Network Savings", value: "$9.8M", change: "+18% YoY" },
+          { metric: "Avg Discount Rate", value: "32.4%", change: "+5.6% YoY" },
+          { metric: "Network Coverage", value: "94%", change: "+3% YoY" },
+          { metric: "Contract Renewal Rate", value: "98%", change: "+2% YoY" },
+          { metric: "Avg Processing Time", value: "12 days", change: "-3 days YoY" },
+          ...providersBySpecialty.map(s => ({ metric: `Providers - ${s.specialty}`, value: s.count.toString(), change: `${s.percentage}% of network` })),
+          ...regionData.map(r => ({ metric: `Region - ${r.region}`, value: r.providers.toString(), change: `${r.percentage}% of network` })),
+        ], [
+          { key: "metric", label: "Metric" },
+          { key: "value", label: "Value" },
+          { key: "change", label: "Change/Notes" },
+        ], `network-summary-${timestamp}`);
+        break;
+        
+      case "provider-directory":
+        exportToCSV([
+          ...topProviders.map((p, i) => ({
+            rank: i + 1,
+            name: p.name,
+            contracts: p.contracts,
+            avgDiscount: p.discount,
+            status: p.status,
+          })),
+        ], [
+          { key: "rank", label: "Rank" },
+          { key: "name", label: "Provider Name" },
+          { key: "contracts", label: "Contracts" },
+          { key: "avgDiscount", label: "Avg Discount" },
+          { key: "status", label: "Status" },
+        ], `provider-directory-${timestamp}`);
+        break;
+        
+      case "contract-status":
+        exportToCSV([
+          { status: "Active", count: contractHealth.active, notes: "Currently active contracts" },
+          { status: "Expiring in 30 days", count: contractHealth.expiring30, notes: "Requires immediate attention" },
+          { status: "Expiring in 60 days", count: contractHealth.expiring60, notes: "Schedule renewal outreach" },
+          { status: "Expiring in 90 days", count: contractHealth.expiring90, notes: "Plan renewal strategy" },
+          { status: "Pending Renewal", count: contractHealth.pendingRenewal, notes: "Renewal in progress" },
+          { status: "Recently Terminated", count: contractHealth.terminated, notes: "Last 90 days" },
+        ], [
+          { key: "status", label: "Contract Status" },
+          { key: "count", label: "Count" },
+          { key: "notes", label: "Notes" },
+        ], `contract-status-${timestamp}`);
+        break;
+        
+      case "credentialing-status":
+        exportToCSV(credentialingPipeline.map(p => ({
+          stage: p.stage,
+          count: p.count,
+          percentage: ((p.count / credentialingPipeline.reduce((a, b) => a + b.count, 0)) * 100).toFixed(1) + '%',
+        })), [
+          { key: "stage", label: "Pipeline Stage" },
+          { key: "count", label: "Applications" },
+          { key: "percentage", label: "% of Pipeline" },
+        ], `credentialing-pipeline-${timestamp}`);
+        break;
+        
+      case "savings-report":
+        exportToCSV([
+          { period: "This Month", claims: currentSavings.totalClaims, repriced: currentSavings.repriced, savings: formatCurrency(currentSavings.savings), avgDiscount: formatPercent(currentSavings.avgDiscount) },
+          { period: "This Quarter", claims: claimsSavingsData.quarter.totalClaims, repriced: claimsSavingsData.quarter.repriced, savings: formatCurrency(claimsSavingsData.quarter.savings), avgDiscount: formatPercent(claimsSavingsData.quarter.avgDiscount) },
+          { period: "This Year", claims: claimsSavingsData.year.totalClaims, repriced: claimsSavingsData.year.repriced, savings: formatCurrency(claimsSavingsData.year.savings), avgDiscount: formatPercent(claimsSavingsData.year.avgDiscount) },
+        ], [
+          { key: "period", label: "Period" },
+          { key: "claims", label: "Total Claims" },
+          { key: "repriced", label: "Repriced Claims" },
+          { key: "savings", label: "Total Savings" },
+          { key: "avgDiscount", label: "Avg Discount" },
+        ], `savings-analysis-${timestamp}`);
+        break;
+        
+      case "regional-coverage":
+        exportToCSV(regionData.map(r => ({
+          region: r.region,
+          providers: r.providers,
+          percentage: r.percentage + '%',
+        })), [
+          { key: "region", label: "Region" },
+          { key: "providers", label: "Providers" },
+          { key: "percentage", label: "% of Network" },
+        ], `regional-coverage-${timestamp}`);
+        break;
+    }
+    
+    setExporting(null);
+    setExportOpen(false);
+  };
 
   return (
     <div className="space-y-8">
@@ -105,9 +291,93 @@ export default function AnalyticsPage() {
         subtitle="Monitor network performance, growth trends, and key metrics"
         actions={
           <>
-            <Button variant="outline" icon={<Download className="w-4 h-4" />}>
-              Export Report
-            </Button>
+            {/* Export Dropdown */}
+            <div className="relative" ref={exportRef}>
+              <Button 
+                variant="outline" 
+                icon={<Download className="w-4 h-4" />}
+                onClick={() => setExportOpen(!exportOpen)}
+              >
+                Export Report
+                <ChevronDown className={cn("w-4 h-4 ml-1 transition-transform", exportOpen && "rotate-180")} />
+              </Button>
+              
+              <AnimatePresence>
+                {exportOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    className={cn(
+                      "absolute right-0 top-full mt-2 w-80 rounded-xl border shadow-xl z-50 overflow-hidden",
+                      isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+                    )}
+                  >
+                    <div className={cn(
+                      "px-4 py-3 border-b",
+                      isDark ? "bg-slate-700/50 border-slate-700" : "bg-slate-50 border-slate-100"
+                    )}>
+                      <p className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
+                        Download Reports
+                      </p>
+                      <p className={cn("text-xs mt-0.5", isDark ? "text-slate-400" : "text-slate-500")}>
+                        Export data as CSV files
+                      </p>
+                    </div>
+                    <div className="p-2 max-h-80 overflow-y-auto">
+                      {exportReports.map((report) => {
+                        const Icon = report.icon;
+                        const isExporting = exporting === report.id;
+                        return (
+                          <button
+                            key={report.id}
+                            onClick={() => handleExport(report.id)}
+                            disabled={!!exporting}
+                            className={cn(
+                              "w-full flex items-start gap-3 p-3 rounded-lg text-left transition-colors",
+                              isDark 
+                                ? "hover:bg-slate-700/50" 
+                                : "hover:bg-slate-50",
+                              isExporting && "opacity-50 cursor-wait"
+                            )}
+                          >
+                            <div className={cn(
+                              "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0",
+                              isDark ? "bg-blue-500/20" : "bg-blue-50"
+                            )}>
+                              {isExporting ? (
+                                <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                              ) : (
+                                <Icon className="w-4 h-4 text-blue-500" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className={cn(
+                                "text-sm font-medium",
+                                isDark ? "text-white" : "text-slate-900"
+                              )}>
+                                {report.label}
+                              </p>
+                              <p className={cn(
+                                "text-xs mt-0.5",
+                                isDark ? "text-slate-400" : "text-slate-500"
+                              )}>
+                                {report.description}
+                              </p>
+                            </div>
+                            <Download className={cn(
+                              "w-4 h-4 flex-shrink-0 mt-0.5",
+                              isDark ? "text-slate-500" : "text-slate-400"
+                            )} />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            
             <Tabs
               tabs={dateRangeTabs}
               value={dateRange}
@@ -345,6 +615,194 @@ export default function AnalyticsPage() {
           </div>
         </Card>
       </div>
+
+      {/* Claims & Savings Row */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Claims & Savings Card */}
+        <Card className="lg:col-span-2">
+          <CardHeader
+            title="Claims & Network Savings"
+            icon={<DollarSign className="w-5 h-5 text-emerald-500" />}
+            action={
+              <Badge variant="success" dot>
+                {formatPercent(currentSavings.avgDiscount)} avg savings
+              </Badge>
+            }
+          />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className={cn(
+              "p-4 rounded-xl",
+              isDark ? "bg-slate-700/30" : "bg-slate-50"
+            )}>
+              <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>
+                {currentSavings.totalClaims.toLocaleString()}
+              </p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                Total Claims
+              </p>
+            </div>
+            <div className={cn(
+              "p-4 rounded-xl",
+              isDark ? "bg-slate-700/30" : "bg-slate-50"
+            )}>
+              <p className={cn("text-2xl font-bold text-emerald-500")}>
+                {currentSavings.repriced.toLocaleString()}
+              </p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                Repriced Claims
+              </p>
+            </div>
+            <div className={cn(
+              "p-4 rounded-xl",
+              isDark ? "bg-slate-700/30" : "bg-slate-50"
+            )}>
+              <p className={cn("text-2xl font-bold text-emerald-500")}>
+                {formatCurrency(currentSavings.savings)}
+              </p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                Total Savings
+              </p>
+            </div>
+            <div className={cn(
+              "p-4 rounded-xl",
+              isDark ? "bg-slate-700/30" : "bg-slate-50"
+            )}>
+              <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-slate-900")}>
+                {((currentSavings.repriced / currentSavings.totalClaims) * 100).toFixed(1)}%
+              </p>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                Repricing Rate
+              </p>
+            </div>
+          </div>
+          <div className={cn(
+            "p-4 rounded-xl border",
+            isDark ? "bg-emerald-500/10 border-emerald-500/20" : "bg-emerald-50 border-emerald-100"
+          )}>
+            <div className="flex items-center gap-3">
+              <div className={cn(
+                "w-12 h-12 rounded-xl flex items-center justify-center",
+                isDark ? "bg-emerald-500/20" : "bg-emerald-100"
+              )}>
+                <TrendingUp className="w-6 h-6 text-emerald-500" />
+              </div>
+              <div>
+                <p className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                  {dateRange === "year" ? "Annual" : dateRange === "quarter" ? "Quarterly" : "Monthly"} Savings Impact
+                </p>
+                <p className={cn("text-sm", isDark ? "text-emerald-400" : "text-emerald-600")}>
+                  Your network saved employers {formatCurrency(currentSavings.savings)} in {dateRange === "year" ? "the past year" : dateRange === "quarter" ? "this quarter" : "this month"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Contract Health */}
+        <Card>
+          <CardHeader
+            title="Contract Health"
+            icon={<FileSignature className="w-5 h-5 text-blue-500" />}
+          />
+          <div className="space-y-3">
+            <div className={cn(
+              "flex items-center justify-between p-3 rounded-xl",
+              isDark ? "bg-emerald-500/10 border border-emerald-500/20" : "bg-emerald-50 border border-emerald-100"
+            )}>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald-500" />
+                <span className={isDark ? "text-white" : "text-slate-900"}>Active</span>
+              </div>
+              <span className="text-lg font-bold text-emerald-500">{contractHealth.active.toLocaleString()}</span>
+            </div>
+            <div className={cn(
+              "flex items-center justify-between p-3 rounded-xl",
+              isDark ? "bg-red-500/10 border border-red-500/20" : "bg-red-50 border border-red-100"
+            )}>
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-red-500" />
+                <span className={isDark ? "text-white" : "text-slate-900"}>Expiring 30d</span>
+              </div>
+              <span className="text-lg font-bold text-red-500">{contractHealth.expiring30}</span>
+            </div>
+            <div className={cn(
+              "flex items-center justify-between p-3 rounded-xl",
+              isDark ? "bg-amber-500/10 border border-amber-500/20" : "bg-amber-50 border border-amber-100"
+            )}>
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-amber-500" />
+                <span className={isDark ? "text-white" : "text-slate-900"}>Expiring 60d</span>
+              </div>
+              <span className="text-lg font-bold text-amber-500">{contractHealth.expiring60}</span>
+            </div>
+            <div className={cn(
+              "flex items-center justify-between p-3 rounded-xl",
+              isDark ? "bg-blue-500/10 border border-blue-500/20" : "bg-blue-50 border border-blue-100"
+            )}>
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-blue-500" />
+                <span className={isDark ? "text-white" : "text-slate-900"}>Expiring 90d</span>
+              </div>
+              <span className="text-lg font-bold text-blue-500">{contractHealth.expiring90}</span>
+            </div>
+            <div className={cn(
+              "flex items-center justify-between p-3 rounded-xl",
+              isDark ? "bg-purple-500/10 border border-purple-500/20" : "bg-purple-50 border border-purple-100"
+            )}>
+              <div className="flex items-center gap-2">
+                <FileCheck className="w-5 h-5 text-purple-500" />
+                <span className={isDark ? "text-white" : "text-slate-900"}>Pending Renewal</span>
+              </div>
+              <span className="text-lg font-bold text-purple-500">{contractHealth.pendingRenewal}</span>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Credentialing Pipeline */}
+      <Card>
+        <CardHeader
+          title="Credentialing Pipeline"
+          icon={<ShieldCheck className="w-5 h-5 text-purple-500" />}
+          action={
+            <Badge variant="primary">
+              {credentialingPipeline.reduce((a, b) => a + b.count, 0)} applications in process
+            </Badge>
+          }
+        />
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {credentialingPipeline.map((stage, i) => (
+            <motion.div
+              key={stage.stage}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className={cn(
+                "relative p-4 rounded-xl text-center",
+                isDark ? "bg-slate-700/30 border border-slate-700/50" : "bg-slate-50 border border-slate-100"
+              )}
+            >
+              {i < credentialingPipeline.length - 1 && (
+                <div className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 z-10">
+                  <ChevronDown className={cn(
+                    "w-4 h-4 rotate-[-90deg]",
+                    isDark ? "text-slate-600" : "text-slate-300"
+                  )} />
+                </div>
+              )}
+              <div className={cn("w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center", stage.color + "/20")}>
+                <span className={cn("text-lg font-bold", stage.color.replace("bg-", "text-"))}>{stage.count}</span>
+              </div>
+              <p className={cn(
+                "text-xs font-medium",
+                isDark ? "text-slate-300" : "text-slate-600"
+              )}>
+                {stage.stage}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </Card>
 
       {/* Quick Stats Footer */}
       <div className={cn(
