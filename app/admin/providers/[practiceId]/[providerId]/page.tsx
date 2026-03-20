@@ -396,6 +396,51 @@ export default function ProviderDetailPage() {
           const data = await res.json();
           setContractPricing(data);
           
+          // Auto-enable custom rates if contract has any pricing
+          const hasContractPricing = 
+            (data.cptRates && data.cptRates.length > 0) ||
+            (data.rateTypeIndicators && data.rateTypeIndicators.length > 0) ||
+            data.defaultRates.pctMedicare > 0 ||
+            data.defaultRates.pctBilled > 0;
+          
+          if (hasContractPricing) {
+            setUseCustomRates(true);
+          }
+          
+          // Map rate type indicators to service categories
+          const newServiceRates: Record<string, string> = {
+            professional: '',
+            inpatient: '',
+            outpatient: '',
+            urgentCare: '',
+            labServices: '',
+            imaging: '',
+            mentalHealth: '',
+            physicalTherapy: '',
+            dme: '',
+          };
+          
+          // Map I, O, P indicators to service categories
+          if (data.rateTypeIndicators && data.rateTypeIndicators.length > 0) {
+            data.rateTypeIndicators.forEach((indicator: any) => {
+              const rate = String(indicator.rate);
+              if (indicator.type === 'I') {
+                newServiceRates.inpatient = rate;
+              } else if (indicator.type === 'O') {
+                newServiceRates.outpatient = rate;
+              } else if (indicator.type === 'P') {
+                newServiceRates.professional = rate;
+              } else if (indicator.type === 'DEFAULT') {
+                // Apply default to professional if not already set
+                if (!newServiceRates.professional) {
+                  newServiceRates.professional = rate;
+                }
+              }
+            });
+            setRateType("custom");
+            setServiceRates(newServiceRates);
+          }
+          
           // Auto-set rate type and values based on contract
           if (data.cptRates && data.cptRates.length > 0) {
             setRateType("cpt");
@@ -405,11 +450,11 @@ export default function ProviderDetailPage() {
               description: r.revenueCode ? `Revenue Code: ${r.revenueCode}` : '',
               rate: String(r.pricedAmt)
             })));
-          } else if (data.defaultRates.pctMedicare > 0) {
+          } else if (data.defaultRates.pctMedicare > 0 && !data.rateTypeIndicators?.length) {
             setRateType("flat");
             setDiscountBasis("medicare");
             setFlatRate(String(data.defaultRates.pctMedicare));
-          } else if (data.defaultRates.pctBilled > 0) {
+          } else if (data.defaultRates.pctBilled > 0 && !data.rateTypeIndicators?.length) {
             setRateType("flat");
             setDiscountBasis("billed");
             setFlatRate(String(data.defaultRates.pctBilled));
