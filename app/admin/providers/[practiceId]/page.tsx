@@ -219,23 +219,18 @@ export default function PracticeDetailPage() {
           setEditData(practiceData);
           setNewProvider(prev => ({ ...prev, specialty: practiceData.specialty }));
           
-          // Load providers for this practice using the providerIds
-          if (p.providerIds && p.providerIds.length > 0) {
-            // Fetch providers with NPI filter (first 50)
-            const providerPromises = p.providerIds.slice(0, 50).map(async (pid: string) => {
-              const npi = pid.replace('prov-', '');
-              const provRes = await fetch(`/api/providers?search=${npi}&limit=1`);
-              const provData = await provRes.json();
-              return provData.providers?.[0];
-            });
+          // Load providers for this practice by billing NPI (more efficient than individual fetches)
+          if (p.npi || (p.providerIds && p.providerIds.length > 0)) {
+            // Fetch all providers linked to this practice by billing NPI
+            const provRes = await fetch(`/api/providers?billingNpi=${p.npi}&limit=500`);
+            const provData = await provRes.json();
             
-            const providers = await Promise.all(providerPromises);
-            const validProviders = providers.filter(Boolean).map((prov: any) => ({
+            const validProviders = (provData.providers || []).map((prov: any) => ({
               id: `PRV-${prov.npi}`,
               name: `${prov.firstName || ''} ${prov.lastName || ''}`.trim() || 'Unknown',
               firstName: prov.firstName,
               lastName: prov.lastName,
-              title: prov.credential || 'MD',
+              title: prov.credential || prov.credentials || 'MD',
               specialty: prov.specialty || 'General Practice',
               npi: prov.npi,
               status: 'active',

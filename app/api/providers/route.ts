@@ -158,10 +158,16 @@ export async function GET(request: NextRequest) {
   const isPrimaryCare = searchParams.get('isPrimaryCare');
   const isBehavioralHealth = searchParams.get('isBehavioralHealth');
   const acceptingNew = searchParams.get('acceptingNew');
+  const billingNpi = searchParams.get('billingNpi') || '';
   
   let providers = [...providersData] as any[];
   
-  // Apply filters
+  // Filter by billing/practice NPI (for practice detail pages)
+  if (billingNpi) {
+    providers = providers.filter((p: any) => p.billing?.npi === billingNpi);
+  }
+  
+  // Apply search filters
   if (search) {
     const searchLower = search.toLowerCase();
     providers = providers.filter((p: any) => 
