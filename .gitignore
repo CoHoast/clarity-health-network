@@ -41,8 +41,5 @@ yarn-error.log*
 next-env.d.ts
 memory/
 
-# OIG LEIE Database (downloaded from HHS, ~30MB)
+# OIG LEIE Database - keep CSV excluded, but JSON files are needed for deployment
 data/oig-leie.csv
-data/oig-leie.json
-data/oig-npi-index.json
-data/oig-name-index.json
