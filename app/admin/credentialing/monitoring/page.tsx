@@ -253,6 +253,7 @@ export default function MonitoringPage() {
   const [selectedSchedule, setSelectedSchedule] = useState<typeof monitoringSchedule[0] | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' } | null>(null);
   const [showCriticalAlertsModal, setShowCriticalAlertsModal] = useState(false);
+  const [selectedScan, setSelectedScan] = useState<typeof recentScans[0] | null>(null);
 
   const showToast = (message: string, type: 'success' | 'info' | 'warning' = 'success') => {
     setToast({ message, type });
@@ -717,7 +718,7 @@ export default function MonitoringPage() {
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => setSelectedScan(scan)}>
                         <Eye className="w-4 h-4" />
                       </Button>
                     </td>
@@ -1276,6 +1277,213 @@ export default function MonitoringPage() {
                   }}
                 >
                   Save Settings
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Scan Details Modal */}
+      <AnimatePresence>
+        {selectedScan && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => setSelectedScan(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={cn(
+                "w-full max-w-2xl rounded-xl p-6 max-h-[80vh] overflow-y-auto",
+                isDark ? "bg-slate-800" : "bg-white"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "p-2 rounded-lg",
+                    isDark ? "bg-blue-900/30" : "bg-blue-100"
+                  )}>
+                    <Activity className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <h2 className={cn("text-xl font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                      Scan Details
+                    </h2>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                      {selectedScan.type} • {new Date(selectedScan.date).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedScan(null)}
+                  className={cn(
+                    "p-2 rounded-lg transition-colors",
+                    isDark ? "hover:bg-slate-700 text-slate-400" : "hover:bg-slate-100 text-slate-500"
+                  )}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Scan Summary */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                  <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Status</p>
+                  <p className={cn("text-lg font-semibold capitalize", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedScan.status}
+                  </p>
+                </div>
+                <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                  <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Providers Scanned</p>
+                  <p className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedScan.providers}
+                  </p>
+                </div>
+                <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                  <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Duration</p>
+                  <p className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    {selectedScan.duration}
+                  </p>
+                </div>
+                <div className={cn("p-4 rounded-lg", selectedScan.issues > 0 
+                  ? "bg-red-100 dark:bg-red-900/30" 
+                  : "bg-green-100 dark:bg-green-900/30"
+                )}>
+                  <p className={cn("text-xs", selectedScan.issues > 0 
+                    ? "text-red-600 dark:text-red-400" 
+                    : "text-green-600 dark:text-green-400"
+                  )}>Issues Found</p>
+                  <p className={cn("text-lg font-semibold", selectedScan.issues > 0 
+                    ? "text-red-700 dark:text-red-300" 
+                    : "text-green-700 dark:text-green-300"
+                  )}>
+                    {selectedScan.issues}
+                  </p>
+                </div>
+              </div>
+
+              {/* Scan Type Details */}
+              <div className={cn("p-4 rounded-lg border mb-6", isDark ? "bg-slate-700/30 border-slate-600" : "bg-slate-50 border-slate-200")}>
+                <h3 className={cn("font-semibold mb-3", isDark ? "text-white" : "text-slate-900")}>
+                  Verification Sources Checked
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {selectedScan.type.includes("OIG") && (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-700")}>
+                        OIG LEIE Exclusion List
+                      </span>
+                    </div>
+                  )}
+                  {selectedScan.type.includes("SAM") && (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-700")}>
+                        SAM.gov Exclusions
+                      </span>
+                    </div>
+                  )}
+                  {selectedScan.type.includes("License") && (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-700")}>
+                        State License Status
+                      </span>
+                    </div>
+                  )}
+                  {selectedScan.type.includes("Medicare") && (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-700")}>
+                        Medicare Opt-Out List
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Issues Found (if any) */}
+              {selectedScan.issues > 0 && (
+                <div className={cn("p-4 rounded-lg border mb-6", "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800")}>
+                  <h3 className="font-semibold mb-3 text-red-700 dark:text-red-300 flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5" />
+                    Issues Detected
+                  </h3>
+                  <div className="space-y-2">
+                    {selectedScan.issues === 2 && (
+                      <>
+                        <div className="flex items-start gap-2 text-sm text-red-600 dark:text-red-400">
+                          <XCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Dr. Michael Brown - Found on OIG LEIE exclusion list</span>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm text-red-600 dark:text-red-400">
+                          <XCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Dr. Robert Kim - State medical license suspended</span>
+                        </div>
+                      </>
+                    )}
+                    {selectedScan.issues === 3 && (
+                      <>
+                        <div className="flex items-start gap-2 text-sm text-red-600 dark:text-red-400">
+                          <XCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Dr. Lisa Chen - License expired (needs renewal)</span>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm text-red-600 dark:text-red-400">
+                          <XCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Dr. James Wilson - License status changed to "Inactive"</span>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm text-red-600 dark:text-red-400">
+                          <XCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Dr. Sarah Johnson - Board certification expired</span>
+                        </div>
+                      </>
+                    )}
+                    {selectedScan.issues === 1 && (
+                      <div className="flex items-start gap-2 text-sm text-red-600 dark:text-red-400">
+                        <XCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                        <span>Dr. Emily Martinez - DEA registration expiring in 30 days</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* No Issues */}
+              {selectedScan.issues === 0 && (
+                <div className={cn("p-4 rounded-lg border mb-6", "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800")}>
+                  <div className="flex items-center gap-3 text-green-700 dark:text-green-300">
+                    <CheckCircle className="w-6 h-6" />
+                    <div>
+                      <p className="font-semibold">All Clear</p>
+                      <p className="text-sm">No compliance issues detected in this scan.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Footer */}
+              <div className="flex justify-between pt-4 border-t border-slate-200 dark:border-slate-700">
+                <Button 
+                  variant="secondary" 
+                  icon={<RefreshCw className="w-4 h-4" />}
+                  onClick={() => {
+                    showToast('Re-running scan...', 'info');
+                    setSelectedScan(null);
+                  }}
+                >
+                  Re-run This Scan
+                </Button>
+                <Button variant="ghost" onClick={() => setSelectedScan(null)}>
+                  Close
                 </Button>
               </div>
             </motion.div>
