@@ -143,6 +143,138 @@ export function VerificationModal({ isOpen, onClose, provider }: VerificationMod
     return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   };
 
+  // Format parsed data in a clean, readable way
+  const formatParsedData = (data: Record<string, any>, verificationType: string, isDark: boolean) => {
+    const labelClass = cn("text-xs font-medium", isDark ? "text-slate-400" : "text-slate-500");
+    const valueClass = cn("text-sm", isDark ? "text-white" : "text-slate-900");
+    
+    // Format based on verification type
+    if (verificationType === 'NPI_VALIDATION') {
+      return (
+        <div className="grid grid-cols-2 gap-3">
+          {data.name && (
+            <div>
+              <p className={labelClass}>Provider Name</p>
+              <p className={valueClass}>{String(data.name)}</p>
+            </div>
+          )}
+          {data.npi && (
+            <div>
+              <p className={labelClass}>NPI</p>
+              <p className={cn(valueClass, "font-mono")}>{String(data.npi)}</p>
+            </div>
+          )}
+          {data.status && (
+            <div>
+              <p className={labelClass}>Status</p>
+              <p className={valueClass}>{String(data.status)}</p>
+            </div>
+          )}
+          {data.credential && (
+            <div>
+              <p className={labelClass}>Credential</p>
+              <p className={valueClass}>{String(data.credential)}</p>
+            </div>
+          )}
+          {data.specialty && (
+            <div>
+              <p className={labelClass}>Specialty</p>
+              <p className={valueClass}>{String(data.specialty)}</p>
+            </div>
+          )}
+          {data.taxonomyCode && (
+            <div>
+              <p className={labelClass}>Taxonomy Code</p>
+              <p className={cn(valueClass, "font-mono")}>{String(data.taxonomyCode)}</p>
+            </div>
+          )}
+          {data.licenseState && (
+            <div>
+              <p className={labelClass}>License State</p>
+              <p className={valueClass}>{String(data.licenseState)}</p>
+            </div>
+          )}
+          {data.enumerationDate && (
+            <div>
+              <p className={labelClass}>Enumeration Date</p>
+              <p className={valueClass}>{String(data.enumerationDate)}</p>
+            </div>
+          )}
+          {data.lastUpdated && (
+            <div>
+              <p className={labelClass}>Last Updated</p>
+              <p className={valueClass}>{String(data.lastUpdated)}</p>
+            </div>
+          )}
+          {data.address && typeof data.address === 'object' && (
+            <div className="col-span-2">
+              <p className={labelClass}>Address</p>
+              <p className={valueClass}>
+                {(data.address as any).line1}
+                {(data.address as any).line2 && `, ${(data.address as any).line2}`}
+                <br />
+                {(data.address as any).city}, {(data.address as any).state} {(data.address as any).zip}
+              </p>
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    if (verificationType === 'OIG_EXCLUSION' || verificationType === 'SAM_EXCLUSION') {
+      const excluded = data.excluded as boolean;
+      return (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <span className={labelClass}>Exclusion Status:</span>
+            <span className={cn(
+              "px-2 py-0.5 rounded text-xs font-medium",
+              excluded 
+                ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" 
+                : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+            )}>
+              {excluded ? 'EXCLUDED' : 'NOT EXCLUDED'}
+            </span>
+          </div>
+          {data.searchedName && (
+            <div>
+              <span className={labelClass}>Searched Name: </span>
+              <span className={valueClass}>{String(data.searchedName)}</span>
+            </div>
+          )}
+          {data.searchedNpi && (
+            <div>
+              <span className={labelClass}>Searched NPI: </span>
+              <span className={cn(valueClass, "font-mono")}>{String(data.searchedNpi)}</span>
+            </div>
+          )}
+          {data.databaseRecordCount && (
+            <div>
+              <span className={labelClass}>Database Records: </span>
+              <span className={valueClass}>{Number(data.databaseRecordCount).toLocaleString()}</span>
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    // Default fallback: show as formatted list
+    return (
+      <div className="space-y-1">
+        {Object.entries(data).map(([key, value]) => {
+          if (value === null || value === undefined) return null;
+          if (typeof value === 'object') return null; // Skip nested objects
+          return (
+            <div key={key} className="flex gap-2">
+              <span className={labelClass}>{key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}:</span>
+              <span className={valueClass}>{String(value)}</span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -345,14 +477,14 @@ export function VerificationModal({ isOpen, onClose, provider }: VerificationMod
                       {result.parsedData && Object.keys(result.parsedData).length > 0 && (
                         <details className="mt-2">
                           <summary className={cn("text-xs cursor-pointer", isDark ? "text-slate-400" : "text-slate-500")}>
-                            View Details
+                            ▶ View Details
                           </summary>
-                          <pre className={cn(
-                            "mt-2 p-2 rounded text-xs overflow-auto max-h-40",
-                            isDark ? "bg-slate-800 text-slate-300" : "bg-slate-100 text-slate-700"
+                          <div className={cn(
+                            "mt-2 p-3 rounded text-sm space-y-2",
+                            isDark ? "bg-slate-800" : "bg-slate-100"
                           )}>
-                            {JSON.stringify(result.parsedData, null, 2)}
-                          </pre>
+                            {formatParsedData(result.parsedData, type, isDark)}
+                          </div>
                         </details>
                       )}
                     </div>
