@@ -234,3 +234,98 @@ All sections are now editable on the provider detail page:
 - ✅ Schedule
 - ✅ Rates & Discounts
 - ✅ Networks
+
+## Commits Log (Mar 19, 2026 - Evening)
+- `ecf254f` - Add functional export dropdown + claims/savings analytics + contract health + credentialing pipeline
+- `1f9f73b` - Add scheduled reports functionality - Add/Edit/Delete schedules, Run Now, toggle status
+- `32f0c2f` - Add HIPAA audit logging system - real-time logging, PHI access tracking, export support
+- `8bfd2e3` - Update practice provider CSV import to match main format + add download template button
+- `2b7d5bb` - Update CSV import template to official Solidarity 52-column format
+- `c9f97a0` - Fix provider count mismatch - fetch all providers by billing NPI instead of limiting to 50
+- `75e2802` - Include OIG LEIE database for Railway deployment (82k exclusion records)
+
+## HIPAA Audit Logging (Mar 19, 2026)
+Full audit trail system for compliance:
+
+### Files
+- `lib/audit.ts` - Server-side logging to JSON
+- `lib/useAudit.ts` - Client-side React hook
+- `app/api/audit/route.ts` - GET/POST/DELETE endpoints
+- `data/audit-log.json` - Persistent log storage
+
+### Categories
+- `auth` - Login, logout, session events
+- `phi_access` - Viewing member/patient data
+- `data_change` - Create, update, delete operations
+- `system` - System configuration changes
+- `security` - Failed logins, permission denials
+- `export` - Data exports, report downloads
+- `verification` - Provider verification checks
+
+### Client Hook Usage
+```tsx
+const { logViewProvider, logUpdateProvider, logExport } = useAudit();
+
+// Log PHI access
+logViewProvider(providerId, providerName);
+
+// Log data change
+logUpdateProvider(providerId, providerName, 'profile data');
+
+// Log export
+logExport('Network Summary', 100, false);
+```
+
+## CSV Import Template (Mar 19, 2026)
+Official Solidarity 52-column format:
+
+```
+Entity #, Contract #, NPI, First Name, Last Name, Mid Init, Suffix,
+Address1, Address 2, City, State, Zip Code, County, Gender,
+Primary Spc Code, Primary Taxonomy Code, Secondary Spc Code, Secondary Taxonomy Code,
+Facility Type, Phone #, Fax, Email, Language,
+Accepts New Patients, Primary Care Flag, Behavioral Health Flag, Directory Display,
+Monday Hours, Tuesday Hours, Wednesday Hours, Thursday Hours, Friday Hours, Saturday Hours, Sunday Hours,
+Pricing Tier, Network Org, Start Date, End Date,
+Corresponding Addr 1, Corresponding Addr 2, Corresponding City, Corresponding State, Corresponding Zip,
+Contact Name, Corresponding Fax,
+Billing NPI, Billing Tax ID, Billing Name, Billing Addr 1, Billing Addr 2,
+Billing City, Billing State, Billing Zip, Billing Phone, Billing Fax
+```
+
+## OIG LEIE Database (Mar 19, 2026)
+Federal exclusion list for provider verification:
+
+- `data/oig-leie.json` - 82,749 exclusion records (~28MB)
+- `data/oig-npi-index.json` - NPI lookup index
+- `data/oig-name-index.json` - Name lookup index
+
+### Check Usage
+```tsx
+import { checkOIGExclusion } from '@/lib/verification/oig';
+
+const result = await checkOIGExclusion(firstName, lastName, npi);
+// result.status: 'PASSED' | 'FAILED' | 'ERROR'
+```
+
+## Network Analytics (Mar 19, 2026)
+Export dropdown with 6 report types:
+1. Network Summary Report - Overview metrics
+2. Provider Directory - Provider list with contracts
+3. Contract Status Report - Expiring breakdown
+4. Credentialing Pipeline - Applications by stage
+5. Savings Analysis - Claims repricing data
+6. Regional Coverage - Geographic distribution
+
+New analytics sections:
+- Claims & Network Savings (with repricing stats)
+- Contract Health Overview (expiring 30/60/90 days)
+- Credentialing Pipeline visualization
+
+## Scheduled Reports (Mar 19, 2026)
+Full CRUD for automated report delivery:
+- Create schedule with template, frequency, recipients
+- Edit existing schedules
+- Run Now for immediate generation
+- Toggle active/paused status
+- Delete schedules
