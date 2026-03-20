@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, X, DollarSign, Edit, User, CreditCard, Save, Users, ChevronRight, Trash2, Upload, FileSpreadsheet, AlertCircle, Globe } from "lucide-react";
+import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, X, DollarSign, Edit, User, CreditCard, Save, Users, ChevronRight, ChevronDown, Trash2, Upload, FileSpreadsheet, AlertCircle, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useTheme } from "@/components/admin/ThemeContext";
@@ -276,6 +276,7 @@ export default function ProvidersPage() {
   const [showAddPractice, setShowAddPractice] = useState(false);
   const [showAddProvider, setShowAddProvider] = useState(false);
   const [showCsvUpload, setShowCsvUpload] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
   const [csvData, setCsvData] = useState<Partial<Provider>[]>([]);
   const [csvErrors, setCsvErrors] = useState<string[]>([]);
   const [isEditingPractice, setIsEditingPractice] = useState(false);
@@ -556,13 +557,87 @@ export default function ProvidersPage() {
           <p className={cn("mt-1", isDark ? "text-slate-400" : "text-slate-500")}>Manage network practices and their affiliated providers</p>
         </div>
         <div className="flex gap-3">
-          <button className={cn(
-            "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
-            isDark ? "bg-slate-700 text-white hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-          )}>
-            <Download className="w-4 h-4" />
-            Export
-          </button>
+          {/* Export Dropdown */}
+          <div className="relative">
+            <button 
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
+                isDark ? "bg-slate-700 text-white hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              )}
+            >
+              <Download className="w-4 h-4" />
+              Export
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            {showExportMenu && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setShowExportMenu(false)} />
+                <div className={cn(
+                  "absolute right-0 mt-2 w-64 rounded-lg shadow-lg border z-50",
+                  isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+                )}>
+                  <div className="p-2">
+                    <button
+                      onClick={() => {
+                        window.location.href = '/api/export/provider-rates';
+                        setShowExportMenu(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors",
+                        isDark ? "hover:bg-slate-700 text-white" : "hover:bg-slate-100 text-slate-700"
+                      )}
+                    >
+                      <DollarSign className="w-4 h-4 text-emerald-500" />
+                      <div>
+                        <p className="font-medium text-sm">Provider Discount Rates</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>All rates, CPT codes, % Medicare</p>
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Export provider directory
+                        const csv = [
+                          'NPI,First Name,Last Name,Credential,Specialty,Contract #,Reference #,Practice,City,State,Phone,Accepting New',
+                          ...providers.map((p: any) => [
+                            p.npi,
+                            p.firstName,
+                            p.lastName,
+                            p.credential || '',
+                            p.specialty || '',
+                            p.contractNumber || '',
+                            p.entityNumber || p.referenceNumber || '',
+                            p.billing?.name || '',
+                            p.locations?.[0]?.city || '',
+                            p.locations?.[0]?.state || '',
+                            p.locations?.[0]?.phone || '',
+                            p.acceptingNewPatients ? 'Yes' : 'No'
+                          ].map((v: any) => `"${String(v).replace(/"/g, '""')}"`).join(','))
+                        ].join('\n');
+                        const blob = new Blob([csv], { type: 'text/csv' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `provider-directory-${new Date().toISOString().split('T')[0]}.csv`;
+                        a.click();
+                        setShowExportMenu(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors",
+                        isDark ? "hover:bg-slate-700 text-white" : "hover:bg-slate-100 text-slate-700"
+                      )}
+                    >
+                      <Users className="w-4 h-4 text-blue-500" />
+                      <div>
+                        <p className="font-medium text-sm">Provider Directory</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Basic provider info, contact</p>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
           <button 
             onClick={() => setShowCsvUpload(true)}
             className={cn(

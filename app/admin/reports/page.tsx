@@ -24,6 +24,7 @@ const reportTemplates = [
   { id: "provider-roster", name: "Provider Roster", description: "Complete list of all network providers", icon: Building2, category: "Providers" },
   { id: "contract-summary", name: "Contract Summary", description: "Active contracts with rates and terms", icon: FileText, category: "Contracts" },
   { id: "discount-analysis", name: "Discount Analysis", description: "Fee schedule discounts by provider", icon: DollarSign, category: "Rates" },
+  { id: "provider-rate-schedule", name: "Provider Rate Schedule", description: "All discount rates, CPT codes, % Medicare/Billed", icon: DollarSign, category: "Rates", downloadUrl: "/api/export/provider-rates" },
   { id: "credentialing-status", name: "Credentialing Status", description: "Provider verification tracking", icon: Shield, category: "Credentialing" },
   { id: "network-coverage", name: "Network Coverage", description: "Geographic coverage by county", icon: MapPin, category: "Network" },
   { id: "expiring-contracts", name: "Expiring Contracts", description: "Contracts expiring in 30, 60, 90 days", icon: Clock, category: "Contracts" },
@@ -190,8 +191,17 @@ export default function ReportsPage() {
           {reportTemplates.map((template) => {
             const Icon = template.icon;
             const colors = categoryColors[template.category];
+            const handleClick = () => {
+              if ((template as any).downloadUrl) {
+                // Direct download for templates with downloadUrl
+                window.location.href = (template as any).downloadUrl;
+              } else {
+                setSelectedTemplate(template);
+                setShowGenerateModal(true);
+              }
+            };
             return (
-              <Card key={template.id} hover onClick={() => { setSelectedTemplate(template); setShowGenerateModal(true); }}>
+              <Card key={template.id} hover onClick={handleClick}>
                 <div className="flex items-start gap-4">
                   <div className={cn(
                     "w-12 h-12 rounded-xl flex items-center justify-center",
