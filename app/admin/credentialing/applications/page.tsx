@@ -18,10 +18,10 @@ import {
   Plus,
   User,
   Building2,
+  Shield,
   Mail,
   Phone,
   MapPin,
-  Shield,
   Zap,
   RefreshCw,
   Upload,
@@ -38,14 +38,182 @@ import { SearchInput } from "@/components/admin/ui/SearchInput";
 import { cn } from "@/lib/utils";
 
 const applications = [
-  { id: "CRED-2024-1247", provider: "Dr. Sarah Mitchell", npi: "1234567890", specialty: "Cardiology", status: "verification", submitted: "2024-03-10", stage: "PSV In Progress", type: "initial", practice: "Cleveland Heart Center", email: "dr.mitchell@cardio.com", phone: "(555) 123-4567" },
-  { id: "CRED-2024-1246", provider: "Dr. James Wilson", npi: "2345678901", specialty: "Orthopedics", status: "review", submitted: "2024-03-08", stage: "Ready for Review", type: "initial", practice: "Wilson Orthopedics", email: "dr.wilson@ortho.com", phone: "(555) 234-5678" },
-  { id: "CRED-2024-1245", provider: "Metro Imaging Center", npi: "3456789012", specialty: "Radiology", status: "approved", submitted: "2024-03-05", stage: "Complete", type: "initial", practice: "Metro Imaging Center", email: "admin@metroimaging.com", phone: "(555) 345-6789" },
-  { id: "CRED-2024-1244", provider: "Dr. Emily Chen", npi: "4567890123", specialty: "Pediatrics", status: "verification", submitted: "2024-03-03", stage: "Document Review", type: "initial", practice: "Lakeside Pediatrics", email: "dr.chen@pediatrics.com", phone: "(555) 456-7890" },
-  { id: "CRED-2024-1243", provider: "Cleveland Physical Therapy", npi: "5678901234", specialty: "Physical Therapy", status: "approved", submitted: "2024-02-28", stage: "Complete", type: "initial", practice: "Cleveland Physical Therapy", email: "info@clevelandpt.com", phone: "(555) 567-8901" },
-  { id: "CRED-2024-1242", provider: "Dr. Robert Kim", npi: "6789012345", specialty: "Dermatology", status: "denied", submitted: "2024-02-25", stage: "Failed PSV", type: "initial", practice: "Skin Care Associates", email: "dr.kim@dermatology.com", phone: "(555) 678-9012", denialReason: "Malpractice insurance expired" },
-  { id: "CRED-2024-1241", provider: "Dr. Lisa Martinez", npi: "7890123456", specialty: "Neurology", status: "verification", submitted: "2024-02-20", stage: "Primary Source Verification", type: "recredential", practice: "Neurology Associates", email: "dr.martinez@neuro.com", phone: "(555) 789-0123" },
-  { id: "CRED-2024-1240", provider: "Westlake Surgery Center", npi: "8901234567", specialty: "Ambulatory Surgery", status: "review", submitted: "2024-02-15", stage: "Committee Review", type: "initial", practice: "Westlake Surgery Center", email: "admin@westlakesurgery.com", phone: "(555) 890-1234" },
+  { 
+    id: "CRED-2024-1247", provider: "Dr. Sarah Mitchell", npi: "1234567890", specialty: "Cardiology", status: "verification", submitted: "2024-03-10", stage: "PSV In Progress", type: "initial", practice: "Cleveland Heart Center", email: "dr.mitchell@cardio.com", phone: "(555) 123-4567",
+    address: "4500 Euclid Ave, Suite 201, Cleveland, OH 44103",
+    licenseNumber: "MD-35-087654",
+    licenseState: "OH",
+    licenseExpiry: "2026-08-15",
+    deaNumber: "AM1234567",
+    boardCertified: true,
+    boardCertification: "American Board of Internal Medicine - Cardiovascular Disease",
+    documents: [
+      { name: "Medical License", status: "received", date: "2024-03-10" },
+      { name: "DEA Certificate", status: "received", date: "2024-03-10" },
+      { name: "Board Certification", status: "received", date: "2024-03-11" },
+      { name: "Malpractice Insurance COI", status: "pending", date: null },
+      { name: "CV/Resume", status: "received", date: "2024-03-10" },
+      { name: "W-9 Form", status: "pending", date: null },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: "passed", date: "2024-03-11" },
+      { type: "OIG Exclusion", status: "passed", date: "2024-03-11" },
+      { type: "SAM.gov", status: "passed", date: "2024-03-11" },
+      { type: "License Verification", status: "pending", date: null },
+    ]
+  },
+  { 
+    id: "CRED-2024-1246", provider: "Dr. James Wilson", npi: "2345678901", specialty: "Orthopedics", status: "review", submitted: "2024-03-08", stage: "Ready for Review", type: "initial", practice: "Wilson Orthopedics", email: "dr.wilson@ortho.com", phone: "(555) 234-5678",
+    address: "1200 Medical Center Dr, Beachwood, OH 44122",
+    licenseNumber: "MD-35-076543",
+    licenseState: "OH",
+    licenseExpiry: "2025-12-31",
+    deaNumber: "AW2345678",
+    boardCertified: true,
+    boardCertification: "American Board of Orthopaedic Surgery",
+    documents: [
+      { name: "Medical License", status: "received", date: "2024-03-08" },
+      { name: "DEA Certificate", status: "received", date: "2024-03-08" },
+      { name: "Board Certification", status: "received", date: "2024-03-08" },
+      { name: "Malpractice Insurance COI", status: "received", date: "2024-03-09" },
+      { name: "CV/Resume", status: "received", date: "2024-03-08" },
+      { name: "W-9 Form", status: "received", date: "2024-03-08" },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: "passed", date: "2024-03-09" },
+      { type: "OIG Exclusion", status: "passed", date: "2024-03-09" },
+      { type: "SAM.gov", status: "passed", date: "2024-03-09" },
+      { type: "License Verification", status: "passed", date: "2024-03-10" },
+    ]
+  },
+  { 
+    id: "CRED-2024-1245", provider: "Metro Imaging Center", npi: "3456789012", specialty: "Radiology", status: "approved", submitted: "2024-03-05", stage: "Complete", type: "initial", practice: "Metro Imaging Center", email: "admin@metroimaging.com", phone: "(555) 345-6789",
+    address: "789 Imaging Way, Cleveland, OH 44115",
+    licenseNumber: "FAC-45-001234",
+    licenseState: "OH",
+    licenseExpiry: "2025-06-30",
+    documents: [
+      { name: "Facility License", status: "received", date: "2024-03-05" },
+      { name: "Accreditation Certificate", status: "received", date: "2024-03-05" },
+      { name: "Malpractice Insurance COI", status: "received", date: "2024-03-05" },
+      { name: "W-9 Form", status: "received", date: "2024-03-05" },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: "passed", date: "2024-03-06" },
+      { type: "OIG Exclusion", status: "passed", date: "2024-03-06" },
+      { type: "SAM.gov", status: "passed", date: "2024-03-06" },
+      { type: "Facility Accreditation", status: "passed", date: "2024-03-07" },
+    ]
+  },
+  { 
+    id: "CRED-2024-1244", provider: "Dr. Emily Chen", npi: "4567890123", specialty: "Pediatrics", status: "verification", submitted: "2024-03-03", stage: "Document Review", type: "initial", practice: "Lakeside Pediatrics", email: "dr.chen@pediatrics.com", phone: "(555) 456-7890",
+    address: "5678 Lake Shore Blvd, Mentor, OH 44060",
+    licenseNumber: "MD-35-098765",
+    licenseState: "OH",
+    licenseExpiry: "2027-03-31",
+    deaNumber: "AC4567890",
+    boardCertified: true,
+    boardCertification: "American Board of Pediatrics",
+    documents: [
+      { name: "Medical License", status: "received", date: "2024-03-03" },
+      { name: "DEA Certificate", status: "pending", date: null },
+      { name: "Board Certification", status: "received", date: "2024-03-03" },
+      { name: "Malpractice Insurance COI", status: "received", date: "2024-03-04" },
+      { name: "CV/Resume", status: "received", date: "2024-03-03" },
+      { name: "W-9 Form", status: "pending", date: null },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: "passed", date: "2024-03-04" },
+      { type: "OIG Exclusion", status: "passed", date: "2024-03-04" },
+      { type: "SAM.gov", status: "pending", date: null },
+      { type: "License Verification", status: "pending", date: null },
+    ]
+  },
+  { 
+    id: "CRED-2024-1243", provider: "Cleveland Physical Therapy", npi: "5678901234", specialty: "Physical Therapy", status: "approved", submitted: "2024-02-28", stage: "Complete", type: "initial", practice: "Cleveland Physical Therapy", email: "info@clevelandpt.com", phone: "(555) 567-8901",
+    address: "3456 Therapy Lane, Parma, OH 44134",
+    licenseNumber: "PT-35-012345",
+    licenseState: "OH",
+    licenseExpiry: "2025-09-30",
+    documents: [
+      { name: "PT License", status: "received", date: "2024-02-28" },
+      { name: "Malpractice Insurance COI", status: "received", date: "2024-02-28" },
+      { name: "W-9 Form", status: "received", date: "2024-02-28" },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: "passed", date: "2024-03-01" },
+      { type: "OIG Exclusion", status: "passed", date: "2024-03-01" },
+      { type: "SAM.gov", status: "passed", date: "2024-03-01" },
+    ]
+  },
+  { 
+    id: "CRED-2024-1242", provider: "Dr. Robert Kim", npi: "6789012345", specialty: "Dermatology", status: "denied", submitted: "2024-02-25", stage: "Failed PSV", type: "initial", practice: "Skin Care Associates", email: "dr.kim@dermatology.com", phone: "(555) 678-9012", denialReason: "Malpractice insurance expired",
+    address: "9012 Skin Care Blvd, Westlake, OH 44145",
+    licenseNumber: "MD-35-054321",
+    licenseState: "OH",
+    licenseExpiry: "2024-01-15",
+    deaNumber: "AK6789012",
+    boardCertified: true,
+    boardCertification: "American Board of Dermatology",
+    documents: [
+      { name: "Medical License", status: "received", date: "2024-02-25" },
+      { name: "DEA Certificate", status: "received", date: "2024-02-25" },
+      { name: "Board Certification", status: "received", date: "2024-02-25" },
+      { name: "Malpractice Insurance COI", status: "expired", date: "2024-02-25" },
+      { name: "CV/Resume", status: "received", date: "2024-02-25" },
+      { name: "W-9 Form", status: "received", date: "2024-02-25" },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: "passed", date: "2024-02-26" },
+      { type: "OIG Exclusion", status: "passed", date: "2024-02-26" },
+      { type: "SAM.gov", status: "passed", date: "2024-02-26" },
+      { type: "License Verification", status: "failed", date: "2024-02-27" },
+      { type: "Malpractice COI", status: "failed", date: "2024-02-27" },
+    ]
+  },
+  { 
+    id: "CRED-2024-1241", provider: "Dr. Lisa Martinez", npi: "7890123456", specialty: "Neurology", status: "verification", submitted: "2024-02-20", stage: "Primary Source Verification", type: "recredential", practice: "Neurology Associates", email: "dr.martinez@neuro.com", phone: "(555) 789-0123",
+    address: "2345 Neuro Way, Cleveland Heights, OH 44118",
+    licenseNumber: "MD-35-065432",
+    licenseState: "OH",
+    licenseExpiry: "2026-06-30",
+    deaNumber: "AM7890123",
+    boardCertified: true,
+    boardCertification: "American Board of Psychiatry and Neurology",
+    documents: [
+      { name: "Medical License", status: "received", date: "2024-02-20" },
+      { name: "DEA Certificate", status: "received", date: "2024-02-20" },
+      { name: "Board Certification", status: "received", date: "2024-02-21" },
+      { name: "Malpractice Insurance COI", status: "received", date: "2024-02-22" },
+      { name: "CV/Resume", status: "received", date: "2024-02-20" },
+      { name: "W-9 Form", status: "received", date: "2024-02-20" },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: "passed", date: "2024-02-21" },
+      { type: "OIG Exclusion", status: "passed", date: "2024-02-21" },
+      { type: "SAM.gov", status: "passed", date: "2024-02-21" },
+      { type: "License Verification", status: "pending", date: null },
+    ]
+  },
+  { 
+    id: "CRED-2024-1240", provider: "Westlake Surgery Center", npi: "8901234567", specialty: "Ambulatory Surgery", status: "review", submitted: "2024-02-15", stage: "Committee Review", type: "initial", practice: "Westlake Surgery Center", email: "admin@westlakesurgery.com", phone: "(555) 890-1234",
+    address: "1234 Surgery Center Pkwy, Westlake, OH 44145",
+    licenseNumber: "ASC-45-005678",
+    licenseState: "OH",
+    licenseExpiry: "2025-12-31",
+    documents: [
+      { name: "Facility License", status: "received", date: "2024-02-15" },
+      { name: "Accreditation Certificate", status: "received", date: "2024-02-15" },
+      { name: "Malpractice Insurance COI", status: "received", date: "2024-02-16" },
+      { name: "W-9 Form", status: "received", date: "2024-02-15" },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: "passed", date: "2024-02-16" },
+      { type: "OIG Exclusion", status: "passed", date: "2024-02-16" },
+      { type: "SAM.gov", status: "passed", date: "2024-02-16" },
+      { type: "Facility Accreditation", status: "passed", date: "2024-02-18" },
+    ]
+  },
 ];
 
 const stats = [
@@ -409,56 +577,149 @@ export default function ApplicationsPage() {
 
               <div className="space-y-6">
                 {/* Status & Type */}
-                <div className="flex gap-3">
+                <div className="flex gap-3 items-center">
                   {getStatusBadge(selectedApplication.status)}
                   {getTypeBadge(selectedApplication.type)}
+                  <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    Submitted: {new Date(selectedApplication.submitted).toLocaleDateString()}
+                  </span>
                 </div>
 
-                {/* Details Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
-                    <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
-                      NPI
-                    </p>
-                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                      {selectedApplication.npi}
-                    </p>
-                  </div>
-                  <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
-                    <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
-                      Specialty
-                    </p>
-                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                      {selectedApplication.specialty}
-                    </p>
-                  </div>
-                  <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
-                    <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
-                      Email
-                    </p>
-                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                      {selectedApplication.email}
-                    </p>
-                  </div>
-                  <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
-                    <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
-                      Phone
-                    </p>
-                    <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                      {selectedApplication.phone}
-                    </p>
+                {/* Current Stage Progress */}
+                <div className={cn("p-4 rounded-lg border", isDark ? "bg-slate-700/30 border-slate-600" : "bg-blue-50 border-blue-200")}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-blue-600")}>
+                        Current Stage
+                      </p>
+                      <p className={cn("font-semibold text-lg", isDark ? "text-white" : "text-slate-900")}>
+                        {selectedApplication.stage}
+                      </p>
+                    </div>
+                    <Clock className={cn("w-8 h-8", isDark ? "text-slate-500" : "text-blue-400")} />
                   </div>
                 </div>
 
-                {/* Current Stage */}
-                <div className={cn("p-4 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
-                  <p className={cn("text-xs uppercase tracking-wider mb-1", isDark ? "text-slate-400" : "text-slate-500")}>
-                    Current Stage
-                  </p>
-                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                    {selectedApplication.stage}
-                  </p>
+                {/* Provider Details Grid */}
+                <div>
+                  <h3 className={cn("font-semibold mb-3", isDark ? "text-white" : "text-slate-900")}>
+                    Provider Information
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>NPI</p>
+                      <p className={cn("font-medium font-mono", isDark ? "text-white" : "text-slate-900")}>{selectedApplication.npi}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Specialty</p>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{selectedApplication.specialty}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>License #</p>
+                      <p className={cn("font-medium font-mono", isDark ? "text-white" : "text-slate-900")}>{(selectedApplication as any).licenseNumber || "N/A"}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>License Expiry</p>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{(selectedApplication as any).licenseExpiry || "N/A"}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg col-span-2", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Address</p>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{(selectedApplication as any).address || "N/A"}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Email</p>
+                      <p className={cn("font-medium text-sm", isDark ? "text-white" : "text-slate-900")}>{selectedApplication.email}</p>
+                    </div>
+                    <div className={cn("p-3 rounded-lg", isDark ? "bg-slate-700/50" : "bg-slate-50")}>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Phone</p>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{selectedApplication.phone}</p>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Documents Section */}
+                {(selectedApplication as any).documents && (
+                  <div>
+                    <h3 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                      <FileText className="w-4 h-4" />
+                      Documents
+                      <span className={cn("text-sm font-normal", isDark ? "text-slate-400" : "text-slate-500")}>
+                        ({(selectedApplication as any).documents.filter((d: any) => d.status === 'received').length}/{(selectedApplication as any).documents.length} received)
+                      </span>
+                    </h3>
+                    <div className="space-y-2">
+                      {(selectedApplication as any).documents.map((doc: any, idx: number) => (
+                        <div 
+                          key={idx}
+                          className={cn(
+                            "flex items-center justify-between p-3 rounded-lg border",
+                            doc.status === 'received' ? (isDark ? "bg-green-900/20 border-green-800" : "bg-green-50 border-green-200") :
+                            doc.status === 'expired' ? (isDark ? "bg-red-900/20 border-red-800" : "bg-red-50 border-red-200") :
+                            (isDark ? "bg-amber-900/20 border-amber-800" : "bg-amber-50 border-amber-200")
+                          )}
+                        >
+                          <div className="flex items-center gap-3">
+                            {doc.status === 'received' ? (
+                              <CheckCircle className="w-5 h-5 text-green-500" />
+                            ) : doc.status === 'expired' ? (
+                              <XCircle className="w-5 h-5 text-red-500" />
+                            ) : (
+                              <Clock className="w-5 h-5 text-amber-500" />
+                            )}
+                            <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{doc.name}</span>
+                          </div>
+                          <div className="text-right">
+                            <span className={cn(
+                              "text-xs px-2 py-1 rounded-full",
+                              doc.status === 'received' ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300" :
+                              doc.status === 'expired' ? "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300" :
+                              "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300"
+                            )}>
+                              {doc.status === 'received' ? 'Received' : doc.status === 'expired' ? 'Expired' : 'Pending'}
+                            </span>
+                            {doc.date && (
+                              <p className={cn("text-xs mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
+                                {new Date(doc.date).toLocaleDateString()}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Verifications Section */}
+                {(selectedApplication as any).verifications && (
+                  <div>
+                    <h3 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
+                      <Shield className="w-4 h-4" />
+                      Verification Status
+                    </h3>
+                    <div className="grid grid-cols-2 gap-2">
+                      {(selectedApplication as any).verifications.map((v: any, idx: number) => (
+                        <div 
+                          key={idx}
+                          className={cn(
+                            "flex items-center gap-2 p-2 rounded-lg",
+                            v.status === 'passed' ? (isDark ? "bg-green-900/20" : "bg-green-50") :
+                            v.status === 'failed' ? (isDark ? "bg-red-900/20" : "bg-red-50") :
+                            (isDark ? "bg-slate-700/50" : "bg-slate-50")
+                          )}
+                        >
+                          {v.status === 'passed' ? (
+                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                          ) : v.status === 'failed' ? (
+                            <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                          ) : (
+                            <Clock className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                          )}
+                          <span className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-700")}>{v.type}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Denial Reason */}
                 {selectedApplication.status === "denied" && selectedApplication.denialReason && (
