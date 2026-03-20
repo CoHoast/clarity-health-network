@@ -22,6 +22,10 @@ export async function GET(
   let rateType = 'Fixed Rate';
   let rateDescription = '';
   
+  // Check for rate type indicators (I, O, P, DEFAULT)
+  const rateTypeIndicators = contract.rateTypeIndicators || [];
+  const hasRateTypes = rateTypeIndicators.length > 0;
+  
   if (contract.cptRates.length > 0) {
     rateType = 'CPT-Based';
     rateDescription = `${contract.cptRates.length} CPT codes with fixed pricing`;
@@ -50,8 +54,11 @@ export async function GET(
     rateType,
     rateDescription,
     defaultRates: contract.defaultRates,
+    // Rate type indicators (I=Inpatient, O=Outpatient, P=Professional, DEFAULT)
+    rateTypeIndicators: rateTypeIndicators,
+    // Actual CPT codes with fixed prices
     cptRates: contract.cptRates,
-    revenueCodes: contract.revenueCodes,
+    revenueCodes: contract.revenueCodes || [],
     cptCount: contract.cptRates.length
   });
 }
