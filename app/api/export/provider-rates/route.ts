@@ -5,6 +5,20 @@ import contractPricingData from '@/data/contract-pricing.json';
 const providers = providersData as any[];
 const pricing = contractPricingData as Record<string, any>;
 
+// Convert Excel date serial number to MM/DD/YYYY
+function excelDateToString(excelDate: number): string {
+  if (!excelDate || excelDate === 0) return '';
+  // Excel dates start from Jan 1, 1900 (serial 1)
+  // But Excel incorrectly thinks 1900 was a leap year, so we adjust
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const excelEpoch = new Date(1899, 11, 30); // Dec 30, 1899
+  const date = new Date(excelEpoch.getTime() + excelDate * msPerDay);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${day}/${year}`;
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const format = searchParams.get('format') || 'csv';
@@ -44,6 +58,8 @@ export async function GET(request: NextRequest) {
     
     if (contract) {
       // Has contract pricing data
+      const fromDate = excelDateToString(contract.fromDate);
+      const toDate = excelDateToString(contract.toDate);
       
       // Add rate type indicators (I, O, P, DEFAULT) as rows
       if (contract.rateTypeIndicators && contract.rateTypeIndicators.length > 0) {
@@ -51,8 +67,8 @@ export async function GET(request: NextRequest) {
           rows.push([
             referenceNum,
             contractNum,
-            '', // From Date
-            '', // To Date
+            fromDate,
+            toDate,
             '', // CPT Code (blank for rate type indicators)
             indicator.type === 'DEFAULT' ? '' : indicator.type, // Hospital Type Code
             '0', // Contract Priced Amt (not used for % rates)
@@ -71,8 +87,8 @@ export async function GET(request: NextRequest) {
         rows.push([
           referenceNum,
           contractNum,
-          '', // From Date
-          '', // To Date
+          fromDate,
+          toDate,
           '', // CPT Code
           '', // Hospital Type Code
           '0', // Contract Priced Amt
@@ -93,8 +109,8 @@ export async function GET(request: NextRequest) {
           rows.push([
             referenceNum,
             contractNum,
-            '', // From Date
-            '', // To Date
+            fromDate,
+            toDate,
             cpt.cptCode,
             '', // Hospital Type Code (empty for CPT codes)
             String(cpt.pricedAmt || 0),
