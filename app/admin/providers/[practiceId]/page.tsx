@@ -274,14 +274,19 @@ export default function PracticeDetailPage() {
   const providerFileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedProviders, setUploadedProviders] = useState<any[]>([]);
   
-  // CSV headers for provider import (matches main providers page format)
+  // CSV headers for provider import - official Solidarity format
   const providerCsvHeaders = [
-    'NPI', 'Last Name', 'First Name', 'Credentials', 'Gender',
-    'Entity #', 'Contract #', 'Tax ID', 'Practice NPI',
-    'Primary Spc Code', 'Secondary Spc Code', 'Tertiary Spc Code',
-    'Primary Care Flag', 'Behavioral Health Flag',
-    'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip',
-    'Accept New Patients', 'Languages', 'Visible'
+    'Entity #', 'Contract #', 'NPI', 'First Name', 'Last Name', 'Mid Init', 'Suffix',
+    'Address1', 'Address 2', 'City', 'State', 'Zip Code', 'County', 'Gender',
+    'Primary Spc Code', 'Primary Taxonomy Code', 'Secondary Spc Code', 'Secondary Taxonomy Code',
+    'Facility Type', 'Phone #', 'Fax', 'Email', 'Language',
+    'Accepts New Patients', 'Primary Care Flag', 'Behavioral Health Flag', 'Directory Display',
+    'Monday Hours', 'Tuesday Hours', 'Wednesday Hours', 'Thursday Hours', 'Friday Hours', 'Saturday Hours', 'Sunday Hours',
+    'Pricing Tier', 'Network Org', 'Start Date', 'End Date',
+    'Corresponding Addr 1', 'Corresponding Addr 2', 'Corresponding City', 'Corresponding State', 'Corresponding Zip',
+    'Contact Name', 'Corresponding Fax',
+    'Billing NPI', 'Billing Tax ID', 'Billing Name', 'Billing Addr 1', 'Billing Addr 2',
+    'Billing City', 'Billing State', 'Billing Zip', 'Billing Phone', 'Billing Fax'
   ];
 
   const downloadProviderTemplate = () => {
@@ -330,33 +335,67 @@ export default function PracticeDetailPage() {
       // Parse headers to create column mapping
       const headers = parseCsvLine(lines[0]).map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
       
-      // Create header index map
+      // Create header index map - matches official Solidarity template
       const headerMap: Record<string, number> = {};
       headers.forEach((h, i) => {
-        // Map various header names to standard fields
-        if (h.includes('npi') && !h.includes('practice')) headerMap['npi'] = i;
-        else if (h.includes('lastname') || h === 'last') headerMap['lastName'] = i;
+        // Map header names to standard fields
+        if (h === 'entity' || h.includes('entity')) headerMap['referenceNumber'] = i;
+        else if (h === 'contract' || h.includes('contract')) headerMap['contractNumber'] = i;
+        else if (h === 'npi' && !h.includes('billing')) headerMap['npi'] = i;
         else if (h.includes('firstname') || h === 'first') headerMap['firstName'] = i;
-        else if (h.includes('credential') || h.includes('title')) headerMap['credentials'] = i;
-        else if (h.includes('gender') || h === 'sex') headerMap['gender'] = i;
-        else if (h.includes('entity')) headerMap['referenceNumber'] = i;
-        else if (h.includes('contract')) headerMap['contractNumber'] = i;
-        else if (h.includes('taxid') || h.includes('tax')) headerMap['taxId'] = i;
-        else if (h.includes('practicenpi')) headerMap['practiceNpi'] = i;
-        else if (h.includes('primaryspc') || h.includes('specialty1') || (h.includes('specialty') && !h.includes('secondary'))) headerMap['specialtyCode'] = i;
-        else if (h.includes('secondaryspc') || h.includes('specialty2')) headerMap['secondarySpecialtyCode'] = i;
-        else if (h.includes('tertiaryspc') || h.includes('specialty3')) headerMap['tertiarySpecialtyCode'] = i;
+        else if (h.includes('lastname') || h === 'last') headerMap['lastName'] = i;
+        else if (h.includes('midinit') || h.includes('middle')) headerMap['middleInitial'] = i;
+        else if (h.includes('suffix')) headerMap['suffix'] = i;
+        else if (h === 'address1' && !h.includes('billing') && !h.includes('corresponding')) headerMap['address1'] = i;
+        else if (h === 'address2' && !h.includes('billing') && !h.includes('corresponding')) headerMap['address2'] = i;
+        else if (h === 'city' && !h.includes('billing') && !h.includes('corresponding')) headerMap['city'] = i;
+        else if (h === 'state' && !h.includes('billing') && !h.includes('corresponding')) headerMap['state'] = i;
+        else if ((h === 'zipcode' || h === 'zip') && !h.includes('billing') && !h.includes('corresponding')) headerMap['zip'] = i;
+        else if (h === 'county') headerMap['county'] = i;
+        else if (h === 'gender' || h === 'sex') headerMap['gender'] = i;
+        else if (h.includes('primaryspc') || h === 'primaryspccode') headerMap['specialtyCode'] = i;
+        else if (h.includes('primarytaxonomy')) headerMap['taxonomyCode'] = i;
+        else if (h.includes('secondaryspc')) headerMap['secondarySpecialtyCode'] = i;
+        else if (h.includes('secondarytaxonomy')) headerMap['secondaryTaxonomyCode'] = i;
+        else if (h.includes('facilitytype')) headerMap['facilityType'] = i;
+        else if (h === 'phone' || h.includes('phone') && !h.includes('billing')) headerMap['phone'] = i;
+        else if (h === 'fax' && !h.includes('billing') && !h.includes('corresponding')) headerMap['fax'] = i;
+        else if (h === 'email') headerMap['email'] = i;
+        else if (h === 'language' || h.includes('language')) headerMap['languages'] = i;
+        else if (h.includes('acceptsnew') || h.includes('acceptnew')) headerMap['acceptingNewPatients'] = i;
         else if (h.includes('primarycare')) headerMap['isPrimaryCare'] = i;
         else if (h.includes('behavioral')) headerMap['isBehavioralHealth'] = i;
-        else if (h.includes('phone')) headerMap['phone'] = i;
-        else if (h.includes('address1') || h === 'address') headerMap['address1'] = i;
-        else if (h.includes('address2')) headerMap['address2'] = i;
-        else if (h.includes('city')) headerMap['city'] = i;
-        else if (h.includes('state')) headerMap['state'] = i;
-        else if (h.includes('zip')) headerMap['zip'] = i;
-        else if (h.includes('accept') || h.includes('newpatient')) headerMap['acceptingNewPatients'] = i;
-        else if (h.includes('language')) headerMap['languages'] = i;
-        else if (h.includes('visible') || h.includes('directory')) headerMap['directoryDisplay'] = i;
+        else if (h.includes('directory') || h.includes('display')) headerMap['directoryDisplay'] = i;
+        else if (h.includes('mondayhours') || h === 'monday') headerMap['mondayHours'] = i;
+        else if (h.includes('tuesdayhours') || h === 'tuesday') headerMap['tuesdayHours'] = i;
+        else if (h.includes('wednesdayhours') || h === 'wednesday') headerMap['wednesdayHours'] = i;
+        else if (h.includes('thursdayhours') || h === 'thursday') headerMap['thursdayHours'] = i;
+        else if (h.includes('fridayhours') || h === 'friday') headerMap['fridayHours'] = i;
+        else if (h.includes('saturdayhours') || h === 'saturday') headerMap['saturdayHours'] = i;
+        else if (h.includes('sundayhours') || h === 'sunday') headerMap['sundayHours'] = i;
+        else if (h.includes('pricingtier')) headerMap['pricingTier'] = i;
+        else if (h.includes('networkorg')) headerMap['networkOrg'] = i;
+        else if (h.includes('startdate')) headerMap['contractStartDate'] = i;
+        else if (h.includes('enddate')) headerMap['contractEndDate'] = i;
+        // Corresponding address
+        else if (h.includes('correspondingaddr1')) headerMap['correspondingAddress1'] = i;
+        else if (h.includes('correspondingaddr2')) headerMap['correspondingAddress2'] = i;
+        else if (h.includes('correspondingcity')) headerMap['correspondingCity'] = i;
+        else if (h.includes('correspondingstate')) headerMap['correspondingState'] = i;
+        else if (h.includes('correspondingzip')) headerMap['correspondingZip'] = i;
+        else if (h.includes('contactname')) headerMap['contactName'] = i;
+        else if (h.includes('correspondingfax')) headerMap['correspondingFax'] = i;
+        // Billing info
+        else if (h.includes('billingnpi')) headerMap['billingNpi'] = i;
+        else if (h.includes('billingtax')) headerMap['billingTaxId'] = i;
+        else if (h.includes('billingname')) headerMap['billingName'] = i;
+        else if (h.includes('billingaddr1')) headerMap['billingAddress1'] = i;
+        else if (h.includes('billingaddr2')) headerMap['billingAddress2'] = i;
+        else if (h.includes('billingcity')) headerMap['billingCity'] = i;
+        else if (h.includes('billingstate')) headerMap['billingState'] = i;
+        else if (h.includes('billingzip')) headerMap['billingZip'] = i;
+        else if (h.includes('billingphone')) headerMap['billingPhone'] = i;
+        else if (h.includes('billingfax')) headerMap['billingFax'] = i;
       });
       
       const newProviders: any[] = [];
@@ -373,30 +412,82 @@ export default function PracticeDetailPage() {
         // Require NPI and Name
         if (!npi || (!lastName && !firstName)) continue;
         
+        const getVal = (key: string) => headerMap[key] !== undefined ? values[headerMap[key]] || '' : '';
+        const getBool = (key: string, defaultVal = false) => {
+          const val = getVal(key)?.toLowerCase();
+          return val === 'y' || val === 'yes' || val === 'true' || val === '1' || (defaultVal && !val);
+        };
+        
         newProviders.push({
           id: `PRV-UPLOAD-${Date.now()}-${i}`,
           npi,
           firstName,
           lastName,
+          middleInitial: getVal('middleInitial'),
+          suffix: getVal('suffix'),
           name: `${firstName} ${lastName}`.trim(),
-          title: headerMap['credentials'] !== undefined ? values[headerMap['credentials']] || 'MD' : 'MD',
+          title: getVal('suffix') || 'MD',
           specialty: practice?.specialty || 'General Practice',
-          specialtyCode: headerMap['specialtyCode'] !== undefined ? values[headerMap['specialtyCode']] : '',
-          secondarySpecialtyCode: headerMap['secondarySpecialtyCode'] !== undefined ? values[headerMap['secondarySpecialtyCode']] : '',
-          gender: headerMap['gender'] !== undefined ? values[headerMap['gender']] : '',
-          referenceNumber: headerMap['referenceNumber'] !== undefined ? values[headerMap['referenceNumber']] : '',
-          contractNumber: headerMap['contractNumber'] !== undefined ? values[headerMap['contractNumber']] : '',
-          isPrimaryCare: headerMap['isPrimaryCare'] !== undefined ? values[headerMap['isPrimaryCare']]?.toLowerCase() === 'y' || values[headerMap['isPrimaryCare']]?.toLowerCase() === 'true' : false,
-          isBehavioralHealth: headerMap['isBehavioralHealth'] !== undefined ? values[headerMap['isBehavioralHealth']]?.toLowerCase() === 'y' || values[headerMap['isBehavioralHealth']]?.toLowerCase() === 'true' : false,
-          phone: headerMap['phone'] !== undefined ? values[headerMap['phone']] : '',
-          address1: headerMap['address1'] !== undefined ? values[headerMap['address1']] : '',
-          address2: headerMap['address2'] !== undefined ? values[headerMap['address2']] : '',
-          city: headerMap['city'] !== undefined ? values[headerMap['city']] : '',
-          state: headerMap['state'] !== undefined ? values[headerMap['state']] : 'AZ',
-          zip: headerMap['zip'] !== undefined ? values[headerMap['zip']] : '',
-          acceptingNewPatients: headerMap['acceptingNewPatients'] !== undefined ? values[headerMap['acceptingNewPatients']]?.toLowerCase() === 'y' || values[headerMap['acceptingNewPatients']]?.toLowerCase() === 'true' : true,
-          directoryDisplay: headerMap['directoryDisplay'] !== undefined ? values[headerMap['directoryDisplay']]?.toLowerCase() !== 'n' && values[headerMap['directoryDisplay']]?.toLowerCase() !== 'false' : true,
-          languages: headerMap['languages'] !== undefined ? values[headerMap['languages']] : 'English',
+          specialtyCode: getVal('specialtyCode'),
+          taxonomyCode: getVal('taxonomyCode'),
+          secondarySpecialtyCode: getVal('secondarySpecialtyCode'),
+          secondaryTaxonomyCode: getVal('secondaryTaxonomyCode'),
+          facilityType: getVal('facilityType'),
+          gender: getVal('gender'),
+          referenceNumber: getVal('referenceNumber'),
+          contractNumber: getVal('contractNumber'),
+          isPrimaryCare: getBool('isPrimaryCare'),
+          isBehavioralHealth: getBool('isBehavioralHealth'),
+          phone: getVal('phone'),
+          fax: getVal('fax'),
+          email: getVal('email'),
+          address1: getVal('address1'),
+          address2: getVal('address2'),
+          city: getVal('city'),
+          state: getVal('state') || 'AZ',
+          zip: getVal('zip'),
+          county: getVal('county'),
+          acceptingNewPatients: getBool('acceptingNewPatients', true),
+          directoryDisplay: getBool('directoryDisplay', true),
+          languages: getVal('languages') || 'English',
+          // Hours
+          hours: {
+            monday: getVal('mondayHours'),
+            tuesday: getVal('tuesdayHours'),
+            wednesday: getVal('wednesdayHours'),
+            thursday: getVal('thursdayHours'),
+            friday: getVal('fridayHours'),
+            saturday: getVal('saturdayHours'),
+            sunday: getVal('sundayHours'),
+          },
+          // Contract info
+          pricingTier: getVal('pricingTier'),
+          networkOrg: getVal('networkOrg'),
+          contractStartDate: getVal('contractStartDate'),
+          contractEndDate: getVal('contractEndDate'),
+          // Corresponding address
+          correspondingAddress: {
+            address1: getVal('correspondingAddress1'),
+            address2: getVal('correspondingAddress2'),
+            city: getVal('correspondingCity'),
+            state: getVal('correspondingState'),
+            zip: getVal('correspondingZip'),
+            contactName: getVal('contactName'),
+            fax: getVal('correspondingFax'),
+          },
+          // Billing info
+          billing: {
+            npi: getVal('billingNpi'),
+            taxId: getVal('billingTaxId'),
+            name: getVal('billingName'),
+            address1: getVal('billingAddress1'),
+            address2: getVal('billingAddress2'),
+            city: getVal('billingCity'),
+            state: getVal('billingState'),
+            zip: getVal('billingZip'),
+            phone: getVal('billingPhone'),
+            fax: getVal('billingFax'),
+          },
           status: "active",
           useCustomRates: false,
         });
@@ -1441,42 +1532,89 @@ export default function PracticeDetailPage() {
               isDark ? "bg-slate-700/30 border-slate-600/50" : "bg-slate-50 border-slate-200"
             )}>
               <div className="flex items-center justify-between mb-3">
-                <h3 className={cn("text-sm font-semibold", isDark ? "text-white" : "text-slate-900")}>CSV Format</h3>
+                <h3 className={cn("text-sm font-semibold", isDark ? "text-white" : "text-slate-900")}>CSV Template</h3>
                 <button
                   onClick={downloadProviderTemplate}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-500 transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 transition-colors"
                 >
                   <Upload className="w-4 h-4 rotate-180" />
                   Download Template
                 </button>
               </div>
-              <div className="grid grid-cols-4 gap-2 text-xs">
-                <div className="text-blue-400 font-medium">NPI *</div>
-                <div className="text-blue-400 font-medium">Last Name *</div>
-                <div className="text-blue-400 font-medium">First Name *</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Credentials</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Gender</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Entity #</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Contract #</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Tax ID</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Practice NPI</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Spc Code</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Secondary Spc Code</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Tertiary Spc Code</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Care Flag</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Behavioral Health</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Phone</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Address 1</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Address 2</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>City</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>State</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Zip</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Accept New Patients</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Languages</div>
-                <div className={isDark ? "text-slate-400" : "text-slate-500"}>Visible</div>
+              
+              {/* Column sections */}
+              <div className="space-y-3 text-xs">
+                {/* Identity */}
+                <div>
+                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Identity</p>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Entity #</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Contract #</span>
+                    <span className="text-blue-400 font-medium">NPI *</span>
+                    <span className="text-blue-400 font-medium">First Name *</span>
+                    <span className="text-blue-400 font-medium">Last Name *</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Mid Init</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Suffix</span>
+                  </div>
+                </div>
+                
+                {/* Location */}
+                <div>
+                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Location</p>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Address1</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Address 2</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>City</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>State</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Zip Code</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>County</span>
+                  </div>
+                </div>
+                
+                {/* Specialty */}
+                <div>
+                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Specialty & Contact</p>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Gender</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Spc Code</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Taxonomy Code</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Secondary Spc Code</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Secondary Taxonomy Code</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Facility Type</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Phone #</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Fax</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Email</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Language</span>
+                  </div>
+                </div>
+                
+                {/* Flags */}
+                <div>
+                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Flags & Hours</p>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Accepts New Patients</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Care Flag</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Behavioral Health Flag</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Directory Display</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Monday-Sunday Hours</span>
+                  </div>
+                </div>
+                
+                {/* Contract */}
+                <div>
+                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Contract & Billing</p>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Pricing Tier</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Network Org</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Start/End Date</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Corresponding Address</span>
+                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Billing NPI/TaxID/Name/Address</span>
+                  </div>
+                </div>
               </div>
+              
               <p className={cn("text-xs mt-3", isDark ? "text-slate-500" : "text-slate-400")}>
-                * Required fields. Only NPI and Name are required - all other columns are optional.
+                * Required fields. Download template for full column list with 52 fields.
               </p>
             </div>
 

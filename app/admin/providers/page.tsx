@@ -1577,16 +1577,21 @@ export default function ProvidersPage() {
                 {csvData.length === 0 && (
                   <div className="bg-slate-700/30 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-sm font-semibold text-white">CSV Format</h3>
+                      <h3 className="text-sm font-semibold text-white">CSV Template</h3>
                       <button
                         onClick={() => {
                           const headers = [
-                            'NPI', 'Last Name', 'First Name', 'Credentials', 'Gender',
-                            'Entity #', 'Contract #', 'Tax ID', 'Practice NPI',
-                            'Primary Spc Code', 'Secondary Spc Code', 'Tertiary Spc Code',
-                            'Primary Care Flag', 'Behavioral Health Flag',
-                            'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip',
-                            'Accept New Patients', 'Languages', 'Visible'
+                            'Entity #', 'Contract #', 'NPI', 'First Name', 'Last Name', 'Mid Init', 'Suffix',
+                            'Address1', 'Address 2', 'City', 'State', 'Zip Code', 'County', 'Gender',
+                            'Primary Spc Code', 'Primary Taxonomy Code', 'Secondary Spc Code', 'Secondary Taxonomy Code',
+                            'Facility Type', 'Phone #', 'Fax', 'Email', 'Language',
+                            'Accepts New Patients', 'Primary Care Flag', 'Behavioral Health Flag', 'Directory Display',
+                            'Monday Hours', 'Tuesday Hours', 'Wednesday Hours', 'Thursday Hours', 'Friday Hours', 'Saturday Hours', 'Sunday Hours',
+                            'Pricing Tier', 'Network Org', 'Start Date', 'End Date',
+                            'Corresponding Addr 1', 'Corresponding Addr 2', 'Corresponding City', 'Corresponding State', 'Corresponding Zip',
+                            'Contact Name', 'Corresponding Fax',
+                            'Billing NPI', 'Billing Tax ID', 'Billing Name', 'Billing Addr 1', 'Billing Addr 2',
+                            'Billing City', 'Billing State', 'Billing Zip', 'Billing Phone', 'Billing Fax'
                           ];
                           const csv = headers.join(',') + '\n';
                           const blob = new Blob([csv], { type: 'text/csv' });
@@ -1597,38 +1602,84 @@ export default function ProvidersPage() {
                           a.click();
                           URL.revokeObjectURL(url);
                         }}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-500 transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 transition-colors"
                       >
                         <Download className="w-4 h-4" />
                         Download Template
                       </button>
                     </div>
-                    <div className="grid grid-cols-4 gap-2 text-sm">
-                      <div className="text-blue-400 font-medium">NPI *</div>
-                      <div className="text-blue-400 font-medium">Last Name *</div>
-                      <div className="text-blue-400 font-medium">First Name *</div>
-                      <div className="text-slate-400">Credentials</div>
-                      <div className="text-slate-400">Gender</div>
-                      <div className="text-slate-400">Entity #</div>
-                      <div className="text-slate-400">Contract #</div>
-                      <div className="text-slate-400">Tax ID</div>
-                      <div className="text-slate-400">Practice NPI</div>
-                      <div className="text-slate-400">Primary Spc Code</div>
-                      <div className="text-slate-400">Secondary Spc Code</div>
-                      <div className="text-slate-400">Tertiary Spc Code</div>
-                      <div className="text-slate-400">Primary Care Flag</div>
-                      <div className="text-slate-400">Behavioral Health Flag</div>
-                      <div className="text-slate-400">Phone</div>
-                      <div className="text-slate-400">Address 1</div>
-                      <div className="text-slate-400">Address 2</div>
-                      <div className="text-slate-400">City</div>
-                      <div className="text-slate-400">State</div>
-                      <div className="text-slate-400">Zip</div>
-                      <div className="text-slate-400">Accept New Patients</div>
-                      <div className="text-slate-400">Languages</div>
-                      <div className="text-slate-400">Visible</div>
+                    
+                    {/* Column sections */}
+                    <div className="space-y-3 text-sm">
+                      {/* Identity */}
+                      <div>
+                        <p className="text-slate-300 font-medium mb-1">Identity</p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                          <span className="text-slate-400">Entity #</span>
+                          <span className="text-slate-400">Contract #</span>
+                          <span className="text-blue-400 font-medium">NPI *</span>
+                          <span className="text-blue-400 font-medium">First Name *</span>
+                          <span className="text-blue-400 font-medium">Last Name *</span>
+                          <span className="text-slate-400">Mid Init</span>
+                          <span className="text-slate-400">Suffix</span>
+                        </div>
+                      </div>
+                      
+                      {/* Location */}
+                      <div>
+                        <p className="text-slate-300 font-medium mb-1">Location</p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                          <span className="text-slate-400">Address1</span>
+                          <span className="text-slate-400">Address 2</span>
+                          <span className="text-slate-400">City</span>
+                          <span className="text-slate-400">State</span>
+                          <span className="text-slate-400">Zip Code</span>
+                          <span className="text-slate-400">County</span>
+                        </div>
+                      </div>
+                      
+                      {/* Specialty */}
+                      <div>
+                        <p className="text-slate-300 font-medium mb-1">Specialty & Contact</p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                          <span className="text-slate-400">Gender</span>
+                          <span className="text-slate-400">Primary Spc Code</span>
+                          <span className="text-slate-400">Primary Taxonomy Code</span>
+                          <span className="text-slate-400">Secondary Spc Code</span>
+                          <span className="text-slate-400">Facility Type</span>
+                          <span className="text-slate-400">Phone #</span>
+                          <span className="text-slate-400">Fax</span>
+                          <span className="text-slate-400">Email</span>
+                          <span className="text-slate-400">Language</span>
+                        </div>
+                      </div>
+                      
+                      {/* Flags */}
+                      <div>
+                        <p className="text-slate-300 font-medium mb-1">Flags, Hours & Contract</p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                          <span className="text-slate-400">Accepts New Patients</span>
+                          <span className="text-slate-400">Primary Care Flag</span>
+                          <span className="text-slate-400">Behavioral Health Flag</span>
+                          <span className="text-slate-400">Directory Display</span>
+                          <span className="text-slate-400">Mon-Sun Hours</span>
+                          <span className="text-slate-400">Pricing Tier</span>
+                          <span className="text-slate-400">Network Org</span>
+                          <span className="text-slate-400">Start/End Date</span>
+                        </div>
+                      </div>
+                      
+                      {/* Billing */}
+                      <div>
+                        <p className="text-slate-300 font-medium mb-1">Correspondence & Billing</p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                          <span className="text-slate-400">Corresponding Address</span>
+                          <span className="text-slate-400">Contact Name</span>
+                          <span className="text-slate-400">Billing NPI/TaxID/Name/Address</span>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-xs text-slate-500 mt-3">* Required fields. Only NPI and Name are required - all other columns are optional.</p>
+                    <p className="text-xs text-slate-500 mt-3">* Required fields. Download template for full column list with 52 fields.</p>
                   </div>
                 )}
 
