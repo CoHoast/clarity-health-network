@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Shield, Users, Building2, Loader2 } from "lucide-react";
+import { useAudit } from "@/lib/useAudit";
 
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { logLogin } = useAudit();
   const [showPassword, setShowPassword] = useState(false);
   const [userType, setUserType] = useState<"member" | "provider" | "employer">("member");
   
@@ -45,6 +47,10 @@ export default function LoginForm() {
       // Store token
       localStorage.setItem("auth_token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("audit_user", email);
+      
+      // Log successful login
+      logLogin(true);
 
       // Redirect to appropriate portal
       switch (userType) {
@@ -59,7 +65,10 @@ export default function LoginForm() {
           break;
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      const errorMessage = err instanceof Error ? err.message : "Login failed";
+      setError(errorMessage);
+      // Log failed login
+      logLogin(false, errorMessage);
     } finally {
       setLoading(false);
     }

@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { logAudit } from '@/lib/audit';
+import { logAuditEvent } from '@/lib/audit';
 
 // Demo users for testing
 const DEMO_USERS = {
@@ -19,15 +19,24 @@ const DEMO_USERS = {
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
+    const ip = req.headers.get('x-forwarded-for') || 'unknown';
+    const userAgent = req.headers.get('user-agent') || 'unknown';
 
     if (!email) {
-      await logAudit({
-        action: 'login_failure',
-        resource: 'session',
-        userType: 'anonymous',
+      await logAuditEvent({
+        user: 'anonymous',
+        userId: 'anonymous',
+        action: 'Login Failed',
+        category: 'security',
+        resource: 'AUTH',
+        resourceType: 'Authentication',
+        details: 'Email is required',
+        ip,
+        userAgent,
+        sessionId: 'N/A',
+        severity: 'warning',
+        phiAccessed: false,
         success: false,
-        errorMessage: 'Email is required',
-        details: { attemptedEmail: null },
       });
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
@@ -37,20 +46,26 @@ export async function POST(req: NextRequest) {
     
     // Simulate login failure for specific test case
     if (password === 'fail') {
-      await logAudit({
-        action: 'login_failure',
-        resource: 'session',
-        userType: 'anonymous',
-        userEmail: email,
+      await logAuditEvent({
+        user: email,
+        userId: 'N/A',
+        action: 'Login Failed',
+        category: 'security',
+        resource: 'AUTH',
+        resourceType: 'Authentication',
+        details: 'Invalid password',
+        ip,
+        userAgent,
+        sessionId: 'N/A',
+        severity: 'warning',
+        phiAccessed: false,
         success: false,
-        errorMessage: 'Invalid password',
-        details: { attemptedEmail: email, reason: 'invalid_password' },
       });
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
     // Create session
-    const sessionId = crypto.randomUUID();
+    const sessionId = `sess_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
     const user = demoUser || {
       id: crypto.randomUUID(),
       name: email.split('@')[0],
@@ -59,63 +74,32 @@ export async function POST(req: NextRequest) {
     };
 
     // Log successful login
-    await logAudit({
+    await logAuditEvent({
+      user: email,
       userId: user.id,
-      userEmail: email,
-      userType: user.type as any,
-      userRole: user.role,
-      action: 'login_success',
-      resource: 'session',
-      resourceId: sessionId,
-      details: { 
-        email,
-        role: user.role,
-        isDemoUser: !!demoUser,
-      },
-    });
-
-    // Create response with session cookie (demo token)
-    const response = NextResponse.json({
-      success: true,
-      user: {
-        id: user.id,
-        email,
-        name: user.name,
-        role: user.role,
-      },
+      action: 'Login Success',
+      category: 'auth',
+      resource: 'AUTH',
+      resourceType: 'Authentication',
+      details: `User logged in successfully - Role: ${user.role}`,
+      ip,
+      userAgent,
       sessionId,
-      message: 'Login successful',
+      severity: 'info',
+      phiAccessed: false,
+      success: true,
     });
 
-    // Set demo session cookie (in production, use proper JWT/session)
-    response.cookies.set('demo_session', sessionId, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 8, // 8 hour session timeout (HIPAA compliant)
+    return NextResponse.json({
+      success: true,
+      token: sessionId,
+      user: {
+        ...user,
+        email,
+      },
     });
-
-    response.cookies.set('demo_user', JSON.stringify({
-      id: user.id,
-      email,
-      name: user.name,
-      role: user.role,
-    }), {
-      httpOnly: false, // Accessible by client for display
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 8,
-    });
-
-    return response;
   } catch (error) {
-    await logAudit({
-      action: 'login_failure',
-      resource: 'session',
-      userType: 'anonymous',
-      success: false,
-      errorMessage: error instanceof Error ? error.message : 'Unknown error',
-    });
+    console.error('Login error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

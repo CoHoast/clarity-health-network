@@ -2,9 +2,10 @@
 
 import { useTheme } from "@/components/admin/ThemeContext";
 import { cn } from "@/lib/utils";
+import { useAudit } from "@/lib/useAudit";
 import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Shield, CreditCard, FileText, CheckCircle, AlertTriangle, X, Edit } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const mockMember = {
@@ -45,8 +46,14 @@ const mockMember = {
 
 export default function MemberDetail({ id }: { id: string }) {
   const { isDark } = useTheme();
+  const { logViewMember } = useAudit();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTerminateModal, setShowTerminateModal] = useState(false);
+  
+  // Log PHI access when member is viewed
+  useEffect(() => {
+    logViewMember(id, mockMember.name);
+  }, [id, logViewMember]);
 
   return (
     <div className="space-y-6">

@@ -11,6 +11,7 @@ import { Button } from "@/components/admin/ui/Button";
 import { PageHeader, Tabs } from "@/components/admin/ui/PageHeader";
 import { cn } from "@/lib/utils";
 import { exportToCSV, formatDate, formatCurrency, formatPercent } from "@/lib/export";
+import { useAudit } from "@/lib/useAudit";
 
 type DateRange = "month" | "quarter" | "year";
 
@@ -164,6 +165,7 @@ export default function AnalyticsPage() {
   const [exportOpen, setExportOpen] = useState(false);
   const [exporting, setExporting] = useState<string | null>(null);
   const exportRef = useRef<HTMLDivElement>(null);
+  const { logExport } = useAudit();
 
   const currentData = dataByRange[dateRange];
   const currentSavings = claimsSavingsData[dateRange];
@@ -278,6 +280,17 @@ export default function AnalyticsPage() {
         ], `regional-coverage-${timestamp}`);
         break;
     }
+    
+    // Log the export for audit trail
+    const reportLabels: Record<string, string> = {
+      "network-summary": "Network Summary Report",
+      "provider-directory": "Provider Directory",
+      "contract-status": "Contract Status Report",
+      "credentialing-status": "Credentialing Pipeline",
+      "savings-report": "Savings Analysis",
+      "regional-coverage": "Regional Coverage",
+    };
+    logExport(reportLabels[reportId] || reportId, 1, false);
     
     setExporting(null);
     setExportOpen(false);

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { logAudit } from '@/lib/audit';
 import practicesData from '@/data/arizona-practices.json';
 import fs from 'fs';
 import path from 'path';
@@ -11,12 +10,6 @@ export async function POST(request: NextRequest) {
     
     // Validate required fields
     if (!data.name || !data.taxId) {
-      await logAudit({
-        action: 'create',
-        resource: 'practice',
-        success: false,
-        errorMessage: 'Missing required fields: name, taxId',
-      });
       return NextResponse.json(
         { error: 'Missing required fields: name, taxId' },
         { status: 400 }
@@ -28,13 +21,6 @@ export async function POST(request: NextRequest) {
     // Check for duplicate Tax ID
     const existing = practices.find((p: any) => p.taxId === data.taxId);
     if (existing) {
-      await logAudit({
-        action: 'create',
-        resource: 'practice',
-        resourceId: data.taxId,
-        success: false,
-        errorMessage: 'Practice with this Tax ID already exists',
-      });
       return NextResponse.json(
         { error: 'Practice with this Tax ID already exists' },
         { status: 409 }
@@ -65,25 +51,12 @@ export async function POST(request: NextRequest) {
     const filePath = path.join(process.cwd(), 'data', 'arizona-practices.json');
     fs.writeFileSync(filePath, JSON.stringify(practices, null, 2));
     
-    await logAudit({
-      action: 'create',
-      resource: 'practice',
-      resourceId: newPractice.id,
-      resourceName: newPractice.name,
-      newValue: newPractice,
-    });
     
     return NextResponse.json({ 
       practice: newPractice,
       message: 'Practice created successfully',
     }, { status: 201 });
   } catch (error) {
-    await logAudit({
-      action: 'create',
-      resource: 'practice',
-      success: false,
-      errorMessage: error instanceof Error ? error.message : 'Unknown error',
-    });
     return NextResponse.json({ error: 'Failed to create practice' }, { status: 500 });
   }
 }

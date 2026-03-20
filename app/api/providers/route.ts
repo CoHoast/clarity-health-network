@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { logAudit } from '@/lib/audit';
+import { logAuditEvent } from '@/lib/audit';
 import providersData from '@/data/arizona-providers.json';
 import fs from 'fs';
 import path from 'path';
@@ -8,14 +8,25 @@ import path from 'path';
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    const userAgent = request.headers.get('user-agent') || 'unknown';
     
     // Validate required fields
     if (!data.npi || !data.firstName || !data.lastName) {
-      await logAudit({
-        action: 'create',
-        resource: 'provider',
+      await logAuditEvent({
+        user: 'system',
+        userId: 'system',
+        action: 'Create Provider',
+        category: 'data_change',
+        resource: 'PROVIDER',
+        resourceType: 'Provider',
+        details: 'Failed - Missing required fields: npi, firstName, lastName',
+        ip,
+        userAgent,
+        sessionId: 'api',
+        severity: 'warning',
+        phiAccessed: false,
         success: false,
-        errorMessage: 'Missing required fields: npi, firstName, lastName',
       });
       return NextResponse.json(
         { error: 'Missing required fields: npi, firstName, lastName' },
@@ -27,12 +38,21 @@ export async function POST(request: NextRequest) {
     const providers = [...providersData] as any[];
     const existing = providers.find((p: any) => p.npi === data.npi);
     if (existing) {
-      await logAudit({
-        action: 'create',
-        resource: 'provider',
+      await logAuditEvent({
+        user: 'system',
+        userId: 'system',
+        action: 'Create Provider',
+        category: 'data_change',
+        resource: data.npi,
+        resourceType: 'Provider',
         resourceId: data.npi,
+        details: 'Failed - Provider with this NPI already exists',
+        ip,
+        userAgent,
+        sessionId: 'api',
+        severity: 'warning',
+        phiAccessed: false,
         success: false,
-        errorMessage: 'Provider with this NPI already exists',
       });
       return NextResponse.json(
         { error: 'Provider with this NPI already exists' },
@@ -100,16 +120,21 @@ export async function POST(request: NextRequest) {
     fs.writeFileSync(filePath, JSON.stringify(providers, null, 2));
     
     // Log the creation
-    await logAudit({
-      action: 'create',
-      resource: 'provider',
+    await logAuditEvent({
+      user: 'admin@truecare.health',
+      userId: 'admin',
+      action: 'Create Provider',
+      category: 'data_change',
+      resource: newProvider.npi,
+      resourceType: 'Provider',
       resourceId: newProvider.npi,
-      resourceName: `${newProvider.firstName} ${newProvider.lastName}`,
-      newValue: newProvider,
-      details: {
-        specialty: newProvider.specialty,
-        network: newProvider.networkId,
-      },
+      details: `Created provider: ${newProvider.firstName} ${newProvider.lastName}, ${newProvider.specialty}`,
+      ip,
+      userAgent,
+      sessionId: 'api',
+      severity: 'info',
+      phiAccessed: true,
+      success: true,
     });
     
     return NextResponse.json({ 
@@ -117,12 +142,7 @@ export async function POST(request: NextRequest) {
       message: 'Provider created successfully',
     }, { status: 201 });
   } catch (error) {
-    await logAudit({
-      action: 'create',
-      resource: 'provider',
-      success: false,
-      errorMessage: error instanceof Error ? error.message : 'Unknown error',
-    });
+    console.error('Create provider error:', error);
     return NextResponse.json({ error: 'Failed to create provider' }, { status: 500 });
   }
 }

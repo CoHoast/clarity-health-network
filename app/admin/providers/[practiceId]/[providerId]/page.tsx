@@ -2,6 +2,7 @@
 
 import { useTheme } from "@/components/admin/ThemeContext";
 import { cn } from "@/lib/utils";
+import { useAudit } from "@/lib/useAudit";
 
 import React, { useState, useRef } from "react";
 import Link from "next/link";
@@ -209,6 +210,7 @@ const serviceCategories = [
 
 export default function ProviderDetailPage() {
   const { isDark } = useTheme();
+  const { logViewProvider, logUpdateProvider } = useAudit();
   const params = useParams();
   const practiceId = params.practiceId as string;
   const providerId = params.providerId as string;
@@ -216,6 +218,7 @@ export default function ProviderDetailPage() {
   // Provider data state - load from API
   const [provider, setProvider] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasLoggedView, setHasLoggedView] = useState(false);
 
   const [activeSection, setActiveSection] = useState("overview");
   const [isEditing, setIsEditing] = useState(false);
@@ -360,6 +363,14 @@ export default function ProviderDetailPage() {
     loadProvider();
   }, [providerId, practiceId]);
 
+  // Log PHI access when provider is viewed
+  React.useEffect(() => {
+    if (provider && !hasLoggedView) {
+      logViewProvider(provider.npi || providerId, `${provider.firstName} ${provider.lastName}, ${provider.title}`);
+      setHasLoggedView(true);
+    }
+  }, [provider, hasLoggedView, logViewProvider, providerId]);
+
   // Handle CSV upload for CPT rates
   const handleCptCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -467,6 +478,13 @@ export default function ProviderDetailPage() {
       setProvider({ ...provider, ...editData });
       setSaved(true);
       setIsEditing(false);
+      
+      // Log audit event
+      logUpdateProvider(
+        provider.npi || providerId,
+        `${editData.firstName} ${editData.lastName}, ${editData.title}`,
+        'profile data'
+      );
       setTimeout(() => setSaved(false), 2000);
     } catch (error) {
       console.error('Failed to save provider:', error);

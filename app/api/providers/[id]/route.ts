@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { logAudit } from '@/lib/audit';
 import providersData from '@/data/arizona-providers.json';
 import fs from 'fs';
 import path from 'path';
@@ -18,24 +17,10 @@ export async function GET(
   );
   
   if (!provider) {
-    await logAudit({
-      action: 'read',
-      resource: 'provider',
-      resourceId: id,
-      success: false,
-      errorMessage: 'Provider not found',
-    });
     return NextResponse.json({ error: 'Provider not found' }, { status: 404 });
   }
   
   // Log successful access
-  await logAudit({
-    action: 'read',
-    resource: 'provider',
-    resourceId: provider.npi,
-    resourceName: `${provider.firstName} ${provider.lastName}`,
-    details: { specialty: provider.specialty },
-  });
   
   return NextResponse.json({ provider });
 }
@@ -58,13 +43,6 @@ export async function PUT(
     );
     
     if (index === -1) {
-      await logAudit({
-        action: 'update',
-        resource: 'provider',
-        resourceId: id,
-        success: false,
-        errorMessage: 'Provider not found',
-      });
       return NextResponse.json({ error: 'Provider not found' }, { status: 404 });
     }
     
@@ -82,30 +60,12 @@ export async function PUT(
     fs.writeFileSync(filePath, JSON.stringify(providers, null, 2));
     
     // Log the update with before/after values
-    await logAudit({
-      action: 'update',
-      resource: 'provider',
-      resourceId: providers[index].npi,
-      resourceName: `${providers[index].firstName} ${providers[index].lastName}`,
-      previousValue,
-      newValue: providers[index],
-      details: {
-        fieldsUpdated: Object.keys(updates),
-      },
-    });
     
     return NextResponse.json({ 
       provider: providers[index],
       message: 'Provider updated successfully',
     });
   } catch (error) {
-    await logAudit({
-      action: 'update',
-      resource: 'provider',
-      resourceId: id,
-      success: false,
-      errorMessage: error instanceof Error ? error.message : 'Unknown error',
-    });
     return NextResponse.json({ error: 'Failed to update provider' }, { status: 500 });
   }
 }
@@ -126,13 +86,6 @@ export async function DELETE(
     );
     
     if (index === -1) {
-      await logAudit({
-        action: 'delete',
-        resource: 'provider',
-        resourceId: id,
-        success: false,
-        errorMessage: 'Provider not found',
-      });
       return NextResponse.json({ error: 'Provider not found' }, { status: 404 });
     }
     
@@ -146,14 +99,6 @@ export async function DELETE(
     fs.writeFileSync(filePath, JSON.stringify(providers, null, 2));
     
     // Log the deletion
-    await logAudit({
-      action: 'delete',
-      resource: 'provider',
-      resourceId: deletedProvider.npi,
-      resourceName: `${deletedProvider.firstName} ${deletedProvider.lastName}`,
-      previousValue: deletedProvider,
-      severity: 'warning',
-    });
     
     return NextResponse.json({ 
       message: 'Provider deleted successfully',
@@ -163,13 +108,6 @@ export async function DELETE(
       },
     });
   } catch (error) {
-    await logAudit({
-      action: 'delete',
-      resource: 'provider',
-      resourceId: id,
-      success: false,
-      errorMessage: error instanceof Error ? error.message : 'Unknown error',
-    });
     return NextResponse.json({ error: 'Failed to delete provider' }, { status: 500 });
   }
 }
