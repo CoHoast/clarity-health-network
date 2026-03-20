@@ -107,6 +107,7 @@ export default function ApplicationsPage() {
   const [requestModalTarget, setRequestModalTarget] = useState<typeof applications[0] | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationComplete, setVerificationComplete] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   const handleRunVerification = async (app: typeof applications[0]) => {
     setIsVerifying(true);
@@ -485,7 +486,10 @@ export default function ApplicationsPage() {
                       <Button 
                         variant="secondary" 
                         icon={<Send className="w-4 h-4" />}
-                        onClick={() => setShowRequestModal(true)}
+                        onClick={() => {
+                          setRequestModalTarget(selectedApplication);
+                          setShowRequestModal(true);
+                        }}
                       >
                         Request from Provider
                       </Button>
@@ -786,7 +790,11 @@ export default function ApplicationsPage() {
                   variant="primary" 
                   className="flex-1" 
                   icon={<Send className="w-4 h-4" />}
-                  onClick={() => { setShowRequestModal(false); setRequestModalTarget(null); }}
+                  onClick={() => { 
+                    setShowRequestModal(false); 
+                    setRequestModalTarget(null);
+                    setToast({ message: `Document request sent to ${requestModalTarget.provider}`, type: 'success' });
+                  }}
                 >
                   Send Request
                 </Button>
@@ -818,6 +826,21 @@ export default function ApplicationsPage() {
           >
             <CheckCircle className="w-5 h-5" />
             Verification complete!
+          </motion.div>
+        )}
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            onAnimationComplete={() => setTimeout(() => setToast(null), 3000)}
+            className={cn(
+              "fixed bottom-6 right-6 px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50",
+              toast.type === 'success' ? "bg-green-600 text-white" : "bg-red-600 text-white"
+            )}
+          >
+            {toast.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <X className="w-5 h-5" />}
+            {toast.message}
           </motion.div>
         )}
       </AnimatePresence>
