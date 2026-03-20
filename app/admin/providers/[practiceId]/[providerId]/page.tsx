@@ -237,6 +237,18 @@ export default function ProviderDetailPage() {
     { code: "99214", description: "Office visit, established patient, moderate complexity", rate: "150" },
   ]);
   const cptFileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Contract Pricing from imported CSV
+  const [contractPricing, setContractPricing] = useState<{
+    contractNumber: string;
+    rateType: string;
+    rateDescription: string;
+    defaultRates: { pctMedicare: number; pctBilled: number };
+    cptRates: { cptCode: string; pricedAmt: number; revenueCode: string | null }[];
+    revenueCodes: string[];
+    cptCount: number;
+  } | null>(null);
+  const [pricingLoading, setPricingLoading] = useState(false);
 
   // Load provider data from API
   React.useEffect(() => {
@@ -370,6 +382,47 @@ export default function ProviderDetailPage() {
       setHasLoggedView(true);
     }
   }, [provider, hasLoggedView, logViewProvider, providerId]);
+
+  // Load contract pricing when provider loads
+  React.useEffect(() => {
+    async function loadContractPricing() {
+      if (!provider?.contractNumber) return;
+      
+      setPricingLoading(true);
+      try {
+        const res = await fetch(`/api/contract-pricing/${provider.contractNumber}`);
+        if (res.ok) {
+          const data = await res.json();
+          setContractPricing(data);
+          
+          // Auto-set rate type and values based on contract
+          if (data.cptRates.length > 0) {
+            setRateType("cpt");
+            // Map contract CPT rates to display format
+            setCptRates(data.cptRates.slice(0, 20).map((r: any) => ({
+              code: r.cptCode,
+              description: r.revenueCode ? `Revenue Code: ${r.revenueCode}` : '',
+              rate: String(r.pricedAmt)
+            })));
+          } else if (data.defaultRates.pctMedicare > 0) {
+            setRateType("flat");
+            setDiscountBasis("medicare");
+            setFlatRate(String(data.defaultRates.pctMedicare));
+          } else if (data.defaultRates.pctBilled > 0) {
+            setRateType("flat");
+            setDiscountBasis("billed");
+            setFlatRate(String(data.defaultRates.pctBilled));
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load contract pricing:', error);
+      } finally {
+        setPricingLoading(false);
+      }
+    }
+    
+    loadContractPricing();
+  }, [provider?.contractNumber]);
 
   // Handle CSV upload for CPT rates
   const handleCptCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -740,6 +793,19 @@ export default function ProviderDetailPage() {
                   <p className="text-slate-900 font-mono font-bold text-blue-600">{provider.contractNumber || "—"}</p>
                 )}
               </div>
+              {/* Revenue Codes - from contract pricing */}
+              {contractPricing?.revenueCodes && contractPricing.revenueCodes.length > 0 && (
+                <div className="bg-white border border-slate-200 rounded-lg p-4">
+                  <p className="text-xs text-slate-500 mb-1">Revenue Codes</p>
+                  <div className="flex flex-wrap gap-1">
+                    {contractPricing.revenueCodes.map(rc => (
+                      <span key={rc} className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-mono rounded">
+                        {rc}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="bg-white border border-slate-200 rounded-lg p-4">
                 <p className="text-xs text-slate-500 mb-1">Reference Number</p>
                 <p className="text-[10px] text-slate-400 mb-1">(Entity #)</p>
@@ -2148,6 +2214,63 @@ export default function ProviderDetailPage() {
                 Provider Discount Rates
               </h2>
             </div>
+
+            {/* Contract Pricing Info Banner */}
+            {pricingLoading ? (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 animate-pulse">
+                <div className="h-4 bg-blue-200 rounded w-48 mb-2"></div>
+                <div className="h-3 bg-blue-100 rounded w-64"></div>
+              </div>
+            ) : contractPricing ? (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="px-2 py-1 bg-blue-500 text-white text-xs font-medium rounded">
+                        Contract #{contractPricing.contractNumber}
+                      </span>
+                      <span className="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs font-medium rounded">
+                        {contractPricing.rateType}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-700">{contractPricing.rateDescription}</p>
+                    {contractPricing.revenueCodes.length > 0 && (
+                      <div className="mt-2 flex items-center gap-2">
+                        <span className="text-xs text-slate-500">Revenue Codes:</span>
+                        {contractPricing.revenueCodes.map(rc => (
+                          <span key={rc} className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded">
+                            {rc}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    {contractPricing.defaultRates.pctMedicare > 0 && (
+                      <p className="text-2xl font-bold text-blue-600">{contractPricing.defaultRates.pctMedicare}%</p>
+                    )}
+                    {contractPricing.defaultRates.pctMedicare > 0 && (
+                      <p className="text-xs text-slate-500">of Medicare</p>
+                    )}
+                    {contractPricing.defaultRates.pctBilled > 0 && contractPricing.defaultRates.pctMedicare === 0 && (
+                      <>
+                        <p className="text-2xl font-bold text-indigo-600">{contractPricing.defaultRates.pctBilled}%</p>
+                        <p className="text-xs text-slate-500">of Billed Charges</p>
+                      </>
+                    )}
+                    {contractPricing.cptCount > 0 && (
+                      <p className="text-xs text-slate-500 mt-1">{contractPricing.cptCount} CPT codes</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : provider?.contractNumber ? (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p className="text-sm text-amber-700">
+                  No pricing data found for Contract #{provider.contractNumber}
+                </p>
+              </div>
+            ) : null}
 
             {/* Custom Rates Toggle */}
             <div className="bg-white border border-slate-200 rounded-lg p-4 flex items-center justify-between">

@@ -1,0 +1,6629 @@
+{
+  "1001": {
+    "contractNumber": "1001",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 105,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1002": {
+    "contractNumber": "1002",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 150,
+      "pctBilled": 50
+    },
+    "cptRates": [
+      {
+        "cptCode": "59400",
+        "pricedAmt": 2800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59510",
+        "pricedAmt": 3200,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59610",
+        "pricedAmt": 2800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59618",
+        "pricedAmt": 3200,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1003": {
+    "contractNumber": "1003",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 125,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1004": {
+    "contractNumber": "1004",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 125,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1005": {
+    "contractNumber": "1005",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 0
+    },
+    "cptRates": [
+      {
+        "cptCode": "I",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "O",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "P",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.39,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1008": {
+    "contractNumber": "1008",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 103,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1009": {
+    "contractNumber": "1009",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 0
+    },
+    "cptRates": [
+      {
+        "cptCode": "0191",
+        "pricedAmt": 380,
+        "revenueCode": "0191",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0192",
+        "pricedAmt": 450,
+        "revenueCode": "0192",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0193",
+        "pricedAmt": 500,
+        "revenueCode": "0193",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0194",
+        "pricedAmt": 650,
+        "revenueCode": "0194",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": [
+      "0191",
+      "0192",
+      "0193",
+      "0194"
+    ]
+  },
+  "1010": {
+    "contractNumber": "1010",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "0724",
+        "pricedAmt": 1700,
+        "revenueCode": "0724",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59400",
+        "pricedAmt": 2800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59610",
+        "pricedAmt": 2800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": [
+      "0724"
+    ]
+  },
+  "1011": {
+    "contractNumber": "1011",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1012": {
+    "contractNumber": "1012",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1014": {
+    "contractNumber": "1014",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "I",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "P",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1015": {
+    "contractNumber": "1015",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "H0015",
+        "pricedAmt": 270,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "H0018",
+        "pricedAmt": 750,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "S9484",
+        "pricedAmt": 144.5,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "S9485",
+        "pricedAmt": 800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0124",
+        "pricedAmt": 1250,
+        "revenueCode": "0124",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0126",
+        "pricedAmt": 1250,
+        "revenueCode": "0126",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0134",
+        "pricedAmt": 1250,
+        "revenueCode": "0134",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": [
+      "0124",
+      "0126",
+      "0134"
+    ]
+  },
+  "1016": {
+    "contractNumber": "1016",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 50
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1018": {
+    "contractNumber": "1018",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "H0015",
+        "pricedAmt": 350,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "H0018",
+        "pricedAmt": 750,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "H0035",
+        "pricedAmt": 500,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "S0201",
+        "pricedAmt": 500,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "S9480",
+        "pricedAmt": 350,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1019": {
+    "contractNumber": "1019",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 120,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1020": {
+    "contractNumber": "1020",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 105,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "H0015",
+        "pricedAmt": 300,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "H2035",
+        "pricedAmt": 550,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "H2036",
+        "pricedAmt": 550,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "S9480",
+        "pricedAmt": 300,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90791",
+        "pricedAmt": 300,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90837",
+        "pricedAmt": 300,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1021": {
+    "contractNumber": "1021",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 140,
+      "pctBilled": 50
+    },
+    "cptRates": [
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1022": {
+    "contractNumber": "1022",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 120,
+      "pctBilled": 50
+    },
+    "cptRates": [
+      {
+        "cptCode": "59400",
+        "pricedAmt": 2800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59510",
+        "pricedAmt": 3200,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59610",
+        "pricedAmt": 2800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59618",
+        "pricedAmt": 3200,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1023": {
+    "contractNumber": "1023",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 0
+    },
+    "cptRates": [
+      {
+        "cptCode": "H0018",
+        "pricedAmt": 525,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": "56"
+      },
+      {
+        "cptCode": "H0031",
+        "pricedAmt": 275,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": "99"
+      },
+      {
+        "cptCode": "H2019",
+        "pricedAmt": 275,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": "99"
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1024": {
+    "contractNumber": "1024",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1027": {
+    "contractNumber": "1027",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 115,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1028": {
+    "contractNumber": "1028",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 120,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "H0015",
+        "pricedAmt": 275,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "H0018",
+        "pricedAmt": 525,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1029": {
+    "contractNumber": "1029",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 120,
+      "pctBilled": 50
+    },
+    "cptRates": [
+      {
+        "cptCode": "59400",
+        "pricedAmt": 2800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59510",
+        "pricedAmt": 3200,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59610",
+        "pricedAmt": 2800,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59618",
+        "pricedAmt": 3200,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1030": {
+    "contractNumber": "1030",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 100,
+      "pctBilled": 50
+    },
+    "cptRates": [
+      {
+        "cptCode": "59400",
+        "pricedAmt": 2950,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59510",
+        "pricedAmt": 3275,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59610",
+        "pricedAmt": 2950,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59618",
+        "pricedAmt": 3275,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1031": {
+    "contractNumber": "1031",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 125,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1032": {
+    "contractNumber": "1032",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 105,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1033": {
+    "contractNumber": "1033",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "H0014",
+        "pricedAmt": 400,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "H0015",
+        "pricedAmt": 400,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "H0035",
+        "pricedAmt": 600,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "S9480",
+        "pricedAmt": 400,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1034": {
+    "contractNumber": "1034",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 50
+    },
+    "cptRates": [
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1035": {
+    "contractNumber": "1035",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 65
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1036": {
+    "contractNumber": "1036",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1038": {
+    "contractNumber": "1038",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "OE",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "OF",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "SG",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1039": {
+    "contractNumber": "1039",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 105,
+      "pctBilled": 50
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1040": {
+    "contractNumber": "1040",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 120,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "90792",
+        "pricedAmt": 295,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90889",
+        "pricedAmt": 112.79,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "99213",
+        "pricedAmt": 90.85,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "99214",
+        "pricedAmt": 128.52,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "99215",
+        "pricedAmt": 181.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1041": {
+    "contractNumber": "1041",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 140,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1045": {
+    "contractNumber": "1045",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 0
+    },
+    "cptRates": [
+      {
+        "cptCode": "I",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "O",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "P",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 264.43,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 216.97,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 140.14,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 47.54,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 154.71,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 33.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 37.43,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 15.79,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 115.81,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 151.4,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 330.05,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 22.79,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 35.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 22.08,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 89.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 121.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 175.13,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 118.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 76.1,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 142.21,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 35.79,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 82.5,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 113.33,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 325.04,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 50.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 196.44,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 123.4,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 169.8,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 185.81,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 293.48,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 84.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 58.04,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 223.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1046": {
+    "contractNumber": "1046",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 135,
+      "pctBilled": 25
+    },
+    "cptRates": [
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1047": {
+    "contractNumber": "1047",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 60
+    },
+    "cptRates": [
+      {
+        "cptCode": "I",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "P",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0169",
+        "pricedAmt": 850,
+        "revenueCode": "0169",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0768",
+        "pricedAmt": 10000,
+        "revenueCode": "0768",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0783",
+        "pricedAmt": 14500,
+        "revenueCode": "0783",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0784",
+        "pricedAmt": 14500,
+        "revenueCode": "0784",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0785",
+        "pricedAmt": 14500,
+        "revenueCode": "0785",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0786",
+        "pricedAmt": 14500,
+        "revenueCode": "0786",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0787",
+        "pricedAmt": 14500,
+        "revenueCode": "0787",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0788",
+        "pricedAmt": 14500,
+        "revenueCode": "0788",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0796",
+        "pricedAmt": 10000,
+        "revenueCode": "0796",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0797",
+        "pricedAmt": 10000,
+        "revenueCode": "0797",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0798",
+        "pricedAmt": 10000,
+        "revenueCode": "0798",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0805",
+        "pricedAmt": 10000,
+        "revenueCode": "0805",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "0806",
+        "pricedAmt": 10000,
+        "revenueCode": "0806",
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59425",
+        "pricedAmt": 500,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "59426",
+        "pricedAmt": 900,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": [
+      "0169",
+      "0768",
+      "0783",
+      "0784",
+      "0785",
+      "0786",
+      "0787",
+      "0788",
+      "0796",
+      "0797",
+      "0798",
+      "0805",
+      "0806"
+    ]
+  },
+  "1048": {
+    "contractNumber": "1048",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 0,
+      "pctBilled": 55
+    },
+    "cptRates": [
+      {
+        "cptCode": "P",
+        "pricedAmt": 0,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90620",
+        "pricedAmt": 229.94,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90621",
+        "pricedAmt": 188.67,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90630",
+        "pricedAmt": 121.86,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90633",
+        "pricedAmt": 41.34,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90636",
+        "pricedAmt": 134.53,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90644",
+        "pricedAmt": 29.35,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90647",
+        "pricedAmt": 32.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90648",
+        "pricedAmt": 13.73,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90649",
+        "pricedAmt": 100.7,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90650",
+        "pricedAmt": 131.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90651",
+        "pricedAmt": 287,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90655",
+        "pricedAmt": 19.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90657",
+        "pricedAmt": 31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90658",
+        "pricedAmt": 19.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90673",
+        "pricedAmt": 77.75,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90680",
+        "pricedAmt": 105.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90681",
+        "pricedAmt": 152.29,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90690",
+        "pricedAmt": 103.19,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90696",
+        "pricedAmt": 66.17,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90698",
+        "pricedAmt": 123.66,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90700",
+        "pricedAmt": 31.12,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90702",
+        "pricedAmt": 71.74,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90707",
+        "pricedAmt": 98.55,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90710",
+        "pricedAmt": 282.64,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90713",
+        "pricedAmt": 44.11,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90716",
+        "pricedAmt": 170.82,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90723",
+        "pricedAmt": 107.3,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90733",
+        "pricedAmt": 147.65,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90734",
+        "pricedAmt": 161.57,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90736",
+        "pricedAmt": 255.2,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90743",
+        "pricedAmt": 73.31,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90748",
+        "pricedAmt": 50.47,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      },
+      {
+        "cptCode": "90750",
+        "pricedAmt": 194.41,
+        "revenueCode": null,
+        "hospitalType": null,
+        "mod1": null,
+        "mod2": null,
+        "placeOfService": null
+      }
+    ],
+    "revenueCodes": []
+  },
+  "1050": {
+    "contractNumber": "1050",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 125,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1060": {
+    "contractNumber": "1060",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 115,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1063": {
+    "contractNumber": "1063",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 100,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1064": {
+    "contractNumber": "1064",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 110,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  },
+  "1068": {
+    "contractNumber": "1068",
+    "fromDate": 45658,
+    "toDate": 0,
+    "defaultRates": {
+      "pctMedicare": 100,
+      "pctBilled": 25
+    },
+    "cptRates": [],
+    "revenueCodes": []
+  }
+}
