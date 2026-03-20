@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Download, Calendar, Clock, BarChart3, Building2, DollarSign, Shield, TrendingUp, Play, Eye, Mail, X, Check, FileSpreadsheet, Printer, Share2, MapPin, FileCheck, Users } from "lucide-react";
+import { FileText, Download, Calendar, Clock, BarChart3, Building2, DollarSign, Shield, TrendingUp, Play, Eye, Mail, X, Check, FileSpreadsheet, Printer, Share2, MapPin, FileCheck, Users, Plus, Trash2, Edit3, Pause, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { Card, CardHeader } from "@/components/admin/ui/Card";
@@ -9,6 +9,16 @@ import { Button, IconButton } from "@/components/admin/ui/Button";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { Badge } from "@/components/admin/ui/Badge";
 import { cn } from "@/lib/utils";
+
+type ScheduledReport = {
+  id: number;
+  name: string;
+  template: string;
+  frequency: string;
+  nextRun: string;
+  recipients: string[];
+  status: "active" | "paused";
+};
 
 const reportTemplates = [
   { id: "provider-roster", name: "Provider Roster", description: "Complete list of all network providers", icon: Building2, category: "Providers" },
@@ -22,11 +32,13 @@ const reportTemplates = [
   { id: "credential-expiration", name: "Credential Expiration", description: "Licenses, DEA expiring soon", icon: FileCheck, category: "Credentialing" },
 ];
 
-const scheduledReports = [
-  { id: 1, name: "Weekly Contract Expirations", frequency: "Weekly", nextRun: "Mar 18, 2026", recipients: ["contracts@truecare.health"], status: "active" },
-  { id: 2, name: "Monthly Provider Roster", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["network@truecare.health"], status: "active" },
-  { id: 3, name: "Monthly Credentialing Alerts", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["credentialing@truecare.health"], status: "active" },
+const initialScheduledReports: ScheduledReport[] = [
+  { id: 1, name: "Weekly Contract Expirations", template: "expiring-contracts", frequency: "Weekly", nextRun: "Mar 24, 2026", recipients: ["contracts@truecare.health"], status: "active" },
+  { id: 2, name: "Monthly Provider Roster", template: "provider-roster", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["network@truecare.health"], status: "active" },
+  { id: 3, name: "Monthly Credentialing Alerts", template: "credential-expiration", frequency: "Monthly", nextRun: "Apr 1, 2026", recipients: ["credentialing@truecare.health"], status: "active" },
 ];
+
+const frequencyOptions = ["Daily", "Weekly", "Bi-Weekly", "Monthly", "Quarterly"];
 
 const recentReports = [
   { id: 1, name: "Provider Roster - March 2026", generated: "Mar 12, 2026", size: "1.8 MB", format: "CSV" },
@@ -52,6 +64,19 @@ export default function ReportsPage() {
   const [generated, setGenerated] = useState(false);
   const [previewingReport, setPreviewingReport] = useState<typeof recentReports[0] | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  
+  // Schedule state
+  const [scheduledReports, setScheduledReports] = useState<ScheduledReport[]>(initialScheduledReports);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [editingSchedule, setEditingSchedule] = useState<ScheduledReport | null>(null);
+  const [scheduleForm, setScheduleForm] = useState({
+    name: "",
+    template: "",
+    frequency: "Weekly",
+    recipients: "",
+  });
+  const [savingSchedule, setSavingSchedule] = useState(false);
+  const [runningReport, setRunningReport] = useState<number | null>(null);
 
   const showToast = (message: string) => {
     setToast(message);
@@ -73,6 +98,77 @@ export default function ReportsPage() {
         setGenerated(false);
       }, 2000);
     }, 2000);
+  };
+
+  const openAddSchedule = () => {
+    setEditingSchedule(null);
+    setScheduleForm({ name: "", template: "", frequency: "Weekly", recipients: "" });
+    setShowScheduleModal(true);
+  };
+
+  const openEditSchedule = (report: ScheduledReport) => {
+    setEditingSchedule(report);
+    setScheduleForm({
+      name: report.name,
+      template: report.template,
+      frequency: report.frequency,
+      recipients: report.recipients.join(", "),
+    });
+    setShowScheduleModal(true);
+  };
+
+  const handleSaveSchedule = () => {
+    setSavingSchedule(true);
+    setTimeout(() => {
+      if (editingSchedule) {
+        // Update existing
+        setScheduledReports(prev => prev.map(r => 
+          r.id === editingSchedule.id 
+            ? { ...r, name: scheduleForm.name, template: scheduleForm.template, frequency: scheduleForm.frequency, recipients: scheduleForm.recipients.split(",").map(e => e.trim()) }
+            : r
+        ));
+        showToast("Schedule updated successfully");
+      } else {
+        // Add new
+        const nextRun = scheduleForm.frequency === "Daily" ? "Tomorrow" 
+          : scheduleForm.frequency === "Weekly" ? "Next Week"
+          : scheduleForm.frequency === "Monthly" ? "Apr 1, 2026"
+          : "Next Quarter";
+        const newReport: ScheduledReport = {
+          id: Date.now(),
+          name: scheduleForm.name,
+          template: scheduleForm.template,
+          frequency: scheduleForm.frequency,
+          nextRun,
+          recipients: scheduleForm.recipients.split(",").map(e => e.trim()),
+          status: "active",
+        };
+        setScheduledReports(prev => [...prev, newReport]);
+        showToast("Schedule created successfully");
+      }
+      setSavingSchedule(false);
+      setShowScheduleModal(false);
+    }, 1000);
+  };
+
+  const handleDeleteSchedule = (id: number) => {
+    setScheduledReports(prev => prev.filter(r => r.id !== id));
+    setShowScheduleModal(false);
+    showToast("Schedule deleted");
+  };
+
+  const handleToggleStatus = (id: number) => {
+    setScheduledReports(prev => prev.map(r => 
+      r.id === id ? { ...r, status: r.status === "active" ? "paused" : "active" } : r
+    ));
+  };
+
+  const handleRunNow = (report: ScheduledReport) => {
+    setRunningReport(report.id);
+    setTimeout(() => {
+      setRunningReport(null);
+      showToast(`Running "${report.name}"...`);
+    }, 1500);
   };
 
   return (
@@ -122,26 +218,82 @@ export default function ReportsPage() {
           <CardHeader
             title="Scheduled Reports"
             icon={<Calendar className="w-5 h-5 text-blue-500" />}
-            action={<Button variant="outline" size="sm">Add Schedule</Button>}
+            action={
+              <Button variant="outline" size="sm" icon={<Plus className="w-4 h-4" />} onClick={openAddSchedule}>
+                Add Schedule
+              </Button>
+            }
           />
           <div className="space-y-3">
-            {scheduledReports.map((report) => (
-              <div key={report.id} className={cn(
-                "p-4 rounded-xl flex items-center justify-between",
+            {scheduledReports.length === 0 ? (
+              <div className={cn(
+                "p-8 rounded-xl text-center",
                 isDark ? "bg-slate-700/30 border border-slate-700/50" : "bg-slate-50 border border-slate-100"
               )}>
-                <div>
-                  <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{report.name}</p>
-                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                    {report.frequency} • Next: {report.nextRun}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="success" dot>{report.status}</Badge>
-                  <IconButton icon={<Play className="w-4 h-4" />} tooltip="Run Now" />
-                </div>
+                <Calendar className={cn("w-12 h-12 mx-auto mb-3", isDark ? "text-slate-600" : "text-slate-300")} />
+                <p className={cn("font-medium", isDark ? "text-slate-400" : "text-slate-500")}>No scheduled reports</p>
+                <p className={cn("text-sm mt-1", isDark ? "text-slate-500" : "text-slate-400")}>
+                  Create your first schedule to automate report delivery
+                </p>
+                <Button variant="outline" size="sm" className="mt-4" onClick={openAddSchedule}>
+                  Create Schedule
+                </Button>
               </div>
-            ))}
+            ) : (
+              scheduledReports.map((report) => (
+                <div 
+                  key={report.id} 
+                  onClick={() => openEditSchedule(report)}
+                  className={cn(
+                    "p-4 rounded-xl flex items-center justify-between cursor-pointer transition-colors group",
+                    isDark 
+                      ? "bg-slate-700/30 border border-slate-700/50 hover:bg-slate-700/50" 
+                      : "bg-slate-50 border border-slate-100 hover:bg-slate-100"
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={cn(
+                      "w-10 h-10 rounded-lg flex items-center justify-center",
+                      report.status === "active" 
+                        ? isDark ? "bg-blue-500/20" : "bg-blue-50"
+                        : isDark ? "bg-slate-600" : "bg-slate-200"
+                    )}>
+                      {report.status === "active" ? (
+                        <Calendar className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
+                      ) : (
+                        <Pause className={cn("w-5 h-5", isDark ? "text-slate-400" : "text-slate-500")} />
+                      )}
+                    </div>
+                    <div>
+                      <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{report.name}</p>
+                      <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                        {report.frequency} • Next: {report.nextRun}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                    <Badge variant={report.status === "active" ? "success" : "default"} dot>
+                      {report.status}
+                    </Badge>
+                    <IconButton 
+                      icon={runningReport === report.id 
+                        ? <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                        : <Play className="w-4 h-4" />
+                      } 
+                      tooltip="Run Now" 
+                      onClick={() => handleRunNow(report)}
+                      disabled={runningReport !== null}
+                    />
+                    <IconButton 
+                      icon={<Settings className="w-4 h-4" />} 
+                      tooltip="Edit Schedule" 
+                      onClick={() => openEditSchedule(report)}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </Card>
 
@@ -376,6 +528,178 @@ export default function ReportsPage() {
         )}
       </AnimatePresence>
 
+      {/* Schedule Report Modal */}
+      <AnimatePresence>
+        {showScheduleModal && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setShowScheduleModal(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" 
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={cn(
+                "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg rounded-2xl shadow-2xl z-50",
+                isDark ? "bg-slate-800 border border-slate-700" : "bg-white border border-slate-200"
+              )}
+            >
+              <div className={cn("p-5 border-b flex items-center justify-between", isDark ? "border-slate-700" : "border-slate-200")}>
+                <div>
+                  <h3 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>
+                    {editingSchedule ? "Edit Schedule" : "Create Schedule"}
+                  </h3>
+                  <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {editingSchedule ? "Update scheduled report settings" : "Set up automatic report delivery"}
+                  </p>
+                </div>
+                <IconButton icon={<X className="w-5 h-5" />} onClick={() => setShowScheduleModal(false)} />
+              </div>
+              
+              <div className="p-5 space-y-4">
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Schedule Name
+                  </label>
+                  <input 
+                    type="text"
+                    value={scheduleForm.name}
+                    onChange={(e) => setScheduleForm(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g., Weekly Contract Report"
+                    className={cn(
+                      "w-full px-4 py-2.5 rounded-lg",
+                      isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400" : "bg-white border-slate-300 text-slate-900",
+                      "border focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    )}
+                  />
+                </div>
+                
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Report Template
+                  </label>
+                  <select 
+                    value={scheduleForm.template}
+                    onChange={(e) => setScheduleForm(prev => ({ ...prev, template: e.target.value }))}
+                    className={cn(
+                      "w-full px-4 py-2.5 rounded-lg",
+                      isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-300 text-slate-900",
+                      "border"
+                    )}
+                  >
+                    <option value="">Select template...</option>
+                    {reportTemplates.map((t) => (
+                      <option key={t.id} value={t.id}>{t.name}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Frequency
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {frequencyOptions.map((freq) => (
+                      <button
+                        key={freq}
+                        onClick={() => setScheduleForm(prev => ({ ...prev, frequency: freq }))}
+                        className={cn(
+                          "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                          scheduleForm.frequency === freq
+                            ? "bg-blue-600 text-white"
+                            : isDark ? "bg-slate-700 text-slate-300 hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                        )}
+                      >
+                        {freq}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div>
+                  <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                    Email Recipients
+                  </label>
+                  <input 
+                    type="text"
+                    value={scheduleForm.recipients}
+                    onChange={(e) => setScheduleForm(prev => ({ ...prev, recipients: e.target.value }))}
+                    placeholder="email@example.com, another@example.com"
+                    className={cn(
+                      "w-full px-4 py-2.5 rounded-lg",
+                      isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400" : "bg-white border-slate-300 text-slate-900",
+                      "border focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    )}
+                  />
+                  <p className={cn("text-xs mt-1", isDark ? "text-slate-500" : "text-slate-400")}>
+                    Separate multiple emails with commas
+                  </p>
+                </div>
+
+                {editingSchedule && (
+                  <div className={cn(
+                    "p-4 rounded-lg",
+                    isDark ? "bg-slate-700/50" : "bg-slate-50"
+                  )}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
+                          Schedule Status
+                        </p>
+                        <p className={cn("text-xs mt-0.5", isDark ? "text-slate-400" : "text-slate-500")}>
+                          {editingSchedule.status === "active" ? "Report will run on schedule" : "Schedule is paused"}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleToggleStatus(editingSchedule.id)}
+                        className={cn(
+                          "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
+                          editingSchedule.status === "active" ? "bg-blue-600" : isDark ? "bg-slate-600" : "bg-slate-300"
+                        )}
+                      >
+                        <span className={cn(
+                          "inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
+                          editingSchedule.status === "active" ? "translate-x-6" : "translate-x-1"
+                        )} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <div className={cn("flex gap-3 p-5 border-t", isDark ? "border-slate-700" : "border-slate-200")}>
+                {editingSchedule && (
+                  <Button 
+                    variant="outline" 
+                    className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                    icon={<Trash2 className="w-4 h-4" />}
+                    onClick={() => handleDeleteSchedule(editingSchedule.id)}
+                  >
+                    Delete
+                  </Button>
+                )}
+                <div className="flex-1" />
+                <Button variant="outline" onClick={() => setShowScheduleModal(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  variant="primary" 
+                  onClick={handleSaveSchedule} 
+                  loading={savingSchedule}
+                  disabled={!scheduleForm.name || !scheduleForm.template || !scheduleForm.recipients}
+                >
+                  {editingSchedule ? "Save Changes" : "Create Schedule"}
+                </Button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Toast Notification */}
       <AnimatePresence>
         {toast && (
@@ -385,7 +709,7 @@ export default function ReportsPage() {
             exit={{ opacity: 0, y: 50 }}
             className="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50"
           >
-            <Download className="w-5 h-5" />
+            <Check className="w-5 h-5" />
             {toast}
           </motion.div>
         )}
