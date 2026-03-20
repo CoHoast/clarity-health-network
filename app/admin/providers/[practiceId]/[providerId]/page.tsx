@@ -2272,6 +2272,99 @@ export default function ProviderDetailPage() {
               </div>
             ) : null}
 
+            {/* Contract Default Rates Detail */}
+            {contractPricing && (contractPricing.defaultRates.pctMedicare > 0 || contractPricing.defaultRates.pctBilled > 0) && (
+              <div className="bg-white border border-slate-200 rounded-lg p-6">
+                <h3 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-blue-500" />
+                  Default Contract Rates
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {contractPricing.defaultRates.pctMedicare > 0 && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <p className="text-xs text-blue-600 font-medium mb-1">% of Medicare</p>
+                      <p className="text-3xl font-bold text-blue-700">{contractPricing.defaultRates.pctMedicare}%</p>
+                      <p className="text-xs text-slate-500 mt-2">
+                        Applied when no specific CPT rate exists
+                      </p>
+                    </div>
+                  )}
+                  {contractPricing.defaultRates.pctBilled > 0 && (
+                    <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                      <p className="text-xs text-indigo-600 font-medium mb-1">% of Billed Charges</p>
+                      <p className="text-3xl font-bold text-indigo-700">{contractPricing.defaultRates.pctBilled}%</p>
+                      <p className="text-xs text-slate-500 mt-2">
+                        {contractPricing.defaultRates.pctMedicare > 0 ? "Fallback when Medicare rate = 0" : "Applied to all services"}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Contract CPT Rates Table */}
+            {contractPricing && contractPricing.cptRates.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-lg p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-blue-500" />
+                    CPT Code Pricing ({contractPricing.cptRates.length} codes)
+                  </h3>
+                  <button
+                    onClick={() => {
+                      // Export to CSV
+                      const csv = [
+                        "CPT Code,Contract Price,Revenue Code",
+                        ...contractPricing.cptRates.map(r => 
+                          `${r.cptCode},${r.pricedAmt},${r.revenueCode || ""}`
+                        )
+                      ].join("\n");
+                      const blob = new Blob([csv], { type: "text/csv" });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.href = url;
+                      a.download = `contract-${contractPricing.contractNumber}-cpt-rates.csv`;
+                      a.click();
+                    }}
+                    className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  >
+                    <Download className="w-3 h-3" />
+                    Export CSV
+                  </button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-200">
+                        <th className="text-left py-3 px-4 font-semibold text-slate-700">CPT Code</th>
+                        <th className="text-right py-3 px-4 font-semibold text-slate-700">Contract Price</th>
+                        <th className="text-left py-3 px-4 font-semibold text-slate-700">Revenue Code</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {contractPricing.cptRates.map((rate, idx) => (
+                        <tr key={idx} className={`border-b border-slate-100 ${idx % 2 === 0 ? "bg-white" : "bg-slate-50/50"}`}>
+                          <td className="py-3 px-4 font-mono text-slate-900">{rate.cptCode}</td>
+                          <td className="py-3 px-4 text-right font-semibold text-emerald-600">
+                            ${rate.pricedAmt.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </td>
+                          <td className="py-3 px-4">
+                            {rate.revenueCode ? (
+                              <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-mono rounded">
+                                {rate.revenueCode}
+                              </span>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
             {/* Custom Rates Toggle */}
             <div className="bg-white border border-slate-200 rounded-lg p-4 flex items-center justify-between">
               <div>
