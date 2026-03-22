@@ -1521,96 +1521,15 @@ export default function PracticeDetailPage() {
               </div>
             </div>
 
-            {/* CSV format info with download template */}
-            <div className={cn(
-              "p-4 rounded-xl border",
-              isDark ? "bg-slate-700/30 border-slate-600/50" : "bg-slate-50 border-slate-200"
-            )}>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className={cn("text-sm font-semibold", isDark ? "text-white" : "text-slate-900")}>CSV Template</h3>
-                <button
-                  onClick={downloadProviderTemplate}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 transition-colors"
-                >
-                  <Upload className="w-4 h-4 rotate-180" />
-                  Download Template
-                </button>
-              </div>
-              
-              {/* Column sections */}
-              <div className="space-y-3 text-xs">
-                {/* Identity */}
-                <div>
-                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Identity</p>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1">
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Entity #</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Contract #</span>
-                    <span className="text-blue-400 font-medium">NPI *</span>
-                    <span className="text-blue-400 font-medium">First Name *</span>
-                    <span className="text-blue-400 font-medium">Last Name *</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Mid Init</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Suffix</span>
-                  </div>
-                </div>
-                
-                {/* Location */}
-                <div>
-                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Location</p>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1">
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Address1</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Address 2</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>City</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>State</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Zip Code</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>County</span>
-                  </div>
-                </div>
-                
-                {/* Specialty */}
-                <div>
-                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Specialty & Contact</p>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1">
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Gender</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Spc Code</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Taxonomy Code</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Secondary Spc Code</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Secondary Taxonomy Code</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Facility Type</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Phone #</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Fax</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Email</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Language</span>
-                  </div>
-                </div>
-                
-                {/* Flags */}
-                <div>
-                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Flags & Hours</p>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1">
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Accepts New Patients</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Primary Care Flag</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Behavioral Health Flag</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Directory Display</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Monday-Sunday Hours</span>
-                  </div>
-                </div>
-                
-                {/* Contract */}
-                <div>
-                  <p className={cn("font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>Contract & Billing</p>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1">
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Pricing Tier</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Network Org</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Start/End Date</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Corresponding Address</span>
-                    <span className={isDark ? "text-slate-400" : "text-slate-500"}>Billing NPI/TaxID/Name/Address</span>
-                  </div>
-                </div>
-              </div>
-              
-              <p className={cn("text-xs mt-3", isDark ? "text-slate-500" : "text-slate-400")}>
-                * Required fields. Download template for full column list with 52 fields.
-              </p>
+            {/* Download Template Button */}
+            <div className="flex justify-end">
+              <button
+                onClick={downloadProviderTemplate}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-500 transition-colors"
+              >
+                <Upload className="w-4 h-4 rotate-180" />
+                Download CSV Template
+              </button>
             </div>
 
             <div className="space-y-3">
