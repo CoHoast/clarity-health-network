@@ -573,7 +573,6 @@ export default function PracticeDetailPage() {
     { id: "contact", label: "Contact & Location", icon: MapPin },
     { id: "billing", label: "Billing Info", icon: CreditCard },
     { id: "contract", label: "Contract", icon: FileSignature },
-    { id: "rates", label: "Rates & Discounts", icon: DollarSign },
     { id: "providers", label: "Providers", icon: Users },
     { id: "networks", label: "Networks", icon: Globe },
   ];
@@ -761,7 +760,7 @@ export default function PracticeDetailPage() {
             {/* Quick Stats */}
             <div className="grid grid-cols-4 gap-4 mt-6">
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                <p className="text-3xl font-bold text-blue-400">{practice.providers?.length || 0}</p>
+                <p className="text-3xl font-bold text-blue-400">{practiceProviders?.length || practice.providers?.length || 0}</p>
                 <p className="text-sm text-slate-400">Providers</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
@@ -769,8 +768,8 @@ export default function PracticeDetailPage() {
                 <p className="text-sm text-slate-400">Networks</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
-                <p className="text-3xl font-bold text-purple-400">{practice.discountRate}</p>
-                <p className="text-sm text-slate-400">Discount Rate</p>
+                <p className="text-2xl font-bold text-purple-400">{practice.contractNumber || practiceProviders?.[0]?.contractNumber || 'N/A'}</p>
+                <p className="text-sm text-slate-400">Contract #</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-4 text-center">
                 <p className={`text-lg font-bold ${practice.status === "active" ? "text-green-400" : "text-amber-400"}`}>
@@ -1307,181 +1306,6 @@ export default function PracticeDetailPage() {
                 </div>
               </div>
 
-              <div className="bg-slate-700/30 rounded-lg p-6">
-                <h3 className="text-sm font-semibold text-white mb-4">Default Discount Terms</h3>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1">Discount Type</p>
-                    {isEditing ? (
-                      <select
-                        value={editData.discountType}
-                        onChange={(e) => setEditData({ ...editData, discountType: e.target.value })}
-                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
-                      >
-                        <option value="% Off Billed">% Off Billed</option>
-                        <option value="% of Medicare">% of Medicare</option>
-                        <option value="Flat Rate">Flat Rate</option>
-                        <option value="Case Rate">Case Rate</option>
-                      </select>
-                    ) : (
-                      <p className="text-white">{practice.discountType}</p>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1">Discount Rate</p>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={editData.discountRate}
-                        onChange={(e) => setEditData({ ...editData, discountRate: e.target.value })}
-                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
-                      />
-                    ) : (
-                      <p className="text-2xl font-bold text-blue-400">{practice.discountRate}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Rates & Discounts Section */}
-        {activeSection === "rates" && (
-          <div className="space-y-6">
-            {/* Info Banner */}
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-              <p className="text-blue-300 text-sm">
-                <strong>Default Practice Rate:</strong> This rate applies to all providers in this practice unless they have custom rates set on their individual provider page.
-              </p>
-            </div>
-
-            {/* Discount Basis Selection */}
-            <div className="bg-slate-700/30 rounded-lg p-4">
-              <p className="text-sm font-medium text-white mb-3">Discount Basis</p>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setDiscountBasis("medicare")}
-                  className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
-                    discountBasis === "medicare" 
-                      ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-teal-600 text-white" 
-                      : "bg-slate-700 border-slate-600 text-slate-400 hover:border-slate-500"
-                  }`}
-                >
-                  % of Medicare
-                </button>
-                <button
-                  onClick={() => setDiscountBasis("billed")}
-                  className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors border-2 ${
-                    discountBasis === "billed" 
-                      ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-teal-600 text-white" 
-                      : "bg-slate-700 border-slate-600 text-slate-400 hover:border-slate-500"
-                  }`}
-                >
-                  % of Billed Charges
-                </button>
-              </div>
-              <p className="text-xs text-slate-500 mt-2">
-                {discountBasis === "medicare" 
-                  ? "Rates are calculated as a percentage of the Medicare allowable amount"
-                  : "Rates are calculated as a percentage off the provider's billed charges"
-                }
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-blue-400" />
-                Default Discount Rate
-              </h2>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setRateType("flat")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    rateType === "flat" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-700 text-slate-400"
-                  }`}
-                >
-                  Flat Rate
-                </button>
-                <button
-                  onClick={() => setRateType("custom")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    rateType === "custom" ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" : "bg-slate-700 text-slate-400"
-                  }`}
-                >
-                  Custom by Category
-                </button>
-              </div>
-            </div>
-
-            {rateType === "flat" ? (
-              <div className="bg-slate-700/30 rounded-lg p-6">
-                <h3 className="text-sm font-semibold text-white mb-4">
-                  Flat {discountBasis === "medicare" ? "% of Medicare" : "% Off Billed Charges"}
-                </h3>
-                <p className="text-slate-400 text-sm mb-4">
-                  Single rate applied to all services for this practice.
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="flex-1 max-w-xs">
-                    <div className="relative">
-                      <input
-                        type="number"
-                        value={flatRate}
-                        onChange={(e) => setFlatRate(e.target.value)}
-                        className="w-full px-4 py-3 pr-12 bg-slate-700 border border-slate-600 rounded-lg text-white text-2xl font-bold"
-                      />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">%</span>
-                    </div>
-                    <p className="text-xs text-slate-500 mt-2">
-                      {discountBasis === "medicare" ? "of Medicare rate" : "off billed charges"}
-                    </p>
-                  </div>
-                  <div className="bg-teal-500/20 border border-teal-500/30 rounded-lg p-4 flex-1">
-                    <p className="text-sm text-blue-400">
-                      {discountBasis === "medicare" 
-                        ? `Example: For a $100 Medicare allowable, you pay $${parseFloat(flatRate) || 0}`
-                        : `Example: For a $100 billed charge, you pay $${100 - (parseFloat(flatRate) || 0)}`
-                      }
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="bg-slate-700/30 rounded-lg p-6">
-                  <h3 className="text-sm font-semibold text-white mb-4">Rates by Service Category</h3>
-                  <p className="text-slate-400 text-sm mb-6">
-                    Set different discount rates for each service category.
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {serviceCategories.map((cat) => (
-                      <div key={cat.key} className="bg-slate-700/50 rounded-lg p-4">
-                        <label className="block text-sm text-slate-400 mb-2">{cat.label}</label>
-                        <div className="relative">
-                          <input
-                            type="number"
-                            value={serviceRates[cat.key] || ""}
-                            onChange={(e) => setServiceRates({ ...serviceRates, [cat.key]: e.target.value })}
-                            className="w-full px-3 py-2 pr-10 bg-white border border-slate-300 rounded-lg text-slate-900 font-medium"
-                          />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">%</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div className="flex justify-end">
-              <button
-                onClick={handleSave}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
-              >
-                <Save className="w-4 h-4" />
-                Save Rates
-              </button>
             </div>
           </div>
         )}
