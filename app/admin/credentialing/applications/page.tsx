@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Search,
@@ -37,7 +37,8 @@ import { Button, IconButton } from "@/components/admin/ui/Button";
 import { SearchInput } from "@/components/admin/ui/SearchInput";
 import { cn } from "@/lib/utils";
 
-const applications = [
+// Demo applications (existing data)
+const demoApplications = [
   { 
     id: "CRED-2024-1247", provider: "Dr. Sarah Mitchell", npi: "1234567890", specialty: "Cardiology", status: "verification", submitted: "2024-03-10", stage: "PSV In Progress", type: "initial", practice: "Cleveland Heart Center", email: "dr.mitchell@cardio.com", phone: "(555) 123-4567",
     address: "4500 Euclid Ave, Suite 201, Cleveland, OH 44103",
@@ -216,12 +217,87 @@ const applications = [
   },
 ];
 
-const stats = [
-  { label: "Total Applications", value: "156", trend: "up" as const, change: "+24", icon: <FileText className="w-5 h-5" /> },
-  { label: "In Verification", value: "28", trend: "neutral" as const, change: "Processing", icon: <RefreshCw className="w-5 h-5" /> },
-  { label: "Ready for Review", value: "12", trend: "warning" as const, change: "Awaiting", icon: <Eye className="w-5 h-5" /> },
-  { label: "Approved (YTD)", value: "89", trend: "up" as const, change: "+12", icon: <CheckCircle className="w-5 h-5" /> },
-];
+// Helper to convert wizard submissions to display format
+interface WizardApplication {
+  id: string;
+  status: string;
+  submittedAt: string;
+  source?: string;
+  providerType?: string;
+  demographics?: {
+    firstName?: string;
+    lastName?: string;
+    credentials?: string;
+    npi?: string;
+    primarySpecialty?: string;
+    email?: string;
+    phone?: string;
+  };
+  practice?: {
+    legalName?: string;
+    npi?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+  };
+  licenses?: Array<{ state?: string; licenseNumber?: string; expirationDate?: string }>;
+  dea?: { number?: string };
+  boardCertifications?: { isCertified?: string; certifications?: Array<{ board?: string }> };
+  verification?: Record<string, { status?: string; checkedAt?: string | null }>;
+  workflow?: { currentStage?: string };
+}
+
+function convertWizardToDisplay(app: WizardApplication) {
+  const providerName = app.demographics 
+    ? `${app.demographics.firstName || ''} ${app.demographics.lastName || ''}${app.demographics.credentials ? `, ${app.demographics.credentials}` : ''}`.trim()
+    : 'Unknown Provider';
+  
+  const getStageLabel = (stage?: string) => {
+    switch (stage) {
+      case 'verification': return 'PSV In Progress';
+      case 'review': return 'Ready for Review';
+      case 'committee': return 'Committee Review';
+      case 'contract': return 'Contract Pending';
+      case 'active': return 'Complete';
+      default: return 'Submitted';
+    }
+  };
+  
+  return {
+    id: app.id,
+    provider: providerName || 'New Applicant',
+    npi: app.demographics?.npi || app.practice?.npi || '',
+    specialty: app.demographics?.primarySpecialty || 'Not specified',
+    status: app.status === 'submitted' ? 'verification' : app.status,
+    submitted: app.submittedAt?.split('T')[0] || new Date().toISOString().split('T')[0],
+    stage: getStageLabel(app.workflow?.currentStage),
+    type: 'initial' as const,
+    practice: app.practice?.legalName || 'Not specified',
+    email: app.demographics?.email || '',
+    phone: app.demographics?.phone || '',
+    address: app.practice ? `${app.practice.address || ''}, ${app.practice.city || ''}, ${app.practice.state || ''} ${app.practice.zip || ''}` : '',
+    licenseNumber: app.licenses?.[0]?.licenseNumber || '',
+    licenseState: app.licenses?.[0]?.state || '',
+    licenseExpiry: app.licenses?.[0]?.expirationDate || '',
+    deaNumber: app.dea?.number || '',
+    boardCertified: app.boardCertifications?.isCertified === 'yes',
+    boardCertification: app.boardCertifications?.certifications?.[0]?.board || '',
+    source: app.source || 'manual',
+    documents: [
+      { name: "Medical License", status: app.licenses?.length ? 'received' : 'pending', date: app.submittedAt?.split('T')[0] || null },
+      { name: "DEA Certificate", status: app.dea?.number ? 'received' : 'pending', date: null },
+      { name: "Malpractice Insurance COI", status: 'pending', date: null },
+      { name: "W-9 Form", status: 'pending', date: null },
+    ],
+    verifications: [
+      { type: "NPI Validation", status: app.verification?.nppes?.status || 'pending', date: app.verification?.nppes?.checkedAt || null },
+      { type: "OIG Exclusion", status: app.verification?.oig?.status || 'pending', date: app.verification?.oig?.checkedAt || null },
+      { type: "SAM.gov", status: app.verification?.sam?.status || 'pending', date: app.verification?.sam?.checkedAt || null },
+      { type: "License Verification", status: app.verification?.stateLicense?.status || 'pending', date: null },
+    ],
+  };
+}
 
 const statusFilters = [
   { label: "All", value: "" },
@@ -263,21 +339,57 @@ const getTypeBadge = (type: string) => {
   }
 };
 
+// Application type for the display
+type ApplicationDisplay = typeof demoApplications[0];
+
 export default function ApplicationsPage() {
   const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-  const [selectedApplication, setSelectedApplication] = useState<typeof applications[0] | null>(null);
+  const [applications, setApplications] = useState<ApplicationDisplay[]>(demoApplications);
+  const [selectedApplication, setSelectedApplication] = useState<ApplicationDisplay | null>(null);
   const [showNewAppModal, setShowNewAppModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showRequestModal, setShowRequestModal] = useState(false);
-  const [requestModalTarget, setRequestModalTarget] = useState<typeof applications[0] | null>(null);
+  const [requestModalTarget, setRequestModalTarget] = useState<ApplicationDisplay | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationComplete, setVerificationComplete] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleRunVerification = async (app: typeof applications[0]) => {
+  // Fetch real applications from API and merge with demo data
+  useEffect(() => {
+    async function fetchApplications() {
+      try {
+        const res = await fetch('/api/apply');
+        const data = await res.json();
+        
+        if (data.success && data.applications?.length > 0) {
+          // Convert wizard applications to display format
+          const wizardApps = data.applications.map(convertWizardToDisplay);
+          // Merge with demo data, wizard apps first (most recent)
+          setApplications([...wizardApps, ...demoApplications]);
+        }
+      } catch (error) {
+        console.error('Error fetching applications:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchApplications();
+  }, []);
+
+  // Dynamic stats
+  const stats = [
+    { label: "Total Applications", value: String(applications.length), trend: "up" as const, change: `+${applications.filter(a => (a as ApplicationDisplay & { source?: string }).source === 'manual').length} new`, icon: <FileText className="w-5 h-5" /> },
+    { label: "In Verification", value: String(applications.filter(a => a.status === 'verification').length), trend: "neutral" as const, change: "Processing", icon: <RefreshCw className="w-5 h-5" /> },
+    { label: "Ready for Review", value: String(applications.filter(a => a.status === 'review').length), trend: "warning" as const, change: "Awaiting", icon: <Eye className="w-5 h-5" /> },
+    { label: "Approved (YTD)", value: String(applications.filter(a => a.status === 'approved').length), trend: "up" as const, change: "+12", icon: <CheckCircle className="w-5 h-5" /> },
+  ];
+
+  const handleRunVerification = async (app: ApplicationDisplay) => {
     setIsVerifying(true);
     // Simulate verification process
     await new Promise(resolve => setTimeout(resolve, 2000));

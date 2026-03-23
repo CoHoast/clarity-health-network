@@ -384,6 +384,14 @@ export default function CredentialingDashboardPage() {
               >
                 Request Documents
               </Button>
+              <Button 
+                variant="primary" 
+                className="w-full justify-start" 
+                icon={<Users className="w-4 h-4" />}
+                href="/admin/credentialing/onboarding"
+              >
+                Invite Providers
+              </Button>
             </div>
           </div>
 
