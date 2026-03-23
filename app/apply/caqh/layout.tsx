@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { CAQHProvider, useCAQH } from './CAQHContext';
+import { ToastProvider } from '../Toast';
 
 // Step labels
 const stepLabels = [
@@ -237,7 +238,9 @@ function CAQHLayoutInner({ children }: { children: React.ReactNode }) {
 export default function CAQHLayout({ children }: { children: React.ReactNode }) {
   return (
     <CAQHProvider>
-      <CAQHLayoutInner>{children}</CAQHLayoutInner>
+      <ToastProvider>
+        <CAQHLayoutInner>{children}</CAQHLayoutInner>
+      </ToastProvider>
     </CAQHProvider>
   );
 }

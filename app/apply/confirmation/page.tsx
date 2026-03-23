@@ -35,10 +35,22 @@ const CelebrationIcon = () => (
   </svg>
 );
 
+// Storage keys - must match WizardContext
+const STORAGE_KEY = 'solidarity_provider_application_draft';
+const STORAGE_STEP_KEY = 'solidarity_provider_application_step';
+
 function ConfirmationContent() {
   const searchParams = useSearchParams();
   const applicationId = searchParams.get('id') || 'CRED-2026-XXXX';
   const [copied, setCopied] = useState(false);
+  
+  // Clear any leftover draft data
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_STEP_KEY);
+    }
+  }, []);
   
   const handleCopy = () => {
     navigator.clipboard.writeText(applicationId);

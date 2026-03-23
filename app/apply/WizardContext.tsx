@@ -1,6 +1,10 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+
+// Storage keys
+const STORAGE_KEY = 'solidarity_provider_application_draft';
+const STORAGE_STEP_KEY = 'solidarity_provider_application_step';
 
 // Application data structure
 export interface ApplicationData {
@@ -258,6 +262,9 @@ interface WizardContextType {
   errors: Record<string, string>;
   setErrors: (errors: Record<string, string>) => void;
   resetWizard: () => void;
+  hasDraft: boolean;
+  lastSaved: Date | null;
+  clearDraft: () => void;
 }
 
 const WizardContext = createContext<WizardContextType | null>(null);
@@ -268,8 +275,78 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   const [canProceed, setCanProceed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [hasDraft, setHasDraft] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
   
   const totalSteps = 10;
+  
+  // Load draft from localStorage on mount
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      const savedStep = localStorage.getItem(STORAGE_STEP_KEY);
+      
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        // Verify it's a valid draft (has some data)
+        if (parsed.providerType || parsed.practice?.legalName || parsed.demographics?.firstName) {
+          setData(parsed);
+          setHasDraft(true);
+          setLastSaved(new Date(parsed._savedAt || Date.now()));
+        }
+      }
+      
+      if (savedStep) {
+        const step = parseInt(savedStep, 10);
+        if (step >= 1 && step <= totalSteps) {
+          setCurrentStep(step);
+        }
+      }
+    } catch (e) {
+      console.error('Error loading draft:', e);
+    }
+    
+    setIsHydrated(true);
+  }, []);
+  
+  // Auto-save to localStorage when data or step changes
+  useEffect(() => {
+    if (!isHydrated || typeof window === 'undefined') return;
+    
+    // Don't save if wizard was just reset or no meaningful data
+    const hasData = data.providerType || 
+                    data.practice?.legalName || 
+                    data.demographics?.firstName;
+    
+    if (hasData) {
+      try {
+        const dataToSave = { ...data, _savedAt: new Date().toISOString() };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+        localStorage.setItem(STORAGE_STEP_KEY, currentStep.toString());
+        setHasDraft(true);
+        setLastSaved(new Date());
+      } catch (e) {
+        console.error('Error saving draft:', e);
+      }
+    }
+  }, [data, currentStep, isHydrated]);
+  
+  // Clear draft from localStorage
+  const clearDraft = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_STEP_KEY);
+      setHasDraft(false);
+      setLastSaved(null);
+    } catch (e) {
+      console.error('Error clearing draft:', e);
+    }
+  }, []);
   
   const updateData = useCallback((updates: Partial<ApplicationData>) => {
     setData(prev => ({ ...prev, ...updates }));
@@ -306,7 +383,8 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     setCanProceed(false);
     setIsSubmitting(false);
     setErrors({});
-  }, []);
+    clearDraft();
+  }, [clearDraft]);
   
   return (
     <WizardContext.Provider
@@ -326,6 +404,9 @@ export function WizardProvider({ children }: { children: ReactNode }) {
         errors,
         setErrors,
         resetWizard,
+        hasDraft,
+        lastSaved,
+        clearDraft,
       }}
     >
       {children}

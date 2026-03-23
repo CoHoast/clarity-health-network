@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useWizard } from '../../WizardContext';
+import { useToast } from '../../Toast';
 import StepNavigation from '../StepNavigation';
 
 // Disclosure questions
@@ -31,7 +32,8 @@ const DISCLOSURE_QUESTIONS = [
 
 export default function Step10Submit() {
   const router = useRouter();
-  const { data, updateNestedData, updateData, setCanProceed, isSubmitting, setIsSubmitting } = useWizard();
+  const { data, updateNestedData, updateData, setCanProceed, isSubmitting, setIsSubmitting, clearDraft } = useWizard();
+  const { addToast } = useToast();
   const w9InputRef = useRef<HTMLInputElement>(null);
   const cvInputRef = useRef<HTMLInputElement>(null);
   
@@ -76,6 +78,9 @@ export default function Step10Submit() {
     setIsSubmitting(true);
     
     try {
+      // Show submission in progress toast
+      addToast({ type: 'info', message: 'Submitting your application...', duration: 10000 });
+      
       // Submit application
       const response = await fetch('/api/apply', {
         method: 'POST',
@@ -86,15 +91,29 @@ export default function Step10Submit() {
       const result = await response.json();
       
       if (result.success) {
+        // Clear the draft since submission was successful
+        clearDraft();
+        
+        // Show success toast
+        addToast({ type: 'success', message: 'Application submitted successfully!' });
+        
         // Redirect to confirmation page with application ID
         router.push(`/apply/confirmation?id=${result.applicationId}`);
       } else {
-        alert(result.error || 'Failed to submit application. Please try again.');
+        addToast({ 
+          type: 'error', 
+          message: result.error || 'Failed to submit application. Please try again.',
+          duration: 6000
+        });
         setIsSubmitting(false);
       }
     } catch (error) {
       console.error('Submit error:', error);
-      alert('Failed to submit application. Please try again.');
+      addToast({ 
+        type: 'error', 
+        message: 'Network error. Please check your connection and try again.',
+        duration: 6000
+      });
       setIsSubmitting(false);
     }
   };
