@@ -30,7 +30,7 @@ interface Application {
 const statusColors = {
   passed: 'bg-emerald-500',
   pending: 'bg-slate-300',
-  in_progress: 'bg-cyan-500',
+  in_progress: 'bg-blue-500',
   failed: 'bg-red-500',
   action_required: 'bg-amber-500',
 };
@@ -160,7 +160,7 @@ export default function ApplicationStatusPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-xl flex items-center justify-center text-white">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center text-white">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
@@ -170,7 +170,7 @@ export default function ApplicationStatusPage() {
                 <span className="text-lg font-light text-slate-600 ml-1">Health Network</span>
               </div>
             </div>
-            <Link href="/apply" className="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
+            <Link href="/apply" className="text-sm text-blue-600 hover:text-blue-700 font-medium">
               ← Back to Portal
             </Link>
           </div>
@@ -221,7 +221,7 @@ export default function ApplicationStatusPage() {
                         isCompleted
                           ? 'bg-emerald-500'
                           : isCurrent
-                          ? 'bg-cyan-500 ring-4 ring-cyan-100'
+                          ? 'bg-blue-500 ring-4 ring-cyan-100'
                           : 'bg-slate-200'
                       }`}
                     >
@@ -269,7 +269,7 @@ export default function ApplicationStatusPage() {
                   {item.date ? (
                     <span className="text-xs text-emerald-600 font-medium">Passed - {item.date}</span>
                   ) : item.status === 'in_progress' ? (
-                    <span className="text-xs text-cyan-600 font-medium">In Progress</span>
+                    <span className="text-xs text-blue-600 font-medium">In Progress</span>
                   ) : (
                     <span className="text-xs text-slate-400">Pending</span>
                   )}
@@ -300,7 +300,7 @@ export default function ApplicationStatusPage() {
         {/* Contact */}
         <div className="text-center text-sm text-slate-600">
           Questions? Contact{' '}
-          <a href="mailto:credentialing@solidaritynetwork.com" className="text-cyan-600 hover:text-cyan-700 font-medium">
+          <a href="mailto:credentialing@solidaritynetwork.com" className="text-blue-600 hover:text-blue-700 font-medium">
             credentialing@solidaritynetwork.com
           </a>
         </div>

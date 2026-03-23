@@ -187,7 +187,7 @@ export default function Step10Submit() {
                     placeholder="Please provide details for each 'Yes' answer above..."
                     value={disclosures.explanation}
                     onChange={(e) => updateNestedData('disclosures', { explanation: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white resize-none"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white resize-none"
                   />
                 </div>
               )}
@@ -208,7 +208,7 @@ export default function Step10Submit() {
                       href="https://www.irs.gov/pub/irs-pdf/fw9.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-cyan-600 hover:text-cyan-700"
+                      className="text-xs text-blue-600 hover:text-blue-700"
                     >
                       Download blank W-9 →
                     </a>
@@ -232,7 +232,7 @@ export default function Step10Submit() {
                     <button
                       type="button"
                       onClick={() => w9InputRef.current?.click()}
-                      className="w-full p-3 border-2 border-dashed border-slate-300 rounded-lg hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                      className="w-full p-3 border-2 border-dashed border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
                     >
                       <span className="text-sm text-slate-500">Click to upload W-9</span>
                     </button>
@@ -274,7 +274,7 @@ export default function Step10Submit() {
                     <button
                       type="button"
                       onClick={() => cvInputRef.current?.click()}
-                      className="w-full p-3 border-2 border-dashed border-slate-300 rounded-lg hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                      className="w-full p-3 border-2 border-dashed border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
                     >
                       <span className="text-sm text-slate-500">Click to upload CV/Resume</span>
                     </button>
@@ -315,7 +315,7 @@ export default function Step10Submit() {
                         type="checkbox"
                         checked={attestation[item.key] as boolean}
                         onChange={(e) => handleAttestationChange(item.key, e.target.checked)}
-                        className="mt-0.5 w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                        className="mt-0.5 w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                       />
                       <span className="text-sm text-slate-700">{item.label}</span>
                     </label>
@@ -333,7 +333,7 @@ export default function Step10Submit() {
                         placeholder="Type your full legal name"
                         value={attestation.signature}
                         onChange={(e) => handleAttestationChange('signature', e.target.value)}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white font-medium"
+                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white font-medium"
                       />
                       <p className="mt-1 text-xs text-slate-500">
                         By typing your name, you are electronically signing this application

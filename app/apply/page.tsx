@@ -104,30 +104,41 @@ export default function ApplyLandingPage() {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50/30 to-teal-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/30">
+      {/* Top Bar */}
+      <div className="bg-slate-900 text-white py-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center text-sm">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              (216) 763-2484
+            </span>
+            <span className="hidden sm:inline text-slate-400">|</span>
+            <span className="hidden sm:inline">Cleveland, OH</span>
+          </div>
+          <span className="text-blue-300">Trusted Partner Since 1989</span>
+        </div>
+      </div>
+      
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-50">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-xl flex items-center justify-center text-white">
-                <BuildingIcon />
-              </div>
-              <div>
-                <span className="text-lg font-bold text-slate-900">Solidarity</span>
-                <span className="text-lg font-light text-slate-600 ml-1">Health Network</span>
-              </div>
-            </div>
-            <div className="hidden sm:flex items-center gap-4">
-              <Link href="/find-provider" className="text-sm text-slate-600 hover:text-slate-900">
+            <Link href="/" className="flex items-center">
+              <img src="/solidarity-logo.png" alt="Solidarity Health Network" className="h-12 w-auto" />
+            </Link>
+            <div className="hidden sm:flex items-center gap-6">
+              <Link href="/find-provider" className="text-sm text-slate-600 hover:text-blue-600 font-medium">
                 Find a Provider
               </Link>
-              <a href="https://solidaritynetwork.com" className="text-sm text-slate-600 hover:text-slate-900">
+              <a href="https://shninc.org" className="text-sm text-slate-600 hover:text-blue-600 font-medium">
                 About Us
               </a>
               <Link 
                 href="/apply/status" 
-                className="text-sm text-cyan-600 hover:text-cyan-700 font-medium"
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
               >
                 Check Application Status
               </Link>
@@ -178,14 +189,14 @@ export default function ApplyLandingPage() {
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-cyan-100 text-cyan-700 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
               <LightningIcon />
               Now accepting applications
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight">
               Join the{' '}
-              <span className="bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent">
                 Solidarity
               </span>{' '}
               Health Network
@@ -199,7 +210,7 @@ export default function ApplyLandingPage() {
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/apply/manual"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-semibold rounded-xl hover:from-cyan-700 hover:to-teal-700 transition-all shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-cyan-700 transition-all shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30"
               >
                 Start Application
                 <ArrowRightIcon />
@@ -237,7 +248,7 @@ export default function ApplyLandingPage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center p-6">
-              <div className="w-14 h-14 bg-gradient-to-br from-cyan-100 to-teal-100 rounded-2xl flex items-center justify-center text-cyan-600 mx-auto mb-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center text-blue-600 mx-auto mb-4">
                 <ClockIcon />
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2">14-Day Payments</h3>
@@ -245,7 +256,7 @@ export default function ApplyLandingPage() {
             </div>
             
             <div className="text-center p-6">
-              <div className="w-14 h-14 bg-gradient-to-br from-cyan-100 to-teal-100 rounded-2xl flex items-center justify-center text-cyan-600 mx-auto mb-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center text-blue-600 mx-auto mb-4">
                 <UsersIcon />
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2">40,000+ Members</h3>
@@ -253,7 +264,7 @@ export default function ApplyLandingPage() {
             </div>
             
             <div className="text-center p-6">
-              <div className="w-14 h-14 bg-gradient-to-br from-cyan-100 to-teal-100 rounded-2xl flex items-center justify-center text-cyan-600 mx-auto mb-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center text-blue-600 mx-auto mb-4">
                 <CurrencyIcon />
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2">Competitive Rates</h3>
@@ -261,7 +272,7 @@ export default function ApplyLandingPage() {
             </div>
             
             <div className="text-center p-6">
-              <div className="w-14 h-14 bg-gradient-to-br from-cyan-100 to-teal-100 rounded-2xl flex items-center justify-center text-cyan-600 mx-auto mb-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center text-blue-600 mx-auto mb-4">
                 <HeadphonesIcon />
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2">Dedicated Support</h3>
@@ -288,7 +299,7 @@ export default function ApplyLandingPage() {
             ].map((item, index) => (
               <div key={item.step} className="relative">
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-4">
                     {item.step}
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
@@ -332,20 +343,20 @@ export default function ApplyLandingPage() {
               ))}
             </div>
             
-            <div className="mt-8 p-6 bg-cyan-50 border border-cyan-100 rounded-xl">
+            <div className="mt-8 p-6 bg-blue-50 border border-blue-100 rounded-xl">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                   <LightningIcon />
                 </div>
                 <div>
                   <h4 className="font-semibold text-cyan-900">Have a CAQH ProView account?</h4>
-                  <p className="mt-1 text-cyan-700 text-sm">
+                  <p className="mt-1 text-blue-700 text-sm">
                     Most of your information is already in CAQH. Use our Fast Track option to pull your 
                     credentials automatically and complete your application in about 5 minutes.
                   </p>
                   <Link 
                     href="/apply/caqh" 
-                    className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-cyan-700 hover:text-cyan-800"
+                    className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-blue-700 hover:text-cyan-800"
                   >
                     Start Fast Track Application
                     <ArrowRightIcon />
@@ -388,7 +399,7 @@ export default function ApplyLandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-lg flex items-center justify-center text-white">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center text-white">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>

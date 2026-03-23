@@ -123,7 +123,7 @@ export default function Step7Education() {
                   placeholder="e.g., Case Western Reserve University School of Medicine"
                   value={education.medicalSchool}
                   onChange={(e) => handleChange('medicalSchool', e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                  className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                 />
               </div>
               
@@ -135,7 +135,7 @@ export default function Step7Education() {
                   <select
                     value={education.degree}
                     onChange={(e) => handleChange('degree', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   >
                     <option value="">Select degree</option>
                     {DEGREES.map(d => (
@@ -152,7 +152,7 @@ export default function Step7Education() {
                     type="date"
                     value={education.graduationDate}
                     onChange={(e) => handleChange('graduationDate', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   />
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function Step7Education() {
                         placeholder="e.g., Cleveland Clinic Foundation"
                         value={residency.institution}
                         onChange={(e) => updateResidency(residency.id, 'institution', e.target.value)}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                       />
                     </div>
                     
@@ -209,7 +209,7 @@ export default function Step7Education() {
                           placeholder="e.g., Internal Medicine"
                           value={residency.specialty}
                           onChange={(e) => updateResidency(residency.id, 'specialty', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         />
                       </div>
                       
@@ -221,7 +221,7 @@ export default function Step7Education() {
                           type="date"
                           value={residency.completionDate}
                           onChange={(e) => updateResidency(residency.id, 'completionDate', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         />
                       </div>
                     </div>
@@ -232,7 +232,7 @@ export default function Step7Education() {
               <button
                 type="button"
                 onClick={addResidency}
-                className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
               >
                 <div className="flex items-center justify-center gap-2 text-slate-600">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -280,7 +280,7 @@ export default function Step7Education() {
                         placeholder="e.g., Cleveland Clinic Foundation"
                         value={fellowship.institution}
                         onChange={(e) => updateFellowship(fellowship.id, 'institution', e.target.value)}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                       />
                     </div>
                     
@@ -294,7 +294,7 @@ export default function Step7Education() {
                           placeholder="e.g., Cardiovascular Disease"
                           value={fellowship.specialty}
                           onChange={(e) => updateFellowship(fellowship.id, 'specialty', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         />
                       </div>
                       
@@ -306,7 +306,7 @@ export default function Step7Education() {
                           type="date"
                           value={fellowship.completionDate}
                           onChange={(e) => updateFellowship(fellowship.id, 'completionDate', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         />
                       </div>
                     </div>
@@ -317,7 +317,7 @@ export default function Step7Education() {
               <button
                 type="button"
                 onClick={addFellowship}
-                className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
               >
                 <div className="flex items-center justify-center gap-2 text-slate-600">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

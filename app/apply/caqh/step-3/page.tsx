@@ -138,7 +138,7 @@ export default function CAQHStep3PullData() {
       );
     } else if (index === currentPullStep && pulling) {
       return (
-        <div className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center">
+        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
           <svg className="w-4 h-4 text-white animate-spin" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -180,7 +180,7 @@ export default function CAQHStep3PullData() {
                 index < currentPullStep
                   ? 'text-emerald-700 font-medium'
                   : index === currentPullStep
-                  ? 'text-cyan-700 font-medium'
+                  ? 'text-blue-700 font-medium'
                   : 'text-slate-500'
               }`}>
                 {step.label}
@@ -209,7 +209,7 @@ export default function CAQHStep3PullData() {
           <div className="mt-8 text-center">
             <button
               onClick={startPull}
-              className="px-6 py-3 bg-cyan-600 text-white font-medium rounded-lg hover:bg-cyan-700 transition-colors"
+              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-cyan-700 transition-colors"
             >
               Retry
             </button>

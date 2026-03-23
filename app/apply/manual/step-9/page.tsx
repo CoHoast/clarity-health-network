@@ -88,7 +88,7 @@ export default function Step9Insurance() {
                     placeholder="e.g., ProAssurance"
                     value={malpractice.carrier}
                     onChange={(e) => handleMalpracticeChange('carrier', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   />
                 </div>
                 
@@ -101,7 +101,7 @@ export default function Step9Insurance() {
                     placeholder="e.g., PAC-2024-5678"
                     value={malpractice.policyNumber}
                     onChange={(e) => handleMalpracticeChange('policyNumber', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   />
                 </div>
               </div>
@@ -114,7 +114,7 @@ export default function Step9Insurance() {
                   <select
                     value={malpractice.coveragePerOccurrence}
                     onChange={(e) => handleMalpracticeChange('coveragePerOccurrence', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   >
                     <option value="">Select amount</option>
                     {COVERAGE_LIMITS.map(limit => (
@@ -130,7 +130,7 @@ export default function Step9Insurance() {
                   <select
                     value={malpractice.coverageAggregate}
                     onChange={(e) => handleMalpracticeChange('coverageAggregate', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   >
                     <option value="">Select amount</option>
                     {COVERAGE_LIMITS.map(limit => (
@@ -149,7 +149,7 @@ export default function Step9Insurance() {
                     type="date"
                     value={malpractice.effectiveDate}
                     onChange={(e) => handleMalpracticeChange('effectiveDate', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   />
                 </div>
                 
@@ -161,7 +161,7 @@ export default function Step9Insurance() {
                     type="date"
                     value={malpractice.expirationDate}
                     onChange={(e) => handleMalpracticeChange('expirationDate', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   />
                 </div>
               </div>
@@ -190,7 +190,7 @@ export default function Step9Insurance() {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                    className="w-full p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
                   >
                     <div className="flex flex-col items-center text-slate-500">
                       <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,7 +242,7 @@ export default function Step9Insurance() {
                         placeholder="e.g., Dr. John Smith, MD"
                         value={ref.name}
                         onChange={(e) => handleReferenceChange(ref.id, 'name', e.target.value)}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                       />
                     </div>
                     
@@ -256,7 +256,7 @@ export default function Step9Insurance() {
                           placeholder="e.g., 216-555-9999"
                           value={ref.phone}
                           onChange={(e) => handleReferenceChange(ref.id, 'phone', formatPhone(e.target.value))}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         />
                       </div>
                       
@@ -269,7 +269,7 @@ export default function Step9Insurance() {
                           placeholder="e.g., jsmith@clinic.com"
                           value={ref.email}
                           onChange={(e) => handleReferenceChange(ref.id, 'email', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         />
                       </div>
                     </div>
@@ -283,7 +283,7 @@ export default function Step9Insurance() {
                         placeholder="e.g., Former colleague at Cleveland Clinic"
                         value={ref.relationship}
                         onChange={(e) => handleReferenceChange(ref.id, 'relationship', e.target.value)}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                       />
                     </div>
                   </div>

@@ -67,12 +67,12 @@ export default function Step5DEA() {
                 onClick={() => handleChange('hasDea', true)}
                 className={`flex-1 p-4 rounded-lg border-2 transition-colors ${
                   dea.hasDea === true
-                    ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
+                    ? 'border-blue-500 bg-blue-50 text-blue-700'
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-center gap-2">
-                  <svg className={`w-5 h-5 ${dea.hasDea === true ? 'text-cyan-600' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${dea.hasDea === true ? 'text-blue-600' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <span className="font-medium">Yes</span>
@@ -83,12 +83,12 @@ export default function Step5DEA() {
                 onClick={() => handleChange('hasDea', false)}
                 className={`flex-1 p-4 rounded-lg border-2 transition-colors ${
                   dea.hasDea === false
-                    ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
+                    ? 'border-blue-500 bg-blue-50 text-blue-700'
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-center gap-2">
-                  <svg className={`w-5 h-5 ${dea.hasDea === false ? 'text-cyan-600' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${dea.hasDea === false ? 'text-blue-600' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                   <span className="font-medium">No (N/A for my specialty)</span>
@@ -113,7 +113,7 @@ export default function Step5DEA() {
                         value={dea.number}
                         onChange={(e) => handleChange('number', e.target.value.toUpperCase())}
                         maxLength={9}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                       />
                       <p className="mt-1 text-xs text-slate-500">Format: 2 letters + 7 digits</p>
                     </div>
@@ -126,7 +126,7 @@ export default function Step5DEA() {
                         type="date"
                         value={dea.issueDate}
                         onChange={(e) => handleChange('issueDate', e.target.value)}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                       />
                     </div>
                     
@@ -138,7 +138,7 @@ export default function Step5DEA() {
                         type="date"
                         value={dea.expirationDate}
                         onChange={(e) => handleChange('expirationDate', e.target.value)}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                       />
                     </div>
                   </div>
@@ -156,14 +156,14 @@ export default function Step5DEA() {
                           onClick={() => toggleSchedule(schedule.id)}
                           className={`text-left p-4 rounded-lg border-2 transition-colors ${
                             dea.schedules.includes(schedule.id)
-                              ? 'border-cyan-500 bg-cyan-50'
+                              ? 'border-blue-500 bg-blue-50'
                               : 'border-slate-200 bg-white hover:border-slate-300'
                           }`}
                         >
                           <div className="flex items-start gap-3">
                             <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
                               dea.schedules.includes(schedule.id)
-                                ? 'border-cyan-500 bg-cyan-500'
+                                ? 'border-blue-500 bg-blue-500'
                                 : 'border-slate-300'
                             }`}>
                               {dea.schedules.includes(schedule.id) && (
@@ -173,7 +173,7 @@ export default function Step5DEA() {
                               )}
                             </div>
                             <div>
-                              <span className={`font-medium ${dea.schedules.includes(schedule.id) ? 'text-cyan-700' : 'text-slate-900'}`}>
+                              <span className={`font-medium ${dea.schedules.includes(schedule.id) ? 'text-blue-700' : 'text-slate-900'}`}>
                                 {schedule.label}
                               </span>
                               <p className="text-xs text-slate-500 mt-0.5">{schedule.desc}</p>
@@ -208,7 +208,7 @@ export default function Step5DEA() {
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-full p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                        className="w-full p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
                       >
                         <div className="flex flex-col items-center text-slate-500">
                           <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

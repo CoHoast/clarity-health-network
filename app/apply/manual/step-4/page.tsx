@@ -134,7 +134,7 @@ export default function Step4Licenses() {
                     <select
                       value={license.state}
                       onChange={(e) => updateLicense(license.id, 'state', e.target.value)}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                     >
                       <option value="">Select state</option>
                       {US_STATES.map(s => (
@@ -152,7 +152,7 @@ export default function Step4Licenses() {
                       placeholder="e.g., 35-123456"
                       value={license.licenseNumber}
                       onChange={(e) => updateLicense(license.id, 'licenseNumber', e.target.value)}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                     />
                   </div>
                 </div>
@@ -166,7 +166,7 @@ export default function Step4Licenses() {
                       type="date"
                       value={license.issueDate}
                       onChange={(e) => updateLicense(license.id, 'issueDate', e.target.value)}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                     />
                   </div>
                   
@@ -178,7 +178,7 @@ export default function Step4Licenses() {
                       type="date"
                       value={license.expirationDate}
                       onChange={(e) => updateLicense(license.id, 'expirationDate', e.target.value)}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                     />
                   </div>
                   
@@ -189,7 +189,7 @@ export default function Step4Licenses() {
                     <select
                       value={license.status}
                       onChange={(e) => updateLicense(license.id, 'status', e.target.value)}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                     >
                       {LICENSE_STATUSES.map(s => (
                         <option key={s} value={s}>{s}</option>
@@ -222,7 +222,7 @@ export default function Step4Licenses() {
                     <button
                       type="button"
                       onClick={() => fileInputRefs.current[license.id]?.click()}
-                      className="w-full p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                      className="w-full p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
                     >
                       <div className="flex flex-col items-center text-slate-500">
                         <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,7 +252,7 @@ export default function Step4Licenses() {
           <button
             type="button"
             onClick={addLicense}
-            className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+            className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
           >
             <div className="flex items-center justify-center gap-2 text-slate-600">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

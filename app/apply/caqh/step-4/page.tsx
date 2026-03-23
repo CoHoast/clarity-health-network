@@ -46,7 +46,7 @@ export default function CAQHStep4Review() {
         <div className="border border-slate-200 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
             <h3 className="font-semibold text-slate-900">Demographics</h3>
-            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-600 hover:text-cyan-700">
+            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:text-blue-700">
               Edit in CAQH →
             </a>
           </div>
@@ -76,7 +76,7 @@ export default function CAQHStep4Review() {
         <div className="border border-slate-200 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
             <h3 className="font-semibold text-slate-900">Licenses ({profile.licenses.length})</h3>
-            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-600 hover:text-cyan-700">
+            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:text-blue-700">
               Edit in CAQH →
             </a>
           </div>
@@ -107,7 +107,7 @@ export default function CAQHStep4Review() {
           <div className="border border-slate-200 rounded-xl overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
               <h3 className="font-semibold text-slate-900">DEA Registration</h3>
-              <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-600 hover:text-cyan-700">
+              <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:text-blue-700">
                 Edit in CAQH →
               </a>
             </div>
@@ -135,7 +135,7 @@ export default function CAQHStep4Review() {
         <div className="border border-slate-200 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
             <h3 className="font-semibold text-slate-900">Board Certifications</h3>
-            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-600 hover:text-cyan-700">
+            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:text-blue-700">
               Edit in CAQH →
             </a>
           </div>
@@ -165,7 +165,7 @@ export default function CAQHStep4Review() {
         <div className="border border-slate-200 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
             <h3 className="font-semibold text-slate-900">Malpractice Insurance</h3>
-            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-600 hover:text-cyan-700">
+            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:text-blue-700">
               Edit in CAQH →
             </a>
           </div>
@@ -192,7 +192,7 @@ export default function CAQHStep4Review() {
         <div className="border border-slate-200 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
             <h3 className="font-semibold text-slate-900">Practice Locations ({profile.practiceLocations.length})</h3>
-            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-600 hover:text-cyan-700">
+            <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:text-blue-700">
               Edit in CAQH →
             </a>
           </div>
@@ -210,7 +210,7 @@ export default function CAQHStep4Review() {
         </div>
         
         {/* Confirmation */}
-        <div className="p-4 bg-cyan-50 border border-cyan-200 rounded-xl">
+        <div className="p-4 bg-blue-50 border border-cyan-200 rounded-xl">
           <p className="text-sm text-cyan-800">
             <strong>Please verify all information is correct.</strong> If you need to make changes, 
             update your CAQH ProView profile and refresh this page. Click "Continue" when ready.

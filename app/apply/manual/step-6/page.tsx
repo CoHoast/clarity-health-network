@@ -174,12 +174,12 @@ export default function Step6Certifications() {
                   onClick={() => handleCertifiedChange(option.value)}
                   className={`p-4 rounded-lg border-2 transition-colors ${
                     isCertified === option.value
-                      ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2">
-                    <span className={`text-lg ${isCertified === option.value ? 'text-cyan-600' : 'text-slate-400'}`}>
+                    <span className={`text-lg ${isCertified === option.value ? 'text-blue-600' : 'text-slate-400'}`}>
                       {option.icon}
                     </span>
                     <span className="font-medium">{option.label}</span>
@@ -218,7 +218,7 @@ export default function Step6Certifications() {
                         <select
                           value={cert.board}
                           onChange={(e) => updateCertification(cert.id, 'board', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         >
                           <option value="">Select board</option>
                           {CERTIFYING_BOARDS.map(b => (
@@ -234,7 +234,7 @@ export default function Step6Certifications() {
                         <select
                           value={cert.specialty}
                           onChange={(e) => updateCertification(cert.id, 'specialty', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         >
                           <option value="">Select specialty</option>
                           {BOARD_SPECIALTIES.map(s => (
@@ -253,7 +253,7 @@ export default function Step6Certifications() {
                           type="date"
                           value={cert.certificationDate}
                           onChange={(e) => updateCertification(cert.id, 'certificationDate', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         />
                       </div>
                       
@@ -265,7 +265,7 @@ export default function Step6Certifications() {
                           type="date"
                           value={cert.expirationDate}
                           onChange={(e) => updateCertification(cert.id, 'expirationDate', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                         />
                         <p className="mt-1 text-xs text-slate-500">Leave blank if lifetime certification</p>
                       </div>
@@ -295,7 +295,7 @@ export default function Step6Certifications() {
                         <button
                           type="button"
                           onClick={() => fileInputRefs.current[cert.id]?.click()}
-                          className="w-full p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                          className="w-full p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
                         >
                           <div className="flex flex-col items-center text-slate-500">
                             <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -325,7 +325,7 @@ export default function Step6Certifications() {
               <button
                 type="button"
                 onClick={addCertification}
-                className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+                className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
               >
                 <div className="flex items-center justify-center gap-2 text-slate-600">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

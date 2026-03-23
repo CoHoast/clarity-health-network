@@ -98,7 +98,7 @@ export default function Step1ProviderType() {
               onClick={() => handleSelect(option.type)}
               className={`w-full text-left p-6 rounded-xl border-2 transition-all ${
                 isSelected
-                  ? 'border-cyan-500 bg-cyan-50 ring-2 ring-cyan-500/20'
+                  ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-500/20'
                   : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
               }`}
             >
@@ -106,7 +106,7 @@ export default function Step1ProviderType() {
                 <div
                   className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${
                     isSelected
-                      ? 'bg-gradient-to-br from-cyan-500 to-teal-500 text-white'
+                      ? 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white'
                       : 'bg-slate-100 text-slate-500'
                   }`}
                 >
@@ -115,11 +115,11 @@ export default function Step1ProviderType() {
                 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <h3 className={`text-lg font-semibold ${isSelected ? 'text-cyan-700' : 'text-slate-900'}`}>
+                    <h3 className={`text-lg font-semibold ${isSelected ? 'text-blue-700' : 'text-slate-900'}`}>
                       {option.title}
                     </h3>
                     {isSelected && (
-                      <div className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                         <CheckIcon />
                       </div>
                     )}

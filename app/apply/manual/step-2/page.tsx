@@ -34,7 +34,7 @@ function Input({
       </label>
       <input
         {...props}
-        className={`w-full px-4 py-2.5 border rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-colors ${
+        className={`w-full px-4 py-2.5 border rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors ${
           error ? 'border-red-300 bg-red-50' : 'border-slate-300 bg-white'
         }`}
       />
@@ -65,7 +65,7 @@ function Select({
       </label>
       <select
         {...props}
-        className={`w-full px-4 py-2.5 border rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-colors appearance-none bg-white ${
+        className={`w-full px-4 py-2.5 border rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors appearance-none bg-white ${
           error ? 'border-red-300 bg-red-50' : 'border-slate-300'
         }`}
       >
@@ -197,7 +197,7 @@ export default function Step2PracticeInfo() {
                   value={practice.npi}
                   onChange={(e) => handleChange('npi', e.target.value.replace(/\D/g, '').slice(0, 10))}
                   maxLength={10}
-                  className={`flex-1 px-4 py-2.5 border rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-colors ${
+                  className={`flex-1 px-4 py-2.5 border rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors ${
                     errors.npi ? 'border-red-300 bg-red-50' : 
                     npiVerified === true ? 'border-emerald-300 bg-emerald-50' : 
                     'border-slate-300 bg-white'
@@ -209,7 +209,7 @@ export default function Step2PracticeInfo() {
                   disabled={practice.npi.length !== 10 || verifying}
                   className={`px-4 py-2.5 rounded-lg font-medium transition-colors ${
                     practice.npi.length === 10 && !verifying
-                      ? 'bg-cyan-600 text-white hover:bg-cyan-700'
+                      ? 'bg-blue-600 text-white hover:bg-cyan-700'
                       : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                   }`}
                 >

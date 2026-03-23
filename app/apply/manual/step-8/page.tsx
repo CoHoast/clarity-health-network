@@ -130,7 +130,7 @@ export default function Step8WorkHistory() {
                     placeholder="e.g., Cleveland Heart Center"
                     value={entry.employer}
                     onChange={(e) => updateWorkEntry(entry.id, 'employer', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   />
                 </div>
                 
@@ -143,7 +143,7 @@ export default function Step8WorkHistory() {
                     placeholder="e.g., 4500 Euclid Ave, Cleveland, OH 44103"
                     value={entry.address}
                     onChange={(e) => updateWorkEntry(entry.id, 'address', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   />
                 </div>
                 
@@ -156,7 +156,7 @@ export default function Step8WorkHistory() {
                     placeholder="e.g., Attending Cardiologist"
                     value={entry.position}
                     onChange={(e) => updateWorkEntry(entry.id, 'position', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                   />
                 </div>
                 
@@ -169,7 +169,7 @@ export default function Step8WorkHistory() {
                       type="date"
                       value={entry.startDate}
                       onChange={(e) => updateWorkEntry(entry.id, 'startDate', e.target.value)}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                     />
                   </div>
                   
@@ -183,7 +183,7 @@ export default function Step8WorkHistory() {
                         value={entry.endDate}
                         onChange={(e) => updateWorkEntry(entry.id, 'endDate', e.target.value)}
                         disabled={entry.isCurrent}
-                        className={`w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 ${
+                        className={`w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${
                           entry.isCurrent ? 'bg-slate-100 cursor-not-allowed' : 'bg-white'
                         }`}
                       />
@@ -192,7 +192,7 @@ export default function Step8WorkHistory() {
                           type="checkbox"
                           checked={entry.isCurrent}
                           onChange={(e) => updateWorkEntry(entry.id, 'isCurrent', e.target.checked)}
-                          className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                          className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                         />
                         <span className="text-sm text-slate-600">Current position</span>
                       </label>
@@ -210,7 +210,7 @@ export default function Step8WorkHistory() {
                       placeholder="e.g., Dr. John Smith"
                       value={entry.contactName}
                       onChange={(e) => updateWorkEntry(entry.id, 'contactName', e.target.value)}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                     />
                     <p className="mt-1 text-xs text-slate-500">Supervisor or HR contact for verification</p>
                   </div>
@@ -224,7 +224,7 @@ export default function Step8WorkHistory() {
                       placeholder="e.g., 216-555-1000"
                       value={entry.contactPhone}
                       onChange={(e) => updateWorkEntry(entry.id, 'contactPhone', formatPhone(e.target.value))}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white"
+                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                     />
                   </div>
                 </div>
@@ -235,7 +235,7 @@ export default function Step8WorkHistory() {
           <button
             type="button"
             onClick={addWorkEntry}
-            className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-cyan-400 hover:bg-cyan-50/50 transition-colors"
+            className="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
           >
             <div className="flex items-center justify-center gap-2 text-slate-600">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,7 +259,7 @@ export default function Step8WorkHistory() {
                 placeholder="e.g., Took 3-month sabbatical for personal health (June-August 2023)"
                 value={gapExplanation}
                 onChange={(e) => updateData({ gapExplanation: e.target.value })}
-                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 bg-white resize-none"
+                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white resize-none"
               />
             </div>
           </div>

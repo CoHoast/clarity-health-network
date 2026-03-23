@@ -28,19 +28,19 @@ export default function CAQHStep2Authorize() {
         {/* Steps to authorize */}
         <div className="space-y-4">
           <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl">
-            <div className="w-8 h-8 bg-cyan-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
+            <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
               1
             </div>
             <div>
               <h3 className="font-medium text-slate-900">Log into CAQH ProView</h3>
               <p className="text-sm text-slate-600 mt-1">
-                Go to <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-cyan-600 hover:text-cyan-700 underline">proview.caqh.org</a> and sign in with your credentials.
+                Go to <a href="https://proview.caqh.org" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline">proview.caqh.org</a> and sign in with your credentials.
               </p>
             </div>
           </div>
           
           <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl">
-            <div className="w-8 h-8 bg-cyan-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
+            <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
               2
             </div>
             <div>
@@ -52,7 +52,7 @@ export default function CAQHStep2Authorize() {
           </div>
           
           <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl">
-            <div className="w-8 h-8 bg-cyan-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
+            <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
               3
             </div>
             <div>
@@ -64,7 +64,7 @@ export default function CAQHStep2Authorize() {
           </div>
           
           <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl">
-            <div className="w-8 h-8 bg-cyan-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
+            <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
               4
             </div>
             <div>
@@ -103,8 +103,8 @@ export default function CAQHStep2Authorize() {
               />
               <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
                 isAuthorized 
-                  ? 'bg-cyan-600 border-cyan-600' 
-                  : 'border-slate-300 group-hover:border-cyan-400'
+                  ? 'bg-blue-600 border-cyan-600' 
+                  : 'border-slate-300 group-hover:border-blue-400'
               }`}>
                 {isAuthorized && (
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

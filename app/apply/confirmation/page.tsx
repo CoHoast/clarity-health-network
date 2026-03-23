@@ -67,22 +67,26 @@ function ConfirmationContent() {
   });
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-blue-50/30">
+      {/* Top Bar */}
+      <div className="bg-slate-900 text-white py-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center text-sm">
+          <div className="flex items-center gap-4">
+            <span>(216) 763-2484</span>
+            <span className="hidden sm:inline text-slate-400">|</span>
+            <span className="hidden sm:inline">Cleveland, OH</span>
+          </div>
+          <span className="text-blue-300">Trusted Partner Since 1989</span>
+        </div>
+      </div>
+      
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-xl flex items-center justify-center text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-lg font-bold text-slate-900">Solidarity</span>
-                <span className="text-lg font-light text-slate-600 ml-1">Health Network</span>
-              </div>
-            </div>
+            <a href="/apply" className="flex items-center">
+              <img src="/solidarity-logo.png" alt="Solidarity Health Network" className="h-12 w-auto" />
+            </a>
           </div>
         </div>
       </header>
@@ -166,7 +170,7 @@ function ConfirmationContent() {
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-medium text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded-full">
+                      <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
                         Step {item.step}
                       </span>
                       <span className="text-xs text-slate-500">{item.time}</span>
@@ -183,7 +187,7 @@ function ConfirmationContent() {
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 <Link
                   href={`/apply/status/${applicationId}`}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-semibold rounded-xl hover:from-cyan-700 hover:to-teal-700 transition-all shadow-lg shadow-cyan-500/25"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-semibold rounded-xl hover:from-cyan-700 hover:to-teal-700 transition-all shadow-lg shadow-blue-500/25"
                 >
                   Track Application Status
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,7 +210,7 @@ function ConfirmationContent() {
         <div className="mt-8 text-center">
           <p className="text-sm text-slate-600">
             Questions? Contact us at{' '}
-            <a href="mailto:credentialing@solidaritynetwork.com" className="text-cyan-600 hover:text-cyan-700 font-medium">
+            <a href="mailto:credentialing@solidaritynetwork.com" className="text-blue-600 hover:text-blue-700 font-medium">
               credentialing@solidaritynetwork.com
             </a>
           </p>

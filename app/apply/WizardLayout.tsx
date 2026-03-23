@@ -38,22 +38,28 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
   
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* Top Bar */}
+      <div className="bg-slate-900 text-white py-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center text-sm">
+          <div className="flex items-center gap-4">
+            <span>(216) 763-2484</span>
+            <span className="hidden sm:inline text-slate-400">|</span>
+            <span className="hidden sm:inline">Cleveland, OH</span>
+          </div>
+          <span className="text-blue-300">Trusted Partner Since 1989</span>
+        </div>
+      </div>
+      
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-xl flex items-center justify-center text-white">
-                <BuildingIcon />
-              </div>
-              <div>
-                <span className="text-lg font-bold text-slate-900">Solidarity</span>
-                <span className="text-lg font-light text-slate-600 ml-1">Health Network</span>
-              </div>
-            </div>
+            <a href="/apply" className="flex items-center">
+              <img src="/solidarity-logo.png" alt="Solidarity Health Network" className="h-12 w-auto" />
+            </a>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-slate-500">Need help?</span>
-              <a href="mailto:credentialing@solidaritynetwork.com" className="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
+              <span className="text-sm text-slate-500 hidden sm:inline">Need help?</span>
+              <a href="mailto:credentialing@shninc.org" className="text-sm text-blue-600 hover:text-blue-700 font-medium">
                 Contact Support
               </a>
             </div>
@@ -79,7 +85,7 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
                     <div
                       key={stepNum}
                       className={`flex items-center gap-3 py-2 px-3 rounded-lg transition-colors ${
-                        isCurrent ? 'bg-cyan-50' : ''
+                        isCurrent ? 'bg-blue-50' : ''
                       }`}
                     >
                       <div
@@ -87,7 +93,7 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
                           isCompleted
                             ? 'bg-emerald-500 text-white'
                             : isCurrent
-                            ? 'bg-cyan-600 text-white'
+                            ? 'bg-blue-600 text-white'
                             : 'bg-slate-200 text-slate-500'
                         }`}
                       >
@@ -98,7 +104,7 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
                           isCompleted
                             ? 'text-slate-600'
                             : isCurrent
-                            ? 'text-cyan-700 font-medium'
+                            ? 'text-blue-700 font-medium'
                             : 'text-slate-400'
                         }`}
                       >
@@ -117,7 +123,7 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
                 </div>
                 <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-cyan-500 to-teal-500 transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
@@ -133,7 +139,7 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
                 </div>
                 <Link
                   href="/apply"
-                  className="text-xs text-cyan-600 hover:text-cyan-700 font-medium"
+                  className="text-xs text-blue-600 hover:text-blue-700 font-medium"
                 >
                   ← Save & Exit
                 </Link>
@@ -151,7 +157,7 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
               </div>
               <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-cyan-500 to-teal-500 transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -185,7 +191,7 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
                   disabled={!canProceed}
                   className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                     canProceed
-                      ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white hover:from-cyan-700 hover:to-teal-700 shadow-lg shadow-cyan-500/25'
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-cyan-700 hover:to-teal-700 shadow-lg shadow-blue-500/25'
                       : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                   }`}
                 >

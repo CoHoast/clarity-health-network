@@ -68,7 +68,7 @@ export default function CAQHStep1() {
               setError(null);
             }}
             maxLength={10}
-            className={`w-full px-4 py-3 text-lg border rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-colors ${
+            className={`w-full px-4 py-3 text-lg border rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors ${
               error ? 'border-red-300 bg-red-50' : 'border-slate-300 bg-white'
             }`}
           />
@@ -76,7 +76,7 @@ export default function CAQHStep1() {
         </div>
         
         {/* Where to find it */}
-        <div className="p-4 bg-cyan-50 border border-cyan-100 rounded-xl">
+        <div className="p-4 bg-blue-50 border border-cyan-100 rounded-xl">
           <h3 className="font-medium text-cyan-900 mb-2 flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -100,7 +100,7 @@ export default function CAQHStep1() {
               value={npiLookup}
               onChange={(e) => setNpiLookup(e.target.value.replace(/\D/g, '').slice(0, 10))}
               maxLength={10}
-              className="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500"
+              className="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             />
             <button
               onClick={handleNpiLookup}
@@ -125,7 +125,7 @@ export default function CAQHStep1() {
         <div className="pt-4 border-t border-slate-200">
           <p className="text-sm text-slate-600">
             Don't have a CAQH ProView account?{' '}
-            <Link href="/apply/manual" className="text-cyan-600 hover:text-cyan-700 font-medium">
+            <Link href="/apply/manual" className="text-blue-600 hover:text-blue-700 font-medium">
               Use the standard application instead →
             </Link>
           </p>
