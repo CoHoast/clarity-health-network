@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import { applyWriteSecurity, encryptPhiFields, sanitizeObject, createErrorResponse } from '@/lib/security';
+import { logAuditEvent } from '@/lib/audit';
 
 // Generate application ID
 function generateApplicationId(): string {
@@ -11,8 +13,26 @@ function generateApplicationId(): string {
 
 // POST /api/apply - Submit a new provider application
 export async function POST(request: NextRequest) {
+  // Apply security checks
+  const security = await applyWriteSecurity(request);
+  if (!security.allowed) {
+    return security.response;
+  }
+  
   try {
-    const data = await request.json();
+    // Use sanitized body if available, otherwise parse
+    const rawData = security.sanitizedBody || await request.json();
+    
+    // Sanitize and encrypt sensitive fields
+    const data = sanitizeObject(rawData as Record<string, unknown>) as Record<string, any>;
+    
+    // Encrypt PHI in demographics
+    if (data.demographics) {
+      data.demographics = encryptPhiFields(
+        data.demographics as Record<string, unknown>,
+        ['ssn', 'dateOfBirth']
+      );
+    }
     
     // Generate application ID
     const applicationId = generateApplicationId();
@@ -110,6 +130,24 @@ export async function POST(request: NextRequest) {
     // Save
     await fs.writeFile(applicationsPath, JSON.stringify(applications, null, 2));
     
+    // Log audit event
+    await logAuditEvent({
+      user: 'provider-applicant',
+      userId: applicationId,
+      action: 'create',
+      category: 'data_change',
+      resource: 'Provider Application',
+      resourceType: 'application',
+      resourceId: applicationId,
+      details: `New provider application submitted: ${applicationId}`,
+      ip: security.clientIp || 'unknown',
+      userAgent: request.headers.get('user-agent') || 'unknown',
+      sessionId: 'apply-session',
+      severity: 'info',
+      phiAccessed: true,
+      success: true,
+    });
+    
     // Trigger initial verification checks (async, non-blocking)
     triggerVerificationChecks(applicationId, data);
     
@@ -120,18 +158,38 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error submitting application:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to submit application' },
-      { status: 500 }
-    );
+    return createErrorResponse('INTERNAL_ERROR', undefined, error);
   }
 }
 
 // GET /api/apply - List all applications (admin)
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Apply read security
+  const security = await applyWriteSecurity(request);
+  if (!security.allowed) {
+    return security.response;
+  }
+  
   try {
     const dataDir = path.join(process.cwd(), 'data');
     const applicationsPath = path.join(dataDir, 'applications.json');
+    
+    // Log PHI access
+    await logAuditEvent({
+      user: 'admin',
+      userId: 'admin-user',
+      action: 'read',
+      category: 'phi_access',
+      resource: 'Provider Applications List',
+      resourceType: 'application',
+      details: 'Accessed provider applications list',
+      ip: security.clientIp || 'unknown',
+      userAgent: request.headers.get('user-agent') || 'unknown',
+      sessionId: 'admin-session',
+      severity: 'info',
+      phiAccessed: true,
+      success: true,
+    });
     
     try {
       const data = await fs.readFile(applicationsPath, 'utf-8');
@@ -151,10 +209,7 @@ export async function GET() {
     }
   } catch (error) {
     console.error('Error fetching applications:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch applications' },
-      { status: 500 }
-    );
+    return createErrorResponse('INTERNAL_ERROR', undefined, error);
   }
 }
 
