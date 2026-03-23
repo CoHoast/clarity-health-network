@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { useWizard } from './WizardContext';
 import Link from 'next/link';
 
@@ -32,9 +33,35 @@ const BuildingIcon = () => (
 );
 
 export default function WizardLayout({ children }: { children: React.ReactNode }) {
-  const { currentStep, totalSteps, prevStep, nextStep, canProceed, isSubmitting } = useWizard();
+  const router = useRouter();
+  const { currentStep, totalSteps, canProceed, isSubmitting, setCurrentStep } = useWizard();
   
   const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+  
+  // Navigation functions that actually change routes
+  const goToStep = (step: number) => {
+    if (step < 1 || step > totalSteps) return;
+    
+    setCurrentStep(step);
+    
+    if (step === 1) {
+      router.push('/apply/manual');
+    } else {
+      router.push(`/apply/manual/step-${step}`);
+    }
+  };
+  
+  const handleNext = () => {
+    if (currentStep < totalSteps && canProceed) {
+      goToStep(currentStep + 1);
+    }
+  };
+  
+  const handlePrev = () => {
+    if (currentStep > 1) {
+      goToStep(currentStep - 1);
+    }
+  };
   
   return (
     <div className="min-h-screen bg-slate-50">
@@ -171,7 +198,7 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
             {/* Navigation Buttons */}
             <div className="mt-6 flex items-center justify-between">
               <button
-                onClick={prevStep}
+                onClick={handlePrev}
                 disabled={currentStep === 1}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
                   currentStep === 1
@@ -187,11 +214,11 @@ export default function WizardLayout({ children }: { children: React.ReactNode }
               
               {currentStep < totalSteps ? (
                 <button
-                  onClick={nextStep}
+                  onClick={handleNext}
                   disabled={!canProceed}
                   className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                     canProceed
-                      ? 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-cyan-700 hover:to-teal-700 shadow-lg shadow-blue-500/25'
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-blue-600 hover:to-cyan-700 shadow-lg shadow-blue-500/25'
                       : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                   }`}
                 >
