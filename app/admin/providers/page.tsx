@@ -14,6 +14,7 @@ import { useToast } from "@/components/admin/ui/Toast";
 import { useBulkSelect } from "@/lib/hooks/useBulkSelect";
 import { BulkActionBar, bulkActionCreators } from "@/components/admin/ui/BulkActionBar";
 import { CsvUploadWizard } from "@/components/admin/CsvUploadWizard";
+import { BulkDeleteConfirm } from "@/components/admin/ui/BulkDeleteConfirm";
 
 // Practice = The office/group (has Pay-To, address, contract)
 interface Practice {
@@ -288,6 +289,8 @@ export default function ProvidersPage() {
   const [isEditingProvider, setIsEditingProvider] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showNetworkAssign, setShowNetworkAssign] = useState(false);
+  const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState(false);
+  const [bulkDeleteLoading, setBulkDeleteLoading] = useState(false);
 
   // Load Arizona providers from API
   useEffect(() => {
@@ -532,13 +535,26 @@ export default function ProvidersPage() {
       // Export logic here
     }),
     bulkActionCreators.delete(() => {
-      const selected = getSelectedItems();
-      if (confirm(`Delete ${selected.length} practice(s)?`)) {
-        console.log("Deleting:", selected);
-        clearSelection();
-      }
+      setShowBulkDeleteConfirm(true);
     }),
   ];
+
+  // Handle bulk delete after confirmation
+  const handleBulkDelete = async () => {
+    setBulkDeleteLoading(true);
+    const selected = getSelectedItems();
+    try {
+      // In production, this would call the API to delete
+      console.log("Deleting practices:", selected);
+      toast.success("Deleted Successfully", `${selected.length} practice(s) have been deleted`);
+      clearSelection();
+    } catch (error) {
+      toast.error("Delete Failed", "An error occurred while deleting");
+    } finally {
+      setBulkDeleteLoading(false);
+      setShowBulkDeleteConfirm(false);
+    }
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -1998,6 +2014,21 @@ export default function ProvidersPage() {
               }
             });
         }}
+      />
+
+      {/* Bulk Delete Confirmation */}
+      <BulkDeleteConfirm
+        isOpen={showBulkDeleteConfirm}
+        onClose={() => setShowBulkDeleteConfirm(false)}
+        onConfirm={handleBulkDelete}
+        itemCount={selectedCount}
+        itemType="practices"
+        itemNames={getSelectedItems().map(item => {
+          const id = typeof item === 'string' ? item : item.id;
+          const practice = practices.find(p => p.id === id);
+          return practice?.name || id;
+        })}
+        isLoading={bulkDeleteLoading}
       />
     </div>
   );

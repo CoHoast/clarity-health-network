@@ -7,6 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { logAuditEvent } from '@/lib/audit';
+import { checkLoginAttempt, recordFailedAttempt, recordSuccessfulLogin } from '@/lib/security/login-attempts';
 
 // Demo users for testing
 const DEMO_USERS = {
@@ -41,19 +42,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
 
-    // For demo, accept any email with demo users getting special roles
-    const demoUser = DEMO_USERS[email as keyof typeof DEMO_USERS];
-    
-    // Simulate login failure for specific test case
-    if (password === 'fail') {
+    // Check if account is locked
+    const loginCheck = checkLoginAttempt(email);
+    if (!loginCheck.allowed) {
       await logAuditEvent({
         user: email,
         userId: 'N/A',
-        action: 'Login Failed',
+        action: 'Login Blocked - Account Locked',
         category: 'security',
         resource: 'AUTH',
         resourceType: 'Authentication',
-        details: 'Invalid password',
+        details: loginCheck.message,
         ip,
         userAgent,
         sessionId: 'N/A',
@@ -61,7 +60,45 @@ export async function POST(req: NextRequest) {
         phiAccessed: false,
         success: false,
       });
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      return NextResponse.json({ 
+        error: 'Account locked',
+        message: loginCheck.message,
+        locked: true,
+        lockedUntil: loginCheck.lockedUntil,
+      }, { status: 429 });
+    }
+
+    // For demo, accept any email with demo users getting special roles
+    const demoUser = DEMO_USERS[email as keyof typeof DEMO_USERS];
+    
+    // Simulate login failure for specific test case
+    if (password === 'fail') {
+      // Record failed attempt
+      const failResult = recordFailedAttempt(email);
+      
+      await logAuditEvent({
+        user: email,
+        userId: 'N/A',
+        action: 'Login Failed',
+        category: 'security',
+        resource: 'AUTH',
+        resourceType: 'Authentication',
+        details: `Invalid password. ${failResult.remainingAttempts} attempts remaining.`,
+        ip,
+        userAgent,
+        sessionId: 'N/A',
+        severity: 'warning',
+        phiAccessed: false,
+        success: false,
+      });
+      
+      return NextResponse.json({ 
+        error: 'Invalid credentials',
+        remainingAttempts: failResult.remainingAttempts,
+        message: failResult.message,
+        locked: !failResult.allowed,
+        lockedUntil: failResult.lockedUntil,
+      }, { status: 401 });
     }
 
     // Create session
@@ -72,6 +109,9 @@ export async function POST(req: NextRequest) {
       role: 'admin',
       type: 'admin',
     };
+
+    // Clear failed login attempts on success
+    recordSuccessfulLogin(email);
 
     // Log successful login
     await logAuditEvent({

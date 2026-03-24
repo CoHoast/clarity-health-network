@@ -103,6 +103,7 @@ const navigationGroups: NavGroup[] = [
       { name: "Document Requests", href: "/admin/credentialing/document-requests", icon: Send },
       { name: "Re-Credentialing", href: "/admin/credentialing/recredentialing", icon: RefreshCw },
       { name: "Monitoring", href: "/admin/credentialing/monitoring", icon: Shield },
+      { name: "Expiring Credentials", href: "/admin/credentialing/expiring", icon: AlertTriangle },
       { name: "Onboarding", href: "/admin/credentialing/onboarding", icon: Users },
     ],
   },

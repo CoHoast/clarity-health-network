@@ -13,6 +13,8 @@ export default function LoginForm() {
   const { logLogin } = useAudit();
   const [showPassword, setShowPassword] = useState(false);
   const [userType, setUserType] = useState<"member" | "provider" | "employer">("member");
+  const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
+  const [lockoutMessage, setLockoutMessage] = useState<string | null>(null);
   
   // Read type from URL query param
   useEffect(() => {
@@ -41,8 +43,19 @@ export default function LoginForm() {
       const data = await res.json();
 
       if (!res.ok) {
+        // Check for lockout
+        if (data.locked) {
+          setLockoutMessage(data.message || "Account locked. Please try again later.");
+          setRemainingAttempts(0);
+        } else if (data.remainingAttempts !== undefined) {
+          setRemainingAttempts(data.remainingAttempts);
+        }
         throw new Error(data.error || "Login failed");
       }
+
+      // Clear any lockout messages
+      setLockoutMessage(null);
+      setRemainingAttempts(null);
 
       // Store token
       localStorage.setItem("auth_token", data.token);
@@ -118,7 +131,31 @@ export default function LoginForm() {
             ))}
           </div>
 
-          {error && (
+          {/* Lockout Warning */}
+          {lockoutMessage && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <div className="flex items-center gap-2 text-red-700 font-medium">
+                <Shield className="w-5 h-5" />
+                Account Locked
+              </div>
+              <p className="text-red-600 text-sm mt-1">{lockoutMessage}</p>
+            </div>
+          )}
+
+          {/* Remaining Attempts Warning */}
+          {remainingAttempts !== null && remainingAttempts > 0 && remainingAttempts <= 2 && !lockoutMessage && (
+            <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+              <div className="flex items-center gap-2 text-amber-700 font-medium">
+                <Shield className="w-5 h-5" />
+                Warning
+              </div>
+              <p className="text-amber-600 text-sm mt-1">
+                {remainingAttempts} login attempt{remainingAttempts !== 1 ? 's' : ''} remaining before account lockout.
+              </p>
+            </div>
+          )}
+
+          {error && !lockoutMessage && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm">
               {error}
             </div>
