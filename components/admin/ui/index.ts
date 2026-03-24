@@ -50,6 +50,15 @@ export {
 // Navigation (Phase 2)
 export { Breadcrumb } from './Breadcrumb';
 
+// Action Required Widget (Phase 9)
+export { 
+  ActionRequiredWidget, 
+  createDemoActionItems,
+  type ActionItem,
+  type ActionPriority,
+  type ActionCategory 
+} from './ActionRequired';
+
 // Command Palette (Phase 3)
 export { CommandPalette } from './CommandPalette';
 

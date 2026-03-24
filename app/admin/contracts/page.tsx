@@ -12,7 +12,7 @@ import { Badge, StatusBadge } from "@/components/admin/ui/Badge";
 import { Button, IconButton } from "@/components/admin/ui/Button";
 import { PageHeader, Tabs } from "@/components/admin/ui/PageHeader";
 import { SearchInput, FilterSelect } from "@/components/admin/ui/SearchInput";
-import { TableRowSkeleton, EmptyState } from "@/components/admin/ui";
+import { TableRowSkeleton, EmptyState, Breadcrumb, useToast } from "@/components/admin/ui";
 import { BulkActionBar, bulkActionCreators } from "@/components/admin/ui/BulkActionBar";
 import { useBulkSelect } from "@/lib/hooks/useBulkSelect";
 import { cn } from "@/lib/utils";
@@ -44,6 +44,7 @@ const statusFilters = [
 
 export default function ContractsPage() {
   const { isDark } = useTheme();
+  const toast = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [selectedContract, setSelectedContract] = useState<typeof contracts[0] | null>(null);
@@ -100,6 +101,9 @@ export default function ContractsPage() {
 
   return (
     <div className="space-y-8">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: "Contracts" }]} />
+      
       {/* Header */}
       <PageHeader
         title="Contract Management"

@@ -26,6 +26,7 @@ import { StatCard, StatCardCompact } from "@/components/admin/ui/StatCard";
 import { Badge, StatusBadge } from "@/components/admin/ui/Badge";
 import { Button } from "@/components/admin/ui/Button";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
+import { ActionRequiredWidget, createDemoActionItems } from "@/components/admin/ui/ActionRequired";
 import { cn } from "@/lib/utils";
 import statsData from "@/data/arizona-import-stats.json";
 
@@ -183,6 +184,49 @@ export default function AdminDashboard() {
         })}
       </div>
 
+      {/* Action Required Widget */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <ActionRequiredWidget items={createDemoActionItems()} maxItems={5} />
+        </div>
+        
+        {/* Recent Activity - 1 column */}
+        <Card>
+          <CardHeader title="Recent Activity" className="mb-4" />
+          <div className="space-y-4">
+            {recentActivity.map((activity, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className={cn(
+                  "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0",
+                  activity.type === "import" && "bg-blue-500/15",
+                  activity.type === "network" && "bg-emerald-500/15",
+                  activity.type === "practices" && "bg-amber-500/15",
+                  activity.type === "primary" && "bg-teal-500/15",
+                  activity.type === "behavioral" && "bg-purple-500/15"
+                )}>
+                  {activity.type === "import" && <Building2 className="w-4 h-4 text-blue-500" />}
+                  {activity.type === "network" && <Globe className="w-4 h-4 text-emerald-500" />}
+                  {activity.type === "practices" && <Building2 className="w-4 h-4 text-amber-500" />}
+                  {activity.type === "primary" && <Heart className="w-4 h-4 text-teal-500" />}
+                  {activity.type === "behavioral" && <Brain className="w-4 h-4 text-purple-500" />}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
+                    {activity.title}
+                  </p>
+                  <p className={cn("text-xs truncate", isDark ? "text-slate-400" : "text-slate-500")}>
+                    {activity.message}
+                  </p>
+                </div>
+                <span className={cn("text-xs whitespace-nowrap", isDark ? "text-slate-500" : "text-slate-400")}>
+                  {activity.time}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+
       {/* Main Content Grid */}
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Top Cities - 2 columns */}
@@ -222,39 +266,6 @@ export default function AdminDashboard() {
           </div>
         </Card>
 
-        {/* Recent Activity - 1 column */}
-        <Card>
-          <CardHeader title="Recent Activity" className="mb-4" />
-          <div className="space-y-4">
-            {recentActivity.map((activity, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div className={cn(
-                  "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0",
-                  activity.type === "provider" && "bg-blue-500/15",
-                  activity.type === "contract" && "bg-emerald-500/15",
-                  activity.type === "discount" && "bg-amber-500/15",
-                  activity.type === "credentialing" && "bg-teal-500/15"
-                )}>
-                  {activity.type === "provider" && <Building2 className="w-4 h-4 text-blue-500" />}
-                  {activity.type === "contract" && <FileSignature className="w-4 h-4 text-emerald-500" />}
-                  {activity.type === "discount" && <DollarSign className="w-4 h-4 text-amber-500" />}
-                  {activity.type === "credentialing" && <CheckCircle className="w-4 h-4 text-blue-500" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className={cn("text-sm font-medium", isDark ? "text-white" : "text-slate-900")}>
-                    {activity.title}
-                  </p>
-                  <p className={cn("text-xs truncate", isDark ? "text-slate-400" : "text-slate-500")}>
-                    {activity.message}
-                  </p>
-                </div>
-                <span className={cn("text-xs whitespace-nowrap", isDark ? "text-slate-500" : "text-slate-400")}>
-                  {activity.time}
-                </span>
-              </div>
-            ))}
-          </div>
-        </Card>
       </div>
 
       {/* Network by Specialty */}

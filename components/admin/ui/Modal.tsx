@@ -148,11 +148,14 @@ interface ConfirmModalProps {
   onClose: () => void;
   onConfirm: () => void;
   title: string;
-  message: string;
+  message: React.ReactNode;
   confirmLabel?: string;
+  confirmText?: string; // Alias for confirmLabel
   cancelLabel?: string;
   variant?: "danger" | "warning" | "info";
+  confirmVariant?: "danger" | "warning" | "info"; // Alias for variant
   loading?: boolean;
+  isLoading?: boolean; // Alias for loading
 }
 
 export function ConfirmModal({
@@ -161,11 +164,18 @@ export function ConfirmModal({
   onConfirm,
   title,
   message,
-  confirmLabel = "Confirm",
+  confirmLabel,
+  confirmText,
   cancelLabel = "Cancel",
-  variant = "danger",
-  loading = false,
+  variant,
+  confirmVariant,
+  loading,
+  isLoading,
 }: ConfirmModalProps) {
+  // Support aliases
+  const finalConfirmLabel = confirmLabel || confirmText || "Confirm";
+  const finalVariant = variant || confirmVariant || "danger";
+  const finalLoading = loading || isLoading || false;
   const { isDark } = useTheme();
   
   const icons = {
@@ -185,9 +195,9 @@ export function ConfirmModal({
       <div className="text-center">
         <div className={cn(
           "w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4",
-          iconBg[variant]
+          iconBg[finalVariant]
         )}>
-          {icons[variant]}
+          {icons[finalVariant]}
         </div>
         <h3 className={cn(
           "text-lg font-semibold mb-2",
@@ -195,23 +205,23 @@ export function ConfirmModal({
         )}>
           {title}
         </h3>
-        <p className={cn(
+        <div className={cn(
           "text-sm mb-6",
           isDark ? "text-slate-400" : "text-slate-500"
         )}>
           {message}
-        </p>
+        </div>
         <div className="flex gap-3">
           <Button variant="outline" className="flex-1" onClick={onClose}>
             {cancelLabel}
           </Button>
           <Button 
-            variant={variant === "danger" ? "danger" : "primary"} 
+            variant={finalVariant === "danger" ? "danger" : "primary"} 
             className="flex-1" 
             onClick={onConfirm}
-            loading={loading}
+            loading={finalLoading}
           >
-            {confirmLabel}
+            {finalConfirmLabel}
           </Button>
         </div>
       </div>

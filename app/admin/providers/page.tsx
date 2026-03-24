@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/admin/ui/StatCard";
 import { StatCardSkeleton, TableRowSkeleton } from "@/components/admin/ui/Skeleton";
 import { EmptyState, NoSearchResults } from "@/components/admin/ui/EmptyState";
+import { Breadcrumb } from "@/components/admin/ui/Breadcrumb";
+import { useToast } from "@/components/admin/ui/Toast";
 import { useBulkSelect } from "@/lib/hooks/useBulkSelect";
 import { BulkActionBar, bulkActionCreators } from "@/components/admin/ui/BulkActionBar";
 import { CsvUploadWizard } from "@/components/admin/CsvUploadWizard";
@@ -262,6 +264,7 @@ function convertApiProviderToPractice(apiProvider: any): Practice {
 
 export default function ProvidersPage() {
   const { isDark } = useTheme();
+  const toast = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All Types");
@@ -552,6 +555,9 @@ export default function ProvidersPage() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: "Providers" }]} />
+      
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -1948,6 +1954,12 @@ export default function ProvidersPage() {
           email: '',
         }))}
         onImportComplete={(result) => {
+          // Show success toast
+          toast.success(
+            "Import Complete", 
+            `${result.added} providers added${result.merged > 0 ? `, ${result.merged} merged` : ''}${result.skipped > 0 ? `, ${result.skipped} skipped` : ''}`
+          );
+          
           // Refresh the providers list
           fetch('/api/providers?limit=500')
             .then(res => res.json())

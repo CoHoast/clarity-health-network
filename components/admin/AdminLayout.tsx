@@ -134,6 +134,7 @@ const settingsGroup: NavGroup = {
     { name: "Team & Permissions", href: "/admin/users", icon: Users },
     { name: "Notifications", href: "/admin/notifications", icon: Bell },
     { name: "Audit Log", href: "/admin/audit-logs", icon: Lock },
+    { name: "Import History", href: "/admin/import-history", icon: RefreshCw },
   ],
 };
 

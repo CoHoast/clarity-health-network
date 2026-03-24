@@ -30,6 +30,7 @@ import { useTheme } from "@/components/admin/ThemeContext";
 import { StatCard } from "@/components/admin/ui/StatCard";
 import { Button } from "@/components/admin/ui/Button";
 import { Badge } from "@/components/admin/ui/Badge";
+import { Breadcrumb } from "@/components/admin/ui/Breadcrumb";
 import { cn } from "@/lib/utils";
 import { VerificationModal } from "@/components/admin/VerificationModal";
 
@@ -155,6 +156,9 @@ export default function CredentialingDashboardPage() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: "Credentialing" }]} />
+      
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

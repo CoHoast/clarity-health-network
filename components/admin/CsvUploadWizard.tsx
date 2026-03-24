@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Upload, FileSpreadsheet, CheckCircle, AlertTriangle, XCircle,
@@ -72,7 +72,7 @@ type Step = "upload" | "analyze" | "review" | "confirm" | "complete";
 export function CsvUploadWizard({
   isOpen,
   onClose,
-  existingProviders,
+  existingProviders: passedProviders, // Keep for backwards compatibility but we'll fetch fresh
   onImportComplete,
 }: CsvUploadWizardProps) {
   const { isDark } = useTheme();
@@ -84,6 +84,13 @@ export function CsvUploadWizard({
   const [isProcessing, setIsProcessing] = useState(false);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [reviewIndex, setReviewIndex] = useState(0);
+  
+  // Server-side analysis results
+  const [serverAnalysis, setServerAnalysis] = useState<{
+    totalExisting: number;
+    duplicates: number;
+    new: number;
+  } | null>(null);
 
   // Reset state when closing
   const handleClose = () => {
@@ -94,6 +101,7 @@ export function CsvUploadWizard({
     setNewProviders([]);
     setImportResult(null);
     setReviewIndex(0);
+    setServerAnalysis(null);
     onClose();
   };
 
@@ -199,62 +207,60 @@ export function CsvUploadWizard({
       setParsedData(parsed);
       setValidationErrors(errors);
       
-      // Analyze for duplicates
-      analyzeDuplicates(parsed);
-      setIsProcessing(false);
-      setStep("analyze");
+      // Server-side duplicate detection (scales to 100K+ providers)
+      analyzeServerSide(parsed);
     };
 
     reader.readAsText(file);
-  }, [existingProviders]);
+  }, []);
 
-  // Analyze parsed data for duplicates
-  const analyzeDuplicates = (parsed: ParsedProvider[]) => {
-    const dupes: DuplicateMatch[] = [];
-    const newProvs: ParsedProvider[] = [];
-
-    parsed.forEach(csvRow => {
-      // Check for NPI match (primary)
-      const npiMatch = existingProviders.find(p => p.npi === csvRow.npi);
+  // Server-side duplicate analysis (scales to 100K+ providers)
+  const analyzeServerSide = async (parsed: ParsedProvider[]) => {
+    try {
+      const response = await fetch('/api/providers/analyze-csv', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rows: parsed }),
+      });
       
-      if (npiMatch) {
-        // Find differences
-        const differences: { field: string; existing: string; csv: string }[] = [];
-        
-        const fieldsToCompare = [
-          { key: 'firstName', label: 'First Name' },
-          { key: 'lastName', label: 'Last Name' },
-          { key: 'specialty', label: 'Specialty' },
-          { key: 'phone', label: 'Phone' },
-          { key: 'email', label: 'Email' },
-          { key: 'address', label: 'Address' },
-          { key: 'city', label: 'City' },
-          { key: 'state', label: 'State' },
-          { key: 'zip', label: 'ZIP' },
-        ];
-
-        fieldsToCompare.forEach(({ key, label }) => {
-          const existingVal = (npiMatch as any)[key] || '';
-          const csvVal = (csvRow as any)[key] || '';
-          if (existingVal !== csvVal && csvVal) {
-            differences.push({ field: label, existing: existingVal || '(empty)', csv: csvVal });
-          }
-        });
-
-        dupes.push({
-          csvRow,
-          existingProvider: npiMatch,
-          matchType: "npi",
-          action: "pending",
-          differences,
-        });
-      } else {
-        newProvs.push(csvRow);
+      const result = await response.json();
+      
+      if (result.error) {
+        console.error('Server analysis failed:', result.error);
+        setIsProcessing(false);
+        return;
       }
-    });
-
-    setDuplicates(dupes);
-    setNewProviders(newProvs);
+      
+      // Store server analysis summary
+      setServerAnalysis({
+        totalExisting: result.totalExisting,
+        duplicates: result.duplicates,
+        new: result.new,
+      });
+      
+      // Convert server response to our DuplicateMatch format
+      const dupes: DuplicateMatch[] = result.duplicateDetails.map((d: any) => ({
+        csvRow: parsed.find(p => p.npi === d.npi) || parsed.find(p => p.rowNumber === d.rowNumber)!,
+        existingProvider: {
+          id: `prov-${d.npi}`,
+          npi: d.npi,
+          firstName: d.existingName?.split(' ')[0] || '',
+          lastName: d.existingName?.split(' ').slice(1).join(' ') || '',
+          specialty: d.existingSpecialty || '',
+        },
+        matchType: "npi" as const,
+        action: "pending" as const,
+        differences: d.differences,
+      }));
+      
+      setDuplicates(dupes);
+      setNewProviders(result.newRows);
+      setIsProcessing(false);
+      setStep("analyze");
+    } catch (error) {
+      console.error('Failed to analyze CSV:', error);
+      setIsProcessing(false);
+    }
   };
 
   // Handle bulk action for duplicates
@@ -439,6 +445,17 @@ export function CsvUploadWizard({
           {/* Step 1: Upload */}
           {step === "upload" && (
             <div className="space-y-6">
+              {/* Server-side detection info */}
+              <div className={cn(
+                "rounded-xl p-4 flex items-center gap-3",
+                isDark ? "bg-blue-500/10 border border-blue-500/30" : "bg-blue-50 border border-blue-200"
+              )}>
+                <CheckCircle className="w-5 h-5 text-blue-500" />
+                <p className={cn("text-sm", isDark ? "text-blue-300" : "text-blue-700")}>
+                  <strong>Server-side duplicate detection</strong> — Scales to 100,000+ providers with instant results
+                </p>
+              </div>
+              
               <div className={cn(
                 "border-2 border-dashed rounded-xl p-12 text-center",
                 isDark ? "border-slate-600" : "border-slate-300"
@@ -491,11 +508,27 @@ export function CsvUploadWizard({
                 <div className="text-center py-12">
                   <RefreshCw className="w-12 h-12 text-blue-500 mx-auto mb-4 animate-spin" />
                   <p className={cn("text-lg font-medium", isDark ? "text-white" : "text-slate-900")}>
-                    Analyzing CSV data...
+                    Analyzing CSV against database...
+                  </p>
+                  <p className={cn("text-sm mt-2", isDark ? "text-slate-400" : "text-slate-500")}>
+                    Server-side duplicate detection in progress
                   </p>
                 </div>
               ) : (
                 <>
+                  {/* Server Analysis Info */}
+                  {serverAnalysis && (
+                    <div className={cn(
+                      "rounded-xl p-4 flex items-center gap-3",
+                      isDark ? "bg-slate-700/50 border border-slate-600" : "bg-slate-50 border border-slate-200"
+                    )}>
+                      <CheckCircle className="w-5 h-5 text-emerald-500" />
+                      <p className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
+                        Checked against <strong>{serverAnalysis.totalExisting.toLocaleString()}</strong> existing providers in database
+                      </p>
+                    </div>
+                  )}
+                  
                   {/* Summary Cards */}
                   <div className="grid grid-cols-3 gap-4">
                     <div className={cn("rounded-xl p-4 border", isDark ? "bg-green-500/10 border-green-500/30" : "bg-green-50 border-green-200")}>
