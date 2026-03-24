@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import providersData from '@/data/arizona-providers.json';
 import fs from 'fs';
 import path from 'path';
+import { maskProviderPII } from '@/lib/demo-mode';
 
 // Get single provider
 export async function GET(
@@ -22,7 +23,7 @@ export async function GET(
   
   // Log successful access
   
-  return NextResponse.json({ provider });
+  return NextResponse.json({ provider: maskProviderPII(provider) });
 }
 
 // Update provider

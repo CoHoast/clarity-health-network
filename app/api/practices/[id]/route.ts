@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import practicesData from '@/data/arizona-practices.json';
 import fs from 'fs';
 import path from 'path';
+import { maskPracticePII } from '@/lib/demo-mode';
 
 // Get single practice
 export async function GET(
@@ -17,7 +18,7 @@ export async function GET(
   }
   
   
-  return NextResponse.json({ practice });
+  return NextResponse.json({ practice: maskPracticePII(practice) });
 }
 
 // Update practice

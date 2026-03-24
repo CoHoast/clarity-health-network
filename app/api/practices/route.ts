@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import practicesData from '@/data/arizona-practices.json';
 import fs from 'fs';
 import path from 'path';
+import { maskPracticePII } from '@/lib/demo-mode';
 
 // Create new practice
 export async function POST(request: NextRequest) {
@@ -75,7 +76,7 @@ export async function GET(request: NextRequest) {
   if (id) {
     const practice = practices.find((p: any) => p.id === id);
     if (practice) {
-      return NextResponse.json({ practice });
+      return NextResponse.json({ practice: maskPracticePII(practice) });
     }
     return NextResponse.json({ error: 'Practice not found' }, { status: 404 });
   }
@@ -101,7 +102,7 @@ export async function GET(request: NextRequest) {
   const paginated = practices.slice(offset, offset + limit);
   
   return NextResponse.json({
-    practices: paginated,
+    practices: paginated.map(maskPracticePII),
     pagination: {
       page,
       limit,

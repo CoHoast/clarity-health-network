@@ -3,6 +3,7 @@ import { logAuditEvent } from '@/lib/audit';
 import providersData from '@/data/arizona-providers.json';
 import fs from 'fs';
 import path from 'path';
+import { maskProviderPII } from '@/lib/demo-mode';
 
 // Create new provider
 export async function POST(request: NextRequest) {
@@ -207,7 +208,7 @@ export async function GET(request: NextRequest) {
   const paginated = providers.slice(offset, offset + limit);
   
   return NextResponse.json({
-    providers: paginated,
+    providers: paginated.map(maskProviderPII),
     pagination: {
       page,
       limit,
