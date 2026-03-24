@@ -11,6 +11,7 @@ import { StatCardSkeleton, TableRowSkeleton } from "@/components/admin/ui/Skelet
 import { EmptyState, NoSearchResults } from "@/components/admin/ui/EmptyState";
 import { useBulkSelect } from "@/lib/hooks/useBulkSelect";
 import { BulkActionBar, bulkActionCreators } from "@/components/admin/ui/BulkActionBar";
+import { CsvUploadWizard } from "@/components/admin/CsvUploadWizard";
 
 // Practice = The office/group (has Pay-To, address, contract)
 interface Practice {
@@ -276,6 +277,7 @@ export default function ProvidersPage() {
   const [showAddPractice, setShowAddPractice] = useState(false);
   const [showAddProvider, setShowAddProvider] = useState(false);
   const [showCsvUpload, setShowCsvUpload] = useState(false);
+  const [showCsvWizard, setShowCsvWizard] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [csvData, setCsvData] = useState<Partial<Provider>[]>([]);
   const [csvErrors, setCsvErrors] = useState<string[]>([]);
@@ -639,7 +641,7 @@ export default function ProvidersPage() {
             )}
           </div>
           <button 
-            onClick={() => setShowCsvUpload(true)}
+            onClick={() => setShowCsvWizard(true)}
             className={cn(
               "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
               isDark ? "bg-slate-700 text-white hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -1931,6 +1933,60 @@ export default function ProvidersPage() {
           );
         })()}
       </AnimatePresence>
+
+      {/* CSV Upload Wizard */}
+      <CsvUploadWizard
+        isOpen={showCsvWizard}
+        onClose={() => setShowCsvWizard(false)}
+        existingProviders={allProviders.map(p => ({
+          id: p.id,
+          npi: p.npi,
+          firstName: p.firstName || '',
+          lastName: p.lastName || '',
+          specialty: p.specialty,
+          phone: p.phone,
+          email: '',
+        }))}
+        onImportComplete={(result) => {
+          // Refresh the providers list
+          fetch('/api/providers?limit=500')
+            .then(res => res.json())
+            .then(data => {
+              if (data.providers) {
+                const mapped = data.providers.map((p: any) => ({
+                  id: p.id || `prov-${p.npi}`,
+                  practiceId: '',
+                  name: p.name || `${p.firstName || ''} ${p.lastName || ''}`.trim(),
+                  firstName: p.firstName,
+                  lastName: p.lastName,
+                  credential: p.credentials || p.credential || '',
+                  npi: p.npi,
+                  gender: p.gender || '',
+                  specialty: p.specialty || '',
+                  primaryTaxonomy: p.taxonomyCode || p.specialtyCode || '',
+                  primaryTaxonomyDesc: '',
+                  secondaryTaxonomy: p.secondaryTaxonomyCode || '',
+                  secondaryTaxonomyDesc: '',
+                  licenseState: '',
+                  licenseNumber: '',
+                  acceptingNewPatients: p.acceptingNewPatients ?? true,
+                  languages: p.languages || ['English'],
+                  clinicHours: {},
+                  referenceNumber: p.referenceNumber || '',
+                  contractNumber: p.contractNumber || '',
+                  isPrimaryCare: p.isPrimaryCare || false,
+                  isBehavioralHealth: p.isBehavioralHealth || false,
+                  phone: p.locations?.[0]?.phone || '',
+                  address: p.locations?.[0]?.address1 || '',
+                  city: p.locations?.[0]?.city || '',
+                  state: p.locations?.[0]?.state || '',
+                  zip: p.locations?.[0]?.zip || '',
+                }));
+                setAllProviders(mapped);
+              }
+            });
+        }}
+      />
     </div>
   );
 }
