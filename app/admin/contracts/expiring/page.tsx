@@ -223,6 +223,124 @@ export default function ExpiringContractsPage() {
         </div>
       </div>
 
+      {/* Contract Details Slide-Over */}
+      <AnimatePresence>
+        {selectedContract && (
+          <div className="fixed inset-0 bg-black/50 flex justify-end z-50" onClick={() => setSelectedContract(null)}>
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className={`w-full max-w-lg h-full overflow-y-auto ${isDark ? "bg-slate-800" : "bg-white"}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className={`sticky top-0 z-10 p-6 border-b ${isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"}`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className={`text-xl font-bold ${isDark ? "text-white" : "text-slate-900"}`}>Contract Details</h2>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}`}>{selectedContract.id}</p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedContract(null)}
+                    className={`p-2 rounded-lg transition-colors ${isDark ? "hover:bg-slate-700 text-slate-400" : "hover:bg-slate-100 text-slate-500"}`}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6 space-y-6">
+                {/* Provider Info */}
+                <div className={`p-4 rounded-xl ${isDark ? "bg-slate-700/50" : "bg-slate-50"}`}>
+                  <div className="flex items-start gap-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isDark ? "bg-blue-500/20" : "bg-blue-100"}`}>
+                      <Building2 className={`w-6 h-6 ${isDark ? "text-blue-400" : "text-blue-600"}`} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className={`text-lg font-semibold ${isDark ? "text-white" : "text-slate-900"}`}>{selectedContract.provider}</h3>
+                      <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}`}>{selectedContract.specialty}</p>
+                      <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}`}>NPI: {selectedContract.npi}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contract Status */}
+                <div>
+                  <h4 className={`text-sm font-semibold uppercase tracking-wider mb-3 ${isDark ? "text-slate-400" : "text-slate-500"}`}>Renewal Status</h4>
+                  <div className="flex items-center gap-3">
+                    {getStatusBadge(selectedContract.status)}
+                  </div>
+                </div>
+
+                {/* Contract Details Grid */}
+                <div>
+                  <h4 className={`text-sm font-semibold uppercase tracking-wider mb-3 ${isDark ? "text-slate-400" : "text-slate-500"}`}>Contract Terms</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className={`p-4 rounded-xl ${isDark ? "bg-slate-700/50" : "bg-slate-50"}`}>
+                      <p className={`text-xs ${isDark ? "text-slate-500" : "text-slate-400"}`}>Expiration Date</p>
+                      <p className={`text-lg font-semibold ${isDark ? "text-white" : "text-slate-900"}`}>{selectedContract.expires}</p>
+                    </div>
+                    <div className={`p-4 rounded-xl ${isDark ? "bg-slate-700/50" : "bg-slate-50"}`}>
+                      <p className={`text-xs ${isDark ? "text-slate-500" : "text-slate-400"}`}>Days Remaining</p>
+                      <p className={`text-lg font-semibold ${getDaysLeftColor(selectedContract.daysLeft)}`}>{selectedContract.daysLeft} days</p>
+                    </div>
+                    <div className={`p-4 rounded-xl ${isDark ? "bg-slate-700/50" : "bg-slate-50"}`}>
+                      <p className={`text-xs ${isDark ? "text-slate-500" : "text-slate-400"}`}>Current Discount</p>
+                      <p className={`text-lg font-semibold ${isDark ? "text-green-400" : "text-green-600"}`}>{selectedContract.discount}</p>
+                    </div>
+                    <div className={`p-4 rounded-xl ${isDark ? "bg-slate-700/50" : "bg-slate-50"}`}>
+                      <p className={`text-xs ${isDark ? "text-slate-500" : "text-slate-400"}`}>Last Contact</p>
+                      <p className={`text-lg font-semibold ${isDark ? "text-white" : "text-slate-900"}`}>{selectedContract.lastContact || "Never"}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Info */}
+                <div>
+                  <h4 className={`text-sm font-semibold uppercase tracking-wider mb-3 ${isDark ? "text-slate-400" : "text-slate-500"}`}>Contact Information</h4>
+                  <div className={`p-4 rounded-xl flex items-center gap-3 ${isDark ? "bg-slate-700/50" : "bg-slate-50"}`}>
+                    <Mail className={`w-5 h-5 ${isDark ? "text-slate-400" : "text-slate-500"}`} />
+                    <a href={`mailto:${selectedContract.contactEmail}`} className={`${isDark ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-700"}`}>
+                      {selectedContract.contactEmail}
+                    </a>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="space-y-3 pt-4">
+                  {selectedContract.status === "not_started" && (
+                    <button
+                      onClick={() => {
+                        setSelectedContract(null);
+                        openRenewalModal(selectedContract);
+                      }}
+                      className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-xl hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center justify-center gap-2 shadow-[0_2px_8px_rgba(59,130,246,0.3)]"
+                    >
+                      <Send className="w-5 h-5" />
+                      Send Renewal Notice
+                    </button>
+                  )}
+                  <Link
+                    href={`/admin/contracts/${selectedContract.id}`}
+                    className={`w-full px-4 py-3 font-medium rounded-xl transition-colors flex items-center justify-center gap-2 ${
+                      isDark 
+                        ? "bg-slate-700 text-slate-300 hover:bg-slate-600" 
+                        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                    }`}
+                  >
+                    <FileText className="w-5 h-5" />
+                    View Full Contract
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Send Renewal Modal */}
       <AnimatePresence>
         {showRenewalModal && renewalContract && (
