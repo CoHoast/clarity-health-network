@@ -37,6 +37,8 @@ import AdminPulseChat from "@/components/pulse/AdminPulseChat";
 import { ThemeProvider } from "@/components/admin/ThemeContext";
 import { ToastProvider } from "@/components/admin/ui/Toast";
 import { CommandPalette } from "@/components/admin/ui/CommandPalette";
+import { SessionTimeoutWarning } from "@/components/admin/SessionTimeoutWarning";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 interface NavItem {
   name: string;
@@ -544,13 +546,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <main className="p-4 lg:p-8" data-theme={isDark ? "dark" : "light"}>
           <ThemeProvider value={{ isDark, setIsDark, mounted }}>
             <ToastProvider>
-              <div className={isDark ? "admin-dark" : "admin-light"}>
-                {children}
-              </div>
+              <ErrorBoundary>
+                <div className={isDark ? "admin-dark" : "admin-light"}>
+                  {children}
+                </div>
+              </ErrorBoundary>
             </ToastProvider>
           </ThemeProvider>
         </main>
       </div>
+
+      {/* Session Timeout Warning */}
+      <SessionTimeoutWarning />
 
       {/* Pulse AI Chat */}
       <AdminPulseChat isOpen={showPulse} onClose={() => setShowPulse(false)} />
