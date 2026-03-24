@@ -6,6 +6,53 @@ export * from './sanitize';
 export * from './encryption';
 export * from './errors';
 
+// Session management
+export { 
+  SESSION_CONFIG,
+  createSession,
+  getSession,
+  updateActivity,
+  clearSession,
+  isAuthenticated,
+  getRemainingMinutes,
+  getTimeUntilExpiry,
+  shouldShowTimeoutWarning,
+} from './session';
+
+// API rate limiter (separate from request rate limiter)
+export {
+  RATE_LIMITS,
+  checkRateLimit as checkApiRateLimit,
+  resetRateLimit as resetApiRateLimit,
+  getRateLimitStatus as getApiRateLimitStatus,
+  rateLimitResponse as apiRateLimitResponse,
+} from './api-rate-limiter';
+
+// Login attempt tracking
+export {
+  LOGIN_CONFIG,
+  checkLoginAttempt,
+  recordFailedAttempt,
+  recordSuccessfulLogin,
+  unlockAccount,
+  getAccountStatus,
+} from './login-attempts';
+
+// Input sanitization
+export {
+  sanitizeHtml,
+  stripHtml,
+  sanitizeObject,
+  sanitizeNpi,
+  sanitizeTaxId,
+  sanitizeEmail,
+  sanitizePhone,
+  sanitizeZip,
+  sanitizeFilename,
+  sanitizeSearchQuery,
+  validateProviderData,
+} from './input-sanitizer';
+
 // Combined security middleware
 import { checkRateLimit, getClientIdentifier, rateLimitResponse, RateLimitConfig, STRICT_LIMIT, AUTH_LIMIT } from './rate-limit';
 import { validateApiKey, isTrustedRequest } from './api-key';
