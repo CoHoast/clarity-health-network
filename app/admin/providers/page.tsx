@@ -1938,7 +1938,7 @@ export default function ProvidersPage() {
       <CsvUploadWizard
         isOpen={showCsvWizard}
         onClose={() => setShowCsvWizard(false)}
-        existingProviders={allProviders.map(p => ({
+        existingProviders={providers.map(p => ({
           id: p.id,
           npi: p.npi,
           firstName: p.firstName || '',
@@ -1982,7 +1982,7 @@ export default function ProvidersPage() {
                   state: p.locations?.[0]?.state || '',
                   zip: p.locations?.[0]?.zip || '',
                 }));
-                setAllProviders(mapped);
+                setProviders(mapped);
               }
             });
         }}
