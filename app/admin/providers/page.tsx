@@ -2634,7 +2634,7 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
               </div>
             </div>
 
-            {/* Practice Info (linked) */}
+            {/* Practice Info (linked) - Shows this specific location */}
             {practice && (
               <div className="bg-slate-700/30 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
@@ -2645,7 +2645,10 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
                   <div>
                     <p className="text-white font-medium">{practice.name}</p>
                     <p className="text-slate-400 text-sm">{practice.specialty} • {practice.type}</p>
-                    <p className="text-slate-500 text-sm">{practice.city}, {practice.state}</p>
+                    {/* Show this provider's location, not the billing address */}
+                    <p className="text-slate-500 text-sm">
+                      {provider.city || practice.city}, {provider.state || practice.state}
+                    </p>
                   </div>
                   {practice.status === "active" && (
                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">
@@ -2758,71 +2761,75 @@ function ProviderDetailTabs({ provider, practice, isEditing, setIsEditing }: {
         {/* Location & Contact Tab */}
         {providerTab === "location" && (
           <div className="space-y-6">
-            {practice ? (
-              <>
-                {/* Practice Location */}
-                <div className="bg-slate-700/30 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-blue-400" />
-                    Practice Location
-                  </h3>
-                  <div className="space-y-2">
-                    <p className="text-lg text-white font-medium">{practice.name}</p>
-                    <p className="text-slate-300">{practice.address}</p>
-                    <p className="text-slate-300">{practice.city}, {practice.county} County</p>
-                    <p className="text-slate-300">{practice.state} {practice.zip}</p>
-                    <p className="text-slate-400">{practice.country}</p>
+            {/* Provider's Specific Location (from this provider record) */}
+            <div className="bg-slate-700/30 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-blue-400" />
+                This Location
+              </h3>
+              <div className="space-y-2">
+                <p className="text-lg text-white font-medium">{practice?.name || 'Practice'}</p>
+                {provider.address && (
+                  <p className="text-slate-300">{provider.address}{provider.address2 ? `, ${provider.address2}` : ''}</p>
+                )}
+                <p className="text-slate-300">
+                  {provider.city || practice?.city || 'Unknown'}, {provider.state || practice?.state || 'AZ'} {provider.zip || practice?.zip || ''}
+                </p>
+                <p className="text-slate-400">USA</p>
+              </div>
+            </div>
+
+            {/* Contact Information for this location */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-slate-700/30 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Phone className="w-5 h-5 text-blue-400" />
+                  Location Contact
+                </h3>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Phone</p>
+                    <p className="text-blue-400 font-medium">{provider.phone || practice?.phone || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Fax</p>
+                    <p className="text-white">{practice?.fax || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Email</p>
+                    <p className="text-blue-400">{practice?.email || 'N/A'}</p>
                   </div>
                 </div>
+              </div>
 
-                {/* Contact Information */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-slate-700/30 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                      <Phone className="w-5 h-5 text-blue-400" />
-                      Main Office Contact
-                    </h3>
-                    <div className="space-y-3">
-                      <div>
-                        <p className="text-xs text-slate-500 mb-1">Contact Name</p>
-                        <p className="text-white">{practice.contactName}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-500 mb-1">Phone</p>
-                        <p className="text-blue-400 font-medium">{practice.phone}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-500 mb-1">Fax</p>
-                        <p className="text-white">{practice.fax}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-500 mb-1">Email</p>
-                        <p className="text-blue-400">{practice.email}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-700/30 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                      <Mail className="w-5 h-5 text-blue-400" />
-                      Correspondence Address
-                    </h3>
-                    <div className="space-y-2">
-                      <p className="text-slate-300">{practice.correspondenceAddress}</p>
+              {practice && (
+                <div className="bg-slate-700/30 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-blue-400" />
+                    Correspondence Address
+                  </h3>
+                  <div className="space-y-2">
+                    <p className="text-slate-300">{practice.correspondenceAddress || 'N/A'}</p>
+                    {practice.correspondenceCity && (
                       <p className="text-slate-300">{practice.correspondenceCity}, {practice.correspondenceState} {practice.correspondenceZip}</p>
-                      <p className="text-slate-400">{practice.correspondenceCountry}</p>
+                    )}
+                    <p className="text-slate-400">{practice.correspondenceCountry || 'USA'}</p>
+                    {practice.correspondenceFax && (
                       <div className="pt-2">
                         <p className="text-xs text-slate-500 mb-1">Correspondence Fax</p>
                         <p className="text-white">{practice.correspondenceFax}</p>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
-              </>
-            ) : (
-              <div className="text-center py-8 text-slate-400">
-                <MapPin className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p>No practice linked to this provider</p>
+              )}
+            </div>
+            
+            {!provider.address && !provider.city && (
+              <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                <p className="text-sm text-amber-300">
+                  <strong>Note:</strong> No specific location data available for this provider record.
+                </p>
               </div>
             )}
           </div>
