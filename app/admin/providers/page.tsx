@@ -335,10 +335,10 @@ export default function ProvidersPage() {
           setPractices(loadedPractices);
         }
         
-        // Load providers from API
+        // Load providers from API (practiceId comes from API pre-calculated)
         if (providersData.providers && Array.isArray(providersData.providers)) {
           const loadedProviders: Provider[] = providersData.providers.map((p: any) => 
-            convertApiProvider(p, `practice-${p.billing?.taxId || p.npi}`)
+            convertApiProvider(p, p.practiceId || `practice-${p.billing?.taxId || p.npi}`)
           );
           setProviders(loadedProviders);
           

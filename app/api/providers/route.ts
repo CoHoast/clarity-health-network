@@ -207,8 +207,14 @@ export async function GET(request: NextRequest) {
   const offset = (page - 1) * limit;
   const paginated = providers.slice(offset, offset + limit);
   
+  // Add practiceId to each provider BEFORE masking (uses unmasked taxId)
+  const providersWithPracticeId = paginated.map((p: any) => ({
+    ...p,
+    practiceId: `practice-${p.billing?.taxId || p.npi}`,
+  }));
+
   return NextResponse.json({
-    providers: paginated.map(maskProviderPII),
+    providers: providersWithPracticeId.map(maskProviderPII),
     pagination: {
       page,
       limit,
