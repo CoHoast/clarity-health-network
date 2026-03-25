@@ -14,15 +14,23 @@ import {
 } from "@/lib/security/session";
 import { Button } from "@/components/admin/ui/Button";
 import { cn } from "@/lib/utils";
+import { DEMO_MODE } from "@/lib/demo-mode";
 
 /**
  * Session Timeout Warning Component
  * 
  * Shows a warning modal when session is about to expire.
  * Allows user to extend session or logout.
+ * 
+ * DISABLED in demo mode - no session management needed.
  */
 export function SessionTimeoutWarning() {
   const router = useRouter();
+  
+  // Disable entirely in demo mode
+  if (DEMO_MODE) {
+    return null;
+  }
   const [showWarning, setShowWarning] = useState(false);
   const [remainingMinutes, setRemainingMinutes] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
@@ -207,12 +215,16 @@ export function SessionTimeoutWarning() {
 
 /**
  * Hook to check if session is valid
+ * Returns always valid in demo mode.
  */
 export function useSession() {
   const [isValid, setIsValid] = useState(true);
   const router = useRouter();
   
   useEffect(() => {
+    // Skip session checks in demo mode
+    if (DEMO_MODE) return;
+    
     const check = () => {
       const session = getSession();
       setIsValid(!!session);
@@ -227,5 +239,5 @@ export function useSession() {
     return () => clearInterval(interval);
   }, [router]);
   
-  return { isValid, extendSession: updateActivity };
+  return { isValid: DEMO_MODE ? true : isValid, extendSession: updateActivity };
 }
