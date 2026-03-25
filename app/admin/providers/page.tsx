@@ -535,22 +535,71 @@ export default function ProvidersPage() {
     return matchesSearch && matchesStatus && matchesType;
   }).sort((a, b) => a.name.localeCompare(b.name));
 
-  // Filter providers directly (for Provider View mode)
+  // Deduplicate providers by NPI (for Provider View mode)
+  interface DeduplicatedProvider {
+    npi: string;
+    name: string;
+    firstName?: string;
+    lastName?: string;
+    credential?: string;
+    specialty?: string;
+    acceptingNewPatients?: boolean;
+    locationCount: number;
+    practiceNames: string[];
+    instances: Provider[]; // All instances for this NPI
+  }
+
+  const deduplicatedProviders = useMemo(() => {
+    const npiMap = new Map<string, DeduplicatedProvider>();
+    
+    providers.forEach(p => {
+      const npi = p.npi || '';
+      if (!npi) return;
+      
+      const existing = npiMap.get(npi);
+      const practice = practices.find(pr => pr.id === p.practiceId);
+      const practiceName = practice?.name || 'Unknown';
+      
+      if (existing) {
+        existing.locationCount++;
+        existing.instances.push(p);
+        if (!existing.practiceNames.includes(practiceName)) {
+          existing.practiceNames.push(practiceName);
+        }
+      } else {
+        npiMap.set(npi, {
+          npi,
+          name: p.name || `${p.firstName || ''} ${p.lastName || ''}`.trim(),
+          firstName: p.firstName,
+          lastName: p.lastName,
+          credential: p.credential,
+          specialty: p.specialty,
+          acceptingNewPatients: p.acceptingNewPatients,
+          locationCount: 1,
+          practiceNames: [practiceName],
+          instances: [p],
+        });
+      }
+    });
+    
+    return Array.from(npiMap.values());
+  }, [providers, practices]);
+
+  // Filter deduplicated providers (for Provider View mode)
   const filteredProviders = useMemo(() => {
-    if (!searchQuery.trim()) return providers;
+    if (!searchQuery.trim()) return deduplicatedProviders;
     
     const searchLower = searchQuery.toLowerCase().trim();
     
-    return providers.filter(p => {
-      const providerName = p.name || `${p.firstName || ''} ${p.lastName || ''}`.trim();
+    return deduplicatedProviders.filter(p => {
       const matchesNpi = p.npi && p.npi.includes(searchQuery.trim());
-      const matchesName = providerName.toLowerCase().includes(searchLower);
+      const matchesName = p.name.toLowerCase().includes(searchLower);
       const matchesSpecialty = p.specialty && p.specialty.toLowerCase().includes(searchLower);
       const matchesCredential = p.credential && p.credential.toLowerCase().includes(searchLower);
       
       return matchesNpi || matchesName || matchesSpecialty || matchesCredential;
     });
-  }, [searchQuery, providers]);
+  }, [searchQuery, deduplicatedProviders]);
 
   // Get practice name for a provider
   const getPracticeForProvider = (practiceId: string) => {
@@ -1041,23 +1090,21 @@ export default function ProvidersPage() {
                   <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Provider</th>
                   <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>NPI</th>
                   <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Specialty</th>
-                  <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Practice</th>
+                  <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Locations</th>
                   <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Status</th>
                   <th className={cn("text-right px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Actions</th>
                 </tr>
               </thead>
               <tbody className={cn("divide-y", isDark ? "divide-slate-700" : "divide-slate-200")}>
                 {filteredProviders.slice(0, 100).map(provider => {
-                  const practice = getPracticeForProvider(provider.practiceId);
-                  const providerName = provider.name || `${provider.firstName || ''} ${provider.lastName || ''}`.trim();
                   return (
                     <tr 
-                      key={provider.id} 
+                      key={provider.npi} 
                       className={cn(
                         "transition-colors cursor-pointer",
                         isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50"
                       )}
-                      onClick={() => setSelectedProvider(provider)}
+                      onClick={() => setSelectedProvider(provider.instances[0])}
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
@@ -1068,7 +1115,7 @@ export default function ProvidersPage() {
                             <User className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
                           </div>
                           <div>
-                            <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{providerName}</p>
+                            <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{provider.name}</p>
                             <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{provider.credential || ''}</p>
                           </div>
                         </div>
@@ -1082,7 +1129,18 @@ export default function ProvidersPage() {
                         <p className={isDark ? "text-slate-300" : "text-slate-600"}>{provider.specialty || 'N/A'}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{practice?.name || 'Unknown'}</p>
+                        <div className="flex items-center gap-2">
+                          <MapPin className={cn("w-4 h-4", isDark ? "text-blue-400" : "text-blue-600")} />
+                          <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{provider.locationCount}</span>
+                          <span className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                            {provider.locationCount === 1 ? 'location' : 'locations'}
+                          </span>
+                        </div>
+                        {provider.practiceNames.length > 0 && (
+                          <p className={cn("text-xs mt-1 truncate max-w-[200px]", isDark ? "text-slate-500" : "text-slate-400")}>
+                            {provider.practiceNames[0]}{provider.practiceNames.length > 1 && ` +${provider.practiceNames.length - 1} more`}
+                          </p>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         {provider.acceptingNewPatients ? (
@@ -1099,7 +1157,7 @@ export default function ProvidersPage() {
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end gap-2">
                           <button
-                            onClick={(e) => { e.stopPropagation(); setSelectedProvider(provider); }}
+                            onClick={(e) => { e.stopPropagation(); setSelectedProvider(provider.instances[0]); }}
                             className={cn(
                               "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm",
                               isDark 
@@ -1120,7 +1178,7 @@ export default function ProvidersPage() {
           )}
           {filteredProviders.length > 100 && (
             <div className={cn("px-6 py-4 text-center border-t", isDark ? "border-slate-700 text-slate-400" : "border-slate-200 text-slate-500")}>
-              Showing 100 of {filteredProviders.length.toLocaleString()} providers. Use search to narrow results.
+              Showing 100 of {filteredProviders.length.toLocaleString()} unique providers ({providers.length.toLocaleString()} total locations). Use search to narrow results.
             </div>
           )}
         </div>
