@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { UserCheck, Search, CheckCircle, XCircle, Clock, AlertTriangle, RefreshCw, Eye, ExternalLink, Shield, FileText, Calendar, Hash, Building2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { UserCheck, Search, CheckCircle, XCircle, Clock, AlertTriangle, RefreshCw, Eye, ExternalLink, Shield, FileText, Calendar, Hash, Building2, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { Button } from "@/components/admin/ui/Button";
@@ -30,20 +30,7 @@ interface VerificationRecord {
   extendedDetails?: VerificationDetail;
 }
 
-const initialVerifications: VerificationRecord[] = [
-  { id: "VER-001", providerName: "Dr. Sarah Chen, MD", npi: "2345678901", verificationType: "Medical License", status: "verified", verifiedDate: "2026-02-15", expirationDate: "2027-12-31", source: "Ohio Medical Board", details: "License #MD-123456 Active", extendedDetails: { licenseNumber: "MD-123456", issueDate: "2015-06-15", disciplinaryActions: "None on record", restrictions: "None", verificationMethod: "Primary Source - State API", lastChecked: "2026-02-15 09:32:14 EST", rawResponse: "Status: ACTIVE | Type: MD | Specialty: Internal Medicine | Original Issue: 2015-06-15 | Expiration: 2027-12-31" } },
-  { id: "VER-002", providerName: "Dr. Sarah Chen, MD", npi: "2345678901", verificationType: "DEA Registration", status: "verified", verifiedDate: "2026-02-15", expirationDate: "2027-06-30", source: "DEA NTIS", details: "DEA #AC1234567 Active", extendedDetails: { licenseNumber: "AC1234567", issueDate: "2016-07-01", disciplinaryActions: "None", restrictions: "Schedules II-V", verificationMethod: "DEA NTIS Database", lastChecked: "2026-02-15 09:33:02 EST", rawResponse: "DEA Number: AC1234567 | Status: ACTIVE | Schedules: 2,2N,3,3N,4,5 | Business Activity: Practitioner | State: OH" } },
-  { id: "VER-003", providerName: "Dr. Sarah Chen, MD", npi: "2345678901", verificationType: "Board Certification", status: "verified", verifiedDate: "2026-02-15", expirationDate: "2028-12-31", source: "ABIM", details: "Internal Medicine - Certified", extendedDetails: { licenseNumber: "ABIM-789012", issueDate: "2018-08-01", disciplinaryActions: "None", restrictions: "None", verificationMethod: "ABIM Certification API", lastChecked: "2026-02-15 09:34:18 EST", rawResponse: "Certification: Internal Medicine | Status: Certified | MOC Status: Meeting Requirements | Initial Certification: 2018-08-01" } },
-  { id: "VER-004", providerName: "Cleveland Family Medicine", npi: "1234567890", verificationType: "NPI Validation", status: "verified", verifiedDate: "2026-03-01", expirationDate: null, source: "NPPES", details: "Active Organization NPI", extendedDetails: { licenseNumber: "1234567890", issueDate: "2008-05-23", disciplinaryActions: "N/A", restrictions: "None", verificationMethod: "NPPES NPI Registry API", lastChecked: "2026-03-01 14:22:05 EST", rawResponse: "NPI: 1234567890 | Entity Type: Organization | Status: Active | Authorized Official: John Smith | Taxonomy: 207Q00000X (Family Medicine)" } },
-  { id: "VER-005", providerName: "Cleveland Family Medicine", npi: "1234567890", verificationType: "Liability Insurance", status: "expiring", verifiedDate: "2025-04-01", expirationDate: "2026-04-01", source: "ProAssurance", details: "$1M/$3M Coverage - Expiring Soon", extendedDetails: { licenseNumber: "PA-2024-78901", issueDate: "2024-04-01", disciplinaryActions: "N/A", restrictions: "None", verificationMethod: "Insurance Certificate Upload", lastChecked: "2025-04-01 10:15:33 EST", rawResponse: "Policy: PA-2024-78901 | Coverage: $1,000,000/$3,000,000 | Effective: 2024-04-01 | Expiration: 2026-04-01 | Status: ACTIVE - RENEWAL REQUIRED" } },
-  { id: "VER-006", providerName: "Dr. James Wilson, DO", npi: "5678901234", verificationType: "Medical License", status: "pending", verifiedDate: null, expirationDate: null, source: "Ohio Medical Board", details: "Verification in progress", extendedDetails: { verificationMethod: "Primary Source - Awaiting Response", lastChecked: "2026-03-20 08:45:00 EST", rawResponse: "Request submitted to Ohio Medical Board. Estimated response time: 2-3 business days." } },
-  { id: "VER-007", providerName: "Dr. James Wilson, DO", npi: "5678901234", verificationType: "DEA Registration", status: "pending", verifiedDate: null, expirationDate: null, source: "DEA NTIS", details: "Verification in progress", extendedDetails: { verificationMethod: "DEA NTIS Database Query", lastChecked: "2026-03-20 08:45:15 EST", rawResponse: "Query pending - DEA number validation in progress." } },
-  { id: "VER-008", providerName: "Metro Imaging Center", npi: "3456789012", verificationType: "Facility License", status: "verified", verifiedDate: "2026-01-20", expirationDate: "2027-01-31", source: "Ohio Dept of Health", details: "Diagnostic Imaging License Active", extendedDetails: { licenseNumber: "ODH-IMG-456789", issueDate: "2020-02-01", disciplinaryActions: "None", restrictions: "None", verificationMethod: "ODH License Verification Portal", lastChecked: "2026-01-20 11:08:44 EST", rawResponse: "License: ODH-IMG-456789 | Type: Diagnostic Imaging Facility | Status: ACTIVE | Last Inspection: 2025-11-15 | Result: No Deficiencies" } },
-  { id: "VER-009", providerName: "Metro Imaging Center", npi: "3456789012", verificationType: "CLIA Certificate", status: "verified", verifiedDate: "2026-01-20", expirationDate: "2028-01-31", source: "CMS CLIA", details: "CLIA #12D3456789", extendedDetails: { licenseNumber: "12D3456789", issueDate: "2022-02-01", disciplinaryActions: "None", restrictions: "Waived Tests Only", verificationMethod: "CMS CLIA Database", lastChecked: "2026-01-20 11:10:22 EST", rawResponse: "CLIA ID: 12D3456789 | Certificate Type: Certificate of Waiver | Status: Active | Effective: 2022-02-01 | Expiration: 2028-01-31" } },
-  { id: "VER-010", providerName: "Westlake Urgent Care", npi: "6789012345", verificationType: "Liability Insurance", status: "failed", verifiedDate: null, expirationDate: null, source: "Insurance Verification", details: "Policy expired - Awaiting renewal docs", extendedDetails: { licenseNumber: "EXPIRED", issueDate: "2023-03-01", disciplinaryActions: "N/A", restrictions: "COVERAGE LAPSED", verificationMethod: "Insurance Certificate Review", lastChecked: "2026-03-15 16:30:00 EST", rawResponse: "ERROR: Policy #INS-2023-34567 expired on 2026-03-01. No renewal documentation received. Provider notified on 2026-02-15, 2026-02-28, 2026-03-10." } },
-  { id: "VER-011", providerName: "Quest Diagnostics Cleveland", npi: "8901234567", verificationType: "CLIA Certificate", status: "verified", verifiedDate: "2026-02-01", expirationDate: "2028-02-28", source: "CMS CLIA", details: "CLIA #12D7891234 - Full Service Lab", extendedDetails: { licenseNumber: "12D7891234", issueDate: "2024-03-01", disciplinaryActions: "None", restrictions: "None - Full Service", verificationMethod: "CMS CLIA Database", lastChecked: "2026-02-01 09:15:00 EST", rawResponse: "CLIA ID: 12D7891234 | Certificate Type: Certificate of Accreditation | Accreditation Org: CAP | Status: Active | Specialties: Chemistry, Hematology, Microbiology, Pathology" } },
-  { id: "VER-012", providerName: "Cleveland Cardiology Associates", npi: "9012345678", verificationType: "Group Practice License", status: "verified", verifiedDate: "2026-01-15", expirationDate: "2027-12-31", source: "Ohio Medical Board", details: "Group Practice License Active", extendedDetails: { licenseNumber: "GPL-OH-123456", issueDate: "2019-01-01", disciplinaryActions: "None", restrictions: "None", verificationMethod: "Ohio Medical Board API", lastChecked: "2026-01-15 14:20:00 EST", rawResponse: "Group License: GPL-OH-123456 | Status: ACTIVE | Supervising Physicians: 4 | Allied Health Professionals: 8 | Locations: 2" } },
-];
+// Verification records are now loaded from API
 
 const statusOptions = ["All Statuses", "Verified", "Pending", "Failed", "Expiring"];
 const typeOptions = ["All Types", "Medical License", "DEA Registration", "Board Certification", "NPI Validation", "Liability Insurance", "Facility License", "CLIA Certificate"];
@@ -54,9 +41,37 @@ export default function VerificationStatusPage() {
   const [statusFilter, setStatusFilter] = useState("All Statuses");
   const [typeFilter, setTypeFilter] = useState("All Types");
   const [selectedVerification, setSelectedVerification] = useState<VerificationRecord | null>(null);
-  const [verifications, setVerifications] = useState<VerificationRecord[]>(initialVerifications);
+  const [verifications, setVerifications] = useState<VerificationRecord[]>([]);
   const [reverifyingId, setReverifyingId] = useState<string | null>(null);
   const [showReverifySuccess, setShowReverifySuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [stats, setStats] = useState({ total: 0, verified: 0, pending: 0, failed: 0, expiring: 0 });
+
+  // Fetch verification records from API
+  useEffect(() => {
+    async function fetchVerifications() {
+      try {
+        setIsLoading(true);
+        const params = new URLSearchParams();
+        if (statusFilter !== "All Statuses") params.set('status', statusFilter);
+        if (typeFilter !== "All Types") params.set('type', typeFilter);
+        if (searchQuery) params.set('search', searchQuery);
+        
+        const res = await fetch(`/api/verification/queue?${params}`);
+        if (!res.ok) throw new Error('Failed to fetch');
+        
+        const data = await res.json();
+        setVerifications(data.records || []);
+        setStats(data.stats || { total: 0, verified: 0, pending: 0, failed: 0, expiring: 0 });
+      } catch (error) {
+        console.error('Failed to fetch verifications:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    fetchVerifications();
+  }, [statusFilter, typeFilter, searchQuery]);
 
   const handleReverify = async (verification: VerificationRecord) => {
     setReverifyingId(verification.id);
@@ -90,17 +105,8 @@ export default function VerificationStatusPage() {
     setTimeout(() => setShowReverifySuccess(false), 3000);
   };
 
-  const filteredVerifications = verifications.filter(v => {
-    const matchesSearch = v.providerName.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         v.npi.includes(searchQuery);
-    const matchesStatus = statusFilter === "All Statuses" || 
-                         (statusFilter === "Verified" && v.status === "verified") ||
-                         (statusFilter === "Pending" && v.status === "pending") ||
-                         (statusFilter === "Failed" && v.status === "failed") ||
-                         (statusFilter === "Expiring" && v.status === "expiring");
-    const matchesType = typeFilter === "All Types" || v.verificationType === typeFilter;
-    return matchesSearch && matchesStatus && matchesType;
-  });
+  // Verifications are filtered server-side via API
+  const filteredVerifications = verifications;
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -112,10 +118,11 @@ export default function VerificationStatusPage() {
     }
   };
 
-  const verifiedCount = verifications.filter(v => v.status === "verified").length;
-  const pendingCount = verifications.filter(v => v.status === "pending").length;
-  const failedCount = verifications.filter(v => v.status === "failed").length;
-  const expiringCount = verifications.filter(v => v.status === "expiring").length;
+  // Use stats from API
+  const verifiedCount = stats.verified;
+  const pendingCount = stats.pending;
+  const failedCount = stats.failed;
+  const expiringCount = stats.expiring;
 
   return (
     <div className="space-y-6">
@@ -212,19 +219,30 @@ export default function VerificationStatusPage() {
       <div className={`rounded-xl overflow-hidden ${
         isDark ? "bg-slate-800/50 border border-slate-700" : "bg-white border border-slate-200"
       }`}>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+            <span className="ml-3 text-slate-400">Loading verifications...</span>
+          </div>
+        ) : filteredVerifications.length === 0 ? (
+          <div className="text-center py-12">
+            <Shield className="w-12 h-12 text-slate-500 mx-auto mb-3" />
+            <p className={isDark ? "text-slate-400" : "text-slate-500"}>No verification records found</p>
+          </div>
+        ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-slate-700">
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Provider</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Verification Type</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Source</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Expiration</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</th>
+              <tr className={cn("border-b", isDark ? "border-slate-700" : "border-slate-200")}>
+                <th className={cn("px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider", isDark ? "text-slate-400" : "text-slate-500")}>Provider</th>
+                <th className={cn("px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider", isDark ? "text-slate-400" : "text-slate-500")}>Verification Type</th>
+                <th className={cn("px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider", isDark ? "text-slate-400" : "text-slate-500")}>Source</th>
+                <th className={cn("px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider", isDark ? "text-slate-400" : "text-slate-500")}>Expiration</th>
+                <th className={cn("px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider", isDark ? "text-slate-400" : "text-slate-500")}>Status</th>
+                <th className={cn("px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider", isDark ? "text-slate-400" : "text-slate-500")}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className={cn("divide-y", isDark ? "divide-slate-700" : "divide-slate-200")}>
               {filteredVerifications.map((verification) => (
                 <tr key={verification.id} className="hover:bg-slate-700/30 transition-colors">
                   <td className="px-6 py-4">
@@ -275,6 +293,7 @@ export default function VerificationStatusPage() {
             </tbody>
           </table>
         </div>
+        )}
       </div>
 
       {/* Success Toast */}
