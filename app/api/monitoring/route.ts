@@ -67,14 +67,22 @@ function generateAlerts(providers: any[], today: Date): any[] {
     return npiSum % 47 === 0; // ~2% of providers have an alert
   }).slice(0, 15);
   
+  // Alert types with auto-suspend policy:
+  // - Critical (OIG, SAM, License Revoked): AUTO-SUSPEND
+  // - High (License Suspended, DEA Expired): Alert team immediately, NO auto-suspend
+  // - Medium (Expiring credentials): Alert within 24h, NO auto-suspend
+  // - Low (Address changes): Log for review, NO auto-suspend
   const alertTypes = [
-    { type: "OIG Exclusion", severity: "critical", checkType: "oig", autoAction: "Suspended pending review" },
-    { type: "License Expired", severity: "critical", checkType: "license", autoAction: "Auto-suspended" },
+    { type: "OIG Exclusion", severity: "critical", checkType: "oig", autoAction: "Auto-suspended per CMS requirements" },
+    { type: "SAM Exclusion", severity: "critical", checkType: "sam", autoAction: "Auto-suspended per federal requirements" },
+    { type: "License Revoked", severity: "critical", checkType: "license", autoAction: "Auto-suspended - cannot practice" },
     { type: "License Suspended", severity: "high", checkType: "license", autoAction: null },
     { type: "DEA Certificate Expired", severity: "high", checkType: "dea", autoAction: null },
     { type: "License Expiring Soon", severity: "medium", checkType: "license", autoAction: null },
     { type: "Malpractice Expiring", severity: "medium", checkType: "malpractice", autoAction: null },
+    { type: "DEA Expiring Soon", severity: "medium", checkType: "dea", autoAction: null },
     { type: "Address Mismatch", severity: "low", checkType: "npi", autoAction: null },
+    { type: "Contact Info Updated", severity: "low", checkType: "npi", autoAction: null },
   ];
   
   alertProviders.forEach((provider, index) => {

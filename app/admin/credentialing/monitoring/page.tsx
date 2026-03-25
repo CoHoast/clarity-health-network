@@ -856,28 +856,37 @@ export default function MonitoringPage() {
 
             <div className="space-y-4">
               {[
-                { severity: "🔴 Critical", action: "Auto-suspend provider", description: "OIG exclusion, license revoked, SAM debarment", enabled: true },
-                { severity: "🟠 High", action: "Alert team immediately", description: "License suspended, DEA revoked", enabled: true },
-                { severity: "🟡 Medium", action: "Alert within 24 hours", description: "License expiring, malpractice expiring", enabled: true },
-                { severity: "🔵 Low", action: "Log for review", description: "Address changes, minor updates", enabled: true },
+                { severity: "🔴 Critical", action: "Auto-suspend provider", description: "OIG exclusion, SAM debarment, license revoked. Claims halted immediately per CMS/federal requirements.", enabled: true, autoSuspend: true },
+                { severity: "🟠 High", action: "Alert team immediately", description: "License suspended, DEA expired/revoked. Human review required before any action.", enabled: true, autoSuspend: false },
+                { severity: "🟡 Medium", action: "Alert within 24 hours", description: "License expiring (<30 days), malpractice expiring, DEA expiring. Send renewal reminders.", enabled: true, autoSuspend: false },
+                { severity: "🔵 Low", action: "Log for review", description: "Address changes, contact updates, minor discrepancies. No immediate action needed.", enabled: true, autoSuspend: false },
               ].map((rule, index) => (
                 <div
                   key={index}
                   className={cn(
                     "p-4 rounded-lg border",
-                    isDark ? "bg-slate-700/50 border-slate-600" : "bg-slate-50 border-slate-200"
+                    rule.autoSuspend 
+                      ? (isDark ? "bg-red-900/20 border-red-800" : "bg-red-50 border-red-200")
+                      : (isDark ? "bg-slate-700/50 border-slate-600" : "bg-slate-50 border-slate-200")
                   )}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
-                      {rule.severity}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                        {rule.severity}
+                      </span>
+                      {rule.autoSuspend && (
+                        <span className="px-2 py-0.5 text-xs font-medium bg-red-500 text-white rounded">
+                          AUTO-SUSPEND
+                        </span>
+                      )}
+                    </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked={rule.enabled} className="sr-only peer" />
                       <div className="w-9 h-5 bg-slate-300 peer-checked:bg-blue-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                     </label>
                   </div>
-                  <p className={cn("text-sm font-medium text-blue-600 dark:text-blue-400 mb-1")}>
+                  <p className={cn("text-sm font-medium mb-1", rule.autoSuspend ? "text-red-600 dark:text-red-400" : "text-blue-600 dark:text-blue-400")}>
                     {rule.action}
                   </p>
                   <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>
