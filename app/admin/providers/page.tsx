@@ -620,30 +620,7 @@ export default function ProvidersPage() {
                     </button>
                     <button
                       onClick={() => {
-                        // Export provider directory
-                        const csv = [
-                          'NPI,First Name,Last Name,Credential,Specialty,Contract #,Reference #,Practice,City,State,Phone,Accepting New',
-                          ...providers.map((p: any) => [
-                            p.npi,
-                            p.firstName,
-                            p.lastName,
-                            p.credential || '',
-                            p.specialty || '',
-                            p.contractNumber || '',
-                            p.entityNumber || p.referenceNumber || '',
-                            p.billing?.name || '',
-                            p.locations?.[0]?.city || '',
-                            p.locations?.[0]?.state || '',
-                            p.locations?.[0]?.phone || '',
-                            p.acceptingNewPatients ? 'Yes' : 'No'
-                          ].map((v: any) => `"${String(v).replace(/"/g, '""')}"`).join(','))
-                        ].join('\n');
-                        const blob = new Blob([csv], { type: 'text/csv' });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = `provider-directory-${new Date().toISOString().split('T')[0]}.csv`;
-                        a.click();
+                        window.location.href = '/api/export/providers?type=basic';
                         setShowExportMenu(false);
                       }}
                       className={cn(
@@ -653,8 +630,24 @@ export default function ProvidersPage() {
                     >
                       <Users className="w-4 h-4 text-blue-500" />
                       <div>
-                        <p className="font-medium text-sm">Provider Directory</p>
-                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Basic provider info, contact</p>
+                        <p className="font-medium text-sm">Provider Directory (Basic)</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>12 fields: NPI, name, specialty, contact</p>
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => {
+                        window.location.href = '/api/export/providers?type=full';
+                        setShowExportMenu(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors",
+                        isDark ? "hover:bg-slate-700 text-white" : "hover:bg-slate-100 text-slate-700"
+                      )}
+                    >
+                      <FileSpreadsheet className="w-4 h-4 text-purple-500" />
+                      <div>
+                        <p className="font-medium text-sm">Full Provider Data</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>52 fields: all credentials, licenses, billing</p>
                       </div>
                     </button>
                   </div>
