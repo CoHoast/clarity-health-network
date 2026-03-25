@@ -31,6 +31,7 @@ import {
   TrendingUp,
   BarChart3,
   Zap,
+  ExternalLink,
 } from "lucide-react";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { StatCard } from "@/components/admin/ui/StatCard";
@@ -1031,6 +1032,171 @@ export default function MonitoringPage() {
                   </p>
                 </div>
               </div>
+
+              {/* Verify at Source - Direct Links */}
+              <div>
+                <label className={cn("text-xs uppercase tracking-wider block mb-2", isDark ? "text-slate-500" : "text-slate-400")}>
+                  Verify at Source
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {/* OIG Link */}
+                  {(selectedAlert.type?.includes("OIG") || selectedAlert.checkType === "oig") && (
+                    <a
+                      href={`https://exclusions.oig.hhs.gov/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "flex items-center gap-2 p-3 rounded-lg border transition-colors",
+                        isDark 
+                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 text-blue-400" 
+                          : "bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                      )}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <div>
+                        <p className="font-medium text-sm">OIG LEIE Database</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-blue-600")}>
+                          Search: {selectedAlert.npi}
+                        </p>
+                      </div>
+                    </a>
+                  )}
+                  
+                  {/* SAM.gov Link */}
+                  {(selectedAlert.type?.includes("SAM") || selectedAlert.checkType === "sam") && (
+                    <a
+                      href={`https://sam.gov/content/exclusions`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "flex items-center gap-2 p-3 rounded-lg border transition-colors",
+                        isDark 
+                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 text-blue-400" 
+                          : "bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                      )}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <div>
+                        <p className="font-medium text-sm">SAM.gov Exclusions</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-blue-600")}>
+                          Search: {selectedAlert.provider}
+                        </p>
+                      </div>
+                    </a>
+                  )}
+                  
+                  {/* State License Board Link */}
+                  {(selectedAlert.type?.includes("License") || selectedAlert.checkType === "license") && (
+                    <a
+                      href={`https://www.azmd.gov/glsuiteweb/clients/azbom/public/WebVerificationSearch.aspx`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "flex items-center gap-2 p-3 rounded-lg border transition-colors",
+                        isDark 
+                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 text-blue-400" 
+                          : "bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                      )}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <div>
+                        <p className="font-medium text-sm">AZ Medical Board</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-blue-600")}>
+                          Verify License Status
+                        </p>
+                      </div>
+                    </a>
+                  )}
+                  
+                  {/* DEA Link */}
+                  {(selectedAlert.type?.includes("DEA") || selectedAlert.checkType === "dea") && (
+                    <a
+                      href={`https://apps.deadiversion.usdoj.gov/webforms2/spring/validationLogin`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "flex items-center gap-2 p-3 rounded-lg border transition-colors",
+                        isDark 
+                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 text-blue-400" 
+                          : "bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                      )}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <div>
+                        <p className="font-medium text-sm">DEA Registration</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-blue-600")}>
+                          Verify DEA Status
+                        </p>
+                      </div>
+                    </a>
+                  )}
+                  
+                  {/* NPI Registry Link - Always show */}
+                  <a
+                    href={`https://npiregistry.cms.hhs.gov/search?number=${selectedAlert.npi}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "flex items-center gap-2 p-3 rounded-lg border transition-colors",
+                      isDark 
+                        ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 text-blue-400" 
+                        : "bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                    )}
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <div>
+                      <p className="font-medium text-sm">NPPES Registry</p>
+                      <p className={cn("text-xs", isDark ? "text-slate-400" : "text-blue-600")}>
+                        NPI: {selectedAlert.npi}
+                      </p>
+                    </div>
+                  </a>
+                  
+                  {/* Malpractice - NPDB */}
+                  {(selectedAlert.type?.includes("Malpractice") || selectedAlert.checkType === "malpractice") && (
+                    <a
+                      href={`https://www.npdb.hrsa.gov/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "flex items-center gap-2 p-3 rounded-lg border transition-colors",
+                        isDark 
+                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 text-blue-400" 
+                          : "bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                      )}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <div>
+                        <p className="font-medium text-sm">NPDB</p>
+                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-blue-600")}>
+                          National Practitioner Data Bank
+                        </p>
+                      </div>
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* Auto-Suspend Policy Note */}
+              {selectedAlert.severity === "critical" && (
+                <div className={cn(
+                  "p-4 rounded-lg border",
+                  isDark ? "bg-red-900/10 border-red-800" : "bg-red-50 border-red-200"
+                )}>
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
+                    <div>
+                      <p className={cn("font-medium text-sm", isDark ? "text-red-400" : "text-red-700")}>
+                        Auto-Suspend Policy
+                      </p>
+                      <p className={cn("text-xs mt-1", isDark ? "text-red-400/80" : "text-red-600")}>
+                        Critical alerts (OIG/SAM exclusions, license revocations) trigger automatic suspension per CMS compliance requirements. 
+                        Human review is required before reinstatement.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Resolution (if resolved) */}
               {selectedAlert.status === "resolved" && selectedAlert.resolution && (
