@@ -9,12 +9,9 @@ export const DEMO_MODE = true;
 
 /**
  * Mask a Tax ID (EIN or SSN)
- * Input: "260904640" or "26-0904640"
- * Output: "XX-XXX1234" (shows last 4)
  */
 export function maskTaxId(taxId: string | null | undefined): string {
   if (!taxId || !DEMO_MODE) return taxId || '';
-  // Show last 4 digits for reference
   const clean = taxId.replace(/\D/g, '');
   if (clean.length >= 4) {
     return `XX-XXX${clean.slice(-4)}`;
@@ -24,8 +21,6 @@ export function maskTaxId(taxId: string | null | undefined): string {
 
 /**
  * Mask an email address
- * Input: "doctor@hospital.com"
- * Output: "d***@*****.com"
  */
 export function maskEmail(email: string | null | undefined): string {
   if (!email || !DEMO_MODE) return email || '';
@@ -39,8 +34,6 @@ export function maskEmail(email: string | null | undefined): string {
 
 /**
  * Mask a phone number
- * Input: "(480) 555-1234" or "4805551234"
- * Output: "(XXX) XXX-1234" (shows last 4)
  */
 export function maskPhone(phone: string | null | undefined): string {
   if (!phone || !DEMO_MODE) return phone || '';
@@ -61,21 +54,17 @@ export function maskFax(fax: string | null | undefined): string {
 
 /**
  * Mask an address
- * Input: "123 Main Street"
- * Output: "XXX Main Street" (hides street number)
  */
 export function maskAddress(address: string | null | undefined): string {
   if (!address || !DEMO_MODE) return address || '';
   if (address.trim() === '') return '';
-  // Replace leading numbers with XXX
   return address.replace(/^\d+/, 'XXX');
 }
 
 /**
  * Mask sensitive fields in a provider object
- * Handles all nested objects that may contain PII
  */
-export function maskProviderPII<T extends Record<string, any>>(provider: T): T {
+export function maskProviderPII(provider: Record<string, any>): Record<string, any> {
   if (!DEMO_MODE) return provider;
   
   const masked = { ...provider };
@@ -87,12 +76,12 @@ export function maskProviderPII<T extends Record<string, any>>(provider: T): T {
   
   // Mask nested locations
   if (masked.locations && Array.isArray(masked.locations)) {
-    masked.locations = masked.locations.map((loc: any) => ({
+    masked.locations = masked.locations.map((loc: Record<string, any>) => ({
       ...loc,
-      email: maskEmail(loc.email),
-      phone: maskPhone(loc.phone),
-      fax: maskFax(loc.fax),
-      address1: maskAddress(loc.address1),
+      email: loc.email ? maskEmail(loc.email) : loc.email,
+      phone: loc.phone ? maskPhone(loc.phone) : loc.phone,
+      fax: loc.fax ? maskFax(loc.fax) : loc.fax,
+      address1: loc.address1 ? maskAddress(loc.address1) : loc.address1,
     }));
   }
   
@@ -100,10 +89,10 @@ export function maskProviderPII<T extends Record<string, any>>(provider: T): T {
   if (masked.billing && typeof masked.billing === 'object') {
     masked.billing = {
       ...masked.billing,
-      taxId: maskTaxId(masked.billing.taxId),
-      phone: maskPhone(masked.billing.phone),
-      fax: maskFax(masked.billing.fax),
-      address1: maskAddress(masked.billing.address1),
+      taxId: masked.billing.taxId ? maskTaxId(masked.billing.taxId) : masked.billing.taxId,
+      phone: masked.billing.phone ? maskPhone(masked.billing.phone) : masked.billing.phone,
+      fax: masked.billing.fax ? maskFax(masked.billing.fax) : masked.billing.fax,
+      address1: masked.billing.address1 ? maskAddress(masked.billing.address1) : masked.billing.address1,
     };
   }
   
@@ -111,27 +100,27 @@ export function maskProviderPII<T extends Record<string, any>>(provider: T): T {
   if (masked.correspondingAddress && typeof masked.correspondingAddress === 'object') {
     masked.correspondingAddress = {
       ...masked.correspondingAddress,
-      fax: maskFax(masked.correspondingAddress.fax),
-      address1: maskAddress(masked.correspondingAddress.address1),
+      fax: masked.correspondingAddress.fax ? maskFax(masked.correspondingAddress.fax) : masked.correspondingAddress.fax,
+      address1: masked.correspondingAddress.address1 ? maskAddress(masked.correspondingAddress.address1) : masked.correspondingAddress.address1,
     };
   }
   
-  return masked as T;
+  return masked;
 }
 
 /**
  * Mask sensitive fields in a practice object
  */
-export function maskPracticePII<T extends Record<string, any>>(practice: T): T {
+export function maskPracticePII(practice: Record<string, any>): Record<string, any> {
   if (!DEMO_MODE) return practice;
   
   return {
     ...practice,
-    taxId: maskTaxId(practice.taxId),
-    phone: maskPhone(practice.phone),
-    fax: maskFax(practice.fax),
-    email: maskEmail(practice.email),
-    address1: maskAddress(practice.address1),
+    taxId: practice.taxId ? maskTaxId(practice.taxId) : practice.taxId,
+    phone: practice.phone ? maskPhone(practice.phone) : practice.phone,
+    fax: practice.fax ? maskFax(practice.fax) : practice.fax,
+    email: practice.email ? maskEmail(practice.email) : practice.email,
+    address1: practice.address1 ? maskAddress(practice.address1) : practice.address1,
   };
 }
 
