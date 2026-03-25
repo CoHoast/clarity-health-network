@@ -702,6 +702,28 @@ export default function ReviewQueuePage() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "flagged">("pending");
   const [viewingDocument, setViewingDocument] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch real review queue from API
+  useEffect(() => {
+    async function fetchReviewQueue() {
+      try {
+        const res = await fetch('/api/credentialing/review');
+        const data = await res.json();
+        
+        if (data.applications?.length > 0) {
+          setApplications(data.applications);
+        }
+      } catch (error) {
+        console.error('Error fetching review queue:', error);
+        // Keep initial demo data on error
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchReviewQueue();
+  }, []);
 
   const stats = calculateStats(applications);
 

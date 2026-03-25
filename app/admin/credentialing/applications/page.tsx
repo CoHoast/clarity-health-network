@@ -358,21 +358,41 @@ export default function ApplicationsPage() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch real applications from API and merge with demo data
+  // Fetch real applications from API (both wizard apps and real provider data)
   useEffect(() => {
     async function fetchApplications() {
       try {
-        const res = await fetch('/api/apply');
-        const data = await res.json();
+        // Fetch both wizard apps and real provider applications
+        const [wizardRes, providerRes] = await Promise.all([
+          fetch('/api/apply'),
+          fetch('/api/credentialing/applications')
+        ]);
         
-        if (data.success && data.applications?.length > 0) {
-          // Convert wizard applications to display format
-          const wizardApps = data.applications.map(convertWizardToDisplay);
-          // Merge with demo data, wizard apps first (most recent)
-          setApplications([...wizardApps, ...demoApplications]);
+        const wizardData = await wizardRes.json();
+        const providerData = await providerRes.json();
+        
+        let allApps: ApplicationDisplay[] = [];
+        
+        // Add wizard applications
+        if (wizardData.success && wizardData.applications?.length > 0) {
+          const wizardApps = wizardData.applications.map(convertWizardToDisplay);
+          allApps = [...wizardApps];
         }
+        
+        // Add real provider applications (from Arizona providers)
+        if (providerData.applications?.length > 0) {
+          allApps = [...allApps, ...providerData.applications];
+        }
+        
+        // If no API data, fall back to demo
+        if (allApps.length === 0) {
+          allApps = demoApplications;
+        }
+        
+        setApplications(allApps);
       } catch (error) {
         console.error('Error fetching applications:', error);
+        setApplications(demoApplications); // Fallback to demo
       } finally {
         setLoading(false);
       }
