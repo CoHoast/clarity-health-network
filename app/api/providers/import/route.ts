@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { logAuditEvent } from '@/lib/audit';
+
+// Increase body size limit for large CSV files (8000+ providers)
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '50mb',
+    },
+  },
+};
 import {
   createImportSession,
   updateImportSession,

@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import providersData from '@/data/arizona-providers.json';
 
+// Increase body size limit for large CSV files (8000+ providers)
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '50mb',
+    },
+  },
+};
+
 interface ParsedRow {
   rowNumber: number;
   npi: string;
