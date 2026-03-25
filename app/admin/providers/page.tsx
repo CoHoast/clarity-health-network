@@ -269,6 +269,7 @@ export default function ProvidersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All Types");
+  const [viewMode, setViewMode] = useState<"practices" | "providers">("practices");
   const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
   const [activeTab, setActiveTab] = useState<"info" | "providers" | "billing" | "payto" | "contract">("info");
@@ -534,6 +535,28 @@ export default function ProvidersPage() {
     return matchesSearch && matchesStatus && matchesType;
   }).sort((a, b) => a.name.localeCompare(b.name));
 
+  // Filter providers directly (for Provider View mode)
+  const filteredProviders = useMemo(() => {
+    if (!searchQuery.trim()) return providers;
+    
+    const searchLower = searchQuery.toLowerCase().trim();
+    
+    return providers.filter(p => {
+      const providerName = p.name || `${p.firstName || ''} ${p.lastName || ''}`.trim();
+      const matchesNpi = p.npi && p.npi.includes(searchQuery.trim());
+      const matchesName = providerName.toLowerCase().includes(searchLower);
+      const matchesSpecialty = p.specialty && p.specialty.toLowerCase().includes(searchLower);
+      const matchesCredential = p.credential && p.credential.toLowerCase().includes(searchLower);
+      
+      return matchesNpi || matchesName || matchesSpecialty || matchesCredential;
+    });
+  }, [searchQuery, providers]);
+
+  // Get practice name for a provider
+  const getPracticeForProvider = (practiceId: string) => {
+    return practices.find(p => p.id === practiceId);
+  };
+
   // Bulk select for practices
   const {
     selectedIds,
@@ -783,8 +806,42 @@ export default function ProvidersPage() {
             <option key={type} value={type}>{type}</option>
           ))}
         </select>
+        
+        {/* View Toggle */}
+        <div className={cn(
+          "flex rounded-lg border overflow-hidden",
+          isDark ? "border-slate-700" : "border-slate-200"
+        )}>
+          <button
+            onClick={() => setViewMode("practices")}
+            className={cn(
+              "px-4 py-2 text-sm font-medium flex items-center gap-2 transition-colors",
+              viewMode === "practices"
+                ? (isDark ? "bg-blue-600 text-white" : "bg-blue-500 text-white")
+                : (isDark ? "bg-slate-800 text-slate-300 hover:bg-slate-700" : "bg-white text-slate-600 hover:bg-slate-50")
+            )}
+          >
+            <Building2 className="w-4 h-4" />
+            Practices
+          </button>
+          <button
+            onClick={() => setViewMode("providers")}
+            className={cn(
+              "px-4 py-2 text-sm font-medium flex items-center gap-2 transition-colors",
+              viewMode === "providers"
+                ? (isDark ? "bg-blue-600 text-white" : "bg-blue-500 text-white")
+                : (isDark ? "bg-slate-800 text-slate-300 hover:bg-slate-700" : "bg-white text-slate-600 hover:bg-slate-50")
+            )}
+          >
+            <User className="w-4 h-4" />
+            Providers
+          </button>
+        </div>
       </div>
 
+      {/* View Mode: Practices */}
+      {viewMode === "practices" && (
+      <>
       {/* Practices Table */}
       <div className={cn(
         "rounded-xl border overflow-hidden",
@@ -949,6 +1006,125 @@ export default function ProvidersPage() {
         actions={bulkActions}
         onClear={clearSelection}
       />
+      </>
+      )}
+
+      {/* View Mode: Providers */}
+      {viewMode === "providers" && (
+        <div className={cn(
+          "rounded-xl border overflow-hidden",
+          isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200 shadow-sm"
+        )}>
+          {isLoading ? (
+            <table className="w-full">
+              <tbody>
+                {[...Array(5)].map((_, i) => (
+                  <TableRowSkeleton key={i} columns={6} />
+                ))}
+              </tbody>
+            </table>
+          ) : filteredProviders.length === 0 ? (
+            searchQuery ? (
+              <NoSearchResults query={searchQuery} onClear={() => setSearchQuery("")} />
+            ) : (
+              <EmptyState
+                title="No providers found"
+                description="Import providers or add them manually."
+                icon={<User className="w-12 h-12" />}
+                action={{ label: "Import CSV", onClick: () => setShowCsvWizard(true) }}
+              />
+            )
+          ) : (
+            <table className="w-full">
+              <thead className={isDark ? "bg-slate-700/50" : "bg-slate-50"}>
+                <tr>
+                  <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Provider</th>
+                  <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>NPI</th>
+                  <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Specialty</th>
+                  <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Practice</th>
+                  <th className={cn("text-left px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Status</th>
+                  <th className={cn("text-right px-6 py-4 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>Actions</th>
+                </tr>
+              </thead>
+              <tbody className={cn("divide-y", isDark ? "divide-slate-700" : "divide-slate-200")}>
+                {filteredProviders.slice(0, 100).map(provider => {
+                  const practice = getPracticeForProvider(provider.practiceId);
+                  const providerName = provider.name || `${provider.firstName || ''} ${provider.lastName || ''}`.trim();
+                  return (
+                    <tr 
+                      key={provider.id} 
+                      className={cn(
+                        "transition-colors cursor-pointer",
+                        isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50"
+                      )}
+                      onClick={() => setSelectedProvider(provider)}
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className={cn(
+                            "w-10 h-10 rounded-full flex items-center justify-center",
+                            isDark ? "bg-blue-500/20" : "bg-blue-50"
+                          )}>
+                            <User className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
+                          </div>
+                          <div>
+                            <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{providerName}</p>
+                            <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{provider.credential || ''}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <code className={cn("text-sm font-mono px-2 py-1 rounded", isDark ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-700")}>
+                          {provider.npi}
+                        </code>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className={isDark ? "text-slate-300" : "text-slate-600"}>{provider.specialty || 'N/A'}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>{practice?.name || 'Unknown'}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        {provider.acceptingNewPatients ? (
+                          <span className={cn("inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium", isDark ? "bg-green-500/20 text-green-400" : "bg-green-100 text-green-700")}>
+                            <CheckCircle className="w-3 h-3" />
+                            Accepting
+                          </span>
+                        ) : (
+                          <span className={cn("inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium", isDark ? "bg-slate-600 text-slate-300" : "bg-slate-100 text-slate-600")}>
+                            Not Accepting
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setSelectedProvider(provider); }}
+                            className={cn(
+                              "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm",
+                              isDark 
+                                ? "text-slate-300 bg-slate-700 hover:bg-slate-600" 
+                                : "text-slate-600 bg-slate-100 hover:bg-slate-200"
+                            )}
+                          >
+                            <Eye className="w-4 h-4" />
+                            View
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+          {filteredProviders.length > 100 && (
+            <div className={cn("px-6 py-4 text-center border-t", isDark ? "border-slate-700 text-slate-400" : "border-slate-200 text-slate-500")}>
+              Showing 100 of {filteredProviders.length.toLocaleString()} providers. Use search to narrow results.
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Network Assignment Modal */}
       <AnimatePresence>
