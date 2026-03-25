@@ -1012,6 +1012,21 @@ export default function MonitoringPage() {
                   </p>
                 </div>
               </div>
+              
+              {/* View Full Profile Button */}
+              <Link 
+                href={`/admin/providers/practice-${selectedAlert.npi}/${selectedAlert.providerId || `prov-${selectedAlert.npi}`}`}
+                className={cn(
+                  "flex items-center justify-center gap-2 w-full py-3 rounded-lg border font-medium transition-colors",
+                  isDark 
+                    ? "bg-slate-700 border-slate-600 text-white hover:bg-slate-600" 
+                    : "bg-white border-slate-300 text-slate-900 hover:bg-slate-50"
+                )}
+              >
+                <User className="w-4 h-4" />
+                View Full Provider Profile
+                <ChevronRight className="w-4 h-4" />
+              </Link>
 
               {/* Details */}
               <div>
