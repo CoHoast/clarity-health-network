@@ -3,17 +3,17 @@
 import { useTheme } from "@/components/admin/ThemeContext";
 import { cn } from "@/lib/utils";
 
-import { useState } from "react";
-import { FileText, Plus, Edit, Copy, Trash2, Eye, Download, CheckCircle, X, Check, AlertTriangle } from "lucide-react";
+import { useState, useRef } from "react";
+import { FileText, Plus, Edit, Copy, Trash2, Eye, Download, CheckCircle, X, Check, AlertTriangle, Upload, File } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const templates = [
-  { id: "TPL-001", name: "Standard Provider Agreement", type: "Individual", description: "Standard contract for individual providers joining the network", termLength: "3 years", lastModified: "2026-02-15", usageCount: 145, isDefault: true },
-  { id: "TPL-002", name: "Group Practice Agreement", type: "Group Practice", description: "Contract template for group practices with multiple providers", termLength: "3 years", lastModified: "2026-02-10", usageCount: 67, isDefault: false },
-  { id: "TPL-003", name: "Facility Agreement", type: "Facility", description: "Agreement for hospitals, imaging centers, and other facilities", termLength: "5 years", lastModified: "2026-01-20", usageCount: 34, isDefault: false },
-  { id: "TPL-004", name: "Urgent Care Agreement", type: "Facility", description: "Specialized contract for urgent care centers with specific rate structures", termLength: "3 years", lastModified: "2026-02-01", usageCount: 12, isDefault: false },
-  { id: "TPL-005", name: "Laboratory Services Agreement", type: "Facility", description: "Contract for diagnostic laboratories with volume-based pricing", termLength: "2 years", lastModified: "2026-01-15", usageCount: 8, isDefault: false },
-  { id: "TPL-006", name: "Specialist Agreement", type: "Individual", description: "Enhanced contract for specialists with higher reimbursement rates", termLength: "3 years", lastModified: "2026-02-20", usageCount: 89, isDefault: false },
+const initialTemplates = [
+  { id: "TPL-001", name: "Standard Provider Agreement", type: "Individual", description: "Standard contract for individual providers joining the network", termLength: "3 years", lastModified: "2026-02-15", usageCount: 145, isDefault: true, fileName: "standard-provider-agreement.pdf", hasFile: true },
+  { id: "TPL-002", name: "Group Practice Agreement", type: "Group Practice", description: "Contract template for group practices with multiple providers", termLength: "3 years", lastModified: "2026-02-10", usageCount: 67, isDefault: false, fileName: "group-practice-agreement.pdf", hasFile: true },
+  { id: "TPL-003", name: "Facility Agreement", type: "Facility", description: "Agreement for hospitals, imaging centers, and other facilities", termLength: "5 years", lastModified: "2026-01-20", usageCount: 34, isDefault: false, fileName: "facility-agreement.pdf", hasFile: true },
+  { id: "TPL-004", name: "Urgent Care Agreement", type: "Facility", description: "Specialized contract for urgent care centers with specific rate structures", termLength: "3 years", lastModified: "2026-02-01", usageCount: 12, isDefault: false, fileName: null, hasFile: false },
+  { id: "TPL-005", name: "Laboratory Services Agreement", type: "Facility", description: "Contract for diagnostic laboratories with volume-based pricing", termLength: "2 years", lastModified: "2026-01-15", usageCount: 8, isDefault: false, fileName: null, hasFile: false },
+  { id: "TPL-006", name: "Specialist Agreement", type: "Individual", description: "Enhanced contract for specialists with higher reimbursement rates", termLength: "3 years", lastModified: "2026-02-20", usageCount: 89, isDefault: false, fileName: "specialist-agreement.pdf", hasFile: true },
 ];
 
 interface Clause {
@@ -239,24 +239,99 @@ Provider shall maintain and provide evidence of the following credentials throug
 
 export default function ContractTemplatesPage() {
   const { isDark } = useTheme();
-  const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
+  const [templates, setTemplates] = useState(initialTemplates);
+  const [selectedTemplate, setSelectedTemplate] = useState<typeof initialTemplates[0] | null>(null);
+  const [editingTemplate, setEditingTemplate] = useState<typeof initialTemplates[0] | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showClauseModal, setShowClauseModal] = useState(false);
   const [selectedClause, setSelectedClause] = useState<Clause | null>(null);
   const [showAddClauseModal, setShowAddClauseModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"templates" | "clauses">("templates");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  
+  // Create template form state
+  const [newTemplateName, setNewTemplateName] = useState("");
+  const [newTemplateType, setNewTemplateType] = useState("");
+  const [newTemplateDesc, setNewTemplateDesc] = useState("");
+  const [newTemplateTerm, setNewTemplateTerm] = useState("3 years");
+  const [newTemplateFile, setNewTemplateFile] = useState<File | null>(null);
+  const templateFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSave = () => {
     setSaving(true);
     setTimeout(() => {
+      if (showCreateModal && newTemplateName && newTemplateType) {
+        const newTemplate = {
+          id: `TPL-${Date.now()}`,
+          name: newTemplateName,
+          type: newTemplateType,
+          description: newTemplateDesc,
+          termLength: newTemplateTerm,
+          lastModified: new Date().toISOString().split('T')[0],
+          usageCount: 0,
+          isDefault: false,
+          fileName: newTemplateFile?.name || null,
+          hasFile: !!newTemplateFile,
+        };
+        setTemplates(prev => [...prev, newTemplate]);
+      }
       setSaving(false);
       setSaved(true);
       setTimeout(() => {
         setSaved(false);
         setShowCreateModal(false);
+        setShowEditModal(false);
         setShowAddClauseModal(false);
+        // Reset form
+        setNewTemplateName("");
+        setNewTemplateType("");
+        setNewTemplateDesc("");
+        setNewTemplateTerm("3 years");
+        setNewTemplateFile(null);
+      }, 1500);
+    }, 1000);
+  };
+
+  const handleEditTemplate = (template: typeof initialTemplates[0]) => {
+    setEditingTemplate(template);
+    setNewTemplateName(template.name);
+    setNewTemplateType(template.type);
+    setNewTemplateDesc(template.description);
+    setNewTemplateTerm(template.termLength);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingTemplate) return;
+    setSaving(true);
+    setTimeout(() => {
+      setTemplates(prev => prev.map(t => 
+        t.id === editingTemplate.id 
+          ? {
+              ...t,
+              name: newTemplateName,
+              type: newTemplateType,
+              description: newTemplateDesc,
+              termLength: newTemplateTerm,
+              lastModified: new Date().toISOString().split('T')[0],
+              fileName: newTemplateFile?.name || t.fileName,
+              hasFile: newTemplateFile ? true : t.hasFile,
+            }
+          : t
+      ));
+      setSaving(false);
+      setSaved(true);
+      setTimeout(() => {
+        setSaved(false);
+        setShowEditModal(false);
+        setEditingTemplate(null);
+        setNewTemplateName("");
+        setNewTemplateType("");
+        setNewTemplateDesc("");
+        setNewTemplateTerm("3 years");
+        setNewTemplateFile(null);
       }, 1500);
     }, 1000);
   };
@@ -341,6 +416,20 @@ export default function ContractTemplatesPage() {
                 </div>
               </div>
 
+              {/* File indicator */}
+              {template.hasFile && (
+                <div className="flex items-center gap-2 mb-3 text-xs text-slate-400">
+                  <File className="w-3 h-3" />
+                  <span>{template.fileName}</span>
+                </div>
+              )}
+              {!template.hasFile && (
+                <div className="flex items-center gap-2 mb-3 text-xs text-amber-400">
+                  <AlertTriangle className="w-3 h-3" />
+                  <span>No PDF uploaded</span>
+                </div>
+              )}
+
               <div className="flex gap-2">
                 <button
                   onClick={() => setSelectedTemplate(template)}
@@ -349,7 +438,10 @@ export default function ContractTemplatesPage() {
                   <Eye className="w-4 h-4" />
                   Preview
                 </button>
-                <button className="inline-flex items-center justify-center gap-2 px-3 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors">
+                <button 
+                  onClick={() => handleEditTemplate(template)}
+                  className="inline-flex items-center justify-center gap-2 px-3 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                >
                   <Edit className="w-4 h-4" />
                 </button>
                 <button className="inline-flex items-center justify-center gap-2 px-3 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors">
@@ -531,40 +623,92 @@ export default function ContractTemplatesPage() {
                   <div className="p-6 border-b border-slate-700 flex items-center justify-between">
                     <div>
                       <h2 className="text-xl font-bold text-white">Create New Template</h2>
-                      <p className="text-slate-400 text-sm">Build a new contract template from scratch or copy an existing one</p>
+                      <p className="text-slate-400 text-sm">Upload an existing contract PDF to use as a template</p>
                     </div>
                     <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-white p-2 hover:bg-slate-700 rounded-lg">
                       <X className="w-6 h-6" />
                     </button>
                   </div>
                   <div className="p-6 overflow-auto max-h-[60vh] space-y-5">
+                    {/* File Upload - Primary */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Upload Contract Template (PDF) *</label>
+                      <input
+                        ref={templateFileInputRef}
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={(e) => setNewTemplateFile(e.target.files?.[0] || null)}
+                        className="hidden"
+                      />
+                      <div
+                        onClick={() => templateFileInputRef.current?.click()}
+                        className={cn(
+                          "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+                          "border-slate-600 hover:border-blue-500",
+                          newTemplateFile && "border-green-500 bg-green-500/10"
+                        )}
+                      >
+                        {newTemplateFile ? (
+                          <div className="flex items-center justify-center gap-3">
+                            <File className="w-8 h-8 text-green-400" />
+                            <div className="text-left">
+                              <p className="text-white font-medium">{newTemplateFile.name}</p>
+                              <p className="text-slate-400 text-sm">{(newTemplateFile.size / 1024).toFixed(1)} KB</p>
+                            </div>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setNewTemplateFile(null); }}
+                              className="p-1 hover:bg-slate-700 rounded"
+                            >
+                              <X className="w-4 h-4 text-slate-400" />
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <Upload className="w-10 h-10 text-slate-500 mx-auto mb-3" />
+                            <p className="text-white font-medium">Click to upload your contract template</p>
+                            <p className="text-slate-400 text-sm mt-1">PDF or Word document (max 10MB)</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">Template Name *</label>
                       <input 
-                        type="text" 
+                        type="text"
+                        value={newTemplateName}
+                        onChange={(e) => setNewTemplateName(e.target.value)}
                         className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
-                        placeholder="e.g., Telehealth Provider Agreement"
+                        placeholder="e.g., Standard Provider Agreement"
                       />
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-slate-300 mb-2">Provider Type *</label>
-                        <select className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500">
+                        <select 
+                          value={newTemplateType}
+                          onChange={(e) => setNewTemplateType(e.target.value)}
+                          className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        >
                           <option value="">Select type...</option>
-                          <option>Individual</option>
-                          <option>Group Practice</option>
-                          <option>Facility</option>
-                          <option>Ancillary</option>
+                          <option value="Individual">Individual</option>
+                          <option value="Group Practice">Group Practice</option>
+                          <option value="Facility">Facility</option>
+                          <option value="Ancillary">Ancillary</option>
                         </select>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-slate-300 mb-2">Default Term Length *</label>
-                        <select className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500">
-                          <option>1 year</option>
-                          <option>2 years</option>
-                          <option>3 years</option>
-                          <option>5 years</option>
+                        <select 
+                          value={newTemplateTerm}
+                          onChange={(e) => setNewTemplateTerm(e.target.value)}
+                          className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        >
+                          <option value="1 year">1 year</option>
+                          <option value="2 years">2 years</option>
+                          <option value="3 years">3 years</option>
+                          <option value="5 years">5 years</option>
                         </select>
                       </div>
                     </div>
@@ -572,32 +716,21 @@ export default function ContractTemplatesPage() {
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
                       <textarea 
+                        value={newTemplateDesc}
+                        onChange={(e) => setNewTemplateDesc(e.target.value)}
                         className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 h-20 resize-none"
                         placeholder="Brief description of when this template should be used..."
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Copy From Existing Template</label>
-                      <select className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500">
-                        <option value="">Start from blank template</option>
-                        {templates.map(t => (
-                          <option key={t.id} value={t.id}>{t.name}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Include Clauses</label>
-                      <div className="bg-slate-700/50 rounded-lg p-4 max-h-40 overflow-auto space-y-2">
-                        {clauseLibrary.map(clause => (
-                          <label key={clause.id} className="flex items-center gap-3 cursor-pointer hover:bg-slate-600/30 p-2 rounded">
-                            <input type="checkbox" defaultChecked={["CL-002", "CL-003", "CL-005", "CL-006", "CL-008"].includes(clause.id)} className="rounded bg-slate-600 border-slate-500 text-blue-500 focus:ring-teal-500" />
-                            <span className="text-slate-300 text-sm">{clause.name}</span>
-                            <span className="text-slate-500 text-xs">({clause.category})</span>
-                          </label>
-                        ))}
-                      </div>
+                    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                      <h4 className="text-blue-400 font-medium text-sm mb-2">📄 How Templates Work</h4>
+                      <ul className="text-blue-300/80 text-sm space-y-1">
+                        <li>• Upload your existing contract PDF as the template</li>
+                        <li>• When onboarding a provider, select this template</li>
+                        <li>• Send for e-signature via DocuSign integration</li>
+                        <li>• Signed contract is automatically saved to provider file</li>
+                      </ul>
                     </div>
 
                     <div className="flex items-center gap-3">
@@ -614,7 +747,8 @@ export default function ContractTemplatesPage() {
                     </button>
                     <button 
                       onClick={handleSave}
-                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
+                      disabled={!newTemplateName || !newTemplateType}
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2 disabled:opacity-50"
                     >
                       <Plus className="w-4 h-4" />
                       Create Template
@@ -637,6 +771,176 @@ export default function ContractTemplatesPage() {
                   </motion.div>
                   <p className="text-white font-medium">Template Created!</p>
                   <p className="text-slate-400 text-sm mt-1">You can now use this template for new contracts</p>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Template Modal */}
+      <AnimatePresence>
+        {showEditModal && editingTemplate && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => !saving && setShowEditModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[85vh] overflow-hidden border border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {!saving && !saved ? (
+                <>
+                  <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-white">Edit Template</h2>
+                      <p className="text-slate-400 text-sm">Update template details or upload a new PDF</p>
+                    </div>
+                    <button onClick={() => setShowEditModal(false)} className="text-slate-400 hover:text-white p-2 hover:bg-slate-700 rounded-lg">
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  <div className="p-6 overflow-auto max-h-[60vh] space-y-5">
+                    {/* Current File */}
+                    {editingTemplate.hasFile && (
+                      <div className="bg-slate-700/50 rounded-lg p-4">
+                        <p className="text-slate-400 text-sm mb-2">Current Template File</p>
+                        <div className="flex items-center gap-3">
+                          <File className="w-5 h-5 text-blue-400" />
+                          <span className="text-white">{editingTemplate.fileName}</span>
+                          <button className="text-blue-400 text-sm hover:underline">Download</button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Replace File */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        {editingTemplate.hasFile ? "Replace Template PDF (optional)" : "Upload Template PDF *"}
+                      </label>
+                      <input
+                        ref={templateFileInputRef}
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={(e) => setNewTemplateFile(e.target.files?.[0] || null)}
+                        className="hidden"
+                      />
+                      <div
+                        onClick={() => templateFileInputRef.current?.click()}
+                        className={cn(
+                          "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
+                          "border-slate-600 hover:border-blue-500",
+                          newTemplateFile && "border-green-500 bg-green-500/10"
+                        )}
+                      >
+                        {newTemplateFile ? (
+                          <div className="flex items-center justify-center gap-3">
+                            <File className="w-6 h-6 text-green-400" />
+                            <span className="text-white">{newTemplateFile.name}</span>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setNewTemplateFile(null); }}
+                              className="p-1 hover:bg-slate-700 rounded"
+                            >
+                              <X className="w-4 h-4 text-slate-400" />
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <Upload className="w-8 h-8 text-slate-500 mx-auto mb-2" />
+                            <p className="text-slate-400 text-sm">Click to upload a new PDF</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Template Name *</label>
+                      <input 
+                        type="text"
+                        value={newTemplateName}
+                        onChange={(e) => setNewTemplateName(e.target.value)}
+                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Provider Type *</label>
+                        <select 
+                          value={newTemplateType}
+                          onChange={(e) => setNewTemplateType(e.target.value)}
+                          className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        >
+                          <option value="Individual">Individual</option>
+                          <option value="Group Practice">Group Practice</option>
+                          <option value="Facility">Facility</option>
+                          <option value="Ancillary">Ancillary</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Default Term Length</label>
+                        <select 
+                          value={newTemplateTerm}
+                          onChange={(e) => setNewTemplateTerm(e.target.value)}
+                          className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-teal-500"
+                        >
+                          <option value="1 year">1 year</option>
+                          <option value="2 years">2 years</option>
+                          <option value="3 years">3 years</option>
+                          <option value="5 years">5 years</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                      <textarea 
+                        value={newTemplateDesc}
+                        onChange={(e) => setNewTemplateDesc(e.target.value)}
+                        className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:border-teal-500 h-20 resize-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="p-4 border-t border-slate-700 flex justify-between">
+                    <button
+                      className="px-4 py-2 text-red-400 hover:bg-red-500/10 font-medium rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      Delete Template
+                    </button>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => setShowEditModal(false)}
+                        className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        onClick={handleSaveEdit}
+                        className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
+                      >
+                        <Check className="w-4 h-4" />
+                        Save Changes
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : saving ? (
+                <div className="p-12 text-center">
+                  <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-white font-medium">Saving changes...</p>
+                </div>
+              ) : (
+                <div className="p-12 text-center">
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Check className="w-8 h-8 text-green-400" />
+                  </motion.div>
+                  <p className="text-white font-medium">Changes Saved!</p>
+                  <p className="text-slate-400 text-sm mt-1">Template has been updated</p>
                 </div>
               )}
             </motion.div>
