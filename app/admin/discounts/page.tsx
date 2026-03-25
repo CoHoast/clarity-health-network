@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X, Check, AlertTriangle, User, Percent, FileText, Filter, Upload, FileSpreadsheet } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { DollarSign, Search, Plus, Edit, Trash2, Eye, Download, Building2, CheckCircle, X, Check, AlertTriangle, User, Percent, FileText, Filter, Upload, FileSpreadsheet, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { cn } from "@/lib/utils";
@@ -147,121 +147,7 @@ const discountSchedules: DiscountSchedule[] = [
   },
 ];
 
-const providerRates: ProviderRate[] = [
-  {
-    id: "PR-001",
-    providerId: "P-1234",
-    providerName: "Dr. Sarah Johnson",
-    practiceName: "Main Street Medical Group",
-    npi: "1234567890",
-    rateType: "custom",
-    serviceRates: {
-      professional: "145% Medicare",
-      inpatient: "140% Medicare",
-      outpatient: "135% Medicare",
-      urgentCare: "150% Medicare",
-      labServices: "125% Medicare",
-      imaging: "130% Medicare",
-    },
-    cptRates: [
-      { cpt: "99213", description: "Office Visit - Established, Low", rate: "$85" },
-      { cpt: "99214", description: "Office Visit - Established, Moderate", rate: "$125" },
-      { cpt: "99215", description: "Office Visit - Established, High", rate: "$175" },
-    ],
-    effectiveDate: "2026-01-01",
-    notes: "Negotiated rates based on high volume referrals. CPT flat rates for common office visits.",
-    lastModified: "2026-02-15"
-  },
-  {
-    id: "PR-002",
-    providerId: "P-2345",
-    providerName: "Dr. Michael Chen",
-    practiceName: "Valley Orthopedics",
-    npi: "2345678901",
-    rateType: "flat",
-    flatRate: "130% Medicare",
-    cptRates: [
-      { cpt: "27447", description: "Total Knee Arthroplasty", rate: "$4,500" },
-      { cpt: "27130", description: "Total Hip Arthroplasty", rate: "$5,200" },
-      { cpt: "29881", description: "Knee Arthroscopy w/ Meniscectomy", rate: "$1,800" },
-      { cpt: "20610", description: "Joint Injection - Major", rate: "$150" },
-    ],
-    effectiveDate: "2025-06-01",
-    expirationDate: "2027-05-31",
-    notes: "2-year contract with flat rates for major orthopedic procedures",
-    lastModified: "2025-06-01"
-  },
-  {
-    id: "PR-003",
-    providerId: "P-3456",
-    providerName: "Cleveland Regional Hospital",
-    practiceName: "Cleveland Regional Hospital",
-    npi: "3456789012",
-    rateType: "custom",
-    serviceRates: {
-      professional: "150% Medicare",
-      inpatient: "155% Medicare",
-      outpatient: "140% Medicare",
-      urgentCare: "145% Medicare",
-      labServices: "120% Medicare",
-      imaging: "135% Medicare",
-    },
-    cptRates: [
-      { cpt: "99283", description: "ER Visit - Moderate", rate: "$350" },
-      { cpt: "99284", description: "ER Visit - High", rate: "$550" },
-      { cpt: "99285", description: "ER Visit - Severe", rate: "$850" },
-      { cpt: "70553", description: "MRI Brain w/ & w/o Contrast", rate: "$650" },
-      { cpt: "74177", description: "CT Abdomen/Pelvis w/ Contrast", rate: "$475" },
-    ],
-    effectiveDate: "2026-01-01",
-    notes: "Major hospital facility - tiered rates with CPT overrides for ER and imaging",
-    lastModified: "2026-01-15"
-  },
-  {
-    id: "PR-004",
-    providerId: "P-4567",
-    providerName: "Dr. Emily Rodriguez",
-    practiceName: "Family Care Associates",
-    npi: "4567890123",
-    rateType: "custom",
-    serviceRates: {
-      professional: "135% Medicare",
-      labServices: "115% Medicare",
-      imaging: "120% Medicare",
-    },
-    effectiveDate: "2025-09-01",
-    lastModified: "2025-09-01"
-  },
-  {
-    id: "PR-005",
-    providerId: "P-5678",
-    providerName: "Lakeside Imaging Center",
-    practiceName: "Lakeside Imaging Center",
-    npi: "5678901234",
-    rateType: "flat",
-    flatRate: "125% Medicare",
-    effectiveDate: "2026-02-01",
-    notes: "Imaging-only facility",
-    lastModified: "2026-02-01"
-  },
-  {
-    id: "PR-006",
-    providerId: "P-6789",
-    providerName: "Urgent Care Plus",
-    practiceName: "Urgent Care Plus",
-    npi: "6789012345",
-    rateType: "custom",
-    serviceRates: {
-      professional: "140% Medicare",
-      urgentCare: "160% Medicare",
-      labServices: "110% Medicare",
-      imaging: "115% Medicare",
-    },
-    effectiveDate: "2026-01-15",
-    notes: "Extended hours premium",
-    lastModified: "2026-01-15"
-  },
-];
+// Provider rates will be fetched from API
 
 const discountTypes = ["All Types", "% Off Billed", "% of Medicare", "Case Rate", "Flat Rate"];
 
@@ -287,6 +173,70 @@ export default function DiscountSchedulesPage() {
   const [selectedProviderRate, setSelectedProviderRate] = useState<ProviderRate | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showProviderRateModal, setShowProviderRateModal] = useState(false);
+  
+  // Provider data from API
+  const [providerRates, setProviderRates] = useState<ProviderRate[]>([]);
+  const [providersLoading, setProvidersLoading] = useState(false);
+  const [providerPage, setProviderPage] = useState(1);
+  const [providerTotal, setProviderTotal] = useState(0);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Fetch providers from API
+  useEffect(() => {
+    if (activeTab !== "providers") return;
+    
+    async function fetchProviders() {
+      setProvidersLoading(true);
+      try {
+        const params = new URLSearchParams({
+          page: providerPage.toString(),
+          limit: "25",
+        });
+        if (debouncedSearch) {
+          params.set("search", debouncedSearch);
+        }
+        
+        const res = await fetch(`/api/providers?${params}`);
+        const data = await res.json();
+        
+        // Transform API data to ProviderRate format
+        const rates: ProviderRate[] = (data.providers || []).map((p: any) => ({
+          id: p.id || p.npi,
+          providerId: p.id || `prov-${p.npi}`,
+          providerName: `${p.firstName || ''} ${p.lastName || ''}`.trim() || p.billing?.name || 'Unknown',
+          practiceName: p.billing?.name || `${p.firstName || ''} ${p.lastName || ''}`.trim() || 'Unknown Practice',
+          npi: p.npi || '',
+          specialty: p.specialty || 'General Practice',
+          city: p.locations?.[0]?.city || '',
+          state: p.locations?.[0]?.state || 'AZ',
+          rateType: p.pricingTier ? "custom" : "flat",
+          flatRate: p.pricingTier ? `Tier ${p.pricingTier}` : "Standard",
+          serviceRates: {},
+          effectiveDate: p.contractStartDate || '2026-01-01',
+          expirationDate: p.contractEndDate || undefined,
+          contractNumber: p.contractNumber || '',
+          lastModified: p.updatedAt || new Date().toISOString().split('T')[0],
+        }));
+        
+        setProviderRates(rates);
+        setProviderTotal(data.pagination?.total || rates.length);
+      } catch (error) {
+        console.error("Failed to fetch providers:", error);
+      } finally {
+        setProvidersLoading(false);
+      }
+    }
+    
+    fetchProviders();
+  }, [activeTab, providerPage, debouncedSearch]);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [serviceRows, setServiceRows] = useState([{ service: "", rate: "" }]);
@@ -450,13 +400,10 @@ export default function DiscountSchedulesPage() {
     return matchesSearch && matchesType;
   });
 
+  // Client-side filtering for rate type only (search happens server-side)
   const filteredProviderRates = providerRates.filter(pr => {
-    const matchesSearch = 
-      pr.providerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pr.practiceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pr.npi.includes(searchQuery);
     const matchesType = rateTypeFilter === "all" || pr.rateType === rateTypeFilter;
-    return matchesSearch && matchesType;
+    return matchesType;
   });
 
   const totalProviders = discountSchedules.reduce((sum, s) => sum + s.providersUsing, 0);
@@ -473,7 +420,7 @@ export default function DiscountSchedulesPage() {
           <p className={cn("mt-1", isDark ? "text-slate-400" : "text-slate-500")}>
             {activeTab === "schedules" 
               ? `${discountSchedules.length} schedules • ${totalProviders.toLocaleString()} providers assigned`
-              : `${providerRates.length} custom provider rates`
+              : `${providerTotal.toLocaleString()} providers in network`
             }
           </p>
         </div>
@@ -607,89 +554,113 @@ export default function DiscountSchedulesPage() {
       ) : (
         /* Provider Rates Table */
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-slate-700 bg-slate-800">
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Provider</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">NPI</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Rate Type</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Rates</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Effective</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-700">
-              {filteredProviderRates.map((pr) => (
-                <tr key={pr.id} className="hover:bg-slate-800/80">
-                  <td className="px-4 py-4">
-                    <div>
-                      <p className="text-white font-medium">{pr.providerName}</p>
-                      <p className="text-slate-500 text-sm">{pr.practiceName}</p>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 text-slate-300 font-mono text-sm">{pr.npi}</td>
-                  <td className="px-4 py-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      pr.rateType === "flat" 
-                        ? "bg-blue-500/20 text-blue-400"
-                        : "bg-purple-500/20 text-purple-400"
-                    }`}>
-                      {pr.rateType === "flat" ? "Flat Rate" : "Custom by Service"}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="space-y-1">
-                      {pr.rateType === "flat" ? (
-                        <span className="text-green-400 font-semibold">{pr.flatRate}</span>
-                      ) : (
-                        <button
-                          onClick={() => setSelectedProviderRate(pr)}
-                          className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
-                        >
-                          <Eye className="w-3 h-3" />
-                          {Object.keys(pr.serviceRates || {}).length} categories
-                        </button>
-                      )}
-                      {pr.cptRates && pr.cptRates.length > 0 && (
-                        <p className="text-xs text-amber-400">+ {pr.cptRates.length} CPT overrides</p>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="text-sm">
-                      <p className="text-slate-300">{pr.effectiveDate}</p>
-                      {pr.expirationDate && (
-                        <p className="text-slate-500">to {pr.expirationDate}</p>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => setSelectedProviderRate(pr)}
-                        className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          
-          {filteredProviderRates.length === 0 && (
-            <div className="p-8 text-center">
-              <User className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-400">No provider rates found</p>
-              <p className="text-slate-500 text-sm mt-1">Add custom rates for specific providers</p>
+          {providersLoading ? (
+            <div className="p-12 text-center">
+              <Loader2 className="w-8 h-8 text-blue-500 animate-spin mx-auto mb-3" />
+              <p className="text-slate-400">Loading providers...</p>
             </div>
+          ) : (
+            <>
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-700 bg-slate-800">
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Provider</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">NPI</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Specialty</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Location</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Rate</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Contract</th>
+                    <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700">
+                  {filteredProviderRates.map((pr: any) => (
+                    <tr key={pr.id} className="hover:bg-slate-800/80">
+                      <td className="px-4 py-4">
+                        <div>
+                          <p className="text-white font-medium">{pr.providerName}</p>
+                          <p className="text-slate-500 text-sm">{pr.practiceName !== pr.providerName ? pr.practiceName : ''}</p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-slate-300 font-mono text-sm">{pr.npi}</td>
+                      <td className="px-4 py-4">
+                        <span className="text-slate-300 text-sm">{pr.specialty || 'General'}</span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className="text-slate-300 text-sm">{pr.city ? `${pr.city}, ${pr.state}` : pr.state || 'AZ'}</span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          pr.flatRate?.includes('Tier') 
+                            ? "bg-purple-500/20 text-purple-400"
+                            : "bg-green-500/20 text-green-400"
+                        }`}>
+                          {pr.flatRate || 'Standard'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="text-sm">
+                          {pr.contractNumber ? (
+                            <p className="text-blue-400">{pr.contractNumber}</p>
+                          ) : (
+                            <span className="text-slate-500">—</span>
+                          )}
+                          {pr.effectiveDate && pr.effectiveDate !== '2026-01-01' && (
+                            <p className="text-slate-500 text-xs">from {pr.effectiveDate}</p>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => setSelectedProviderRate(pr)}
+                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
+                            <Edit className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              
+              {filteredProviderRates.length === 0 && !providersLoading && (
+                <div className="p-8 text-center">
+                  <User className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                  <p className="text-slate-400">No providers found</p>
+                  <p className="text-slate-500 text-sm mt-1">Try a different search term</p>
+                </div>
+              )}
+              
+              {/* Pagination */}
+              {providerTotal > 25 && (
+                <div className="p-4 border-t border-slate-700 flex items-center justify-between">
+                  <p className="text-sm text-slate-400">
+                    Showing {((providerPage - 1) * 25) + 1} - {Math.min(providerPage * 25, providerTotal)} of {providerTotal.toLocaleString()} providers
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setProviderPage(p => Math.max(1, p - 1))}
+                      disabled={providerPage === 1}
+                      className="px-3 py-1.5 bg-slate-700 text-slate-300 text-sm rounded-lg hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={() => setProviderPage(p => p + 1)}
+                      disabled={providerPage * 25 >= providerTotal}
+                      className="px-3 py-1.5 bg-slate-700 text-slate-300 text-sm rounded-lg hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       )}
