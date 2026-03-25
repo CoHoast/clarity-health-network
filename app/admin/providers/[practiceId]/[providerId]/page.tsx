@@ -11,7 +11,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, User, MapPin, Phone, Mail, FileText, DollarSign, Edit, Save, X,
   CheckCircle, Clock, Briefcase, GraduationCap, Globe, Calendar, Stethoscope,
-  CreditCard, Building2, Languages, Shield, Plus, Trash2, Upload, Download, Eye
+  CreditCard, Building2, Languages, Shield, Plus, Trash2, Upload, Download, Eye,
+  FileSignature
 } from "lucide-react";
 
 // Provider data (in real app, this would come from API)
@@ -606,17 +607,65 @@ export default function ProviderDetailPage() {
     { id: "networks", label: "Networks", icon: Globe },
   ];
 
-  // Sample documents for this provider
-  const providerDocuments = [
-    { id: "doc-1", type: "license", name: "State Medical License", uploadedDate: "2024-01-15", expires: "2026-12-31", status: "current" },
-    { id: "doc-2", type: "dea", name: "DEA Registration", uploadedDate: "2024-01-15", expires: "2025-06-30", status: "current" },
-    { id: "doc-3", type: "board_cert", name: "Board Certification", uploadedDate: "2024-01-10", expires: null, status: "current" },
-    { id: "doc-4", type: "malpractice_coi", name: "Malpractice Insurance COI", uploadedDate: "2024-03-01", expires: "2026-06-30", status: "current" },
-    { id: "doc-5", type: "cv", name: "Curriculum Vitae", uploadedDate: "2024-01-10", expires: null, status: "current" },
-    { id: "doc-6", type: "w9", name: "W-9 Form", uploadedDate: "2024-01-10", expires: null, status: "current" },
+  // Document types available for upload
+  const documentTypes = [
+    { value: "contract", label: "Signed Contract" },
+    { value: "license", label: "State Medical License" },
+    { value: "dea", label: "DEA Registration" },
+    { value: "board_cert", label: "Board Certification" },
+    { value: "malpractice_coi", label: "Malpractice Insurance COI" },
+    { value: "cv", label: "Curriculum Vitae" },
+    { value: "w9", label: "W-9 Form" },
+    { value: "npi_letter", label: "NPI Confirmation Letter" },
+    { value: "other", label: "Other Document" },
   ];
 
+  // Sample documents for this provider
+  const [providerDocuments, setProviderDocuments] = useState([
+    { id: "doc-0", type: "contract", name: "Signed Provider Agreement", uploadedDate: "2024-01-05", expires: "2027-01-05", status: "current", fileName: "provider-agreement-2024.pdf" },
+    { id: "doc-1", type: "license", name: "State Medical License", uploadedDate: "2024-01-15", expires: "2026-12-31", status: "current", fileName: "medical-license.pdf" },
+    { id: "doc-2", type: "dea", name: "DEA Registration", uploadedDate: "2024-01-15", expires: "2025-06-30", status: "current", fileName: "dea-certificate.pdf" },
+    { id: "doc-3", type: "board_cert", name: "Board Certification", uploadedDate: "2024-01-10", expires: null, status: "current", fileName: "board-certification.pdf" },
+    { id: "doc-4", type: "malpractice_coi", name: "Malpractice Insurance COI", uploadedDate: "2024-03-01", expires: "2026-06-30", status: "current", fileName: "malpractice-coi.pdf" },
+    { id: "doc-5", type: "cv", name: "Curriculum Vitae", uploadedDate: "2024-01-10", expires: null, status: "current", fileName: "cv.pdf" },
+    { id: "doc-6", type: "w9", name: "W-9 Form", uploadedDate: "2024-01-10", expires: null, status: "current", fileName: "w9-form.pdf" },
+  ]);
+
   const [viewingDocument, setViewingDocument] = useState<string | null>(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadDocType, setUploadDocType] = useState("contract");
+  const [uploadDocName, setUploadDocName] = useState("");
+  const [uploadExpires, setUploadExpires] = useState("");
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const docFileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDocumentUpload = async () => {
+    if (!uploadFile || !uploadDocType) return;
+    
+    setUploading(true);
+    // Simulate upload delay
+    await new Promise(r => setTimeout(r, 1000));
+    
+    const docLabel = documentTypes.find(d => d.value === uploadDocType)?.label || uploadDocType;
+    const newDoc = {
+      id: `doc-${Date.now()}`,
+      type: uploadDocType,
+      name: uploadDocName || docLabel,
+      uploadedDate: new Date().toISOString().split('T')[0],
+      expires: uploadExpires || null,
+      status: "current",
+      fileName: uploadFile.name,
+    };
+    
+    setProviderDocuments(prev => [newDoc, ...prev]);
+    setShowUploadModal(false);
+    setUploadDocType("contract");
+    setUploadDocName("");
+    setUploadExpires("");
+    setUploadFile(null);
+    setUploading(false);
+  };
 
   const statusColors = {
     active: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -1596,48 +1645,267 @@ export default function ProviderDetailPage() {
         {activeSection === "documents" && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+              <h2 className={cn("text-lg font-semibold flex items-center gap-2", isDark ? "text-white" : "text-slate-900")}>
                 <FileText className="w-5 h-5 text-blue-400" />
-                Credentialing Documents
+                Provider Documents
               </h2>
-              <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors">
+              <button 
+                onClick={() => setShowUploadModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors"
+              >
                 <Upload className="w-4 h-4" />
                 Upload Document
               </button>
             </div>
 
-            <div className="grid gap-4">
-              {providerDocuments.map((doc) => (
-                <div
-                  key={doc.id}
-                  className="bg-white border border-slate-200 rounded-lg p-4 flex items-center justify-between hover:border-blue-300 transition-colors cursor-pointer"
-                  onClick={() => setViewingDocument(doc.type)}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
-                      <FileText className="w-6 h-6 text-blue-600" />
+            {/* Contracts Section */}
+            <div>
+              <h3 className={cn("text-sm font-semibold mb-3 flex items-center gap-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                <FileSignature className="w-4 h-4" />
+                Contracts
+              </h3>
+              <div className="grid gap-3">
+                {providerDocuments.filter(d => d.type === 'contract').map((doc) => (
+                  <div
+                    key={doc.id}
+                    className={cn(
+                      "rounded-lg p-4 flex items-center justify-between border transition-colors cursor-pointer",
+                      isDark ? "bg-slate-800 border-slate-700 hover:border-blue-500" : "bg-white border-slate-200 hover:border-blue-300"
+                    )}
+                    onClick={() => setViewingDocument(doc.type)}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
+                        <FileSignature className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{doc.name}</p>
+                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                          Uploaded: {new Date(doc.uploadedDate).toLocaleDateString()}
+                          {doc.expires && ` • Expires: ${doc.expires}`}
+                        </p>
+                        {doc.fileName && (
+                          <p className={cn("text-xs mt-1", isDark ? "text-slate-500" : "text-slate-400")}>{doc.fileName}</p>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-medium text-slate-900">{doc.name}</p>
-                      <p className="text-sm text-slate-500">
-                        Uploaded: {new Date(doc.uploadedDate).toLocaleDateString()}
-                        {doc.expires && ` • Expires: ${doc.expires}`}
-                      </p>
+                    <div className="flex items-center gap-3">
+                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                        Active
+                      </span>
+                      <button className={cn("p-2 rounded-lg transition-colors", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}>
+                        <Download className="w-5 h-5 text-slate-500" />
+                      </button>
+                      <button className={cn("p-2 rounded-lg transition-colors", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}>
+                        <Eye className="w-5 h-5 text-slate-500" />
+                      </button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                      Current
-                    </span>
-                    <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-                      <Eye className="w-5 h-5 text-slate-500" />
+                ))}
+                {providerDocuments.filter(d => d.type === 'contract').length === 0 && (
+                  <div className={cn("rounded-lg p-6 text-center border-2 border-dashed", isDark ? "border-slate-700" : "border-slate-200")}>
+                    <FileSignature className={cn("w-8 h-8 mx-auto mb-2", isDark ? "text-slate-600" : "text-slate-400")} />
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>No contract uploaded yet</p>
+                    <button 
+                      onClick={() => { setUploadDocType('contract'); setShowUploadModal(true); }}
+                      className="mt-2 text-sm text-blue-500 hover:text-blue-400"
+                    >
+                      Upload Contract
                     </button>
                   </div>
-                </div>
-              ))}
+                )}
+              </div>
+            </div>
+
+            {/* Credentialing Documents Section */}
+            <div>
+              <h3 className={cn("text-sm font-semibold mb-3 flex items-center gap-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                <Shield className="w-4 h-4" />
+                Credentialing Documents
+              </h3>
+              <div className="grid gap-3">
+                {providerDocuments.filter(d => d.type !== 'contract').map((doc) => (
+                  <div
+                    key={doc.id}
+                    className={cn(
+                      "rounded-lg p-4 flex items-center justify-between border transition-colors cursor-pointer",
+                      isDark ? "bg-slate-800 border-slate-700 hover:border-blue-500" : "bg-white border-slate-200 hover:border-blue-300"
+                    )}
+                    onClick={() => setViewingDocument(doc.type)}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                        <FileText className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{doc.name}</p>
+                        <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                          Uploaded: {new Date(doc.uploadedDate).toLocaleDateString()}
+                          {doc.expires && ` • Expires: ${doc.expires}`}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                        Current
+                      </span>
+                      <button className={cn("p-2 rounded-lg transition-colors", isDark ? "hover:bg-slate-700" : "hover:bg-slate-100")}>
+                        <Eye className="w-5 h-5 text-slate-500" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
+
+        {/* Upload Document Modal */}
+        <AnimatePresence>
+          {showUploadModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+              onClick={() => setShowUploadModal(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                className={cn("w-full max-w-md rounded-xl overflow-hidden", isDark ? "bg-slate-800" : "bg-white")}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className={cn("p-4 border-b flex items-center justify-between", isDark ? "border-slate-700" : "border-slate-200")}>
+                  <h3 className={cn("text-lg font-semibold", isDark ? "text-white" : "text-slate-900")}>Upload Document</h3>
+                  <button onClick={() => setShowUploadModal(false)} className="p-2 hover:bg-slate-100 rounded-lg">
+                    <X className="w-5 h-5 text-slate-500" />
+                  </button>
+                </div>
+                
+                <div className="p-6 space-y-4">
+                  {/* Document Type */}
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                      Document Type *
+                    </label>
+                    <select
+                      value={uploadDocType}
+                      onChange={(e) => setUploadDocType(e.target.value)}
+                      className={cn(
+                        "w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500",
+                        isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-300 text-slate-900"
+                      )}
+                    >
+                      {documentTypes.map((type) => (
+                        <option key={type.value} value={type.value}>{type.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Document Name */}
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                      Document Name (optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={uploadDocName}
+                      onChange={(e) => setUploadDocName(e.target.value)}
+                      placeholder={documentTypes.find(d => d.value === uploadDocType)?.label}
+                      className={cn(
+                        "w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500",
+                        isDark ? "bg-slate-700 border-slate-600 text-white placeholder:text-slate-500" : "bg-white border-slate-300 text-slate-900"
+                      )}
+                    />
+                  </div>
+
+                  {/* Expiration Date */}
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                      Expiration Date (optional)
+                    </label>
+                    <input
+                      type="date"
+                      value={uploadExpires}
+                      onChange={(e) => setUploadExpires(e.target.value)}
+                      className={cn(
+                        "w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500",
+                        isDark ? "bg-slate-700 border-slate-600 text-white" : "bg-white border-slate-300 text-slate-900"
+                      )}
+                    />
+                  </div>
+
+                  {/* File Upload */}
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-2", isDark ? "text-slate-300" : "text-slate-700")}>
+                      File *
+                    </label>
+                    <input
+                      ref={docFileInputRef}
+                      type="file"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                      onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
+                      className="hidden"
+                    />
+                    <div
+                      onClick={() => docFileInputRef.current?.click()}
+                      className={cn(
+                        "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
+                        isDark ? "border-slate-600 hover:border-blue-500" : "border-slate-300 hover:border-blue-400",
+                        uploadFile && (isDark ? "border-green-500 bg-green-500/10" : "border-green-400 bg-green-50")
+                      )}
+                    >
+                      {uploadFile ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <FileText className="w-5 h-5 text-green-500" />
+                          <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>{uploadFile.name}</span>
+                        </div>
+                      ) : (
+                        <>
+                          <Upload className={cn("w-8 h-8 mx-auto mb-2", isDark ? "text-slate-500" : "text-slate-400")} />
+                          <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                            Click to select a file
+                          </p>
+                          <p className={cn("text-xs mt-1", isDark ? "text-slate-500" : "text-slate-400")}>
+                            PDF, DOC, DOCX, JPG, PNG
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className={cn("p-4 border-t flex justify-end gap-3", isDark ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-50")}>
+                  <button
+                    onClick={() => setShowUploadModal(false)}
+                    className={cn("px-4 py-2 rounded-lg font-medium", isDark ? "text-slate-300 hover:bg-slate-700" : "text-slate-600 hover:bg-slate-200")}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDocumentUpload}
+                    disabled={!uploadFile || uploading}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {uploading ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-4 h-4" />
+                        Upload
+                      </>
+                    )}
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Document Viewer Modal */}
         <AnimatePresence>
