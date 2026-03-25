@@ -126,33 +126,82 @@ export async function POST(request: NextRequest) {
             continue;
           }
           
-          // Create new provider
+          // Generate unique entity number for this provider-location combo
+          const entityNumber = row.referenceNumber || row.entityNumber || `${row.npi}${String(Date.now()).slice(-5)}`;
+          
+          // Create new provider with ALL fields from CSV
           const newProvider = {
-            id: `prov-${row.npi}`,
+            id: `prov-${entityNumber}`,
+            entityNumber: entityNumber,
+            contractNumber: row.contractNumber || '',
             npi: row.npi,
             firstName: row.firstName || '',
             lastName: row.lastName || '',
+            middleInitial: row.middleInitial || '',
             name: row.name || `${row.firstName || ''} ${row.lastName || ''}`.trim(),
             credentials: row.credential || row.credentials || '',
+            gender: row.gender || 'U',
             specialty: row.specialty || '',
             specialtyCode: row.specialtyCode || '',
-            taxonomyCode: row.primaryTaxonomy || '',
-            secondaryTaxonomyCode: row.secondaryTaxonomy || '',
-            gender: row.gender || 'U',
+            taxonomyCode: row.primaryTaxonomy || row.taxonomyCode || '',
+            secondarySpecialtyCode: row.secondarySpecialtyCode || '',
+            secondaryTaxonomyCode: row.secondaryTaxonomy || row.secondaryTaxonomyCode || '',
             facilityType: row.facilityType || 'INDIVIDUAL',
             isPrimaryCare: row.isPrimaryCare || false,
             isBehavioralHealth: row.isBehavioralHealth || false,
             acceptingNewPatients: row.acceptingNewPatients ?? true,
-            languages: row.languages || ['English'],
+            directoryDisplay: row.directoryDisplay ?? true,
+            languages: Array.isArray(row.languages) ? row.languages : (row.languages ? [row.languages] : ['English']),
+            pricingTier: row.pricingTier || '',
+            networkOrg: row.networkOrg || '',
+            effectiveDate: row.startDate || row.effectiveDate || '',
+            terminationDate: row.endDate || row.terminationDate || '',
+            // Location data - the actual practice location for this provider
             locations: [{
-              address1: row.address || '',
+              name: 'Primary',
+              address: row.address || row.address1 || '',
+              address2: row.address2 || '',
               city: row.city || '',
-              state: row.state || '',
+              state: row.state || 'AZ',
               zip: row.zip || '',
+              county: row.county || '',
               phone: row.phone || '',
+              fax: row.fax || '',
+              email: row.email || '',
             }],
-            contractNumber: row.contractNumber || '',
-            referenceNumber: row.referenceNumber || '',
+            // Office hours
+            hours: {
+              monday: row.mondayHours || '',
+              tuesday: row.tuesdayHours || '',
+              wednesday: row.wednesdayHours || '',
+              thursday: row.thursdayHours || '',
+              friday: row.fridayHours || '',
+              saturday: row.saturdayHours || '',
+              sunday: row.sundayHours || '',
+            },
+            // Corresponding address (for mail/correspondence)
+            correspondingAddress: {
+              address1: row.correspondingAddr1 || '',
+              address2: row.correspondingAddr2 || '',
+              city: row.correspondingCity || '',
+              state: row.correspondingState || '',
+              zip: row.correspondingZip || '',
+              contactName: row.contactName || '',
+              fax: row.correspondingFax || '',
+            },
+            // Billing information (Pay-To entity)
+            billing: {
+              npi: row.billingNpi || '',
+              taxId: row.billingTaxId || '',
+              name: row.billingName || '',
+              address: row.billingAddr1 || row.billingAddress || '',
+              address2: row.billingAddr2 || '',
+              city: row.billingCity || '',
+              state: row.billingState || '',
+              zip: row.billingZip || '',
+              phone: row.billingPhone || '',
+              fax: row.billingFax || '',
+            },
             importSessionId: session.id,
             importedAt: new Date().toISOString(),
           };
@@ -180,13 +229,13 @@ export async function POST(request: NextRequest) {
           }
           
           // Store before state for rollback
-          const beforeState = { ...existing };
+          const beforeState = JSON.parse(JSON.stringify(existing));
           
-          // Merge non-empty fields from CSV (don't overwrite with empty values)
+          // Merge non-empty top-level fields from CSV (don't overwrite with empty values)
           const fieldsToMerge = [
-            'firstName', 'lastName', 'name', 'specialty', 'specialtyCode',
-            'credentials', 'taxonomyCode', 'secondaryTaxonomyCode',
-            'gender', 'facilityType', 'phone', 'address', 'city', 'state', 'zip',
+            'firstName', 'lastName', 'middleInitial', 'name', 'credentials',
+            'specialty', 'specialtyCode', 'taxonomyCode', 'secondarySpecialtyCode', 'secondaryTaxonomyCode',
+            'gender', 'facilityType', 'pricingTier', 'networkOrg', 'effectiveDate', 'terminationDate',
           ];
           
           for (const field of fieldsToMerge) {
@@ -194,6 +243,63 @@ export async function POST(request: NextRequest) {
               existing[field] = row[field];
             }
           }
+          
+          // Merge boolean fields
+          if (row.isPrimaryCare !== undefined) existing.isPrimaryCare = row.isPrimaryCare;
+          if (row.isBehavioralHealth !== undefined) existing.isBehavioralHealth = row.isBehavioralHealth;
+          if (row.acceptingNewPatients !== undefined) existing.acceptingNewPatients = row.acceptingNewPatients;
+          if (row.directoryDisplay !== undefined) existing.directoryDisplay = row.directoryDisplay;
+          
+          // Merge languages
+          if (row.languages) {
+            existing.languages = Array.isArray(row.languages) ? row.languages : [row.languages];
+          }
+          
+          // Merge location data (update first location)
+          if (!existing.locations) existing.locations = [{}];
+          const loc = existing.locations[0];
+          if (row.address) loc.address = row.address;
+          if (row.address2) loc.address2 = row.address2;
+          if (row.city) loc.city = row.city;
+          if (row.state) loc.state = row.state;
+          if (row.zip) loc.zip = row.zip;
+          if (row.county) loc.county = row.county;
+          if (row.phone) loc.phone = row.phone;
+          if (row.fax) loc.fax = row.fax;
+          if (row.email) loc.email = row.email;
+          
+          // Merge hours
+          if (!existing.hours) existing.hours = {};
+          if (row.mondayHours) existing.hours.monday = row.mondayHours;
+          if (row.tuesdayHours) existing.hours.tuesday = row.tuesdayHours;
+          if (row.wednesdayHours) existing.hours.wednesday = row.wednesdayHours;
+          if (row.thursdayHours) existing.hours.thursday = row.thursdayHours;
+          if (row.fridayHours) existing.hours.friday = row.fridayHours;
+          if (row.saturdayHours) existing.hours.saturday = row.saturdayHours;
+          if (row.sundayHours) existing.hours.sunday = row.sundayHours;
+          
+          // Merge billing info
+          if (!existing.billing) existing.billing = {};
+          if (row.billingNpi) existing.billing.npi = row.billingNpi;
+          if (row.billingTaxId) existing.billing.taxId = row.billingTaxId;
+          if (row.billingName) existing.billing.name = row.billingName;
+          if (row.billingAddr1) existing.billing.address = row.billingAddr1;
+          if (row.billingAddr2) existing.billing.address2 = row.billingAddr2;
+          if (row.billingCity) existing.billing.city = row.billingCity;
+          if (row.billingState) existing.billing.state = row.billingState;
+          if (row.billingZip) existing.billing.zip = row.billingZip;
+          if (row.billingPhone) existing.billing.phone = row.billingPhone;
+          if (row.billingFax) existing.billing.fax = row.billingFax;
+          
+          // Merge corresponding address
+          if (!existing.correspondingAddress) existing.correspondingAddress = {};
+          if (row.correspondingAddr1) existing.correspondingAddress.address1 = row.correspondingAddr1;
+          if (row.correspondingAddr2) existing.correspondingAddress.address2 = row.correspondingAddr2;
+          if (row.correspondingCity) existing.correspondingAddress.city = row.correspondingCity;
+          if (row.correspondingState) existing.correspondingAddress.state = row.correspondingState;
+          if (row.correspondingZip) existing.correspondingAddress.zip = row.correspondingZip;
+          if (row.contactName) existing.correspondingAddress.contactName = row.contactName;
+          if (row.correspondingFax) existing.correspondingAddress.fax = row.correspondingFax;
           
           existing.lastUpdatedAt = new Date().toISOString();
           existing.lastUpdatedBySession = session.id;
@@ -205,7 +311,7 @@ export async function POST(request: NextRequest) {
             npi: row.npi,
             providerId: existing.id,
             beforeState,
-            afterState: { ...existing },
+            afterState: JSON.parse(JSON.stringify(existing)),
           });
           
           decisions.push({ npi: row.npi, action: 'merge', reason: 'Updated existing provider' });
