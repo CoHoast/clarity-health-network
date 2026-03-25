@@ -746,7 +746,7 @@ export default function DiscountSchedulesPage() {
         )}
       </AnimatePresence>
 
-      {/* Provider Rate Detail Modal */}
+      {/* Provider Rate Detail Modal - LIGHT THEME */}
       <AnimatePresence>
         {selectedProviderRate && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProviderRate(null)}>
@@ -754,15 +754,15 @@ export default function DiscountSchedulesPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[80vh] overflow-auto border border-slate-700"
+              className="bg-white rounded-xl max-w-2xl w-full max-h-[80vh] overflow-auto shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+              <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-gray-50">
                 <div>
-                  <h2 className="text-xl font-bold text-white">{selectedProviderRate.providerName}</h2>
-                  <p className="text-slate-400">{selectedProviderRate.practiceName} • NPI: {selectedProviderRate.npi}</p>
+                  <h2 className="text-xl font-bold text-gray-900">{selectedProviderRate.providerName}</h2>
+                  <p className="text-gray-500">{selectedProviderRate.practiceName} • NPI: {selectedProviderRate.npi}</p>
                 </div>
-                <button onClick={() => setSelectedProviderRate(null)} className="text-slate-400 hover:text-white">
+                <button onClick={() => setSelectedProviderRate(null)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-200 rounded-lg">
                   <X className="w-6 h-6" />
                 </button>
               </div>
@@ -772,47 +772,47 @@ export default function DiscountSchedulesPage() {
                 <div className="flex items-center gap-4 mb-6">
                   <span className={`px-3 py-1.5 rounded-full text-sm font-medium ${
                     selectedProviderRate.rateType === "flat" 
-                      ? "bg-blue-500/20 text-blue-400"
-                      : "bg-purple-500/20 text-purple-400"
+                      ? "bg-blue-100 text-blue-700"
+                      : "bg-purple-100 text-purple-700"
                   }`}>
                     {selectedProviderRate.rateType === "flat" ? "Flat Rate" : "Custom by Service Category"}
                   </span>
-                  <span className="text-slate-400 text-sm">
+                  <span className="text-gray-500 text-sm">
                     Effective: {selectedProviderRate.effectiveDate}
                     {selectedProviderRate.expirationDate && ` - ${selectedProviderRate.expirationDate}`}
                   </span>
                 </div>
 
                 {selectedProviderRate.rateType === "flat" ? (
-                  <div className="bg-slate-700/50 rounded-xl p-8 text-center">
-                    <Percent className="w-12 h-12 text-green-400 mx-auto mb-3" />
-                    <p className="text-4xl font-bold text-green-400">{selectedProviderRate.flatRate}</p>
-                    <p className="text-slate-400 mt-2">Applied to all service categories</p>
+                  <div className="bg-green-50 rounded-xl p-8 text-center border border-green-200">
+                    <Percent className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                    <p className="text-4xl font-bold text-green-600">{selectedProviderRate.flatRate}</p>
+                    <p className="text-gray-500 mt-2">Applied to all service categories</p>
                   </div>
                 ) : (
                   <div>
-                    <h3 className="text-white font-semibold mb-3">Service Category Rates</h3>
-                    <div className="bg-slate-900 rounded-lg overflow-hidden">
+                    <h3 className="text-gray-900 font-semibold mb-3">Service Category Rates</h3>
+                    <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
                       <table className="w-full">
                         <thead>
-                          <tr className="border-b border-slate-700">
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Category</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Description</th>
-                            <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Rate</th>
+                          <tr className="border-b border-gray-200 bg-gray-50">
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Category</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Description</th>
+                            <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Rate</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-700">
+                        <tbody className="divide-y divide-gray-100">
                           {serviceCategories.map((cat) => {
                             const rate = selectedProviderRate.serviceRates?.[cat.key as keyof typeof selectedProviderRate.serviceRates];
                             return (
-                              <tr key={cat.key} className={rate ? "hover:bg-slate-800/50" : "opacity-50"}>
-                                <td className="px-4 py-3 text-slate-300 font-medium">{cat.label}</td>
-                                <td className="px-4 py-3 text-slate-500 text-sm">{cat.description}</td>
+                              <tr key={cat.key} className={rate ? "hover:bg-gray-50" : "bg-gray-50 opacity-60"}>
+                                <td className="px-4 py-3 text-gray-900 font-medium">{cat.label}</td>
+                                <td className="px-4 py-3 text-gray-500 text-sm">{cat.description}</td>
                                 <td className="px-4 py-3 text-right">
                                   {rate ? (
-                                    <span className="text-green-400 font-semibold">{rate}</span>
+                                    <span className="text-green-600 font-semibold">{rate}</span>
                                   ) : (
-                                    <span className="text-slate-600">—</span>
+                                    <span className="text-gray-400">—</span>
                                   )}
                                 </td>
                               </tr>
@@ -827,46 +827,46 @@ export default function DiscountSchedulesPage() {
                 {/* CPT-Specific Rates */}
                 {selectedProviderRate.cptRates && selectedProviderRate.cptRates.length > 0 && (
                   <div className="mt-6">
-                    <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-amber-400" />
+                    <h3 className="text-gray-900 font-semibold mb-3 flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-amber-500" />
                       CPT-Specific Flat Rates
-                      <span className="text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">Override</span>
+                      <span className="text-xs text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">Override</span>
                     </h3>
-                    <div className="bg-slate-900 rounded-lg overflow-hidden">
+                    <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
                       <table className="w-full">
                         <thead>
-                          <tr className="border-b border-slate-700">
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">CPT Code</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase">Description</th>
-                            <th className="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase">Flat Rate</th>
+                          <tr className="border-b border-gray-200 bg-gray-50">
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">CPT Code</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Description</th>
+                            <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Flat Rate</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-700">
+                        <tbody className="divide-y divide-gray-100">
                           {selectedProviderRate.cptRates.map((cpt, i) => (
-                            <tr key={i} className="hover:bg-slate-800/50">
-                              <td className="px-4 py-3 font-mono text-amber-400 font-medium">{cpt.cpt}</td>
-                              <td className="px-4 py-3 text-slate-300">{cpt.description}</td>
-                              <td className="px-4 py-3 text-right text-green-400 font-semibold">{cpt.rate}</td>
+                            <tr key={i} className="hover:bg-gray-50">
+                              <td className="px-4 py-3 font-mono text-amber-600 font-medium">{cpt.cpt}</td>
+                              <td className="px-4 py-3 text-gray-700">{cpt.description}</td>
+                              <td className="px-4 py-3 text-right text-green-600 font-semibold">{cpt.rate}</td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
-                    <p className="text-xs text-slate-500 mt-2">CPT-specific rates override service category rates for these procedures</p>
+                    <p className="text-xs text-gray-500 mt-2">CPT-specific rates override service category rates for these procedures</p>
                   </div>
                 )}
 
                 {selectedProviderRate.notes && (
-                  <div className="mt-6 bg-slate-700/30 rounded-lg p-4">
-                    <p className="text-slate-400 text-sm">
-                      <span className="text-slate-300 font-medium">Notes:</span> {selectedProviderRate.notes}
+                  <div className="mt-6 bg-blue-50 rounded-lg p-4 border border-blue-200">
+                    <p className="text-gray-600 text-sm">
+                      <span className="text-gray-900 font-medium">Notes:</span> {selectedProviderRate.notes}
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="p-6 border-t border-slate-700 flex justify-end gap-3">
-                <button className="px-4 py-2 bg-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-600 transition-colors flex items-center gap-2">
+              <div className="p-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50">
+                <button className="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-2">
                   <Download className="w-4 h-4" />
                   Export
                 </button>
