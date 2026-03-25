@@ -1058,6 +1058,22 @@ export default function MonitoringPage() {
                 </div>
               </div>
 
+              {/* Demo Data Warning */}
+              <div className={cn(
+                "p-3 rounded-lg border flex items-center gap-3",
+                isDark ? "bg-amber-900/20 border-amber-700" : "bg-amber-50 border-amber-300"
+              )}>
+                <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0" />
+                <div>
+                  <p className={cn("text-sm font-medium", isDark ? "text-amber-400" : "text-amber-700")}>
+                    Sample Alert Data
+                  </p>
+                  <p className={cn("text-xs", isDark ? "text-amber-400/80" : "text-amber-600")}>
+                    This is simulated data for demonstration. Use verification links to check actual status.
+                  </p>
+                </div>
+              </div>
+
               {/* Verify at Source - Direct Links */}
               <div>
                 <label className={cn("text-xs uppercase tracking-wider block mb-2", isDark ? "text-slate-500" : "text-slate-400")}>
@@ -1066,48 +1082,68 @@ export default function MonitoringPage() {
                 <div className="grid grid-cols-2 gap-2">
                   {/* OIG Link */}
                   {(selectedAlert.type?.includes("OIG") || selectedAlert.checkType === "oig") && (
-                    <a
-                      href={`https://exclusions.oig.hhs.gov/`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        "flex items-center gap-2 p-3 rounded-lg border transition-colors",
-                        isDark 
-                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 text-blue-400" 
-                          : "bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
-                      )}
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      <div>
+                    <div className={cn(
+                      "p-3 rounded-lg border",
+                      isDark ? "bg-slate-700/50 border-slate-600" : "bg-blue-50 border-blue-200"
+                    )}>
+                      <a
+                        href={`https://exclusions.oig.hhs.gov/`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(
+                          "flex items-center gap-2 transition-colors",
+                          isDark ? "text-blue-400 hover:text-blue-300" : "text-blue-700 hover:text-blue-800"
+                        )}
+                      >
+                        <ExternalLink className="w-4 h-4" />
                         <p className="font-medium text-sm">OIG LEIE Database</p>
-                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-blue-600")}>
-                          Search: {selectedAlert.npi}
-                        </p>
-                      </div>
-                    </a>
+                      </a>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(selectedAlert.provider?.split(',')[0] || selectedAlert.provider);
+                          showToast('Provider name copied to clipboard', 'info');
+                        }}
+                        className={cn(
+                          "mt-2 text-xs px-2 py-1 rounded flex items-center gap-1 w-full justify-center",
+                          isDark ? "bg-slate-600 hover:bg-slate-500 text-slate-300" : "bg-blue-100 hover:bg-blue-200 text-blue-700"
+                        )}
+                      >
+                        📋 Copy name to search
+                      </button>
+                    </div>
                   )}
                   
                   {/* SAM.gov Link */}
                   {(selectedAlert.type?.includes("SAM") || selectedAlert.checkType === "sam") && (
-                    <a
-                      href={`https://sam.gov/content/exclusions`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        "flex items-center gap-2 p-3 rounded-lg border transition-colors",
-                        isDark 
-                          ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 text-blue-400" 
-                          : "bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
-                      )}
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      <div>
+                    <div className={cn(
+                      "p-3 rounded-lg border",
+                      isDark ? "bg-slate-700/50 border-slate-600" : "bg-blue-50 border-blue-200"
+                    )}>
+                      <a
+                        href={`https://sam.gov/content/exclusions`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(
+                          "flex items-center gap-2 transition-colors",
+                          isDark ? "text-blue-400 hover:text-blue-300" : "text-blue-700 hover:text-blue-800"
+                        )}
+                      >
+                        <ExternalLink className="w-4 h-4" />
                         <p className="font-medium text-sm">SAM.gov Exclusions</p>
-                        <p className={cn("text-xs", isDark ? "text-slate-400" : "text-blue-600")}>
-                          Search: {selectedAlert.provider}
-                        </p>
-                      </div>
-                    </a>
+                      </a>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(selectedAlert.provider?.split(',')[0] || selectedAlert.provider);
+                          showToast('Provider name copied to clipboard', 'info');
+                        }}
+                        className={cn(
+                          "mt-2 text-xs px-2 py-1 rounded flex items-center gap-1 w-full justify-center",
+                          isDark ? "bg-slate-600 hover:bg-slate-500 text-slate-300" : "bg-blue-100 hover:bg-blue-200 text-blue-700"
+                        )}
+                      >
+                        📋 Copy name to search
+                      </button>
+                    </div>
                   )}
                   
                   {/* State License Board Link */}
