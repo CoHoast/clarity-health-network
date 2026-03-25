@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, Download, Eye, Plus, Building2, MapPin, Phone, Mail, FileText, CheckCircle, Clock, XCircle, X, DollarSign, Edit, User, CreditCard, Save, Users, ChevronRight, ChevronDown, Trash2, Upload, FileSpreadsheet, AlertCircle, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -485,24 +485,48 @@ export default function ProvidersPage() {
     reader.readAsText(file);
   };
 
+  // Build a set of practice IDs that have matching providers (for NPI/name search)
+  const practiceIdsWithMatchingProviders = useMemo(() => {
+    if (!searchQuery.trim()) return new Set<string>();
+    
+    const searchLower = searchQuery.toLowerCase().trim();
+    const matchingPracticeIds = new Set<string>();
+    
+    // Search ALL providers directly (more reliable than going through practices)
+    providers.forEach(p => {
+      const providerName = p.name || `${p.firstName || ''} ${p.lastName || ''}`.trim();
+      const matchesNpi = p.npi && p.npi.includes(searchQuery.trim()); // NPI is numeric, exact match
+      const matchesName = providerName.toLowerCase().includes(searchLower);
+      const matchesSpecialty = p.specialty && p.specialty.toLowerCase().includes(searchLower);
+      const matchesCredential = p.credential && p.credential.toLowerCase().includes(searchLower);
+      
+      if (matchesNpi || matchesName || matchesSpecialty || matchesCredential) {
+        matchingPracticeIds.add(p.practiceId);
+      }
+    });
+    
+    return matchingPracticeIds;
+  }, [searchQuery, providers]);
+
   // Search also checks individual providers in the practice
   const filteredPractices = practices.filter(practice => {
-    const practiceProviders = getProvidersForPractice(practice.id);
-    const searchLower = searchQuery.toLowerCase();
+    const searchLower = searchQuery.toLowerCase().trim();
+    
+    // If no search query, show all (filtered by status/type only)
+    if (!searchQuery.trim()) {
+      const matchesStatus = statusFilter === "All" || practice.status.toLowerCase() === statusFilter.toLowerCase();
+      const matchesType = typeFilter === "All Types" || practice.type === typeFilter;
+      return matchesStatus && matchesType;
+    }
     
     // Check practice fields
     const matchesPractice = practice.name.toLowerCase().includes(searchLower) ||
-      practice.specialty.toLowerCase().includes(searchLower) ||
-      practice.city.toLowerCase().includes(searchLower);
+      (practice.specialty && practice.specialty.toLowerCase().includes(searchLower)) ||
+      (practice.city && practice.city.toLowerCase().includes(searchLower)) ||
+      (practice.npi && practice.npi.includes(searchQuery.trim())); // Practice NPI too
     
-    // Check provider fields (name, NPI, specialty)
-    const matchesProvider = practiceProviders.some(p => {
-      const providerName = p.name || `${p.firstName || ''} ${p.lastName || ''}`;
-      return providerName.toLowerCase().includes(searchLower) ||
-        p.npi?.toLowerCase().includes(searchLower) ||
-        p.specialty?.toLowerCase().includes(searchLower) ||
-        p.credential?.toLowerCase().includes(searchLower);
-    });
+    // Check if any provider in this practice matches (using pre-computed set)
+    const matchesProvider = practiceIdsWithMatchingProviders.has(practice.id);
     
     const matchesSearch = matchesPractice || matchesProvider;
     const matchesStatus = statusFilter === "All" || practice.status.toLowerCase() === statusFilter.toLowerCase();
