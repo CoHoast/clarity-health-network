@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -247,13 +247,41 @@ export default function MonitoringPage() {
   const [severityFilter, setSeverityFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [activeTab, setActiveTab] = useState<"alerts" | "history" | "settings">("alerts");
-  const [selectedAlert, setSelectedAlert] = useState<typeof alerts[0] | null>(null);
+  const [selectedAlert, setSelectedAlert] = useState<any | null>(null);
   const [showRunModal, setShowRunModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState<typeof monitoringSchedule[0] | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' } | null>(null);
   const [showCriticalAlertsModal, setShowCriticalAlertsModal] = useState(false);
   const [selectedScan, setSelectedScan] = useState<typeof recentScans[0] | null>(null);
+  
+  // Real data from API
+  const [alerts, setAlerts] = useState<any[]>([]);
+  const [expiringCredentials, setExpiringCredentials] = useState<any[]>([]);
+  const [monitoringStats, setMonitoringStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [totalProviders, setTotalProviders] = useState(0);
+  
+  // Fetch monitoring data from API
+  useEffect(() => {
+    async function fetchMonitoringData() {
+      try {
+        const res = await fetch('/api/monitoring');
+        if (res.ok) {
+          const data = await res.json();
+          setAlerts(data.alerts || []);
+          setExpiringCredentials(data.expiring || []);
+          setMonitoringStats(data.stats || null);
+          setTotalProviders(data.totalProviders || 0);
+        }
+      } catch (error) {
+        console.error('Failed to fetch monitoring data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMonitoringData();
+  }, []);
 
   const showToast = (message: string, type: 'success' | 'info' | 'warning' = 'success') => {
     setToast({ message, type });
@@ -359,16 +387,34 @@ export default function MonitoringPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, index) => (
-          <StatCard
-            key={index}
-            label={stat.label}
-            value={stat.value}
-            trend={stat.trend}
-            change={stat.change}
-            icon={stat.icon}
-          />
-        ))}
+        <StatCard
+          label="Providers Monitored"
+          value={loading ? "..." : totalProviders.toLocaleString()}
+          trend="up"
+          change={`${totalProviders} in network`}
+          icon={<Shield className="w-5 h-5" />}
+        />
+        <StatCard
+          label="Active Alerts"
+          value={loading ? "..." : String(alerts.filter(a => a.status !== "resolved").length)}
+          trend={alerts.filter(a => a.status !== "resolved").length > 0 ? "warning" : "up"}
+          change="Needs attention"
+          icon={<AlertTriangle className="w-5 h-5" />}
+        />
+        <StatCard
+          label="Critical Issues"
+          value={loading ? "..." : String(alerts.filter(a => a.severity === "critical").length)}
+          trend={alerts.filter(a => a.severity === "critical").length > 0 ? "warning" : "up"}
+          change="Immediate action"
+          icon={<XCircle className="w-5 h-5" />}
+        />
+        <StatCard
+          label="Auto-Suspended"
+          value={loading ? "..." : String(alerts.filter(a => a.providerSuspended).length)}
+          trend="neutral"
+          change="Pending review"
+          icon={<Ban className="w-5 h-5" />}
+        />
       </div>
 
       {/* Tabs */}
