@@ -171,6 +171,7 @@ export default function DiscountSchedulesPage() {
   const [rateTypeFilter, setRateTypeFilter] = useState<"all" | "flat" | "custom">("all");
   const [selectedSchedule, setSelectedSchedule] = useState<DiscountSchedule | null>(null);
   const [selectedProviderRate, setSelectedProviderRate] = useState<ProviderRate | null>(null);
+  const [editingProviderRate, setEditingProviderRate] = useState<ProviderRate | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showProviderRateModal, setShowProviderRateModal] = useState(false);
   
@@ -618,7 +619,10 @@ export default function DiscountSchedulesPage() {
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg">
+                          <button 
+                            onClick={() => setEditingProviderRate(pr)}
+                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg"
+                          >
                             <Edit className="w-4 h-4" />
                           </button>
                         </div>
@@ -870,9 +874,157 @@ export default function DiscountSchedulesPage() {
                   <Download className="w-4 h-4" />
                   Export
                 </button>
-                <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2">
+                <button 
+                  onClick={() => {
+                    const pr = selectedProviderRate;
+                    setSelectedProviderRate(null);
+                    setEditingProviderRate(pr);
+                  }}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
+                >
                   <Edit className="w-4 h-4" />
                   Edit Rates
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Provider Rate Modal */}
+      <AnimatePresence>
+        {editingProviderRate && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setEditingProviderRate(null)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-xl max-w-2xl w-full max-h-[85vh] overflow-hidden shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Edit Provider Rates</h2>
+                  <p className="text-gray-500">{editingProviderRate.providerName} • NPI: {editingProviderRate.npi}</p>
+                </div>
+                <button onClick={() => setEditingProviderRate(null)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-200 rounded-lg">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="p-6 overflow-auto max-h-[60vh] space-y-5">
+                {/* Rate Type Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Rate Type</label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="radio" 
+                        name="rateType" 
+                        value="flat"
+                        defaultChecked={editingProviderRate.rateType === "flat"}
+                        className="text-blue-500 focus:ring-blue-500"
+                      />
+                      <span className="text-gray-700">Flat Rate</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="radio" 
+                        name="rateType" 
+                        value="custom"
+                        defaultChecked={editingProviderRate.rateType === "custom"}
+                        className="text-blue-500 focus:ring-blue-500"
+                      />
+                      <span className="text-gray-700">Custom by Service Category</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Flat Rate Input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Flat Rate (% Off Billed)</label>
+                  <input 
+                    type="text" 
+                    defaultValue={editingProviderRate.flatRate || "35%"}
+                    className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    placeholder="e.g., 35% or $150"
+                  />
+                </div>
+
+                {/* Service Category Rates */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Service Category Rates (Optional)</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { key: "professional", label: "Professional Services" },
+                      { key: "inpatient", label: "Inpatient" },
+                      { key: "outpatient", label: "Outpatient" },
+                      { key: "urgentCare", label: "Urgent Care" },
+                      { key: "labServices", label: "Lab Services" },
+                      { key: "imaging", label: "Imaging" },
+                      { key: "mentalHealth", label: "Mental Health" },
+                      { key: "physicalTherapy", label: "Physical Therapy" },
+                    ].map((cat) => (
+                      <div key={cat.key} className="flex items-center gap-2">
+                        <label className="text-sm text-gray-600 w-32 truncate">{cat.label}</label>
+                        <input 
+                          type="text"
+                          defaultValue={editingProviderRate.serviceRates?.[cat.key as keyof typeof editingProviderRate.serviceRates] || ""}
+                          placeholder="—"
+                          className="flex-1 px-3 py-1.5 bg-white border border-gray-300 rounded text-gray-900 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Effective Dates */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Effective Date</label>
+                    <input 
+                      type="date" 
+                      defaultValue={editingProviderRate.effectiveDate}
+                      className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Expiration Date</label>
+                    <input 
+                      type="date" 
+                      defaultValue={editingProviderRate.expirationDate || ""}
+                      className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Notes */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                  <textarea 
+                    defaultValue={editingProviderRate.notes || ""}
+                    className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-500 focus:border-blue-500 h-20 resize-none"
+                    placeholder="Any special terms or conditions..."
+                  />
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50">
+                <button 
+                  onClick={() => setEditingProviderRate(null)}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={() => {
+                    // Demo mode - just close the modal with success feedback
+                    setEditingProviderRate(null);
+                  }}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors flex items-center gap-2"
+                >
+                  <Check className="w-4 h-4" />
+                  Save Changes
                 </button>
               </div>
             </motion.div>
