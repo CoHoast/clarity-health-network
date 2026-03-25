@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/admin/ui/StatCard";
+import { Button } from "@/components/admin/ui/Button";
 import { StatCardSkeleton, TableRowSkeleton } from "@/components/admin/ui/Skeleton";
 import { EmptyState, NoSearchResults } from "@/components/admin/ui/EmptyState";
 import { Breadcrumb } from "@/components/admin/ui/Breadcrumb";
@@ -263,6 +264,20 @@ function convertApiProviderToPractice(apiProvider: any): Practice {
   };
 }
 
+// Deduplicated provider for Provider View
+interface DeduplicatedProvider {
+  npi: string;
+  name: string;
+  firstName?: string;
+  lastName?: string;
+  credential?: string;
+  specialty?: string;
+  acceptingNewPatients?: boolean;
+  locationCount: number;
+  practiceNames: string[];
+  instances: Provider[]; // All instances for this NPI
+}
+
 export default function ProvidersPage() {
   const { isDark } = useTheme();
   const toast = useToast();
@@ -270,6 +285,9 @@ export default function ProvidersPage() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All Types");
   const [viewMode, setViewMode] = useState<"practices" | "providers">("practices");
+  const [providerPage, setProviderPage] = useState(1);
+  const [selectedDeduplicatedProvider, setSelectedDeduplicatedProvider] = useState<DeduplicatedProvider | null>(null);
+  const providersPerPage = 100;
   const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
   const [activeTab, setActiveTab] = useState<"info" | "providers" | "billing" | "payto" | "contract">("info");
@@ -536,19 +554,6 @@ export default function ProvidersPage() {
   }).sort((a, b) => a.name.localeCompare(b.name));
 
   // Deduplicate providers by NPI (for Provider View mode)
-  interface DeduplicatedProvider {
-    npi: string;
-    name: string;
-    firstName?: string;
-    lastName?: string;
-    credential?: string;
-    specialty?: string;
-    acceptingNewPatients?: boolean;
-    locationCount: number;
-    practiceNames: string[];
-    instances: Provider[]; // All instances for this NPI
-  }
-
   const deduplicatedProviders = useMemo(() => {
     const npiMap = new Map<string, DeduplicatedProvider>();
     
@@ -600,6 +605,11 @@ export default function ProvidersPage() {
       return matchesNpi || matchesName || matchesSpecialty || matchesCredential;
     });
   }, [searchQuery, deduplicatedProviders]);
+
+  // Reset to page 1 when search changes
+  useEffect(() => {
+    setProviderPage(1);
+  }, [searchQuery]);
 
   // Get practice name for a provider
   const getPracticeForProvider = (practiceId: string) => {
@@ -1096,7 +1106,9 @@ export default function ProvidersPage() {
                 </tr>
               </thead>
               <tbody className={cn("divide-y", isDark ? "divide-slate-700" : "divide-slate-200")}>
-                {filteredProviders.slice(0, 100).map(provider => {
+                {filteredProviders
+                  .slice((providerPage - 1) * providersPerPage, providerPage * providersPerPage)
+                  .map(provider => {
                   return (
                     <tr 
                       key={provider.npi} 
@@ -1104,7 +1116,7 @@ export default function ProvidersPage() {
                         "transition-colors cursor-pointer",
                         isDark ? "hover:bg-slate-700/30" : "hover:bg-slate-50"
                       )}
-                      onClick={() => setSelectedProvider(provider.instances[0])}
+                      onClick={() => setSelectedDeduplicatedProvider(provider)}
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
@@ -1157,7 +1169,7 @@ export default function ProvidersPage() {
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end gap-2">
                           <button
-                            onClick={(e) => { e.stopPropagation(); setSelectedProvider(provider.instances[0]); }}
+                            onClick={(e) => { e.stopPropagation(); setSelectedDeduplicatedProvider(provider); }}
                             className={cn(
                               "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm",
                               isDark 
@@ -1176,9 +1188,76 @@ export default function ProvidersPage() {
               </tbody>
             </table>
           )}
-          {filteredProviders.length > 100 && (
-            <div className={cn("px-6 py-4 text-center border-t", isDark ? "border-slate-700 text-slate-400" : "border-slate-200 text-slate-500")}>
-              Showing 100 of {filteredProviders.length.toLocaleString()} unique providers ({providers.length.toLocaleString()} total locations). Use search to narrow results.
+          {/* Pagination */}
+          {filteredProviders.length > providersPerPage && (
+            <div className={cn("px-6 py-4 border-t flex items-center justify-between", isDark ? "border-slate-700" : "border-slate-200")}>
+              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                Showing {((providerPage - 1) * providersPerPage) + 1} - {Math.min(providerPage * providersPerPage, filteredProviders.length)} of {filteredProviders.length.toLocaleString()} unique providers
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setProviderPage(p => Math.max(1, p - 1))}
+                  disabled={providerPage === 1}
+                  className={cn(
+                    "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed",
+                    isDark
+                      ? "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  )}
+                >
+                  Previous
+                </button>
+                <div className="flex items-center gap-1">
+                  {/* Page numbers */}
+                  {(() => {
+                    const totalPages = Math.ceil(filteredProviders.length / providersPerPage);
+                    const pages: (number | string)[] = [];
+                    
+                    if (totalPages <= 7) {
+                      for (let i = 1; i <= totalPages; i++) pages.push(i);
+                    } else {
+                      pages.push(1);
+                      if (providerPage > 3) pages.push('...');
+                      for (let i = Math.max(2, providerPage - 1); i <= Math.min(totalPages - 1, providerPage + 1); i++) {
+                        pages.push(i);
+                      }
+                      if (providerPage < totalPages - 2) pages.push('...');
+                      pages.push(totalPages);
+                    }
+                    
+                    return pages.map((page, idx) => (
+                      typeof page === 'number' ? (
+                        <button
+                          key={idx}
+                          onClick={() => setProviderPage(page)}
+                          className={cn(
+                            "w-8 h-8 rounded-lg text-sm font-medium transition-colors",
+                            providerPage === page
+                              ? (isDark ? "bg-blue-600 text-white" : "bg-blue-500 text-white")
+                              : (isDark ? "bg-slate-700 text-slate-300 hover:bg-slate-600" : "bg-slate-100 text-slate-700 hover:bg-slate-200")
+                          )}
+                        >
+                          {page}
+                        </button>
+                      ) : (
+                        <span key={idx} className={cn("px-1", isDark ? "text-slate-500" : "text-slate-400")}>...</span>
+                      )
+                    ));
+                  })()}
+                </div>
+                <button
+                  onClick={() => setProviderPage(p => Math.min(Math.ceil(filteredProviders.length / providersPerPage), p + 1))}
+                  disabled={providerPage >= Math.ceil(filteredProviders.length / providersPerPage)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed",
+                    isDark
+                      ? "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  )}
+                >
+                  Next
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -2266,6 +2345,130 @@ export default function ProvidersPage() {
             });
         }}
       />
+
+      {/* Deduplicated Provider Detail Modal (for Provider View) */}
+      <AnimatePresence>
+        {selectedDeduplicatedProvider && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedDeduplicatedProvider(null)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={cn(
+                "rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col border",
+                isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className={cn("p-6 border-b flex items-start justify-between", isDark ? "border-slate-700" : "border-slate-200")}>
+                <div className="flex items-center gap-4">
+                  <div className={cn(
+                    "w-14 h-14 rounded-full flex items-center justify-center",
+                    isDark ? "bg-blue-500/20" : "bg-blue-50"
+                  )}>
+                    <User className={cn("w-7 h-7", isDark ? "text-blue-400" : "text-blue-600")} />
+                  </div>
+                  <div>
+                    <h2 className={cn("text-xl font-bold", isDark ? "text-white" : "text-slate-900")}>
+                      {selectedDeduplicatedProvider.name}
+                    </h2>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                      NPI: {selectedDeduplicatedProvider.npi} • {selectedDeduplicatedProvider.specialty}
+                    </p>
+                    <div className="flex items-center gap-3 mt-2">
+                      <span className={cn("inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium", isDark ? "bg-blue-500/20 text-blue-400" : "bg-blue-100 text-blue-700")}>
+                        <MapPin className="w-3 h-3" />
+                        {selectedDeduplicatedProvider.locationCount} {selectedDeduplicatedProvider.locationCount === 1 ? 'Location' : 'Locations'}
+                      </span>
+                      {selectedDeduplicatedProvider.acceptingNewPatients && (
+                        <span className={cn("inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium", isDark ? "bg-green-500/20 text-green-400" : "bg-green-100 text-green-700")}>
+                          <CheckCircle className="w-3 h-3" />
+                          Accepting Patients
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedDeduplicatedProvider(null)}
+                  className={cn("p-2 rounded-lg transition-colors", isDark ? "hover:bg-slate-700 text-slate-400" : "hover:bg-slate-100 text-slate-500")}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              {/* Locations List */}
+              <div className="flex-1 overflow-y-auto p-6">
+                <h3 className={cn("text-sm font-semibold uppercase tracking-wider mb-4", isDark ? "text-slate-400" : "text-slate-500")}>
+                  Practice Locations ({selectedDeduplicatedProvider.locationCount})
+                </h3>
+                <div className="space-y-3">
+                  {selectedDeduplicatedProvider.instances.map((instance, idx) => {
+                    const practice = practices.find(p => p.id === instance.practiceId);
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          setSelectedProvider(instance);
+                          setSelectedDeduplicatedProvider(null);
+                        }}
+                        className={cn(
+                          "p-4 rounded-xl border cursor-pointer transition-all hover:shadow-md",
+                          isDark 
+                            ? "bg-slate-700/50 border-slate-600 hover:bg-slate-700 hover:border-blue-500/50" 
+                            : "bg-slate-50 border-slate-200 hover:bg-white hover:border-blue-300"
+                        )}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start gap-3">
+                            <div className={cn(
+                              "w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0",
+                              isDark ? "bg-slate-600" : "bg-white border border-slate-200"
+                            )}>
+                              <Building2 className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
+                            </div>
+                            <div>
+                              <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
+                                {practice?.name || 'Unknown Practice'}
+                              </p>
+                              <p className={cn("text-sm mt-0.5", isDark ? "text-slate-400" : "text-slate-500")}>
+                                {practice?.city || 'Unknown'}, {practice?.state || 'AZ'}
+                              </p>
+                              {practice?.phone && (
+                                <p className={cn("text-sm mt-1 flex items-center gap-1", isDark ? "text-slate-500" : "text-slate-400")}>
+                                  <Phone className="w-3 h-3" />
+                                  {practice.phone}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className={cn(
+                              "px-2 py-1 rounded text-xs font-medium",
+                              isDark ? "bg-slate-600 text-slate-300" : "bg-slate-200 text-slate-600"
+                            )}>
+                              Location {idx + 1}
+                            </span>
+                            <ChevronRight className={cn("w-5 h-5", isDark ? "text-slate-500" : "text-slate-400")} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              
+              {/* Footer */}
+              <div className={cn("p-4 border-t flex justify-end gap-3", isDark ? "border-slate-700" : "border-slate-200")}>
+                <Button variant="secondary" onClick={() => setSelectedDeduplicatedProvider(null)}>
+                  Close
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Bulk Delete Confirmation */}
       <BulkDeleteConfirm
