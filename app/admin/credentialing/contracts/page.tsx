@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -33,92 +33,27 @@ import { Button } from "@/components/admin/ui/Button";
 import { Badge } from "@/components/admin/ui/Badge";
 import { cn } from "@/lib/utils";
 
-// Demo contracts
-const contracts = [
-  {
-    id: "CTR-2024-0156",
-    applicationId: "CRED-2024-1247",
-    provider: "Dr. Sarah Mitchell",
-    practice: "Mitchell Cardiology Associates",
-    type: "individual",
-    status: "pending_signature",
-    template: "Physician Individual Agreement",
-    rateSchedule: "Primary Care - 140% Medicare",
-    effectiveDate: "Apr 1, 2024",
-    termDate: "Mar 31, 2027",
-    sentDate: "Mar 15, 2024",
-    signedDate: null,
-    generatedDate: "Mar 14, 2024",
-  },
-  {
-    id: "CTR-2024-0155",
-    applicationId: "CRED-2024-1245",
-    provider: "Metro Imaging Center",
-    practice: "Metro Imaging Center",
-    type: "facility",
-    status: "signed",
-    template: "Facility Agreement",
-    rateSchedule: "Imaging Center - 125% Medicare",
-    effectiveDate: "Mar 15, 2024",
-    termDate: "Mar 14, 2027",
-    sentDate: "Mar 10, 2024",
-    signedDate: "Mar 12, 2024",
-    generatedDate: "Mar 9, 2024",
-  },
-  {
-    id: "CTR-2024-0154",
-    applicationId: "CRED-2024-1243",
-    provider: "Dr. Emily Chen",
-    practice: "Lakeside Pediatrics",
-    type: "group",
-    status: "draft",
-    template: "Group Practice Agreement",
-    rateSchedule: "Pediatrics - 145% Medicare",
-    effectiveDate: null,
-    termDate: null,
-    sentDate: null,
-    signedDate: null,
-    generatedDate: "Mar 8, 2024",
-  },
-  {
-    id: "CTR-2024-0153",
-    applicationId: "CRED-2024-1240",
-    provider: "Dr. James Wilson",
-    practice: "Wilson Orthopedic Clinic",
-    type: "individual",
-    status: "expired",
-    template: "Physician Individual Agreement",
-    rateSchedule: "Orthopedics - 155% Medicare",
-    effectiveDate: "Mar 1, 2024",
-    termDate: "Feb 29, 2027",
-    sentDate: "Feb 20, 2024",
-    signedDate: null,
-    generatedDate: "Feb 18, 2024",
-  },
-  {
-    id: "CTR-2024-0152",
-    applicationId: "CRED-2024-1238",
-    provider: "Cleveland PT Group",
-    practice: "Cleveland PT Group",
-    type: "group",
-    status: "signed",
-    template: "Allied Health Agreement",
-    rateSchedule: "Physical Therapy - 130% Medicare",
-    effectiveDate: "Feb 15, 2024",
-    termDate: "Feb 14, 2027",
-    sentDate: "Feb 10, 2024",
-    signedDate: "Feb 13, 2024",
-    generatedDate: "Feb 8, 2024",
-  },
-];
+interface Contract {
+  id: string;
+  applicationId: string;
+  provider: string;
+  practice: string;
+  npi?: string;
+  type: string;
+  status: string;
+  template: string;
+  rateSchedule: string;
+  effectiveDate: string | null;
+  termDate: string | null;
+  sentDate: string | null;
+  signedDate: string | null;
+  generatedDate: string;
+  providerCount?: number;
+  city?: string;
+  state?: string;
+}
 
-// Stats
-const stats = [
-  { label: "Total Contracts", value: "234", trend: "neutral" as const, change: "Active + pending", icon: <FileText className="w-5 h-5" /> },
-  { label: "Pending Signature", value: "18", trend: "warning" as const, change: "Awaiting response", icon: <Clock className="w-5 h-5" /> },
-  { label: "Signed This Month", value: "12", trend: "up" as const, change: "+4 vs last month", icon: <CheckCircle className="w-5 h-5" /> },
-  { label: "Expiring (90 days)", value: "7", trend: "warning" as const, change: "Renewal needed", icon: <AlertCircle className="w-5 h-5" /> },
-];
+// Contracts and stats are now loaded from API
 
 const getStatusBadge = (status: string) => {
   switch (status) {
@@ -170,7 +105,7 @@ export default function CredentialingContractsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [showGenerateModal, setShowGenerateModal] = useState(false);
-  const [selectedContract, setSelectedContract] = useState<typeof contracts[0] | null>(null);
+  const [selectedContract, setSelectedContract] = useState<Contract | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showSendModal, setShowSendModal] = useState(false);
   const [showPdfModal, setShowPdfModal] = useState(false);
@@ -182,6 +117,44 @@ export default function CredentialingContractsPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Contracts loaded from API
+  const [contracts, setContracts] = useState<Contract[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [apiStats, setApiStats] = useState({ total: 0, signed: 0, pending: 0, draft: 0, expired: 0 });
+  
+  // Fetch contracts from API
+  useEffect(() => {
+    async function fetchContracts() {
+      try {
+        setIsLoading(true);
+        const params = new URLSearchParams();
+        if (statusFilter !== "all") params.set("status", statusFilter);
+        if (searchQuery) params.set("search", searchQuery);
+        
+        const res = await fetch(`/api/contracts?${params}`);
+        if (!res.ok) throw new Error("Failed to fetch");
+        
+        const data = await res.json();
+        setContracts(data.contracts || []);
+        setApiStats(data.stats || { total: 0, signed: 0, pending: 0, draft: 0, expired: 0 });
+      } catch (error) {
+        console.error("Failed to fetch contracts:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    fetchContracts();
+  }, [statusFilter, searchQuery]);
+  
+  // Dynamic stats from API
+  const stats = [
+    { label: "Total Contracts", value: String(apiStats.total), trend: "neutral" as const, change: "Active + pending", icon: <FileText className="w-5 h-5" /> },
+    { label: "Pending Signature", value: String(apiStats.pending), trend: "warning" as const, change: "Awaiting response", icon: <Clock className="w-5 h-5" /> },
+    { label: "Signed", value: String(apiStats.signed), trend: "up" as const, change: "Fully executed", icon: <CheckCircle className="w-5 h-5" /> },
+    { label: "Drafts", value: String(apiStats.draft), trend: "neutral" as const, change: "Ready to send", icon: <FileSignature className="w-5 h-5" /> },
+  ];
 
   // Show toast helper
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -190,14 +163,14 @@ export default function CredentialingContractsPage() {
   };
 
   // Handle PDF download
-  const handleDownloadPdf = (contract: typeof contracts[0], e?: React.MouseEvent) => {
+  const handleDownloadPdf = (contract: Contract, e?: React.MouseEvent) => {
     e?.stopPropagation();
     setSelectedContract(contract);
     setShowPdfModal(true);
   };
 
   // Handle send for signature
-  const handleSendForSignature = async (contract: typeof contracts[0], e?: React.MouseEvent) => {
+  const handleSendForSignature = async (contract: Contract, e?: React.MouseEvent) => {
     e?.stopPropagation();
     setSelectedContract(contract);
     setShowSendModal(true);
@@ -248,7 +221,7 @@ export default function CredentialingContractsPage() {
   };
 
   // Handle row click
-  const handleRowClick = (contract: typeof contracts[0]) => {
+  const handleRowClick = (contract: Contract) => {
     setSelectedContract(contract);
   };
 
