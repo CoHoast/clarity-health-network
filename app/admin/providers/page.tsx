@@ -523,7 +523,7 @@ export default function ProvidersPage() {
     const matchesPractice = practice.name.toLowerCase().includes(searchLower) ||
       (practice.specialty && practice.specialty.toLowerCase().includes(searchLower)) ||
       (practice.city && practice.city.toLowerCase().includes(searchLower)) ||
-      (practice.npi && practice.npi.includes(searchQuery.trim())); // Practice NPI too
+      (practice.payToNpi && practice.payToNpi.includes(searchQuery.trim())); // Billing NPI
     
     // Check if any provider in this practice matches (using pre-computed set)
     const matchesProvider = practiceIdsWithMatchingProviders.has(practice.id);
