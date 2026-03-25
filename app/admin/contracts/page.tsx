@@ -17,23 +17,19 @@ import { BulkActionBar, bulkActionCreators } from "@/components/admin/ui/BulkAct
 import { useBulkSelect } from "@/lib/hooks/useBulkSelect";
 import { cn } from "@/lib/utils";
 
-const contracts = [
-  { id: "CTR-001", provider: "Cleveland Family Medicine", practiceId: "PRC-001", npi: "1234567890", type: "Primary Care", feeSchedule: "120% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true },
-  { id: "CTR-002", provider: "Metro Imaging Center", practiceId: "PRC-003", npi: "3456789012", type: "Imaging", feeSchedule: "Case Rate", effective: "2023-06-01", expires: "2025-05-31", status: "expiring", autoRenew: false },
-  { id: "CTR-003", provider: "Cleveland Orthopedic Associates", practiceId: "PRC-002", npi: "4567890123", type: "Specialty", feeSchedule: "125% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true },
-  { id: "CTR-004", provider: "Dr. Sarah Chen, MD", practiceId: null, npi: "2345678901", type: "Primary Care", feeSchedule: "115% Medicare", effective: "2023-03-01", expires: "2025-02-28", status: "expiring", autoRenew: true },
-  { id: "CTR-005", provider: "Westlake Urgent Care", practiceId: "PRC-005", npi: "6789012345", type: "Urgent Care", feeSchedule: "110% Medicare", effective: "2024-01-01", expires: "2026-12-31", status: "active", autoRenew: true },
-  { id: "CTR-006", provider: "Pending Provider LLC", practiceId: null, npi: "9876543210", type: "Specialty", feeSchedule: "TBD", effective: "Pending", expires: "Pending", status: "pending", autoRenew: false },
-  { id: "CTR-007", provider: "Cleveland Cardiology Associates", practiceId: "PRC-004", npi: "9012345678", type: "Specialty", feeSchedule: "130% Medicare", effective: "2023-01-01", expires: "2025-12-31", status: "active", autoRenew: true },
-  { id: "CTR-008", provider: "Quest Diagnostics Cleveland", practiceId: null, npi: "8901234567", type: "Laboratory", feeSchedule: "65% Medicare", effective: "2022-01-01", expires: "2027-12-31", status: "active", autoRenew: true },
-];
-
-const stats = [
-  { label: "Active Contracts", value: "847", trend: "up" as const, change: "+12", icon: <CheckCircle className="w-5 h-5" /> },
-  { label: "Expiring Soon", value: "23", trend: "warning" as const, change: "30d", icon: <AlertTriangle className="w-5 h-5" /> },
-  { label: "Pending Approval", value: "12", trend: "neutral" as const, change: "Review", icon: <Clock className="w-5 h-5" /> },
-  { label: "Renewal Rate", value: "98%", trend: "up" as const, change: "+3%", icon: <RefreshCw className="w-5 h-5" /> },
-];
+// Contract type for real data
+interface Contract {
+  id: string;
+  provider: string;
+  practiceId: string | null;
+  npi: string;
+  type: string;
+  feeSchedule: string;
+  effective: string;
+  expires: string;
+  status: string;
+  autoRenew: boolean;
+}
 
 const statusFilters = [
   { label: "All", value: "" },
@@ -47,16 +43,29 @@ export default function ContractsPage() {
   const toast = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [selectedContract, setSelectedContract] = useState<typeof contracts[0] | null>(null);
+  const [contracts, setContracts] = useState<Contract[]>([]);
+  const [selectedContract, setSelectedContract] = useState<Contract | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showRenewalModal, setShowRenewalModal] = useState<typeof contracts[0] | null>(null);
+  const [showRenewalModal, setShowRenewalModal] = useState<Contract | null>(null);
   const [actionSuccess, setActionSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate initial data loading
+  // Fetch contracts from API (currently empty - no contracts uploaded yet)
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
+    async function fetchContracts() {
+      try {
+        const res = await fetch('/api/contracts');
+        if (res.ok) {
+          const data = await res.json();
+          setContracts(data.contracts || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch contracts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchContracts();
   }, []);
 
   const filteredContracts = contracts.filter((contract) => {
@@ -65,6 +74,18 @@ export default function ContractsPage() {
     const matchesStatus = !statusFilter || contract.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  // Dynamic stats based on actual contracts
+  const activeCount = contracts.filter(c => c.status === "active").length;
+  const expiringCount = contracts.filter(c => c.status === "expiring").length;
+  const pendingCount = contracts.filter(c => c.status === "pending").length;
+  
+  const stats = [
+    { label: "Active Contracts", value: String(activeCount), trend: "up" as const, change: activeCount > 0 ? "Active" : "None", icon: <CheckCircle className="w-5 h-5" /> },
+    { label: "Expiring Soon", value: String(expiringCount), trend: expiringCount > 0 ? "warning" as const : "neutral" as const, change: "30d", icon: <AlertTriangle className="w-5 h-5" /> },
+    { label: "Pending Approval", value: String(pendingCount), trend: "neutral" as const, change: "Review", icon: <Clock className="w-5 h-5" /> },
+    { label: "Total Contracts", value: String(contracts.length), trend: "neutral" as const, change: "All", icon: <RefreshCw className="w-5 h-5" /> },
+  ];
 
   // Bulk selection
   const bulk = useBulkSelect({
