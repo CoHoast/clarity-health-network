@@ -299,7 +299,7 @@ export default function ProvidersPage() {
         // Fetch practices and providers in parallel
         const [practicesRes, providersRes] = await Promise.all([
           fetch('/api/practices?limit=500'),
-          fetch('/api/providers?limit=100'),
+          fetch('/api/providers?limit=10000'), // Load all providers for search
         ]);
         
         const practicesData = await practicesRes.json();
