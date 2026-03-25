@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Shield, Loader2 } from "lucide-react";
+import { DEMO_MODE } from "@/lib/demo-mode";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -13,6 +14,34 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // In demo mode, auto-login and redirect
+  useEffect(() => {
+    if (DEMO_MODE) {
+      const sessionId = `demo_${Date.now().toString(36)}`;
+      const demoUser = {
+        id: 'demo-visitor',
+        name: 'Demo User',
+        email: 'demo@solidarity.com',
+        role: 'admin',
+      };
+      localStorage.setItem('auth_token', sessionId);
+      localStorage.setItem('user', JSON.stringify(demoUser));
+      router.replace('/admin');
+    }
+  }, [router]);
+
+  // Show loading in demo mode
+  if (DEMO_MODE) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-slate-400">Loading demo...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,11 +61,8 @@ export default function AdminLoginPage() {
         throw new Error(data.error || "Login failed");
       }
 
-      // Store token
       localStorage.setItem("auth_token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-
-      // Redirect to admin dashboard
       router.push("/admin");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
@@ -52,7 +78,6 @@ export default function AdminLoginPage() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
-        {/* Logo */}
         <div className="text-center mb-8">
           <img 
             src="/solidarity-logo.png" 
@@ -67,7 +92,6 @@ export default function AdminLoginPage() {
           </div>
         </div>
 
-        {/* Login Card */}
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">Sign in to continue</h2>
 
@@ -138,7 +162,6 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Demo hint */}
           <div className="mt-6 p-3 bg-slate-50 rounded-lg text-xs text-slate-600">
             <p className="font-medium">Demo: admin@truecarehealthnetwork.com / demo123</p>
           </div>
@@ -148,9 +171,6 @@ export default function AdminLoginPage() {
           <Link href="/login" className="hover:text-white transition-colors">
             ← Back to member login
           </Link>
-        </p>
-        <p className="text-center text-slate-600 text-xs mt-2">
-          <span className="text-slate-500">Admin URL: /admin-login</span>
         </p>
       </motion.div>
     </div>
