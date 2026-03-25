@@ -52,9 +52,42 @@ const demoCredentials: ExpiringCredential[] = [
 export default function ExpiringCredentialsPage() {
   const { isDark } = useTheme();
   const toast = useToast();
-  const [credentials, setCredentials] = useState<ExpiringCredential[]>(demoCredentials);
-  const [isLoading, setIsLoading] = useState(false);
+  const [credentials, setCredentials] = useState<ExpiringCredential[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'expired' | 'critical' | 'warning' | 'upcoming'>('all');
+
+  // Fetch real expiring credentials from API
+  const fetchCredentials = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/monitoring?type=expiring');
+      if (res.ok) {
+        const data = await res.json();
+        // Map API response to our interface
+        const mapped = (data.expiring || []).map((c: any, i: number) => ({
+          id: String(i + 1),
+          providerId: c.providerId,
+          providerName: c.providerName,
+          npi: c.npi,
+          credentialType: c.credentialType,
+          credentialName: c.credentialName,
+          expirationDate: c.expirationDate,
+          daysUntilExpiry: c.daysUntilExpiry,
+          status: c.status as 'expired' | 'critical' | 'warning' | 'upcoming',
+        }));
+        setCredentials(mapped);
+      }
+    } catch (error) {
+      console.error('Failed to fetch credentials:', error);
+      toast.error("Error", "Failed to load credential data");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCredentials();
+  }, []);
 
   const stats = {
     expired: credentials.filter(c => c.status === 'expired').length,
@@ -68,11 +101,8 @@ export default function ExpiringCredentialsPage() {
     : credentials.filter(c => c.status === filter);
 
   const handleRefresh = async () => {
-    setIsLoading(true);
-    // In production, fetch from API
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await fetchCredentials();
     toast.success("Refreshed", "Credential data updated");
-    setIsLoading(false);
   };
 
   const handleSendReminder = (credential: ExpiringCredential) => {
