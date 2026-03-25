@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -39,7 +39,27 @@ import { Button } from "@/components/admin/ui/Button";
 import { SearchInput } from "@/components/admin/ui/SearchInput";
 import { cn } from "@/lib/utils";
 
-// Re-credentialing cycles by provider type
+interface RecredentialingRecord {
+  id: number;
+  provider: string;
+  practice: string;
+  npi: string;
+  specialty: string;
+  providerType: string;
+  currentExpires: string;
+  daysUntil: number;
+  status: "due_soon" | "upcoming" | "in_progress" | "overdue" | "completed";
+  remindersSent: number;
+  lastReminder: string | null;
+  applicationStarted: boolean;
+  workflowStage: string;
+  cleanHistory: boolean;
+  eligibleForAbbreviated: boolean;
+  city?: string;
+  state?: string;
+}
+
+// Re-credentialing cycles by provider type (kept for reference)
 const recredCycles = [
   { type: "Physician (MD/DO)", months: 36, leadDays: 90 },
   { type: "Mid-Level (NP/PA)", months: 24, leadDays: 60 },
@@ -49,159 +69,7 @@ const recredCycles = [
   { type: "Behavioral Health", months: 24, leadDays: 60 },
 ];
 
-const recredentialingList = [
-  {
-    id: 1,
-    provider: "Dr. Sarah Chen",
-    practice: "Lakeside Family Medicine",
-    npi: "5566778899",
-    specialty: "Family Medicine",
-    providerType: "Physician",
-    currentExpires: "2024-04-15",
-    daysUntil: 28,
-    status: "due_soon",
-    remindersSent: 1,
-    lastReminder: "2024-03-10",
-    applicationStarted: false,
-    workflowStage: "reminder_60",
-    cleanHistory: true,
-    eligibleForAbbreviated: true,
-  },
-  {
-    id: 2,
-    provider: "Dr. Michael Torres",
-    practice: "Cleveland Cardiology",
-    npi: "1122334455",
-    specialty: "Cardiology",
-    providerType: "Physician",
-    currentExpires: "2024-05-01",
-    daysUntil: 44,
-    status: "upcoming",
-    remindersSent: 0,
-    lastReminder: null,
-    applicationStarted: false,
-    workflowStage: "reminder_60",
-    cleanHistory: true,
-    eligibleForAbbreviated: true,
-  },
-  {
-    id: 3,
-    provider: "Valley Health Center",
-    practice: "Valley Health Center",
-    npi: "9988776655",
-    specialty: "Multi-Specialty",
-    providerType: "Facility",
-    currentExpires: "2024-04-30",
-    daysUntil: 43,
-    status: "upcoming",
-    remindersSent: 1,
-    lastReminder: "2024-03-15",
-    applicationStarted: true,
-    workflowStage: "in_review",
-    cleanHistory: true,
-    eligibleForAbbreviated: false, // Facility - needs full review
-  },
-  {
-    id: 4,
-    provider: "Dr. Emily Watson",
-    practice: "Watson Pediatrics",
-    npi: "4455667788",
-    specialty: "Pediatrics",
-    providerType: "Physician",
-    currentExpires: "2024-06-15",
-    daysUntil: 89,
-    status: "upcoming",
-    remindersSent: 0,
-    lastReminder: null,
-    applicationStarted: false,
-    workflowStage: "reminder_90",
-    cleanHistory: true,
-    eligibleForAbbreviated: true,
-  },
-  {
-    id: 5,
-    provider: "Dr. Robert Kim",
-    practice: "Dermatology Associates",
-    npi: "6789012345",
-    specialty: "Dermatology",
-    providerType: "Physician",
-    currentExpires: "2024-03-15",
-    daysUntil: -3,
-    status: "overdue",
-    remindersSent: 4,
-    lastReminder: "2024-03-14",
-    applicationStarted: false,
-    workflowStage: "escalation",
-    cleanHistory: false, // Has malpractice claim
-    eligibleForAbbreviated: false,
-  },
-  {
-    id: 6,
-    provider: "Dr. Lisa Martinez",
-    practice: "Neurology Associates",
-    npi: "7890123456",
-    specialty: "Neurology",
-    providerType: "Physician",
-    currentExpires: "2024-03-10",
-    daysUntil: -8,
-    status: "overdue",
-    remindersSent: 5,
-    lastReminder: "2024-03-08",
-    applicationStarted: true,
-    workflowStage: "grace_period",
-    cleanHistory: true,
-    eligibleForAbbreviated: true,
-  },
-  {
-    id: 7,
-    provider: "Metro Imaging Center",
-    practice: "Metro Imaging Center",
-    npi: "3456789012",
-    specialty: "Radiology",
-    providerType: "Facility",
-    currentExpires: "2024-07-31",
-    daysUntil: 135,
-    status: "on_track",
-    remindersSent: 0,
-    lastReminder: null,
-    applicationStarted: false,
-    workflowStage: "not_started",
-    cleanHistory: true,
-    eligibleForAbbreviated: false,
-  },
-  {
-    id: 8,
-    provider: "Jennifer Lee, NP",
-    practice: "Family Care Associates",
-    npi: "2345678901",
-    specialty: "Nurse Practitioner",
-    providerType: "Mid-Level",
-    currentExpires: "2024-05-20",
-    daysUntil: 63,
-    status: "upcoming",
-    remindersSent: 1,
-    lastReminder: "2024-03-12",
-    applicationStarted: false,
-    workflowStage: "reminder_60",
-    cleanHistory: true,
-    eligibleForAbbreviated: true,
-  },
-];
-
-// Completed re-credentialings
-const completedRecreds = [
-  { id: 101, provider: "Dr. James Wilson", completedDate: "2024-03-01", type: "abbreviated", nextDue: "2027-03-01" },
-  { id: 102, provider: "Cleveland PT Group", completedDate: "2024-02-28", type: "full", nextDue: "2026-02-28" },
-  { id: 103, provider: "Dr. Amanda Foster", completedDate: "2024-02-15", type: "abbreviated", nextDue: "2027-02-15" },
-  { id: 104, provider: "Main Street Clinic", completedDate: "2024-02-10", type: "full", nextDue: "2027-02-10" },
-];
-
-const stats = [
-  { label: "Due in 30 Days", value: "12", trend: "warning" as const, change: "Action needed", icon: <AlertTriangle className="w-5 h-5" /> },
-  { label: "Due in 60 Days", value: "18", trend: "neutral" as const, change: "Reminder sent", icon: <Clock className="w-5 h-5" /> },
-  { label: "Due in 90 Days", value: "23", trend: "up" as const, change: "On track", icon: <Calendar className="w-5 h-5" /> },
-  { label: "Overdue", value: "3", trend: "warning" as const, change: "Immediate", icon: <RefreshCw className="w-5 h-5" /> },
-];
+// Re-credentialing data is now loaded from API
 
 const getStatusBadge = (status: string, daysUntil: number) => {
   if (status === "overdue") {
@@ -257,13 +125,64 @@ export default function RecredentialingPage() {
   const [filterDays, setFilterDays] = useState("");
   const [activeTab, setActiveTab] = useState<"upcoming" | "completed" | "settings">("upcoming");
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState<typeof recredentialingList[0] | null>(null);
+  const [selectedProvider, setSelectedProvider] = useState<RecredentialingRecord | null>(null);
   const [showApplicationModal, setShowApplicationModal] = useState(false);
   const [showReminderModal, setShowReminderModal] = useState(false);
   const [showRequestDocsModal, setShowRequestDocsModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
+  
+  // Data from API
+  const [recredentialingList, setRecredentialingList] = useState<RecredentialingRecord[]>([]);
+  const [completedRecreds, setCompletedRecreds] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [apiStats, setApiStats] = useState({ total: 0, dueSoon: 0, upcoming: 0, inProgress: 0, overdue: 0, completed: 0 });
+  
+  // Fetch re-credentialing data from API
+  useEffect(() => {
+    async function fetchRecredentialingData() {
+      try {
+        setIsLoading(true);
+        const params = new URLSearchParams();
+        if (filterDays) params.set('status', filterDays);
+        if (searchQuery) params.set('search', searchQuery);
+        
+        const res = await fetch(`/api/recredentialing?${params}`);
+        if (!res.ok) throw new Error('Failed to fetch');
+        
+        const data = await res.json();
+        setRecredentialingList(data.records || []);
+        setApiStats(data.stats || { total: 0, dueSoon: 0, upcoming: 0, inProgress: 0, overdue: 0, completed: 0 });
+        
+        // Set completed recreds (filter from the records that are completed)
+        const completed = (data.records || [])
+          .filter((r: RecredentialingRecord) => r.status === 'completed')
+          .map((r: RecredentialingRecord) => ({
+            id: r.id,
+            provider: r.provider,
+            completedDate: r.currentExpires,
+            type: r.eligibleForAbbreviated ? 'abbreviated' : 'full',
+            nextDue: r.currentExpires,
+          }));
+        setCompletedRecreds(completed);
+      } catch (error) {
+        console.error('Failed to fetch re-credentialing data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    fetchRecredentialingData();
+  }, [filterDays, searchQuery]);
+  
+  // Dynamic stats from API
+  const stats = [
+    { label: "Due in 30 Days", value: String(apiStats.dueSoon), trend: "warning" as const, change: "Action needed", icon: <AlertTriangle className="w-5 h-5" /> },
+    { label: "Upcoming (60+ Days)", value: String(apiStats.upcoming), trend: "neutral" as const, change: "Scheduled", icon: <Clock className="w-5 h-5" /> },
+    { label: "In Progress", value: String(apiStats.inProgress), trend: "up" as const, change: "On track", icon: <Calendar className="w-5 h-5" /> },
+    { label: "Overdue", value: String(apiStats.overdue), trend: "warning" as const, change: "Immediate", icon: <RefreshCw className="w-5 h-5" /> },
+  ];
 
   // Document types for request
   const documentTypes = [
@@ -279,17 +198,17 @@ export default function RecredentialingPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const handleViewApplication = (provider: typeof recredentialingList[0]) => {
+  const handleViewApplication = (provider: RecredentialingRecord) => {
     setSelectedProvider(provider);
     setShowApplicationModal(true);
   };
 
-  const handleSendReminder = (provider: typeof recredentialingList[0]) => {
+  const handleSendReminder = (provider: RecredentialingRecord) => {
     setSelectedProvider(provider);
     setShowReminderModal(true);
   };
 
-  const handleRequestDocs = (provider: typeof recredentialingList[0]) => {
+  const handleRequestDocs = (provider: RecredentialingRecord) => {
     setSelectedProvider(provider);
     setSelectedDocs([]);
     setShowRequestDocsModal(true);

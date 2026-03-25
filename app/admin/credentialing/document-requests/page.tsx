@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Send,
@@ -19,6 +19,7 @@ import {
   FileText,
   Calendar,
   User,
+  Loader2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/admin/ThemeContext";
@@ -28,63 +29,22 @@ import { Button, IconButton } from "@/components/admin/ui/Button";
 import { SearchInput } from "@/components/admin/ui/SearchInput";
 import { cn } from "@/lib/utils";
 
-const documentRequests = [
-  {
-    id: "REQ-001",
-    provider: "Dr. Sarah Mitchell",
-    practice: "Cleveland Heart Center",
-    email: "dr.mitchell@cardio.com",
-    requested: "2024-03-14",
-    expires: "2024-03-28",
-    status: "partial",
-    requestedDocs: ["license", "dea", "malpractice_coi", "board_cert", "w9"],
-    uploadedDocs: ["license", "dea", "w9"],
-    sentBy: "Jane Smith",
-  },
-  {
-    id: "REQ-002",
-    provider: "Dr. James Wilson",
-    practice: "Wilson Orthopedics",
-    email: "dr.wilson@ortho.com",
-    requested: "2024-03-12",
-    expires: "2024-03-26",
-    status: "pending",
-    requestedDocs: ["license", "malpractice_coi", "board_cert"],
-    uploadedDocs: [],
-    sentBy: "Jane Smith",
-  },
-  {
-    id: "REQ-003",
-    provider: "Cleveland PT Group",
-    practice: "Cleveland Physical Therapy",
-    email: "admin@clevelandpt.com",
-    requested: "2024-03-10",
-    expires: "2024-03-24",
-    status: "complete",
-    requestedDocs: ["license", "malpractice_coi", "w9"],
-    uploadedDocs: ["license", "malpractice_coi", "w9"],
-    sentBy: "Mike Johnson",
-  },
-  {
-    id: "REQ-004",
-    provider: "Dr. Emily Chen",
-    practice: "Lakeside Pediatrics",
-    email: "dr.chen@pediatrics.com",
-    requested: "2024-03-08",
-    expires: "2024-03-22",
-    status: "expired",
-    requestedDocs: ["license", "dea", "malpractice_coi"],
-    uploadedDocs: ["license"],
-    sentBy: "Jane Smith",
-  },
-];
+interface DocumentRequest {
+  id: string;
+  provider: string;
+  practice: string;
+  npi: string;
+  email: string;
+  requested: string;
+  expires: string;
+  status: "pending" | "partial" | "complete" | "expired";
+  requestedDocs: string[];
+  uploadedDocs: string[];
+  sentBy: string;
+}
 
-const stats = [
-  { label: "Active Requests", value: "12", trend: "neutral" as const, change: "Awaiting upload", icon: <Send className="w-5 h-5" /> },
-  { label: "Partial Uploads", value: "5", trend: "warning" as const, change: "In progress", icon: <Clock className="w-5 h-5" /> },
-  { label: "Completed", value: "34", trend: "up" as const, change: "This month", icon: <CheckCircle className="w-5 h-5" /> },
-  { label: "Expired", value: "3", trend: "warning" as const, change: "Need follow-up", icon: <XCircle className="w-5 h-5" /> },
-];
+// Document requests are now loaded from API
+// Stats are dynamic from API (defined in component)
 
 const documentTypes = [
   { value: "license", label: "State Medical License" },
@@ -121,20 +81,50 @@ export default function DocumentRequestsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [showNewRequestModal, setShowNewRequestModal] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState<typeof documentRequests[0] | null>(null);
+  const [selectedRequest, setSelectedRequest] = useState<DocumentRequest | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [uploadTarget, setUploadTarget] = useState<typeof documentRequests[0] | null>(null);
+  const [uploadTarget, setUploadTarget] = useState<DocumentRequest | null>(null);
   const [showReminderToast, setShowReminderToast] = useState(false);
   const [reminderSentTo, setReminderSentTo] = useState("");
   const [viewingDocument, setViewingDocument] = useState<{ doc: string; provider: string } | null>(null);
+  
+  // Data from API
+  const [documentRequests, setDocumentRequests] = useState<DocumentRequest[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [apiStats, setApiStats] = useState({ total: 0, pending: 0, partial: 0, complete: 0, expired: 0 });
+  
+  // Fetch document requests from API
+  useEffect(() => {
+    async function fetchDocumentRequests() {
+      try {
+        setIsLoading(true);
+        const params = new URLSearchParams();
+        if (statusFilter) params.set('status', statusFilter);
+        if (searchQuery) params.set('search', searchQuery);
+        
+        const res = await fetch(`/api/document-requests?${params}`);
+        if (!res.ok) throw new Error('Failed to fetch');
+        
+        const data = await res.json();
+        setDocumentRequests(data.requests || []);
+        setApiStats(data.stats || { total: 0, pending: 0, partial: 0, complete: 0, expired: 0 });
+      } catch (error) {
+        console.error('Failed to fetch document requests:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    fetchDocumentRequests();
+  }, [statusFilter, searchQuery]);
 
-  const handleSendReminder = (req: typeof documentRequests[0]) => {
+  const handleSendReminder = (req: DocumentRequest) => {
     setReminderSentTo(req.provider);
     setShowReminderToast(true);
     setTimeout(() => setShowReminderToast(false), 3000);
   };
 
-  const handleUploadManually = (req: typeof documentRequests[0]) => {
+  const handleUploadManually = (req: DocumentRequest) => {
     setUploadTarget(req);
     setShowUploadModal(true);
   };
@@ -157,6 +147,14 @@ export default function DocumentRequestsPage() {
     const matchesStatus = !statusFilter || req.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+  
+  // Dynamic stats from API
+  const stats = [
+    { label: "Active Requests", value: String(apiStats.pending + apiStats.partial), trend: "neutral" as const, change: "Awaiting upload", icon: <Send className="w-5 h-5" /> },
+    { label: "Partial Uploads", value: String(apiStats.partial), trend: "warning" as const, change: "In progress", icon: <Clock className="w-5 h-5" /> },
+    { label: "Completed", value: String(apiStats.complete), trend: "up" as const, change: "This month", icon: <CheckCircle className="w-5 h-5" /> },
+    { label: "Expired", value: String(apiStats.expired), trend: "warning" as const, change: "Need follow-up", icon: <XCircle className="w-5 h-5" /> },
+  ];
 
   const toggleDocSelection = (doc: string) => {
     setNewRequest((prev) => ({
@@ -167,7 +165,7 @@ export default function DocumentRequestsPage() {
     }));
   };
 
-  const getProgress = (req: typeof documentRequests[0]) => {
+  const getProgress = (req: DocumentRequest) => {
     return Math.round((req.uploadedDocs.length / req.requestedDocs.length) * 100);
   };
 
