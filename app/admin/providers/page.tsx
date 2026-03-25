@@ -185,6 +185,9 @@ const typeOptions = ["All Types", "Group Practice", "Facility"];
 
 // Convert API provider to internal Provider format
 function convertApiProvider(apiProvider: any, practiceId: string): Provider {
+  // Get location from the provider's locations array (each provider record has its own location)
+  const location = apiProvider.locations?.[0] || {};
+  
   return {
     id: apiProvider.id,
     practiceId,
@@ -213,6 +216,13 @@ function convertApiProvider(apiProvider: any, practiceId: string): Provider {
       saturday: 'Closed',
       sunday: 'Closed',
     },
+    // Include location data for each provider instance
+    address: location.address || location.address1 || '',
+    address2: location.address2 || '',
+    city: location.city || '',
+    state: location.state || 'AZ',
+    zip: location.zip || '',
+    phone: location.phone || '',
   };
 }
 
@@ -2406,6 +2416,18 @@ export default function ProvidersPage() {
                 <div className="space-y-3">
                   {selectedDeduplicatedProvider.instances.map((instance, idx) => {
                     const practice = practices.find(p => p.id === instance.practiceId);
+                    // Use the instance's own location data (each provider record has unique address)
+                    const locationAddress = instance.address || '';
+                    const locationAddress2 = instance.address2 || '';
+                    const locationCity = instance.city || practice?.city || '';
+                    const locationState = instance.state || practice?.state || 'AZ';
+                    const locationZip = instance.zip || '';
+                    const locationPhone = instance.phone || practice?.phone || '';
+                    
+                    // Build full address string
+                    const fullAddress = [locationAddress, locationAddress2].filter(Boolean).join(', ');
+                    const cityStateZip = [locationCity, locationState, locationZip].filter(Boolean).join(', ');
+                    
                     return (
                       <div
                         key={idx}
@@ -2426,19 +2448,25 @@ export default function ProvidersPage() {
                               "w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0",
                               isDark ? "bg-slate-600" : "bg-white border border-slate-200"
                             )}>
-                              <Building2 className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
+                              <MapPin className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
                             </div>
                             <div>
                               <p className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>
                                 {practice?.name || 'Unknown Practice'}
                               </p>
-                              <p className={cn("text-sm mt-0.5", isDark ? "text-slate-400" : "text-slate-500")}>
-                                {practice?.city || 'Unknown'}, {practice?.state || 'AZ'}
+                              {/* Show the actual address for this specific location */}
+                              {fullAddress && (
+                                <p className={cn("text-sm mt-0.5", isDark ? "text-slate-300" : "text-slate-600")}>
+                                  {fullAddress}
+                                </p>
+                              )}
+                              <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
+                                {cityStateZip}
                               </p>
-                              {practice?.phone && (
+                              {locationPhone && (
                                 <p className={cn("text-sm mt-1 flex items-center gap-1", isDark ? "text-slate-500" : "text-slate-400")}>
                                   <Phone className="w-3 h-3" />
-                                  {practice.phone}
+                                  {locationPhone}
                                 </p>
                               )}
                             </div>
