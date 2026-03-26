@@ -65,56 +65,30 @@ const documentTypes: Record<string, { label: string; description: string; helpTe
   },
 };
 
-// Mock data - In production, this would come from API based on token
-const getMockRequestData = (token: string) => {
-  if (token === "expired") {
-    return { error: "expired", message: "This upload link has expired" };
-  }
-  if (token === "invalid") {
-    return { error: "invalid", message: "Invalid or unknown upload link" };
-  }
-
-  // Demo: single document request
-  if (token === "single") {
-    return {
-      id: "REQ-002",
-      token,
-      provider: {
-        name: "Dr. James Wilson, MD",
-        practice: "Wilson Orthopedics",
-        email: "dr.wilson@ortho.com",
-      },
-      network: {
-        name: "TrueCare Health Network",
-        logo: "/logo.svg",
-      },
-      requestedDocs: ["malpractice_coi"],
-      uploadedDocs: [] as string[],
-      expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-      createdAt: new Date().toISOString(),
-      customMessage: "Your malpractice insurance certificate expires soon. Please upload an updated COI.",
-    };
-  }
-
-  return {
-    id: "REQ-001",
-    token,
-    provider: {
-      name: "Dr. Sarah Mitchell, MD",
-      practice: "Cleveland Heart Center",
-      email: "dr.mitchell@cardio.com",
-    },
-    network: {
-      name: "TrueCare Health Network",
-      logo: "/logo.svg",
-    },
-    requestedDocs: ["license", "dea", "malpractice_coi", "board_cert", "w9"],
-    uploadedDocs: [] as string[],
-    expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-    createdAt: new Date().toISOString(),
-    customMessage: "Please upload your documents at your earliest convenience. Contact us if you have any questions.",
+// Request data type
+interface RequestData {
+  id: string;
+  token: string;
+  provider: {
+    name: string;
+    practice: string;
+    email: string;
   };
-};
+  network: {
+    name: string;
+    logo: string;
+  };
+  requestedDocs: string[];
+  uploadedDocs: string[];
+  expiresAt: string;
+  createdAt: string;
+  customMessage?: string;
+}
+
+interface RequestError {
+  error: string;
+  message: string;
+}
 
 interface UploadedFile {
   docType: string;
@@ -130,7 +104,7 @@ export default function SecureUploadPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [requestData, setRequestData] = useState<ReturnType<typeof getMockRequestData> | null>(null);
+  const [requestData, setRequestData] = useState<RequestData | null>(null);
   const [uploads, setUploads] = useState<Record<string, UploadedFile>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -139,21 +113,26 @@ export default function SecureUploadPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isReviewStep, setIsReviewStep] = useState(false);
 
-  const totalDocs = requestData && 'requestedDocs' in requestData && requestData.requestedDocs ? requestData.requestedDocs.length : 0;
+  const totalDocs = requestData?.requestedDocs?.length || 0;
   const isSingleDoc = totalDocs === 1;
 
-  // Load request data
+  // Load request data from API
   useEffect(() => {
     const loadData = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      const data = getMockRequestData(token);
+      try {
+        const response = await fetch(`/api/upload/${token}`);
+        const data = await response.json();
 
-      if ("error" in data) {
-        setError(data.message || "An error occurred");
-      } else {
-        setRequestData(data);
+        if (data.error) {
+          setError(data.message || "An error occurred");
+        } else {
+          setRequestData(data);
+        }
+      } catch (err) {
+        setError("Failed to load upload request. Please try again.");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     loadData();
   }, [token]);
@@ -224,7 +203,7 @@ export default function SecureUploadPage() {
   };
 
   const goToNextStep = () => {
-    if (!requestData || !('requestedDocs' in requestData) || !requestData.requestedDocs) return;
+    if (!requestData?.requestedDocs) return;
     
     if (currentStep < requestData.requestedDocs.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -257,26 +236,66 @@ export default function SecureUploadPage() {
   const handleSubmit = async () => {
     setSubmitting(true);
 
-    // Simulate upload progress for each file
+    // Upload each file to the API
     for (const docType of Object.keys(uploads)) {
-      if (uploads[docType].status === "pending") {
+      const upload = uploads[docType];
+      if (upload.status === "pending" && upload.file) {
         setUploads((prev) => ({
           ...prev,
           [docType]: { ...prev[docType], status: "uploading", progress: 0 },
         }));
 
-        for (let i = 0; i <= 100; i += 20) {
-          await new Promise((resolve) => setTimeout(resolve, 150));
+        try {
+          // Create FormData for file upload
+          const formData = new FormData();
+          formData.append('file', upload.file);
+          formData.append('docType', docType);
+
+          // Simulate progress (actual upload doesn't give progress)
           setUploads((prev) => ({
             ...prev,
-            [docType]: { ...prev[docType], progress: i },
+            [docType]: { ...prev[docType], progress: 30 },
+          }));
+
+          const response = await fetch(`/api/upload/${token}`, {
+            method: 'POST',
+            body: formData,
+          });
+
+          setUploads((prev) => ({
+            ...prev,
+            [docType]: { ...prev[docType], progress: 70 },
+          }));
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            setUploads((prev) => ({
+              ...prev,
+              [docType]: { ...prev[docType], status: "success", progress: 100 },
+            }));
+          } else {
+            setUploads((prev) => ({
+              ...prev,
+              [docType]: { 
+                ...prev[docType], 
+                status: "error", 
+                progress: 0,
+                error: result.error || "Upload failed",
+              },
+            }));
+          }
+        } catch (err) {
+          setUploads((prev) => ({
+            ...prev,
+            [docType]: { 
+              ...prev[docType], 
+              status: "error", 
+              progress: 0,
+              error: "Upload failed. Please try again.",
+            },
           }));
         }
-
-        setUploads((prev) => ({
-          ...prev,
-          [docType]: { ...prev[docType], status: "success", progress: 100 },
-        }));
       }
     }
 
@@ -359,7 +378,7 @@ export default function SecureUploadPage() {
     );
   }
 
-  if (!requestData || !('requestedDocs' in requestData) || !requestData.requestedDocs) return null;
+  if (!requestData?.requestedDocs) return null;
 
   const currentDocType = requestData.requestedDocs[currentStep];
   const currentDocInfo = documentTypes[currentDocType];
