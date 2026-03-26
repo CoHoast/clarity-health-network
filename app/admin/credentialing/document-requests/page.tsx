@@ -95,33 +95,30 @@ export default function DocumentRequestsPage() {
   
   // Fetch document requests from API
   useEffect(() => {
-    async function fetchDocumentRequests() {
-      try {
-        setIsLoading(true);
-        const params = new URLSearchParams();
-        if (statusFilter) params.set('status', statusFilter);
-        if (searchQuery) params.set('search', searchQuery);
-        
-        const res = await fetch(`/api/document-requests?${params}`);
-        if (!res.ok) throw new Error('Failed to fetch');
-        
-        const data = await res.json();
-        setDocumentRequests(data.requests || []);
-        setApiStats(data.stats || { total: 0, pending: 0, partial: 0, complete: 0, expired: 0 });
-      } catch (error) {
-        console.error('Failed to fetch document requests:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    
     fetchDocumentRequests();
-  }, [statusFilter, searchQuery]);
+  }, []);
 
-  const handleSendReminder = (req: DocumentRequest) => {
-    setReminderSentTo(req.provider);
-    setShowReminderToast(true);
-    setTimeout(() => setShowReminderToast(false), 3000);
+  const handleSendReminder = async (req: DocumentRequest) => {
+    try {
+      const response = await fetch(`/api/document-requests/${req.id}/reminder`, {
+        method: 'POST',
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        setReminderSentTo(req.provider);
+        setShowReminderToast(true);
+        setTimeout(() => setShowReminderToast(false), 3000);
+        // Refresh list to update reminder count
+        fetchDocumentRequests();
+      } else {
+        alert(result.error || 'Failed to send reminder');
+      }
+    } catch (error) {
+      console.error('Error sending reminder:', error);
+      alert('Failed to send reminder. Please try again.');
+    }
   };
 
   const handleUploadManually = (req: DocumentRequest) => {
@@ -164,6 +161,92 @@ export default function DocumentRequestsPage() {
         : [...prev.selectedDocs, doc],
     }));
   };
+
+  // State for sending request
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
+
+  const handleSendRequest = async () => {
+    if (!newRequest.email || newRequest.selectedDocs.length === 0) return;
+    
+    setIsSendingRequest(true);
+    try {
+      const response = await fetch('/api/document-requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          providerName: newRequest.providerName,
+          providerEmail: newRequest.email,
+          providerNpi: 'PENDING', // Will be assigned when provider registers
+          practiceName: newRequest.practice || 'Unknown Practice',
+          requestedDocs: newRequest.selectedDocs,
+          expiresInDays: parseInt(newRequest.expiresIn),
+          customMessage: newRequest.customMessage,
+          sendEmail: true,
+          createdBy: 'Admin',
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Close modal and show success
+        setShowNewRequestModal(false);
+        setReminderSentTo(newRequest.providerName || newRequest.email);
+        setShowReminderToast(true);
+        setTimeout(() => setShowReminderToast(false), 3000);
+        
+        // Reset form
+        setNewRequest({
+          providerName: "",
+          email: "",
+          practice: "",
+          selectedDocs: [],
+          expiresIn: "14",
+          customMessage: "",
+        });
+        
+        // Refresh list
+        fetchDocumentRequests();
+      } else {
+        alert(result.error || 'Failed to send request');
+      }
+    } catch (error) {
+      console.error('Error sending request:', error);
+      alert('Failed to send request. Please try again.');
+    } finally {
+      setIsSendingRequest(false);
+    }
+  };
+
+  async function fetchDocumentRequests() {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/document-requests');
+      const data = await response.json();
+      
+      // Transform API data to match component interface
+      const requests = (data.requests || []).map((req: any) => ({
+        id: req.id,
+        provider: req.providerName,
+        practice: req.practiceName,
+        npi: req.providerNpi,
+        email: req.providerEmail,
+        requested: req.createdAt,
+        expires: req.expiresAt,
+        status: req.status,
+        requestedDocs: req.requestedDocs,
+        uploadedDocs: (req.uploadedDocs || []).map((d: any) => d.docType),
+        sentBy: req.createdBy,
+      }));
+      
+      setDocumentRequests(requests);
+      setApiStats(data.stats || { total: 0, pending: 0, partial: 0, complete: 0, expired: 0 });
+    } catch (error) {
+      console.error('Error fetching document requests:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const getProgress = (req: DocumentRequest) => {
     return Math.round((req.uploadedDocs.length / req.requestedDocs.length) * 100);
@@ -415,20 +498,37 @@ export default function DocumentRequestsPage() {
                   />
                 </div>
 
-                <div>
-                  <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    value={newRequest.email}
-                    onChange={(e) => setNewRequest((prev) => ({ ...prev, email: e.target.value }))}
-                    placeholder="provider@example.com"
-                    className={cn(
-                      "w-full px-3 py-2 rounded-lg border text-sm",
-                      isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400" : "bg-white border-slate-200 text-slate-900 placeholder-slate-400"
-                    )}
-                  />
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={newRequest.email}
+                      onChange={(e) => setNewRequest((prev) => ({ ...prev, email: e.target.value }))}
+                      placeholder="provider@example.com"
+                      className={cn(
+                        "w-full px-3 py-2 rounded-lg border text-sm",
+                        isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400" : "bg-white border-slate-200 text-slate-900 placeholder-slate-400"
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className={cn("block text-sm font-medium mb-1", isDark ? "text-slate-300" : "text-slate-700")}>
+                      Practice Name
+                    </label>
+                    <input
+                      type="text"
+                      value={newRequest.practice}
+                      onChange={(e) => setNewRequest((prev) => ({ ...prev, practice: e.target.value }))}
+                      placeholder="Cleveland Heart Center"
+                      className={cn(
+                        "w-full px-3 py-2 rounded-lg border text-sm",
+                        isDark ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400" : "bg-white border-slate-200 text-slate-900 placeholder-slate-400"
+                      )}
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -505,16 +605,11 @@ export default function DocumentRequestsPage() {
                   <Button 
                     variant="primary" 
                     className="flex-1" 
-                    icon={<Send className="w-4 h-4" />}
-                    disabled={!newRequest.email || newRequest.selectedDocs.length === 0}
-                    onClick={() => {
-                      setShowNewRequestModal(false);
-                      setReminderSentTo(newRequest.providerName || newRequest.email);
-                      setShowReminderToast(true);
-                      setTimeout(() => setShowReminderToast(false), 3000);
-                    }}
+                    icon={isSendingRequest ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                    disabled={!newRequest.email || newRequest.selectedDocs.length === 0 || isSendingRequest}
+                    onClick={handleSendRequest}
                   >
-                    Send Request
+                    {isSendingRequest ? 'Sending...' : 'Send Request'}
                   </Button>
                 </div>
               </form>
