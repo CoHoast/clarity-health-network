@@ -225,22 +225,32 @@ export default function PracticeDetailPage() {
             const provRes = await fetch(`/api/providers?billingNpi=${p.npi}&limit=500`);
             const provData = await provRes.json();
             
-            const validProviders = (provData.providers || []).map((prov: any) => ({
-              id: `PRV-${prov.npi}`,
-              name: `${prov.firstName || ''} ${prov.lastName || ''}`.trim() || 'Unknown',
-              firstName: prov.firstName,
-              lastName: prov.lastName,
-              title: prov.credential || prov.credentials || 'MD',
-              specialty: prov.specialty || 'General Practice',
-              npi: prov.npi,
-              status: 'active',
-              useCustomRates: false,
-              isPrimaryCare: prov.isPrimaryCare,
-              isBehavioralHealth: prov.isBehavioralHealth,
-            }));
+            // Deduplicate by NPI - each provider should only appear once
+            // (same provider may have multiple location records)
+            const seenNpis = new Set<string>();
+            const uniqueProviders: any[] = [];
             
-            setPracticeProviders(validProviders);
-            setPractice((prev: any) => prev ? { ...prev, providers: validProviders } : null);
+            (provData.providers || []).forEach((prov: any) => {
+              if (prov.npi && !seenNpis.has(prov.npi)) {
+                seenNpis.add(prov.npi);
+                uniqueProviders.push({
+                  id: `PRV-${prov.npi}`,
+                  name: `${prov.firstName || ''} ${prov.lastName || ''}`.trim() || 'Unknown',
+                  firstName: prov.firstName,
+                  lastName: prov.lastName,
+                  title: prov.credential || prov.credentials || 'MD',
+                  specialty: prov.specialty || 'General Practice',
+                  npi: prov.npi,
+                  status: 'active',
+                  useCustomRates: false,
+                  isPrimaryCare: prov.isPrimaryCare,
+                  isBehavioralHealth: prov.isBehavioralHealth,
+                });
+              }
+            });
+            
+            setPracticeProviders(uniqueProviders);
+            setPractice((prev: any) => prev ? { ...prev, providers: uniqueProviders } : null);
           }
         } else {
           // Fallback to mock data if practice not found
