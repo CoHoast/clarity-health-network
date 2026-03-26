@@ -2311,10 +2311,11 @@ export default function ProvidersPage() {
         }))}
         onImportComplete={(result) => {
           // Show success toast
-          toast.success(
-            "Import Complete", 
-            `${result.added} providers added${result.merged > 0 ? `, ${result.merged} merged` : ''}${result.skipped > 0 ? `, ${result.skipped} skipped` : ''}`
-          );
+          const parts = [];
+          if (result.newProvidersCreated > 0) parts.push(`${result.newProvidersCreated} new providers`);
+          if (result.locationsAdded > 0) parts.push(`${result.locationsAdded} locations added`);
+          if (result.skippedDuplicates > 0) parts.push(`${result.skippedDuplicates} skipped`);
+          toast.success("Import Complete", parts.join(', ') || 'No changes');
           
           // Refresh the providers list
           fetch('/api/providers?limit=500')

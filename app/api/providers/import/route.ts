@@ -9,14 +9,8 @@ import providersData from '@/data/arizona-providers.json';
 import fs from 'fs';
 import path from 'path';
 
-// Increase body size limit for large CSV files (8000+ providers)
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '50mb',
-    },
-  },
-};
+// For large CSV files - body size is handled by Next.js default (4MB)
+// For files over 4MB, use streaming or chunked uploads
 
 interface ImportRow {
   rowNumber?: number;
@@ -242,7 +236,6 @@ export async function POST(request: NextRequest) {
           type: 'update',
           npi: row.npi,
           providerId: provider.id,
-          field: 'locations',
           afterState: newLocation,
         });
 
@@ -351,26 +344,27 @@ export async function POST(request: NextRequest) {
       status: 'completed',
       completedAt: new Date().toISOString(),
       changes,
-      stats: {
-        newProvidersCreated,
-        locationsAdded,
-        skippedDuplicates,
-        errors,
-      },
+      added: newProvidersCreated,
+      updated: locationsAdded,
+      skipped: skippedDuplicates,
+      errors,
     });
 
     // Log audit event
     await logAuditEvent({
       category: 'data_change',
       action: 'provider_import',
-      target: fileName || 'import.csv',
-      targetType: 'provider_batch',
+      resource: fileName || 'import.csv',
+      resourceType: 'provider_batch',
       userId: createdBy || 'system',
-      userName: createdBy || 'System Import',
+      user: createdBy || 'System Import',
       details: JSON.stringify(summary),
-      ipAddress: ip,
-      userAgent: userAgent,
-      severity: 'medium',
+      ip,
+      userAgent,
+      severity: 'info',
+      sessionId: 'import-session',
+      phiAccessed: true,
+      success: true,
     });
 
     return NextResponse.json({

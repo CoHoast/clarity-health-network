@@ -3,14 +3,8 @@ import providersData from '@/data/arizona-providers.json';
 import fs from 'fs';
 import path from 'path';
 
-// Increase body size limit for large CSV files (8000+ providers)
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '50mb',
-    },
-  },
-};
+// For large CSV files - body size is handled by Next.js default (4MB)
+// For files over 4MB, use streaming or chunked uploads
 
 interface ParsedRow {
   rowNumber: number;
