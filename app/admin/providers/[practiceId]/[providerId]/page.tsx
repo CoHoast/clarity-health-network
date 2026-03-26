@@ -259,12 +259,67 @@ export default function ProviderDetailPage() {
         // Extract NPI from providerId (format: prov-XXXXXXXXXX or PRV-XXXXXXXXXX)
         const npi = providerId.replace(/^(prov-|PRV-)/i, '');
         
-        // Fetch provider by NPI
-        const res = await fetch(`/api/providers?search=${npi}&limit=1`);
+        // Fetch ALL providers with this NPI (to get all locations across all practices)
+        const res = await fetch(`/api/providers?search=${npi}&limit=100`);
         const data = await res.json();
         
         if (data.providers && data.providers.length > 0) {
-          const p = data.providers[0];
+          // Filter to exact NPI match
+          const allRecords = data.providers.filter((prov: any) => prov.npi === npi);
+          const p = allRecords[0];
+          
+          // Combine all locations from all records with this NPI
+          const allLocations: any[] = [];
+          const practiceAffiliations: { billingNpi: string; practiceName: string; locationCount: number }[] = [];
+          const seenPractices = new Map<string, { name: string; count: number }>();
+          
+          allRecords.forEach((record: any) => {
+            // Add locations from this record
+            if (record.locations && record.locations.length > 0) {
+              record.locations.forEach((loc: any) => {
+                allLocations.push({
+                  ...loc,
+                  entityNumber: record.entityNumber || loc.entityNumber,
+                  practiceName: record.billing?.name || 'Unknown Practice',
+                  billingNpi: record.billing?.npi || '',
+                });
+              });
+            } else {
+              // Legacy format - location data at provider level
+              allLocations.push({
+                address1: record.address || '',
+                address2: record.address2 || '',
+                city: record.city || '',
+                state: record.state || 'AZ',
+                zip: record.zip || '',
+                county: record.county || '',
+                phone: record.phone || '',
+                fax: record.fax || '',
+                email: record.email || '',
+                entityNumber: record.entityNumber || '',
+                practiceName: record.billing?.name || 'Unknown Practice',
+                billingNpi: record.billing?.npi || '',
+              });
+            }
+            
+            // Track practice affiliations
+            const billingNpi = record.billing?.npi || 'unknown';
+            const practiceName = record.billing?.name || 'Unknown Practice';
+            if (seenPractices.has(billingNpi)) {
+              seenPractices.get(billingNpi)!.count++;
+            } else {
+              seenPractices.set(billingNpi, { name: practiceName, count: 1 });
+            }
+          });
+          
+          // Convert to practice affiliations array
+          seenPractices.forEach((value, key) => {
+            practiceAffiliations.push({
+              billingNpi: key,
+              practiceName: value.name,
+              locationCount: value.count,
+            });
+          });
           const providerData = {
             id: providerId,
             practiceId: practiceId,
@@ -353,8 +408,11 @@ export default function ProviderDetailPage() {
               physicalTherapy: '130',
               dme: '100',
             },
-            // Additional locations
-            locations: p.locations || [],
+            // All locations across all practices (combined from all records with same NPI)
+            locations: allLocations,
+            // Practice affiliations (for "Also practices at X other locations" section)
+            practiceAffiliations: practiceAffiliations,
+            totalLocationCount: allLocations.length,
           };
           setProvider(providerData);
           setEditData(providerData);
@@ -2369,20 +2427,63 @@ export default function ProviderDetailPage() {
               </div>
             </div>
 
-            {/* Additional Locations */}
+            {/* Practice Affiliations Summary */}
+            {provider.practiceAffiliations && provider.practiceAffiliations.length > 1 && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Building2 className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-900">
+                      Practice Affiliations
+                    </h3>
+                    <p className="text-xs text-slate-600">
+                      This provider works at {provider.practiceAffiliations.length} different practices
+                    </p>
+                  </div>
+                </div>
+                <div className="grid gap-3">
+                  {provider.practiceAffiliations.map((aff: any, idx: number) => (
+                    <div key={aff.billingNpi || idx} className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-100">
+                      <div className="flex items-center gap-3">
+                        <MapPin className="w-4 h-4 text-blue-500" />
+                        <span className="text-slate-900 font-medium">{aff.practiceName}</span>
+                      </div>
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                        {aff.locationCount} location{aff.locationCount !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* All Locations */}
             {provider.locations && provider.locations.length > 1 && (
               <div className="bg-white border border-slate-200 rounded-lg p-6">
-                <h3 className="text-sm font-semibold text-slate-900 mb-4">
-                  Additional Locations ({provider.locations.length - 1})
+                <h3 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-slate-400" />
+                  All Locations ({provider.locations.length})
                 </h3>
                 <div className="space-y-4">
-                  {provider.locations.slice(1).map((loc: any, idx: number) => (
-                    <div key={loc.id || idx} className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  {provider.locations.map((loc: any, idx: number) => (
+                    <div key={loc.entityNumber || idx} className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                          Location {idx + 1}
+                        </span>
+                        {loc.practiceName && (
+                          <span className="text-xs text-slate-500">
+                            {loc.practiceName}
+                          </span>
+                        )}
+                      </div>
                       <div className="grid md:grid-cols-3 gap-4">
                         <div className="md:col-span-2">
                           <p className="text-xs text-slate-500">Address</p>
                           <p className="text-slate-900 font-medium">
-                            {loc.address1}{loc.address2 && `, ${loc.address2}`}
+                            {loc.address || loc.address1}{loc.address2 && `, ${loc.address2}`}
                           </p>
                           <p className="text-slate-600">
                             {loc.city}, {loc.state} {loc.zip}
