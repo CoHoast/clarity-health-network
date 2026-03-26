@@ -329,3 +329,27 @@ Full CRUD for automated report delivery:
 - Run Now for immediate generation
 - Toggle active/paused status
 - Delete schedules
+
+---
+
+## Multi-Tenant Architecture (Added Mar 25, 2026)
+
+See: `MULTI-CLIENT-PPO-PLATFORM-SPEC.md`
+
+### Corporate Structure
+- **Novarus LLC** - Holding company, owns all IP
+- **DOKit LLC** - Operating company, licenses platform
+- **Solidarity** - First licensee, manages clients
+- **Clients** - Antidote, TPAs, each with separate database
+
+### Key Files
+- `MULTI-CLIENT-PPO-PLATFORM-SPEC.md` - Full architecture spec
+- 14 sections covering HIPAA, database, security, provisioning
+
+### Build Phases
+1. ✅ Current dashboard (Antidote)
+2. Multi-network support
+3. Solidarity's own network
+4. Client management for Solidarity
+5. Onboarding wizard
+6. Production hardening
