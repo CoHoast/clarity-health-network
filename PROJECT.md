@@ -353,3 +353,50 @@ See: `MULTI-CLIENT-PPO-PLATFORM-SPEC.md`
 4. Client management for Solidarity
 5. Onboarding wizard
 6. Production hardening
+
+---
+
+## AWS Integration (Mar 25, 2026)
+
+### Document Upload System
+HIPAA-compliant document storage using AWS S3 and email via SES.
+
+**Files:**
+- `lib/aws/s3.ts` - Presigned URLs, SSE-S3 encryption
+- `lib/aws/ses.ts` - HTML email templates
+- `lib/document-requests.ts` - Token-based upload management
+
+**APIs:**
+- `POST /api/document-requests` - Create request + send email
+- `POST /api/document-requests/[id]/reminder` - Send reminder
+- `GET/POST /api/upload/[token]` - Upload portal
+
+**Upload Portal:**
+- `/upload/[token]` - Provider-facing upload wizard
+- Step-by-step document upload
+- Progress tracking, skip option, review step
+- Sends confirmation email when complete
+
+**S3 Bucket Structure:**
+```
+{client}/documents/{providerId}/{docType}/{timestamp}_{filename}
+```
+
+**Environment Variables:**
+```env
+S3_BUCKET_NAME=
+S3_REGION=us-east-1
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+SES_REGION=us-east-1
+SES_FROM_EMAIL=
+```
+
+**Graceful Fallbacks:**
+- No S3 → saves to local `uploads/` folder
+- No SES → logs emails to console
+
+**S3 Bucket Requirements:**
+- Block all public access
+- Versioning enabled
+- SSE-S3 encryption enabled
