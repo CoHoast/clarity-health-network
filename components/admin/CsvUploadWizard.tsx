@@ -1,50 +1,66 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import {
   Upload, FileSpreadsheet, CheckCircle, AlertTriangle, XCircle,
-  ChevronRight, ChevronLeft, Download, X, ArrowRight, Merge,
-  SkipForward, RefreshCw, Eye, Check, AlertCircle
+  ChevronRight, ChevronLeft, Download, X, RefreshCw, Eye, Check, AlertCircle,
+  MapPin, Building, Users, SkipForward
 } from "lucide-react";
 import { useTheme } from "@/components/admin/ThemeContext";
 import { cn } from "@/lib/utils";
 
-interface ParsedProvider {
+interface ParsedRow {
   rowNumber: number;
+  entityNumber: string;
   npi: string;
   firstName: string;
   lastName: string;
   name: string;
   credential: string;
   specialty: string;
-  phone?: string;
-  email?: string;
   address?: string;
   city?: string;
   state?: string;
   zip?: string;
-  // All other fields...
   [key: string]: any;
 }
 
-interface ExistingProvider {
-  id: string;
+interface EntityDuplicate {
+  rowNumber: number;
+  entityNumber: string;
   npi: string;
-  firstName: string;
-  lastName: string;
-  specialty: string;
-  phone?: string;
-  email?: string;
-  [key: string]: any;
+  csvName: string;
+  reason: 'exists_in_system' | 'duplicate_in_csv';
+  existingInfo?: {
+    providerName: string;
+    address: string;
+  };
+  duplicateRowNumbers?: number[];
+  action: 'skip' | 'pending';
 }
 
-interface DuplicateMatch {
-  csvRow: ParsedProvider;
-  existingProvider: ExistingProvider;
-  matchType: "npi" | "taxId" | "name";
-  action: "skip" | "merge" | "add" | "pending";
-  differences: { field: string; existing: string; csv: string }[];
+interface LocationToAdd {
+  rowNumber: number;
+  entityNumber: string;
+  npi: string;
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  action: 'add_location' | 'create_provider';
+  existingProviderName?: string;
+  existingLocationCount?: number;
+}
+
+interface ProviderSummary {
+  npi: string;
+  name: string;
+  action: 'add_location' | 'create_provider';
+  existingProviderName?: string;
+  existingLocationCount?: number;
+  newLocationCount: number;
+  locations: { entityNumber: string; address: string; city: string; state: string }[];
 }
 
 interface ValidationError {
@@ -54,16 +70,16 @@ interface ValidationError {
 }
 
 interface ImportResult {
-  added: number;
-  skipped: number;
-  merged: number;
+  newProvidersCreated: number;
+  locationsAdded: number;
+  skippedDuplicates: number;
   errors: number;
 }
 
 interface CsvUploadWizardProps {
   isOpen: boolean;
   onClose: () => void;
-  existingProviders: ExistingProvider[];
+  existingProviders?: any[];
   onImportComplete: (result: ImportResult) => void;
 }
 
@@ -72,36 +88,41 @@ type Step = "upload" | "analyze" | "review" | "confirm" | "complete";
 export function CsvUploadWizard({
   isOpen,
   onClose,
-  existingProviders: passedProviders, // Keep for backwards compatibility but we'll fetch fresh
   onImportComplete,
 }: CsvUploadWizardProps) {
   const { isDark } = useTheme();
   const [step, setStep] = useState<Step>("upload");
-  const [parsedData, setParsedData] = useState<ParsedProvider[]>([]);
-  const [duplicates, setDuplicates] = useState<DuplicateMatch[]>([]);
+  const [parsedData, setParsedData] = useState<ParsedRow[]>([]);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
-  const [newProviders, setNewProviders] = useState<ParsedProvider[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
-  const [reviewIndex, setReviewIndex] = useState(0);
+  const [fileName, setFileName] = useState<string>("");
   
-  // Server-side analysis results
+  // New Entity Number-based analysis results
+  const [duplicates, setDuplicates] = useState<EntityDuplicate[]>([]);
+  const [locationsToAdd, setLocationsToAdd] = useState<LocationToAdd[]>([]);
+  const [providerSummary, setProviderSummary] = useState<ProviderSummary[]>([]);
   const [serverAnalysis, setServerAnalysis] = useState<{
-    totalExisting: number;
-    duplicates: number;
-    new: number;
+    totalExistingProviders: number;
+    totalExistingEntityNumbers: number;
+    newProviders: number;
+    existingProvidersUpdated: number;
+    locationsAddedToExisting: number;
+    duplicatesInSystem: number;
+    duplicatesInCsv: number;
   } | null>(null);
 
   // Reset state when closing
   const handleClose = () => {
     setStep("upload");
     setParsedData([]);
-    setDuplicates([]);
     setValidationErrors([]);
-    setNewProviders([]);
-    setImportResult(null);
-    setReviewIndex(0);
+    setDuplicates([]);
+    setLocationsToAdd([]);
+    setProviderSummary([]);
     setServerAnalysis(null);
+    setImportResult(null);
+    setFileName("");
     onClose();
   };
 
@@ -110,6 +131,7 @@ export function CsvUploadWizard({
     const file = event.target.files?.[0];
     if (!file) return;
 
+    setFileName(file.name);
     setIsProcessing(true);
     const reader = new FileReader();
     
@@ -122,7 +144,7 @@ export function CsvUploadWizard({
       );
 
       const errors: ValidationError[] = [];
-      const parsed: ParsedProvider[] = [];
+      const parsed: ParsedRow[] = [];
 
       for (let i = 1; i < lines.length; i++) {
         if (!lines[i].trim()) continue;
@@ -154,10 +176,12 @@ export function CsvUploadWizard({
         const fullName = row.name || row.provider_name || row.full_name || '';
         const name = fullName || `${firstName} ${lastName}`.trim();
         const npi = row.npi || row.provider_npi || '';
+        const entityNumber = row.entity_ || row.entity || row.entitynumber || row.entity_number || row.reference_number || '';
 
-        // Parse ALL fields from Solidarity CSV format (52 columns)
-        const provider: ParsedProvider = {
+        // Parse ALL fields from CSV
+        const provider: ParsedRow = {
           rowNumber: i,
+          entityNumber,
           npi,
           firstName,
           lastName,
@@ -171,7 +195,6 @@ export function CsvUploadWizard({
           secondaryTaxonomy: row.secondary_taxonomy_code || row.secondary_taxonomy || '',
           facilityType: row.facility_type || row.facilitytype || '',
           gender: row.gender || '',
-          // Location fields
           address: row.address1 || row.address_1 || row.address || '',
           address2: row.address_2 || row.address2 || '',
           city: row.city || '',
@@ -181,20 +204,17 @@ export function CsvUploadWizard({
           phone: row.phone_ || row.phone || row.phone_number || '',
           fax: row.fax || '',
           email: row.email || '',
-          // Flags
-          acceptingNewPatients: row.accepts_new_patients === 'Y' || row.accepts_new_patients?.toLowerCase() === 'yes' || row.acceptsnewpatients === 'Y',
-          isPrimaryCare: row.primary_care_flag === 'P' || row.primary_care === 'Y' || row.primarycareflag === 'P',
-          isBehavioralHealth: row.behavioral_health_flag === 'B' || row.behavioral_health === 'Y' || row.behavioralhealthflag === 'B',
-          directoryDisplay: row.directory_display !== 'N' && row.directory_display !== 'No' && row.directorydisplay !== 'N',
+          acceptingNewPatients: row.accepts_new_patients === 'Y' || row.accepts_new_patients?.toLowerCase() === 'yes',
+          isPrimaryCare: row.primary_care_flag === 'P' || row.primary_care === 'Y',
+          isBehavioralHealth: row.behavioral_health_flag === 'B' || row.behavioral_health === 'Y',
+          directoryDisplay: row.directory_display !== 'N' && row.directory_display !== 'No',
           languages: row.language || row.languages || 'English',
-          // Contract info
-          referenceNumber: row.entity_ || row.entity || row.entitynumber || '',
+          referenceNumber: entityNumber,
           contractNumber: row.contract_ || row.contract || row.contractnumber || '',
           pricingTier: row.pricing_tier || row.pricingtier || '',
           networkOrg: row.network_org || row.networkorg || '',
           startDate: row.start_date || row.startdate || '',
           endDate: row.end_date || row.enddate || '',
-          // Hours
           mondayHours: row.monday_hours || row.mondayhours || '',
           tuesdayHours: row.tuesday_hours || row.tuesdayhours || '',
           wednesdayHours: row.wednesday_hours || row.wednesdayhours || '',
@@ -202,7 +222,6 @@ export function CsvUploadWizard({
           fridayHours: row.friday_hours || row.fridayhours || '',
           saturdayHours: row.saturday_hours || row.saturdayhours || '',
           sundayHours: row.sunday_hours || row.sundayhours || '',
-          // Corresponding address
           correspondingAddr1: row.corresponding_addr_1 || row.correspondingaddr1 || '',
           correspondingAddr2: row.corresponding_addr_2 || row.correspondingaddr2 || '',
           correspondingCity: row.corresponding_city || row.correspondingcity || '',
@@ -210,7 +229,6 @@ export function CsvUploadWizard({
           correspondingZip: row.corresponding_zip || row.correspondingzip || '',
           contactName: row.contact_name || row.contactname || '',
           correspondingFax: row.corresponding_fax || row.correspondingfax || '',
-          // Billing information (Pay-To entity)
           billingNpi: row.billing_npi || row.billingnpi || '',
           billingTaxId: row.billing_tax_id || row.billingtaxid || '',
           billingName: row.billing_name || row.billingname || '',
@@ -232,8 +250,11 @@ export function CsvUploadWizard({
         } else if (!/^\d{10}$/.test(npi)) {
           errors.push({ rowNumber: i, field: 'npi', message: 'Invalid NPI format (must be 10 digits)' });
         }
+        if (!entityNumber) {
+          errors.push({ rowNumber: i, field: 'entityNumber', message: 'Missing Entity Number' });
+        }
 
-        if (name && npi && /^\d{10}$/.test(npi)) {
+        if (name && npi && /^\d{10}$/.test(npi) && entityNumber) {
           parsed.push(provider);
         }
       }
@@ -241,15 +262,15 @@ export function CsvUploadWizard({
       setParsedData(parsed);
       setValidationErrors(errors);
       
-      // Server-side duplicate detection (scales to 100K+ providers)
+      // Server-side analysis with Entity Number-based duplicate detection
       analyzeServerSide(parsed);
     };
 
     reader.readAsText(file);
   }, []);
 
-  // Server-side duplicate analysis (scales to 100K+ providers)
-  const analyzeServerSide = async (parsed: ParsedProvider[]) => {
+  // Server-side analysis using Entity Number as unique key
+  const analyzeServerSide = async (parsed: ParsedRow[]) => {
     try {
       const response = await fetch('/api/providers/analyze-csv', {
         method: 'POST',
@@ -267,28 +288,28 @@ export function CsvUploadWizard({
       
       // Store server analysis summary
       setServerAnalysis({
-        totalExisting: result.totalExisting,
-        duplicates: result.duplicates,
-        new: result.new,
+        totalExistingProviders: result.totalExistingProviders,
+        totalExistingEntityNumbers: result.totalExistingEntityNumbers,
+        newProviders: result.newProviders,
+        existingProvidersUpdated: result.existingProvidersUpdated,
+        locationsAddedToExisting: result.locationsAddedToExisting,
+        duplicatesInSystem: result.duplicatesInSystem,
+        duplicatesInCsv: result.duplicatesInCsv,
       });
       
-      // Convert server response to our DuplicateMatch format
-      const dupes: DuplicateMatch[] = result.duplicateDetails.map((d: any) => ({
-        csvRow: parsed.find(p => p.npi === d.npi) || parsed.find(p => p.rowNumber === d.rowNumber)!,
-        existingProvider: {
-          id: `prov-${d.npi}`,
-          npi: d.npi,
-          firstName: d.existingName?.split(' ')[0] || '',
-          lastName: d.existingName?.split(' ').slice(1).join(' ') || '',
-          specialty: d.existingSpecialty || '',
-        },
-        matchType: "npi" as const,
-        action: "pending" as const,
-        differences: d.differences,
+      // Store duplicates for review
+      const dupes: EntityDuplicate[] = (result.duplicateDetails || []).map((d: any) => ({
+        ...d,
+        action: 'pending' as const,
       }));
-      
       setDuplicates(dupes);
-      setNewProviders(result.newRows);
+      
+      // Store locations to add
+      setLocationsToAdd(result.locationsToAddDetails || []);
+      
+      // Store provider summary for display
+      setProviderSummary(result.providerSummary || []);
+      
       setIsProcessing(false);
       setStep("analyze");
     } catch (error) {
@@ -297,94 +318,49 @@ export function CsvUploadWizard({
     }
   };
 
-  // Handle bulk action for duplicates
-  const handleBulkAction = (action: "skip" | "merge") => {
-    setDuplicates(prev => prev.map(d => ({ ...d, action })));
-    if (action === "skip") {
-      setStep("confirm");
-    }
-  };
-
-  // Handle individual duplicate action
-  const handleDuplicateAction = (index: number, action: "skip" | "merge") => {
-    setDuplicates(prev => {
-      const updated = [...prev];
-      updated[index] = { ...updated[index], action };
-      return updated;
-    });
-  };
-
-  // Move to next duplicate in review
-  const nextDuplicate = () => {
-    if (reviewIndex < duplicates.length - 1) {
-      setReviewIndex(reviewIndex + 1);
-    } else {
-      setStep("confirm");
-    }
-  };
-
   // Perform the actual import
   const performImport = async () => {
     setIsProcessing(true);
     
     try {
-      let added = 0;
-      let merged = 0;
-      let skipped = 0;
-      let errors = 0;
-
-      // Add new providers
-      for (const provider of newProviders) {
-        try {
-          const response = await fetch('/api/providers', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(provider),
-          });
-          if (response.ok) {
-            added++;
-          } else {
-            errors++;
-          }
-        } catch {
-          errors++;
-        }
+      // Filter out duplicates that are being skipped
+      const skippedEntityNumbers = new Set(
+        duplicates.filter(d => d.action === 'skip' || d.action === 'pending').map(d => d.entityNumber)
+      );
+      
+      // Get rows that should be imported (not in skip list)
+      const rowsToImport = parsedData.filter(row => !skippedEntityNumbers.has(row.entityNumber));
+      
+      const response = await fetch('/api/providers/import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rows: rowsToImport,
+          fileName,
+          createdBy: 'admin',
+        }),
+      });
+      
+      const result = await response.json();
+      
+      if (result.error) {
+        console.error('Import failed:', result.error);
+        setIsProcessing(false);
+        return;
       }
-
-      // Handle duplicates based on action
-      for (const dup of duplicates) {
-        if (dup.action === "skip") {
-          skipped++;
-        } else if (dup.action === "merge") {
-          try {
-            // Smart merge - only update non-empty fields from CSV
-            const mergeData: any = {};
-            Object.entries(dup.csvRow).forEach(([key, value]) => {
-              if (value && key !== 'rowNumber' && key !== 'npi') {
-                mergeData[key] = value;
-              }
-            });
-
-            const response = await fetch(`/api/providers/${dup.existingProvider.id}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(mergeData),
-            });
-            if (response.ok) {
-              merged++;
-            } else {
-              errors++;
-            }
-          } catch {
-            errors++;
-          }
-        }
-      }
-
-      const result = { added, merged, skipped, errors };
-      setImportResult(result);
+      
+      const importResult: ImportResult = {
+        newProvidersCreated: result.summary.newProvidersCreated,
+        locationsAdded: result.summary.locationsAdded,
+        skippedDuplicates: result.summary.skippedDuplicates + duplicates.length,
+        errors: result.summary.errors,
+      };
+      
+      setImportResult(importResult);
       setStep("complete");
-      onImportComplete(result);
+      onImportComplete(importResult);
+    } catch (error) {
+      console.error('Import error:', error);
     } finally {
       setIsProcessing(false);
     }
@@ -393,13 +369,12 @@ export function CsvUploadWizard({
   // Download template
   const downloadTemplate = () => {
     const headers = [
-      'NPI', 'First Name', 'Last Name', 'Suffix', 'Gender',
+      'Entity #', 'NPI', 'First Name', 'Last Name', 'Suffix', 'Gender',
       'Primary Spc Code', 'Primary Taxonomy Code', 'Secondary Spc Code', 'Secondary Taxonomy Code',
       'Facility Type', 'Phone #', 'Fax', 'Email',
       'Address1', 'Address 2', 'City', 'State', 'Zip Code', 'County',
       'Accepts New Patients', 'Primary Care Flag', 'Behavioral Health Flag', 'Directory Display',
-      'Language', 'Pricing Tier', 'Network Org', 'Start Date', 'End Date',
-      'Entity #', 'Contract #',
+      'Language', 'Pricing Tier', 'Network Org', 'Start Date', 'End Date', 'Contract #',
       'Billing NPI', 'Billing Tax ID', 'Billing Name'
     ];
     const csv = headers.join(',') + '\n';
@@ -414,8 +389,10 @@ export function CsvUploadWizard({
 
   if (!isOpen) return null;
 
-  const pendingDuplicates = duplicates.filter(d => d.action === "pending");
-  const currentDuplicate = pendingDuplicates.length > 0 ? duplicates[reviewIndex] : null;
+  // Calculate counts
+  const newProvidersCount = providerSummary.filter(p => p.action === 'create_provider').length;
+  const locationsToExisting = providerSummary.filter(p => p.action === 'add_location');
+  const totalNewLocations = locationsToAdd.length;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={handleClose}>
@@ -479,15 +456,16 @@ export function CsvUploadWizard({
           {/* Step 1: Upload */}
           {step === "upload" && (
             <div className="space-y-6">
-              {/* Server-side detection info */}
+              {/* Entity Number info */}
               <div className={cn(
-                "rounded-xl p-4 flex items-center gap-3",
+                "rounded-xl p-4 flex items-start gap-3",
                 isDark ? "bg-blue-500/10 border border-blue-500/30" : "bg-blue-50 border border-blue-200"
               )}>
-                <CheckCircle className="w-5 h-5 text-blue-500" />
-                <p className={cn("text-sm", isDark ? "text-blue-300" : "text-blue-700")}>
-                  <strong>Server-side duplicate detection</strong> — Scales to 100,000+ providers with instant results
-                </p>
+                <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                <div className={cn("text-sm", isDark ? "text-blue-300" : "text-blue-700")}>
+                  <strong>Entity Number = Unique Location ID</strong>
+                  <p className="mt-1">Each row must have a unique Entity Number. Same NPI with different Entity Numbers = multiple locations for one provider.</p>
+                </div>
               </div>
               
               <div className={cn(
@@ -529,7 +507,7 @@ export function CsvUploadWizard({
                   </button>
                 </div>
                 <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                  Download our CSV template with all supported columns. Required fields: NPI, First Name, Last Name.
+                  Required fields: Entity #, NPI, First Name, Last Name. Entity # must be unique per location.
                 </p>
               </div>
             </div>
@@ -545,7 +523,7 @@ export function CsvUploadWizard({
                     Analyzing CSV against database...
                   </p>
                   <p className={cn("text-sm mt-2", isDark ? "text-slate-400" : "text-slate-500")}>
-                    Server-side duplicate detection in progress
+                    Checking Entity Numbers for duplicates
                   </p>
                 </div>
               ) : (
@@ -558,21 +536,44 @@ export function CsvUploadWizard({
                     )}>
                       <CheckCircle className="w-5 h-5 text-emerald-500" />
                       <p className={cn("text-sm", isDark ? "text-slate-300" : "text-slate-600")}>
-                        Checked against <strong>{serverAnalysis.totalExisting.toLocaleString()}</strong> existing providers in database
+                        Checked against <strong>{serverAnalysis.totalExistingProviders.toLocaleString()}</strong> providers 
+                        with <strong>{serverAnalysis.totalExistingEntityNumbers.toLocaleString()}</strong> locations
                       </p>
                     </div>
                   )}
                   
                   {/* Summary Cards */}
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-4 gap-4">
                     <div className={cn("rounded-xl p-4 border", isDark ? "bg-green-500/10 border-green-500/30" : "bg-green-50 border-green-200")}>
                       <div className="flex items-center gap-3">
                         <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", isDark ? "bg-green-500/20" : "bg-green-100")}>
-                          <CheckCircle className={cn("w-5 h-5", isDark ? "text-green-400" : "text-green-600")} />
+                          <Users className={cn("w-5 h-5", isDark ? "text-green-400" : "text-green-600")} />
                         </div>
                         <div>
-                          <p className={cn("text-2xl font-bold", isDark ? "text-green-400" : "text-green-700")}>{newProviders.length}</p>
+                          <p className={cn("text-2xl font-bold", isDark ? "text-green-400" : "text-green-700")}>{newProvidersCount}</p>
                           <p className={cn("text-sm", isDark ? "text-green-400/80" : "text-green-600")}>New Providers</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={cn("rounded-xl p-4 border", isDark ? "bg-blue-500/10 border-blue-500/30" : "bg-blue-50 border-blue-200")}>
+                      <div className="flex items-center gap-3">
+                        <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", isDark ? "bg-blue-500/20" : "bg-blue-100")}>
+                          <MapPin className={cn("w-5 h-5", isDark ? "text-blue-400" : "text-blue-600")} />
+                        </div>
+                        <div>
+                          <p className={cn("text-2xl font-bold", isDark ? "text-blue-400" : "text-blue-700")}>{totalNewLocations}</p>
+                          <p className={cn("text-sm", isDark ? "text-blue-400/80" : "text-blue-600")}>New Locations</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={cn("rounded-xl p-4 border", isDark ? "bg-purple-500/10 border-purple-500/30" : "bg-purple-50 border-purple-200")}>
+                      <div className="flex items-center gap-3">
+                        <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", isDark ? "bg-purple-500/20" : "bg-purple-100")}>
+                          <Building className={cn("w-5 h-5", isDark ? "text-purple-400" : "text-purple-600")} />
+                        </div>
+                        <div>
+                          <p className={cn("text-2xl font-bold", isDark ? "text-purple-400" : "text-purple-700")}>{locationsToExisting.length}</p>
+                          <p className={cn("text-sm", isDark ? "text-purple-400/80" : "text-purple-600")}>Providers Updated</p>
                         </div>
                       </div>
                     </div>
@@ -583,18 +584,7 @@ export function CsvUploadWizard({
                         </div>
                         <div>
                           <p className={cn("text-2xl font-bold", isDark ? "text-amber-400" : "text-amber-700")}>{duplicates.length}</p>
-                          <p className={cn("text-sm", isDark ? "text-amber-400/80" : "text-amber-600")}>Duplicates Found</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={cn("rounded-xl p-4 border", isDark ? "bg-red-500/10 border-red-500/30" : "bg-red-50 border-red-200")}>
-                      <div className="flex items-center gap-3">
-                        <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", isDark ? "bg-red-500/20" : "bg-red-100")}>
-                          <XCircle className={cn("w-5 h-5", isDark ? "text-red-400" : "text-red-600")} />
-                        </div>
-                        <div>
-                          <p className={cn("text-2xl font-bold", isDark ? "text-red-400" : "text-red-700")}>{validationErrors.length}</p>
-                          <p className={cn("text-sm", isDark ? "text-red-400/80" : "text-red-600")}>Invalid Rows</p>
+                          <p className={cn("text-sm", isDark ? "text-amber-400/80" : "text-amber-600")}>Duplicates</p>
                         </div>
                       </div>
                     </div>
@@ -604,7 +594,7 @@ export function CsvUploadWizard({
                   {validationErrors.length > 0 && (
                     <div className={cn("rounded-xl p-4 border", isDark ? "bg-red-500/10 border-red-500/30" : "bg-red-50 border-red-200")}>
                       <h3 className={cn("font-semibold mb-2 flex items-center gap-2", isDark ? "text-red-400" : "text-red-700")}>
-                        <AlertCircle className="w-4 h-4" />
+                        <XCircle className="w-4 h-4" />
                         Validation Errors (rows will be skipped)
                       </h3>
                       <div className="max-h-32 overflow-auto space-y-1">
@@ -622,86 +612,91 @@ export function CsvUploadWizard({
                     </div>
                   )}
 
-                  {/* Duplicate Handling Options */}
+                  {/* Duplicates Warning */}
                   {duplicates.length > 0 && (
                     <div className={cn("rounded-xl p-4 border", isDark ? "bg-amber-500/10 border-amber-500/30" : "bg-amber-50 border-amber-200")}>
-                      <h3 className={cn("font-semibold mb-3", isDark ? "text-amber-400" : "text-amber-700")}>
-                        How would you like to handle {duplicates.length} duplicate(s)?
+                      <h3 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-amber-400" : "text-amber-700")}>
+                        <AlertTriangle className="w-4 h-4" />
+                        Duplicate Entity Numbers Found ({duplicates.length})
                       </h3>
-                      <div className="grid grid-cols-3 gap-3">
-                        <button
-                          onClick={() => handleBulkAction("skip")}
-                          className={cn(
-                            "flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-colors",
-                            isDark 
-                              ? "border-slate-600 hover:border-amber-500 hover:bg-amber-500/10" 
-                              : "border-slate-200 hover:border-amber-500 hover:bg-amber-50"
-                          )}
-                        >
-                          <SkipForward className={cn("w-6 h-6", isDark ? "text-slate-400" : "text-slate-500")} />
-                          <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>Skip All</span>
-                          <span className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Keep existing data</span>
-                        </button>
-                        <button
-                          onClick={() => { setReviewIndex(0); setStep("review"); }}
-                          className={cn(
-                            "flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-colors",
-                            isDark 
-                              ? "border-slate-600 hover:border-blue-500 hover:bg-blue-500/10" 
-                              : "border-slate-200 hover:border-blue-500 hover:bg-blue-50"
-                          )}
-                        >
-                          <Eye className={cn("w-6 h-6", isDark ? "text-slate-400" : "text-slate-500")} />
-                          <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>Review Each</span>
-                          <span className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Decide one by one</span>
-                        </button>
-                        <button
-                          onClick={() => handleBulkAction("merge")}
-                          className={cn(
-                            "flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-colors",
-                            isDark 
-                              ? "border-slate-600 hover:border-green-500 hover:bg-green-500/10" 
-                              : "border-slate-200 hover:border-green-500 hover:bg-green-50"
-                          )}
-                        >
-                          <Merge className={cn("w-6 h-6", isDark ? "text-slate-400" : "text-slate-500")} />
-                          <span className={cn("font-medium", isDark ? "text-white" : "text-slate-900")}>Merge All</span>
-                          <span className={cn("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>Update with CSV data</span>
-                        </button>
+                      <p className={cn("text-sm mb-3", isDark ? "text-amber-300" : "text-amber-600")}>
+                        These rows have Entity Numbers that already exist in the system or are duplicated in the CSV. They will be skipped.
+                      </p>
+                      <div className="max-h-40 overflow-auto space-y-2">
+                        {duplicates.slice(0, 10).map((dup, i) => (
+                          <div key={i} className={cn("flex items-center gap-3 text-sm p-2 rounded", isDark ? "bg-slate-700/50" : "bg-white")}>
+                            <SkipForward className={cn("w-4 h-4", isDark ? "text-amber-400" : "text-amber-500")} />
+                            <span className={cn("font-mono", isDark ? "text-slate-300" : "text-slate-600")}>{dup.entityNumber}</span>
+                            <span className={isDark ? "text-slate-400" : "text-slate-500"}>—</span>
+                            <span className={isDark ? "text-slate-300" : "text-slate-600"}>{dup.csvName}</span>
+                            <span className={cn("text-xs px-2 py-0.5 rounded", 
+                              dup.reason === 'exists_in_system' 
+                                ? (isDark ? "bg-amber-500/20 text-amber-400" : "bg-amber-100 text-amber-700")
+                                : (isDark ? "bg-red-500/20 text-red-400" : "bg-red-100 text-red-700")
+                            )}>
+                              {dup.reason === 'exists_in_system' ? 'Already in system' : 'Duplicate in CSV'}
+                            </span>
+                          </div>
+                        ))}
+                        {duplicates.length > 10 && (
+                          <p className={cn("text-sm text-center py-2", isDark ? "text-amber-400" : "text-amber-500")}>
+                            ...and {duplicates.length - 10} more
+                          </p>
+                        )}
                       </div>
                     </div>
                   )}
 
-                  {/* New Providers Preview */}
-                  {newProviders.length > 0 && (
+                  {/* Provider Summary Preview */}
+                  {providerSummary.length > 0 && (
                     <div>
                       <h3 className={cn("font-semibold mb-3", isDark ? "text-white" : "text-slate-900")}>
-                        New Providers Preview ({newProviders.length})
+                        Import Preview
                       </h3>
                       <div className={cn("rounded-xl overflow-hidden max-h-64 overflow-auto", isDark ? "bg-slate-700/30" : "bg-slate-50")}>
                         <table className="w-full text-sm">
                           <thead className={cn("sticky top-0", isDark ? "bg-slate-800" : "bg-slate-100")}>
                             <tr>
-                              <th className={cn("text-left px-3 py-2", isDark ? "text-slate-400" : "text-slate-500")}>Name</th>
+                              <th className={cn("text-left px-3 py-2", isDark ? "text-slate-400" : "text-slate-500")}>Provider</th>
                               <th className={cn("text-left px-3 py-2", isDark ? "text-slate-400" : "text-slate-500")}>NPI</th>
-                              <th className={cn("text-left px-3 py-2", isDark ? "text-slate-400" : "text-slate-500")}>Specialty</th>
-                              <th className={cn("text-left px-3 py-2", isDark ? "text-slate-400" : "text-slate-500")}>City</th>
+                              <th className={cn("text-left px-3 py-2", isDark ? "text-slate-400" : "text-slate-500")}>Action</th>
+                              <th className={cn("text-left px-3 py-2", isDark ? "text-slate-400" : "text-slate-500")}>Locations</th>
                             </tr>
                           </thead>
                           <tbody className={isDark ? "divide-y divide-slate-700/50" : "divide-y divide-slate-200"}>
-                            {newProviders.slice(0, 20).map((p, i) => (
+                            {providerSummary.slice(0, 20).map((p, i) => (
                               <tr key={i}>
-                                <td className={cn("px-3 py-2", isDark ? "text-white" : "text-slate-900")}>{p.name}</td>
+                                <td className={cn("px-3 py-2", isDark ? "text-white" : "text-slate-900")}>
+                                  {p.name}
+                                  {p.action === 'add_location' && p.existingProviderName && (
+                                    <span className={cn("text-xs ml-2", isDark ? "text-slate-400" : "text-slate-500")}>
+                                      (existing)
+                                    </span>
+                                  )}
+                                </td>
                                 <td className={cn("px-3 py-2 font-mono", isDark ? "text-slate-300" : "text-slate-600")}>{p.npi}</td>
-                                <td className={cn("px-3 py-2", isDark ? "text-slate-300" : "text-slate-600")}>{p.specialty}</td>
-                                <td className={cn("px-3 py-2", isDark ? "text-slate-300" : "text-slate-600")}>{p.city}, {p.state}</td>
+                                <td className="px-3 py-2">
+                                  <span className={cn("text-xs px-2 py-0.5 rounded",
+                                    p.action === 'create_provider'
+                                      ? (isDark ? "bg-green-500/20 text-green-400" : "bg-green-100 text-green-700")
+                                      : (isDark ? "bg-blue-500/20 text-blue-400" : "bg-blue-100 text-blue-700")
+                                  )}>
+                                    {p.action === 'create_provider' ? 'New Provider' : `+${p.newLocationCount} Location${p.newLocationCount > 1 ? 's' : ''}`}
+                                  </span>
+                                </td>
+                                <td className={cn("px-3 py-2", isDark ? "text-slate-300" : "text-slate-600")}>
+                                  {p.action === 'add_location' 
+                                    ? `${p.existingLocationCount} → ${(p.existingLocationCount || 0) + p.newLocationCount}`
+                                    : p.newLocationCount
+                                  }
+                                </td>
                               </tr>
                             ))}
                           </tbody>
                         </table>
-                        {newProviders.length > 20 && (
+                        {providerSummary.length > 20 && (
                           <p className={cn("text-center py-2 text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                            ...and {newProviders.length - 20} more
+                            ...and {providerSummary.length - 20} more providers
                           </p>
                         )}
                       </div>
@@ -712,92 +707,22 @@ export function CsvUploadWizard({
             </div>
           )}
 
-          {/* Step 3: Review Duplicates */}
-          {step === "review" && currentDuplicate && (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className={cn("font-semibold", isDark ? "text-white" : "text-slate-900")}>
-                  Reviewing Duplicate {reviewIndex + 1} of {duplicates.length}
-                </h3>
-                <span className={cn("text-sm px-3 py-1 rounded-full", isDark ? "bg-amber-500/20 text-amber-400" : "bg-amber-100 text-amber-700")}>
-                  Matched by NPI: {currentDuplicate.csvRow.npi}
-                </span>
-              </div>
-
-              {/* Side by Side Comparison */}
-              <div className="grid grid-cols-2 gap-4">
-                {/* Existing */}
-                <div className={cn("rounded-xl p-4 border", isDark ? "bg-slate-700/30 border-slate-600" : "bg-slate-50 border-slate-200")}>
-                  <h4 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-slate-300" : "text-slate-700")}>
-                    <span className="w-2 h-2 rounded-full bg-blue-500" />
-                    Existing Record
-                  </h4>
-                  <div className="space-y-2">
-                    <p className={cn("text-lg font-medium", isDark ? "text-white" : "text-slate-900")}>
-                      {currentDuplicate.existingProvider.firstName} {currentDuplicate.existingProvider.lastName}
-                    </p>
-                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                      {currentDuplicate.existingProvider.specialty}
-                    </p>
-                  </div>
-                </div>
-
-                {/* CSV */}
-                <div className={cn("rounded-xl p-4 border", isDark ? "bg-green-500/10 border-green-500/30" : "bg-green-50 border-green-200")}>
-                  <h4 className={cn("font-semibold mb-3 flex items-center gap-2", isDark ? "text-green-400" : "text-green-700")}>
-                    <span className="w-2 h-2 rounded-full bg-green-500" />
-                    From CSV
-                  </h4>
-                  <div className="space-y-2">
-                    <p className={cn("text-lg font-medium", isDark ? "text-white" : "text-slate-900")}>
-                      {currentDuplicate.csvRow.name}
-                    </p>
-                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
-                      {currentDuplicate.csvRow.specialty}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Differences */}
-              {currentDuplicate.differences.length > 0 && (
-                <div className={cn("rounded-xl p-4", isDark ? "bg-amber-500/10" : "bg-amber-50")}>
-                  <h4 className={cn("font-semibold mb-3", isDark ? "text-amber-400" : "text-amber-700")}>
-                    Differences Found ({currentDuplicate.differences.length})
-                  </h4>
-                  <div className="space-y-2">
-                    {currentDuplicate.differences.map((diff, i) => (
-                      <div key={i} className="flex items-center gap-4">
-                        <span className={cn("w-24 text-sm font-medium", isDark ? "text-slate-400" : "text-slate-500")}>{diff.field}</span>
-                        <span className={cn("flex-1 text-sm px-2 py-1 rounded", isDark ? "bg-slate-700 text-slate-300" : "bg-white text-slate-700")}>{diff.existing}</span>
-                        <ArrowRight className={cn("w-4 h-4", isDark ? "text-slate-500" : "text-slate-400")} />
-                        <span className={cn("flex-1 text-sm px-2 py-1 rounded", isDark ? "bg-green-500/20 text-green-400" : "bg-green-100 text-green-700")}>{diff.csv}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-center gap-4">
-                <button
-                  onClick={() => { handleDuplicateAction(reviewIndex, "skip"); nextDuplicate(); }}
-                  className={cn(
-                    "flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-colors",
-                    isDark ? "bg-slate-700 text-white hover:bg-slate-600" : "bg-slate-200 text-slate-700 hover:bg-slate-300"
-                  )}
-                >
-                  <SkipForward className="w-5 h-5" />
-                  Skip (Keep Existing)
-                </button>
-                <button
-                  onClick={() => { handleDuplicateAction(reviewIndex, "merge"); nextDuplicate(); }}
-                  className="flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-xl font-medium hover:bg-green-600 transition-colors"
-                >
-                  <Merge className="w-5 h-5" />
-                  Merge (Update with CSV)
-                </button>
-              </div>
+          {/* Step 3: Review - Skip for now since duplicates are auto-skipped */}
+          {step === "review" && (
+            <div className="text-center py-12">
+              <AlertCircle className="w-16 h-16 text-amber-500 mx-auto mb-4" />
+              <h3 className={cn("text-xl font-bold mb-2", isDark ? "text-white" : "text-slate-900")}>
+                Duplicates Will Be Skipped
+              </h3>
+              <p className={cn("mb-6", isDark ? "text-slate-400" : "text-slate-500")}>
+                {duplicates.length} duplicate Entity Number(s) found. These will be automatically skipped.
+              </p>
+              <button
+                onClick={() => setStep("confirm")}
+                className="px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors"
+              >
+                Continue to Import
+              </button>
             </div>
           )}
 
@@ -815,22 +740,22 @@ export function CsvUploadWizard({
               </div>
 
               <div className={cn("rounded-xl p-6", isDark ? "bg-slate-700/30" : "bg-slate-50")}>
-                <div className="grid grid-cols-3 gap-6 text-center">
+                <div className="grid grid-cols-4 gap-6 text-center">
                   <div>
-                    <p className={cn("text-3xl font-bold", isDark ? "text-green-400" : "text-green-600")}>{newProviders.length}</p>
-                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Will be added</p>
+                    <p className={cn("text-3xl font-bold", isDark ? "text-green-400" : "text-green-600")}>{newProvidersCount}</p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>New Providers</p>
                   </div>
                   <div>
-                    <p className={cn("text-3xl font-bold", isDark ? "text-blue-400" : "text-blue-600")}>
-                      {duplicates.filter(d => d.action === "merge").length}
-                    </p>
-                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Will be merged</p>
+                    <p className={cn("text-3xl font-bold", isDark ? "text-blue-400" : "text-blue-600")}>{totalNewLocations}</p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Total Locations</p>
                   </div>
                   <div>
-                    <p className={cn("text-3xl font-bold", isDark ? "text-slate-400" : "text-slate-500")}>
-                      {duplicates.filter(d => d.action === "skip").length}
-                    </p>
-                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Will be skipped</p>
+                    <p className={cn("text-3xl font-bold", isDark ? "text-purple-400" : "text-purple-600")}>{locationsToExisting.length}</p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Providers Updated</p>
+                  </div>
+                  <div>
+                    <p className={cn("text-3xl font-bold", isDark ? "text-slate-400" : "text-slate-500")}>{duplicates.length}</p>
+                    <p className={cn("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>Skipped Duplicates</p>
                   </div>
                 </div>
               </div>
@@ -852,15 +777,15 @@ export function CsvUploadWizard({
               
               <div className="grid grid-cols-4 gap-4 max-w-lg mx-auto">
                 <div className={cn("rounded-xl p-4", isDark ? "bg-green-500/10" : "bg-green-50")}>
-                  <p className={cn("text-2xl font-bold", isDark ? "text-green-400" : "text-green-600")}>{importResult.added}</p>
-                  <p className={cn("text-xs", isDark ? "text-green-400/80" : "text-green-600")}>Added</p>
+                  <p className={cn("text-2xl font-bold", isDark ? "text-green-400" : "text-green-600")}>{importResult.newProvidersCreated}</p>
+                  <p className={cn("text-xs", isDark ? "text-green-400/80" : "text-green-600")}>New Providers</p>
                 </div>
                 <div className={cn("rounded-xl p-4", isDark ? "bg-blue-500/10" : "bg-blue-50")}>
-                  <p className={cn("text-2xl font-bold", isDark ? "text-blue-400" : "text-blue-600")}>{importResult.merged}</p>
-                  <p className={cn("text-xs", isDark ? "text-blue-400/80" : "text-blue-600")}>Merged</p>
+                  <p className={cn("text-2xl font-bold", isDark ? "text-blue-400" : "text-blue-600")}>{importResult.locationsAdded}</p>
+                  <p className={cn("text-xs", isDark ? "text-blue-400/80" : "text-blue-600")}>Locations Added</p>
                 </div>
                 <div className={cn("rounded-xl p-4", isDark ? "bg-slate-500/10" : "bg-slate-100")}>
-                  <p className={cn("text-2xl font-bold", isDark ? "text-slate-400" : "text-slate-600")}>{importResult.skipped}</p>
+                  <p className={cn("text-2xl font-bold", isDark ? "text-slate-400" : "text-slate-600")}>{importResult.skippedDuplicates}</p>
                   <p className={cn("text-xs", isDark ? "text-slate-400/80" : "text-slate-500")}>Skipped</p>
                 </div>
                 <div className={cn("rounded-xl p-4", isDark ? "bg-red-500/10" : "bg-red-50")}>
@@ -875,9 +800,9 @@ export function CsvUploadWizard({
         {/* Footer */}
         <div className={cn("p-6 border-t flex justify-between", isDark ? "border-slate-700" : "border-slate-200")}>
           <div>
-            {step === "analyze" && duplicates.length === 0 && newProviders.length > 0 && (
+            {step === "analyze" && (
               <button
-                onClick={() => setStep("confirm")}
+                onClick={() => setStep("upload")}
                 className={cn("px-4 py-2 rounded-lg transition-colors", isDark ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-700")}
               >
                 <ChevronLeft className="w-4 h-4 inline mr-1" />
@@ -893,9 +818,9 @@ export function CsvUploadWizard({
               {step === "complete" ? "Close" : "Cancel"}
             </button>
             
-            {step === "analyze" && duplicates.length === 0 && newProviders.length > 0 && (
+            {step === "analyze" && locationsToAdd.length > 0 && !isProcessing && (
               <button
-                onClick={() => setStep("confirm")}
+                onClick={() => duplicates.length > 0 ? setStep("review") : setStep("confirm")}
                 className="flex items-center gap-2 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
                 Continue
@@ -917,7 +842,7 @@ export function CsvUploadWizard({
                 ) : (
                   <>
                     <Check className="w-4 h-4" />
-                    Import {newProviders.length + duplicates.filter(d => d.action === "merge").length} Providers
+                    Import {totalNewLocations} Location{totalNewLocations !== 1 ? 's' : ''}
                   </>
                 )}
               </button>
