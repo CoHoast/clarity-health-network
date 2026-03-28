@@ -6,14 +6,15 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 export type AuditCategory = 
-  | 'auth'           // Login, logout, session events
-  | 'phi_access'     // Viewing member/patient data
-  | 'data_change'    // Create, update, delete operations
-  | 'system'         // System configuration changes
-  | 'security'       // Failed logins, permission denials
-  | 'export'         // Data exports, report downloads
-  | 'verification'   // Provider verification checks
-  | 'navigation';    // Page views (optional, high volume)
+  | 'auth'             // Login, logout, session events
+  | 'phi_access'       // Viewing member/patient data
+  | 'data_change'      // Create, update, delete operations
+  | 'system'           // System configuration changes
+  | 'security'         // Failed logins, permission denials
+  | 'export'           // Data exports, report downloads
+  | 'verification'     // Provider verification checks
+  | 'user_management'  // User CRUD operations
+  | 'navigation';      // Page views (optional, high volume)
 
 export type AuditSeverity = 'info' | 'warning' | 'error' | 'critical';
 
