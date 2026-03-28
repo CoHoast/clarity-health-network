@@ -9,6 +9,10 @@ export * from './password';
 export * from './mfa';
 export * from './csrf';
 export * from './ip-allowlist';
+export * from './phi-encryption';
+export * from './error-handler';
+export * from './session-security';
+export * from './audit-soc2';
 
 // Session management
 export { 

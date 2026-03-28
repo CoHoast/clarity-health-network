@@ -1,8 +1,11 @@
 /**
  * Security Middleware
  * 
- * HIPAA-compliant security headers and route protection
- * Pen test ready: CSP, HSTS, X-Frame-Options, etc.
+ * HIPAA + SOC 2 + Pen Test Compliant:
+ * - Security headers (CSP, HSTS, X-Frame-Options)
+ * - CORS lockdown
+ * - Route protection
+ * - Request validation
  */
 
 import { NextResponse } from 'next/server';
@@ -12,11 +15,34 @@ import type { NextRequest } from 'next/server';
 const PROTECTED_ROUTES = ['/admin'];
 const PUBLIC_ROUTES = ['/admin-login', '/login', '/api/auth', '/upload', '/apply', '/find-provider'];
 
+// Allowed origins for CORS (add your domains here)
+const ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'https://truecare-health-network-production.up.railway.app',
+  'https://clarity-health-network-production.up.railway.app',
+  // Add production domains
+];
+
+// Allowed methods for API routes
+const ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const origin = request.headers.get('origin');
+  const method = request.method;
+  
+  // Handle CORS preflight
+  if (method === 'OPTIONS') {
+    const response = new NextResponse(null, { status: 204 });
+    setCorsHeaders(response, origin);
+    return response;
+  }
   
   // Create response (will add headers)
   const response = NextResponse.next();
+  
+  // CORS headers
+  setCorsHeaders(response, origin);
   
   // ==========================================
   // SECURITY HEADERS (Critical for Pen Test)
@@ -98,6 +124,24 @@ export function middleware(request: NextRequest) {
   }
   
   return response;
+}
+
+/**
+ * Set CORS headers (locked down to allowed origins)
+ */
+function setCorsHeaders(response: NextResponse, origin: string | null): void {
+  // Only allow whitelisted origins
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    response.headers.set('Access-Control-Allow-Origin', origin);
+  } else if (process.env.NODE_ENV === 'development') {
+    // Allow localhost in development
+    response.headers.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+  }
+  
+  response.headers.set('Access-Control-Allow-Methods', ALLOWED_METHODS.join(', '));
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-CSRF-Token, X-Requested-With');
+  response.headers.set('Access-Control-Allow-Credentials', 'true');
+  response.headers.set('Access-Control-Max-Age', '86400'); // 24 hours
 }
 
 export const config = {
