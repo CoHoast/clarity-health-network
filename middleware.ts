@@ -97,19 +97,57 @@ export function middleware(request: NextRequest) {
   // ROUTE PROTECTION
   // ==========================================
   
-  // Check if route requires auth
-  const isProtectedRoute = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
-  const isPublicRoute = PUBLIC_ROUTES.some(route => pathname.startsWith(route));
+  // Check route types
+  const isProtectedPageRoute = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
+  const isPublicPageRoute = PUBLIC_ROUTES.some(route => pathname.startsWith(route));
   const isApiRoute = pathname.startsWith('/api');
   const isStaticAsset = pathname.startsWith('/_next') || pathname.includes('.');
   
-  // Skip auth check for public routes, API routes (handled separately), and static assets
-  if (isPublicRoute || isApiRoute || isStaticAsset) {
+  // Public API routes (no auth required)
+  const isPublicApiRoute = [
+    '/api/auth/',           // Auth endpoints
+    '/api/public/',         // Explicitly public
+    '/api/upload/',         // Upload portal (token-based auth)
+    '/api/apply/',          // Provider application
+    '/api/find-provider',   // Provider search
+  ].some(pattern => pathname.startsWith(pattern));
+  
+  // Skip auth for static assets
+  if (isStaticAsset) {
     return response;
   }
   
-  // For protected routes, check session cookie
-  if (isProtectedRoute) {
+  // Skip auth for public page routes
+  if (isPublicPageRoute) {
+    return response;
+  }
+  
+  // Protect admin API routes
+  if (isApiRoute && !isPublicApiRoute) {
+    const sessionCookie = request.cookies.get('admin_session');
+    
+    if (!sessionCookie?.value) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+    
+    // Validate session format
+    const sessionId = sessionCookie.value;
+    if (!sessionId.startsWith('admin_') || sessionId.length < 30) {
+      return NextResponse.json(
+        { error: 'Invalid session' },
+        { status: 401 }
+      );
+    }
+    
+    // Add auth headers for downstream use
+    response.headers.set('x-auth-verified', 'true');
+  }
+  
+  // For protected page routes, check session cookie
+  if (isProtectedPageRoute) {
     const sessionCookie = request.cookies.get('admin_session');
     
     if (!sessionCookie?.value) {
@@ -119,8 +157,12 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
     
-    // TODO: Validate session token against database/cache
-    // For now, presence of cookie is enough (client-side validation also happens)
+    // Validate session format
+    const sessionId = sessionCookie.value;
+    if (!sessionId.startsWith('admin_') || sessionId.length < 30) {
+      const loginUrl = new URL('/admin-login', request.url);
+      return NextResponse.redirect(loginUrl);
+    }
   }
   
   return response;
