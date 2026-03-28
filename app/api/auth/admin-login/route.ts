@@ -1,13 +1,18 @@
 /**
  * Secure Admin Login API
  * 
- * Validates credentials against environment variables
- * Implements rate limiting and audit logging
+ * HIPAA + Pen Test Ready:
+ * - Validates credentials against environment variables
+ * - Rate limiting with lockout
+ * - IP allowlisting (optional)
+ * - Comprehensive audit logging
+ * - Constant-time comparison
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { logAuditEvent } from '@/lib/audit';
 import { checkLoginAttempt, recordFailedAttempt, recordSuccessfulLogin } from '@/lib/security/login-attempts';
+import { checkAdminIpAccess } from '@/lib/security/ip-allowlist';
 import crypto from 'crypto';
 
 // Hash password for comparison (constant-time comparison to prevent timing attacks)
@@ -23,8 +28,33 @@ function constantTimeCompare(a: string, b: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
   const userAgent = req.headers.get('user-agent') || 'unknown';
+  
+  // Check IP allowlist first
+  const ipCheck = checkAdminIpAccess(req.headers);
+  const ip = ipCheck.ip;
+  
+  if (!ipCheck.allowed) {
+    await logAuditEvent({
+      user: 'unknown',
+      userId: 'N/A',
+      action: 'Admin Login Blocked - IP Not Allowed',
+      category: 'security',
+      resource: 'ADMIN_AUTH',
+      resourceType: 'Authentication',
+      details: ipCheck.reason || `IP ${ip} blocked`,
+      ip,
+      userAgent,
+      sessionId: 'N/A',
+      severity: 'critical',
+      phiAccessed: false,
+      success: false,
+    });
+    return NextResponse.json(
+      { error: 'Access denied', message: 'Your IP address is not authorized' },
+      { status: 403 }
+    );
+  }
 
   try {
     const { email, password } = await req.json();

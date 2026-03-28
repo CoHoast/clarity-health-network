@@ -5,6 +5,10 @@ export * from './api-key';
 export * from './sanitize';
 export * from './encryption';
 export * from './errors';
+export * from './password';
+export * from './mfa';
+export * from './csrf';
+export * from './ip-allowlist';
 
 // Session management
 export { 
