@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
-// Demo mode - no login required, go straight to admin
+// Redirect login to admin-login for now
+// Future: implement separate member/provider/employer portals
 export default function LoginPage() {
-  redirect("/admin");
+  redirect("/admin-login");
 }

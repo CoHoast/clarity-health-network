@@ -150,10 +150,44 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isDark, setIsDark] = useState(false); // Default to light theme
   const [mounted, setMounted] = useState(false); // Prevent hydration flash
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = () => {
+      const session = localStorage.getItem("admin_session");
+      const userStr = localStorage.getItem("admin_user");
+      
+      // Also check cookie
+      const cookieSession = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('admin_session='))
+        ?.split('=')[1];
+      
+      if (session || cookieSession) {
+        setIsAuthenticated(true);
+        if (userStr) {
+          try {
+            setAdminUser(JSON.parse(userStr));
+          } catch (e) {
+            console.error('Error parsing admin user:', e);
+          }
+        }
+      } else {
+        setIsAuthenticated(false);
+        router.push("/admin-login");
+      }
+    };
+    
+    checkAuth();
+  }, [router]);
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("admin_session");
+    localStorage.removeItem("admin_user");
+    // Clear cookie
+    document.cookie = "admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     router.push("/admin-login");
   };
 
@@ -234,6 +268,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     dropdownText: isDark ? "text-slate-300 hover:bg-slate-700" : "text-gray-700 hover:bg-gray-50",
     dropdownBorder: isDark ? "border-slate-700" : "border-gray-100",
   };
+
+  // Show loading while checking auth
+  if (isAuthenticated === null) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect if not authenticated (handled by useEffect, but safety check)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className={`min-h-screen ${theme.bg}`} data-theme={isDark ? "dark" : "light"}>
@@ -518,8 +569,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     className={`absolute right-0 mt-2 w-56 rounded-xl py-2 z-50 ${theme.dropdown}`}
                   >
                     <div className={`px-4 py-2 border-b ${theme.dropdownBorder}`}>
-                      <p className={`font-semibold ${theme.text}`}>Super Admin</p>
-                      <p className={`text-sm ${theme.textMuted}`}>admin@truecarehealth.com</p>
+                      <p className={`font-semibold ${theme.text}`}>{adminUser?.name || 'Administrator'}</p>
+                      <p className={`text-sm ${theme.textMuted}`}>{adminUser?.email || 'admin'}</p>
                     </div>
                     <Link
                       href="/admin/settings"

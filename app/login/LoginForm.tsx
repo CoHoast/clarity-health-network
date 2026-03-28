@@ -238,17 +238,6 @@ export default function LoginForm() {
             </button>
           </form>
 
-          {/* Demo credentials hint */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-xl text-sm text-gray-600">
-            <p className="font-medium text-gray-700 mb-2">Demo Credentials:</p>
-            <div className="space-y-1 text-xs">
-              <p><span className="font-medium">Member:</span> john.smith@email.com</p>
-              <p><span className="font-medium">Provider:</span> dr.johnson@mainstreetmed.com</p>
-              <p><span className="font-medium">Employer:</span> hr@acmecorp.com</p>
-              <p className="text-gray-500 mt-2">Password for all: demo123</p>
-            </div>
-          </div>
-
           <p className="text-center text-gray-600 mt-8">
             Need an account?{" "}
             <Link href="/contact" className="text-cyan-600 font-medium hover:text-cyan-700">
