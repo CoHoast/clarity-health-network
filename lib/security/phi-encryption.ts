@@ -192,4 +192,4 @@ export const PHI_FIELDS = {
   member: ['ssn', 'dateOfBirth', 'bankAccountNumber', 'bankRoutingNumber'],
   provider: ['ssn', 'taxId', 'dateOfBirth', 'deaNumber'],
   claim: ['memberSsn', 'diagnosisCodes', 'procedureCodes'],
-} as const;
+};
