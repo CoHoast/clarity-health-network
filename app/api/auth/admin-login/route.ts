@@ -15,6 +15,7 @@ import { logAuditEvent } from '@/lib/audit';
 import { checkLoginAttempt, recordFailedAttempt, recordSuccessfulLogin } from '@/lib/security/login-attempts';
 import { checkAdminIpAccess } from '@/lib/security/ip-allowlist';
 import { verifyCredentials, initializeDefaultAdmin, User } from '@/lib/users';
+import { checkRateLimit, createRateLimitResponse } from '@/lib/rate-limiter';
 import crypto from 'crypto';
 
 // Hash password for comparison (constant-time comparison to prevent timing attacks)
@@ -32,7 +33,29 @@ function constantTimeCompare(a: string, b: string): boolean {
 export async function POST(req: NextRequest) {
   const userAgent = req.headers.get('user-agent') || 'unknown';
   
-  // Check IP allowlist first
+  // Rate limiting for auth endpoints (CRITICAL SECURITY)
+  const rateLimitResult = checkRateLimit(req, 'auth');
+  if (!rateLimitResult.allowed) {
+    await logAuditEvent({
+      user: 'unknown',
+      userId: 'N/A',
+      action: 'Admin Login Rate Limited',
+      category: 'security',
+      resource: 'ADMIN_AUTH',
+      resourceType: 'Authentication',
+      details: `Rate limit exceeded: ${rateLimitResult.error}`,
+      ip: req.headers.get('x-forwarded-for') || 'unknown',
+      userAgent,
+      sessionId: 'N/A',
+      severity: 'warning',
+      phiAccessed: false,
+      success: false,
+    });
+    
+    return createRateLimitResponse(rateLimitResult);
+  }
+  
+  // Check IP allowlist
   const ipCheck = checkAdminIpAccess(req.headers);
   const ip = ipCheck.ip;
   

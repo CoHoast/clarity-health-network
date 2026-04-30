@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { logAuditEvent } from '@/lib/audit';
 import { checkLoginAttempt, recordFailedAttempt, recordSuccessfulLogin } from '@/lib/security/login-attempts';
+import { checkRateLimit, createRateLimitResponse } from '@/lib/rate-limiter';
 import crypto from 'crypto';
 
 // Secure demo users with hashed passwords
@@ -53,6 +54,31 @@ function hashPassword(password: string): string {
 
 export async function POST(req: NextRequest) {
   try {
+    // Rate limiting for auth endpoints (CRITICAL SECURITY)
+    const rateLimitResult = checkRateLimit(req, 'auth');
+    if (!rateLimitResult.allowed) {
+      const ip = req.headers.get('x-forwarded-for') || 'unknown';
+      const userAgent = req.headers.get('user-agent') || 'unknown';
+      
+      await logAuditEvent({
+        user: 'unknown',
+        userId: 'N/A',
+        action: 'Demo Login Rate Limited',
+        category: 'security',
+        resource: 'AUTH',
+        resourceType: 'Authentication',
+        details: `Rate limit exceeded: ${rateLimitResult.error}`,
+        ip,
+        userAgent,
+        sessionId: 'N/A',
+        severity: 'warning',
+        phiAccessed: false,
+        success: false,
+      });
+      
+      return createRateLimitResponse(rateLimitResult);
+    }
+
     const { email, password } = await req.json();
     const ip = req.headers.get('x-forwarded-for') || 'unknown';
     const userAgent = req.headers.get('user-agent') || 'unknown';

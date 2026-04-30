@@ -5,7 +5,7 @@
  * Set to false for production with proper authentication.
  */
 
-export const DEMO_MODE = true;
+export const DEMO_MODE = false;
 
 /**
  * Mask a Tax ID (EIN or SSN)

@@ -4,10 +4,18 @@ import providersData from '@/data/arizona-providers.json';
 import fs from 'fs';
 import path from 'path';
 import { maskProviderPII } from '@/lib/demo-mode';
+import { checkRateLimit, createRateLimitResponse } from '@/lib/rate-limiter';
+import { encryptPhiFieldsV2, decryptPhiFieldsV2, PHI_FIELDS } from '@/lib/security/phi-encryption';
 
 // Create new provider
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting for write operations
+    const rateLimitResult = checkRateLimit(request, 'write');
+    if (!rateLimitResult.allowed) {
+      return createRateLimitResponse(rateLimitResult);
+    }
+
     const data = await request.json();
     const ip = request.headers.get('x-forwarded-for') || 'unknown';
     const userAgent = request.headers.get('user-agent') || 'unknown';
@@ -60,16 +68,19 @@ export async function POST(request: NextRequest) {
         { status: 409 }
       );
     }
+
+    // Encrypt sensitive PHI fields before storage  
+    const encryptedData = encryptPhiFieldsV2(data, PHI_FIELDS.provider);
     
     // Create new provider
     const newProvider = {
-      id: `prov-${data.npi}`,
-      npi: data.npi,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      middleInitial: data.middleInitial || '',
-      credentials: data.credentials || data.title || '',
-      gender: data.gender || 'U',
+      id: `prov-${encryptedData.npi}`,
+      npi: encryptedData.npi,
+      firstName: encryptedData.firstName,
+      lastName: encryptedData.lastName,
+      middleInitial: encryptedData.middleInitial || '',
+      credentials: encryptedData.credentials || encryptedData.title || '',
+      gender: encryptedData.gender || 'U',
       specialty: data.specialty || 'General Practice',
       specialtyCode: data.specialtyCode || '',
       taxonomyCode: data.taxonomyCode || '',
