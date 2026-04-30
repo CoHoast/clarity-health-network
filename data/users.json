@@ -1,0 +1,50 @@
+[
+  {
+    "id": "user_super_admin_001",
+    "email": "superadmin@solidarity.com",
+    "name": "Super Administrator",
+    "role": "super_admin",
+    "passwordHash": "7b48bf4dd8384aea4dede8443f74d91304f392cb6db643e06250a426e2729e2d4d973d11eba5dea856cf2bee5309ce897f9308f3e10de4daa4aec1922f8992bb",
+    "passwordSalt": "66f283bdde05d6b37b76444d9da813cee44c27141b3b8f8059e9010bd67fe35b",
+    "createdAt": "2026-04-30T14:06:52.904Z",
+    "createdBy": "system",
+    "mfaEnabled": false,
+    "active": true
+  },
+  {
+    "id": "user_admin_002",
+    "email": "admin@solidarity.com",
+    "name": "Admin User",
+    "role": "admin",
+    "passwordHash": "73b588a8426fe9382d51de35657f7f0ec451e042a3780c74c7a780562ea43194154e343c2bbfd80ca7ff66632c659a2e42cdc9dfcc3df1907fb4f762a3655fba",
+    "passwordSalt": "dc71c6504db6cfc5109d9b7bb68cf89ec39418a8479f8a65a62db97c0594ac6a",
+    "createdAt": "2026-04-30T14:06:52.924Z",
+    "createdBy": "system",
+    "mfaEnabled": false,
+    "active": true
+  },
+  {
+    "id": "user_manager_003",
+    "email": "manager@solidarity.com",
+    "name": "Manager User",
+    "role": "manager",
+    "passwordHash": "8557b56ba48b1a5882c0fe59b184efb52053ffae04ab9fc30ae67f1056faa7f26647b9dcb5e0908302fa89ee118322c4f7ef5fa629133e71bfe9093dfc2d3963",
+    "passwordSalt": "36f1eb04af17898d1ee951432bc43e4d24e831d87b663bad4106e1b171082cdc",
+    "createdAt": "2026-04-30T14:06:52.943Z",
+    "createdBy": "system",
+    "mfaEnabled": false,
+    "active": true
+  },
+  {
+    "id": "user_staff_004",
+    "email": "staff@solidarity.com",
+    "name": "Staff User",
+    "role": "staff",
+    "passwordHash": "64bf9c40ab330f78a4b8001fe5bbaedb7e15e82eaee209875341cf036d8875582dff8d5c24ba93482b0e334b08b2ea8fcda3f64a3b2a3ae5279ecbe432e28160",
+    "passwordSalt": "3e92bf66e05ca7022e404fdafd3ce287d36de1a6a774e9746a931b9545295645",
+    "createdAt": "2026-04-30T14:06:52.962Z",
+    "createdBy": "system",
+    "mfaEnabled": false,
+    "active": true
+  }
+]
