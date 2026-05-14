@@ -35,10 +35,11 @@ export default function AdminLoginPage() {
       if (response.ok) {
         setSuccess('Login successful! Redirecting...');
         
-        // Try immediate redirect first
+        // Wait a moment for cookies to be set, then redirect
         setTimeout(() => {
-          window.location.href = '/admin'; // Force full page navigation instead of client-side routing
-        }, 500); // Shorter timeout
+          console.log('Redirecting to admin dashboard...');
+          window.location.replace('/admin'); // Use replace to avoid back button issues
+        }, 1000); // Give more time for cookie to be set
       } else {
         setError(data.error || 'Login failed');
       }

@@ -155,17 +155,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
 
-  // Check authentication on mount (TEMPORARILY DISABLED FOR DEBUGGING)
+  // Check authentication on mount
   useEffect(() => {
-    // TEMP: Skip authentication check to debug session issues
-    setIsAuthenticated(true);
-    setAdminUser({ 
-      email: "debug@truecare.health", 
-      name: "Debug User (Auth Disabled)"
-    });
-    
-    /* ORIGINAL AUTH CODE (temporarily commented):
     const checkAuth = () => {
+      // More permissive cookie checking to handle Railway hosting
       const cookieSession = document.cookie
         .split('; ')
         .find(row => row.startsWith('admin_session='))
@@ -176,33 +169,45 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         .find(row => row.startsWith('admin_user='))
         ?.split('=')[1];
       
-      if (cookieSession && cookieSession.length > 10) {
+      console.log('Auth check - Session cookie:', cookieSession ? 'Found' : 'Not found');
+      console.log('Auth check - User cookie:', cookieUser ? cookieUser : 'Not found');
+      
+      // More lenient validation - just check if session exists and starts with admin_
+      if (cookieSession && cookieSession.startsWith('admin_')) {
+        console.log('Valid session found, setting authenticated');
         setIsAuthenticated(true);
+        
+        // Set user info
         if (cookieUser) {
           setAdminUser({ 
             email: `${cookieUser}@truecare.health`, 
-            name: cookieUser === 'admin' ? 'System Administrator' : 'Network Administrator'
+            name: cookieUser === 'SHNuser2026' ? 'SHN Administrator' : 'Network Administrator'
           });
         } else {
           setAdminUser({ email: "admin@truecare.health", name: "Administrator" });
         }
       } else {
+        console.log('No valid session, redirecting to login');
         setIsAuthenticated(false);
-        router.push("/admin-login");
+        // Delay redirect slightly to prevent loops
+        setTimeout(() => {
+          router.push("/admin-login");
+        }, 100);
       }
     };
     
-    checkAuth();
+    // Add a small delay to ensure cookies are available
+    setTimeout(checkAuth, 100);
     
+    // Check auth status on page visibility change (detect external logout)
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        checkAuth();
+        setTimeout(checkAuth, 100);
       }
     };
     
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-    */
   }, [router]);
 
   const handleSignOut = async () => {

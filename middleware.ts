@@ -123,7 +123,7 @@ export function middleware(request: NextRequest) {
   }
   
   // Check if authentication should be enforced
-  const enforceAuth = process.env.ENFORCE_AUTH === 'true' || false; // TEMPORARILY DISABLE for debugging
+  const enforceAuth = process.env.ENFORCE_AUTH === 'true' || true; // Re-enable authentication
   
   // Protect admin API routes (unless auth is disabled)
   if (isApiRoute && !isPublicApiRoute && enforceAuth) {
@@ -136,9 +136,9 @@ export function middleware(request: NextRequest) {
       );
     }
     
-    // Validate session format (new auth system)
+    // Validate session format (more lenient for Railway)
     const sessionId = sessionCookie.value;
-    if (!sessionId || !sessionId.startsWith('admin_') || sessionId.length < 30) {
+    if (!sessionId || !sessionId.startsWith('admin_')) {
       return NextResponse.json(
         { error: 'Invalid or expired session' },
         { status: 401 }
@@ -159,9 +159,9 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
     
-    // Validate session format (new auth system)
+    // Validate session format (more lenient for Railway)
     const sessionId = sessionCookie.value;
-    if (!sessionId || !sessionId.startsWith('admin_') || sessionId.length < 30) {
+    if (!sessionId || !sessionId.startsWith('admin_')) {
       // Invalid session - redirect to login
       const loginUrl = new URL('/admin-login', request.url);
       return NextResponse.redirect(loginUrl);
