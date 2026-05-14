@@ -1,99 +1,64 @@
-# 🎭 Demo Mode Access - PPO Dashboard (HIPAA Compliant)
+# TrueCare Health Network - Login Credentials
 
-## 🎯 **INSTANT ACCESS - NO LOGIN PAGE**
+## 🔐 Shared Login Credentials
 
-**Any URL on the domain redirects directly to the admin dashboard:**
+The PPO network platform now has **proper authentication** with shared credentials that multiple team members can use.
 
-- https://truecare-health-network-production.up.railway.app
-- https://truecare-health-network-production.up.railway.app/admin  
-- https://truecare-health-network-production.up.railway.app/login
-- https://truecare-health-network-production.up.railway.app/admin-login
+### Primary Credentials
+- **Username:** `admin`
+- **Password:** `TrueCare2026!`
 
-**All paths lead directly to the dashboard - no login pages to navigate!**
+### Alternative Credentials  
+- **Username:** `truecare`
+- **Password:** `network2026`
 
-## ✅ **Demo Features:**
-- ✅ **Direct access** to admin dashboard (homepage redirects automatically)
-- ✅ **All PHI/PII data masked** for HIPAA compliance
-- ✅ **No authentication required** for demo purposes  
-- ✅ **Full functionality** with safe, masked data
-- ✅ **No login pages** - everything redirects to dashboard
+## 🌐 Access URLs
 
-## 🛡️ **HIPAA Compliance Through Data Masking**
+### Production (Railway)
+- **Login:** https://truecare-health-network-production.up.railway.app/admin-login
+- **Dashboard:** https://truecare-health-network-production.up.railway.app/admin
 
-All sensitive data is automatically masked:
-- **SSN**: `***-**-1234` (shows last 4 digits)
-- **Date of Birth**: `**/**/1985` (shows year only)  
-- **Tax ID/EIN**: `XX-XXX1234` (shows last 4 digits)
-- **Email**: `j***@*****.com` (masks domain and most of name)
-- **Phone**: `(XXX) XXX-1234` (shows last 4 digits)
-- **Addresses**: `XXX Main Street` (masks street numbers)
+### Local Development
+- **Login:** http://localhost:3001/admin-login  
+- **Dashboard:** http://localhost:3001/admin
 
-## 🎭 **Demo Features Available**
-- ✅ **Provider Management** (3,600+ masked provider records)
-- ✅ **Contract Management** (all financial data masked)  
-- ✅ **Credentialing System** (PII/PHI masked)
-- ✅ **Rate & Discount Management** 
-- ✅ **Reports & Analytics** (demo data)
-- ✅ **Team & Permissions** (demo roles)
+## ✅ What Changed
 
-## 📋 **Legacy Login Credentials (No Longer Needed)**
+### Before (Demo Mode)
+- ❌ No login required
+- ❌ All pages publicly accessible  
+- ❌ No audit trail
+- ❌ No session management
 
-**Chris's Admin Access:**
-- **Email**: `chris@claimlynk.com`
-- **Password**: `ClaimAdmin2026!`
-- **Role**: Super Admin (full system access)
+### After (Proper Auth)
+- ✅ **Login required** for admin access
+- ✅ **Session management** (8-hour expiry)
+- ✅ **Audit logging** for all login/logout events
+- ✅ **Secure cookies** with proper configuration
+- ✅ **Multiple shared credentials** for team access
+- ✅ **Logout functionality** in admin header
+- ✅ **Automatic redirect** to login if unauthenticated
 
-**Admin Access:**
-- **Email**: `admin@solidarity.com`
-- **Password**: `SolidAdmin2024!`
-- **Role**: Admin (full dashboard access)
+## 🔧 Features
 
-**Manager Access:**
-- **Email**: `manager@solidarity.com`
-- **Password**: `SolidMgr2024!`
-- **Role**: Manager (limited admin functions)
+- **Session Timeout:** 8 hours of inactivity
+- **Security Headers:** Full HIPAA-compliant security
+- **Audit Logging:** All auth events logged with IP/timestamp
+- **Auto-redirect:** Seamless redirect to login when needed
+- **Cross-tab logout:** Logout detected across browser tabs
 
-**Staff Access:**
-- **Email**: `staff@solidarity.com`
-- **Password**: `SolidStaff2024!`
-- **Role**: Staff (read-only + basic operations)
+## 🚀 Deployment Status
 
-**Provider Access:**
-- **Email**: `provider@arizona.com`
-- **Password**: `AzProvider2024!`
-- **Role**: Provider (provider portal view)
+- ✅ **Code committed & pushed** to GitHub
+- 🔄 **Railway deployment** in progress (~2-3 minutes)
+- 📱 **Mobile-responsive** login form
+- 🎨 **Branded interface** matching TrueCare design
 
-## Super Admin Portal (via /admin-login)
+## 📋 How to Use
 
-**Super Admin:**
-- **Email**: `superadmin@solidarity.com`
-- **Password**: `SuperSolid2024!`
-- **Role**: Super Admin (system-level access)
+1. **Visit login page:** `/admin-login`
+2. **Enter credentials** (either set above)
+3. **Access dashboard:** Full admin functionality
+4. **Logout:** Click user menu → Sign Out
 
-## Security Features ✅
-
-- **Real Password Validation** - No more "any password" demo mode
-- **PBKDF2 Password Hashing** - Industry-standard 100k iterations
-- **Account Lockout** - 5 failed attempts = 15 minute lockout
-- **Audit Logging** - All login attempts tracked with IP/user agent
-- **Rate Limiting** - Protection against brute force attacks
-- **Role-Based Access** - Different permission levels per user type
-
-## Environment Variables (Railway)
-
-Set these in Railway dashboard:
-
-```bash
-ADMIN_EMAIL=superadmin@solidarity.com
-ADMIN_PASSWORD=SuperSolid2024!
-```
-
-## Notes
-
-- All passwords follow strong complexity requirements
-- Demo users are separate from admin portal users
-- Failed login attempts are logged and monitored
-- Session tokens expire after 8 hours
-- IP allowlisting can be configured (currently disabled)
-
-🎸 **Excellent! Security is now locked down properly.**
+The same credentials work for **multiple people simultaneously** - perfect for team access!

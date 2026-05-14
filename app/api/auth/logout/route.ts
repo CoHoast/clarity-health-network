@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       user: userCookie?.value || 'unknown',
       userId: userCookie?.value || 'unknown',
       action: 'Logout',
-      category: 'authentication',
+      category: 'auth',
       resource: 'LOGOUT',
       resourceType: 'Authentication',
       details: `User logged out from ${ip}`,
