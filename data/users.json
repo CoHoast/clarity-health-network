@@ -69,6 +69,7 @@
     "createdAt": "2026-05-14T19:43:45.066Z",
     "createdBy": "script",
     "mfaEnabled": false,
-    "active": true
+    "active": true,
+    "lastLogin": "2026-05-14T19:48:51.214Z"
   }
 ]
