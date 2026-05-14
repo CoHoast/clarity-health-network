@@ -34,9 +34,11 @@ export default function AdminLoginPage() {
 
       if (response.ok) {
         setSuccess('Login successful! Redirecting...');
+        
+        // Try immediate redirect first
         setTimeout(() => {
-          router.push('/admin');
-        }, 1000);
+          window.location.href = '/admin'; // Force full page navigation instead of client-side routing
+        }, 500); // Shorter timeout
       } else {
         setError(data.error || 'Login failed');
       }

@@ -143,23 +143,27 @@ export async function POST(request: NextRequest) {
     const sessionId = `admin_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000); // 8 hours
     
-    // Set secure session cookie
+    // Set secure session cookie with better compatibility
     const cookieStore = await cookies();
+    
+    // More permissive cookie settings for Railway compatibility
     cookieStore.set('admin_session', sessionId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
       expires: expiresAt,
       path: '/',
+      domain: process.env.NODE_ENV === 'production' ? undefined : undefined, // Let browser handle domain
     });
     
     // Also set a user info cookie for display purposes
     cookieStore.set('admin_user', username, {
       httpOnly: false, // Allow client-side access for UI
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax', // Changed from 'strict' to 'lax'
       expires: expiresAt,
       path: '/',
+      domain: process.env.NODE_ENV === 'production' ? undefined : undefined,
     });
     
     // Log successful login
@@ -186,6 +190,11 @@ export async function POST(request: NextRequest) {
         username,
         role: 'admin',
         sessionExpires: expiresAt.toISOString(),
+      },
+      debug: {
+        sessionId: sessionId.substring(0, 20) + '...', // Partial session ID for debugging
+        cookieSet: true,
+        environment: process.env.NODE_ENV,
       },
     });
     
