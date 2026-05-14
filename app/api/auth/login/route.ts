@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { logAuditEvent } from '@/lib/audit';
 
-// Secure shared login credentials with non-obvious usernames
+// Secure shared login credentials 
 const ADMIN_CREDENTIALS = {
-  username: 'tc-admin-2026',
-  password: 'Tr#eCare@Network$2026!',  // 23 chars, complex
+  username: 'SHNuser2026',
+  password: 'PPO#Net123!',
 };
 
-// Alternative secure credentials 
+// Alternative secure credentials (backup)
 const ALT_CREDENTIALS = {
   username: 'ppo-manager',
   password: 'PPO#Mgr@Secure$2026!',   // 19 chars, complex

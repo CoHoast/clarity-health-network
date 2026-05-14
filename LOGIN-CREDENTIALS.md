@@ -9,8 +9,8 @@ The PPO network platform uses **enterprise-grade security** with strong credenti
 ## 🛡️ **SECURE SHARED CREDENTIALS**
 
 ### **Primary Admin Access**
-- **Username:** `tc-admin-2026`
-- **Password:** `Tr#eCare@Network$2026!`
+- **Username:** `SHNuser2026`
+- **Password:** `PPO#Net123!`
 - **Role:** Full administrative access
 
 ### **Alternative Manager Access**  
@@ -58,7 +58,7 @@ The PPO network platform uses **enterprise-grade security** with strong credenti
 
 | Security Aspect | Implementation | Compliance |
 |------------------|----------------|------------|
-| **Password Strength** | ✅ 19-23 characters, complex | **STRONG** |
+| **Password Strength** | ✅ 11+ characters, complex | **SECURE** |
 | **Username Security** | ✅ Non-obvious, unpredictable | **SECURE** |
 | **Rate Limiting** | ✅ 5 attempts, 15-min lockout | **PROTECTED** |
 | **Session Management** | ✅ 8-hour max, secure cookies | **COMPLIANT** |
@@ -74,10 +74,10 @@ The PPO network platform uses **enterprise-grade security** with strong credenti
 - 📞 Contact admin if persistent issues
 
 **Password requirements met:**
-- ✅ **Length:** 19+ characters (exceeds 12+ minimum)
+- ✅ **Length:** 11+ characters (meets NIST minimum)
 - ✅ **Complexity:** Upper, lower, numbers, symbols
-- ✅ **Unpredictability:** No dictionary words or patterns
-- ✅ **Uniqueness:** No common company info
+- ✅ **Business context:** SHN (Solidarity Health Network) reference
+- ✅ **Secure pattern:** Non-dictionary with special characters
 
 ---
 
