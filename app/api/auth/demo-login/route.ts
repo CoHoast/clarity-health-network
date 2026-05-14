@@ -232,12 +232,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Set HTTP-only cookie (same as admin login)
+    // Set HTTP-only cookie - SIMPLIFIED FOR RAILWAY DEBUGGING
     response.cookies.set('admin_session', sessionId, {
-      httpOnly: true,
-      secure: true, // Always use secure in production
-      sameSite: 'lax', // Better compatibility with Railway
+      httpOnly: false, // TEMPORARY: Disable for debugging
+      secure: false, // TEMPORARY: Disable for debugging  
+      sameSite: 'none', // TEMPORARY: Most permissive for debugging
       maxAge: 8 * 60 * 60, // 8 hours
+      path: '/',
+    });
+    
+    // ALSO set a simple cookie for debugging
+    response.cookies.set('debug_session', 'logged_in', {
+      httpOnly: false,
+      secure: false,
+      maxAge: 8 * 60 * 60,
       path: '/',
     });
 

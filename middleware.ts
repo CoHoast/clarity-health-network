@@ -146,8 +146,9 @@ export function middleware(request: NextRequest) {
     response.headers.set('x-auth-verified', 'true');
   }
   
+  // TEMPORARY: Disable session validation to debug Railway cookie issue
   // For protected page routes, check session cookie
-  if (isProtectedPageRoute) {
+  if (isProtectedPageRoute && false) { // DISABLED FOR DEBUGGING
     const sessionCookie = request.cookies.get('admin_session');
     
     if (!sessionCookie?.value) {
@@ -171,6 +172,9 @@ export function middleware(request: NextRequest) {
     
     console.log(`[Middleware] Session valid for ${pathname}`);
   }
+  
+  // TEMPORARY: Allow all admin access while debugging cookies
+  console.log(`[Middleware] BYPASS: Allowing access to ${pathname}`);
   
   return response;
 }

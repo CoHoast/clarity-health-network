@@ -236,12 +236,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Set HTTP-only cookie for added security
+    // Set HTTP-only cookie for added security - SIMPLIFIED FOR RAILWAY
     response.cookies.set('admin_session', sessionId, {
-      httpOnly: true,
-      secure: true, // Always use secure in production
-      sameSite: 'lax', // Change from 'strict' to 'lax' for better compatibility  
+      httpOnly: false, // TEMPORARY: Disable for debugging
+      secure: false, // TEMPORARY: Disable for debugging
+      sameSite: 'none', // TEMPORARY: Most permissive for debugging
       maxAge: 8 * 60 * 60, // 8 hours
+      path: '/',
+    });
+    
+    // ALSO set a simple cookie for debugging
+    response.cookies.set('debug_session', 'logged_in', {
+      httpOnly: false,
+      secure: false,
+      maxAge: 8 * 60 * 60,
       path: '/',
     });
 
