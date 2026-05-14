@@ -1,82 +1,110 @@
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import prisma from '@/lib/db';
-import { signToken } from '@/lib/auth';
+import { cookies } from 'next/headers';
+import { logAuditEvent } from '@/lib/audit';
 
-export async function POST(req: NextRequest) {
+// Shared login credentials (can be used by multiple people)
+const ADMIN_CREDENTIALS = {
+  username: 'admin',
+  password: 'TrueCare2026!',  // Strong password
+};
+
+// Alternative credentials for easier access
+const ALT_CREDENTIALS = {
+  username: 'truecare',
+  password: 'network2026',   // Simpler password
+};
+
+export async function POST(request: NextRequest) {
   try {
-    const { email, password, portalType } = await req.json();
-
-    if (!email || !password || !portalType) {
-      return NextResponse.json({ error: 'Email, password, and portal type are required' }, { status: 400 });
+    const body = await request.json();
+    const { username, password } = body;
+    
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    const userAgent = request.headers.get('user-agent') || 'unknown';
+    
+    // Validate credentials
+    const isValidAdmin = username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
+    const isValidAlt = username === ALT_CREDENTIALS.username && password === ALT_CREDENTIALS.password;
+    
+    if (!isValidAdmin && !isValidAlt) {
+      // Log failed login attempt
+      await logAuditEvent({
+        user: username || 'unknown',
+        userId: username || 'unknown',
+        action: 'Login Attempt',
+        category: 'authentication',
+        resource: 'LOGIN',
+        resourceType: 'Authentication',
+        details: `Failed login attempt from ${ip}`,
+        ip,
+        userAgent,
+        sessionId: 'login-attempt',
+        severity: 'warning',
+        phiAccessed: false,
+        success: false,
+      });
+      
+      return NextResponse.json(
+        { error: 'Invalid username or password' },
+        { status: 401 }
+      );
     }
-
-    let user: any = null;
-    let role: 'member' | 'provider' | 'employer' | 'admin';
-
-    switch (portalType) {
-      case 'member':
-        user = await prisma.member.findUnique({ where: { email } });
-        role = 'member';
-        break;
-      case 'provider':
-        user = await prisma.provider.findUnique({ where: { email } });
-        role = 'provider';
-        break;
-      case 'employer':
-        user = await prisma.employerUser.findUnique({ where: { email } });
-        role = 'employer';
-        break;
-      case 'admin':
-        user = await prisma.adminUser.findUnique({ where: { email } });
-        role = 'admin';
-        break;
-      default:
-        return NextResponse.json({ error: 'Invalid portal type' }, { status: 400 });
-    }
-
-    if (!user) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-    }
-
-    const isValidPassword = bcrypt.compareSync(password, user.passwordHash);
-    if (!isValidPassword) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-    }
-
-    // Log audit entry for login
-    await prisma.auditLog.create({
-      data: {
-        userId: user.id,
-        userType: portalType,
-        action: 'login',
-        resource: 'session',
-        resourceId: user.id,
-        details: { email: user.email },
-      }
-    }).catch(() => {}); // Non-critical, don't fail login
-
-    // Generate token
-    const name = portalType === 'member' 
-      ? `${user.firstName} ${user.lastName}` 
-      : user.name;
-
-    const token = signToken({
-      id: user.id,
-      email: user.email,
-      role,
-      name,
+    
+    // Generate session ID
+    const sessionId = `admin_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000); // 8 hours
+    
+    // Set secure session cookie
+    const cookieStore = await cookies();
+    cookieStore.set('admin_session', sessionId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      expires: expiresAt,
+      path: '/',
     });
-
-    // Return user data (excluding password hash)
-    const { passwordHash, ...userData } = user;
-
+    
+    // Also set a user info cookie for display purposes
+    cookieStore.set('admin_user', username, {
+      httpOnly: false, // Allow client-side access for UI
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      expires: expiresAt,
+      path: '/',
+    });
+    
+    // Log successful login
+    await logAuditEvent({
+      user: username,
+      userId: username,
+      action: 'Login Success',
+      category: 'authentication',
+      resource: 'LOGIN',
+      resourceType: 'Authentication',
+      details: `Successful login from ${ip}`,
+      ip,
+      userAgent,
+      sessionId,
+      severity: 'info',
+      phiAccessed: false,
+      success: true,
+    });
+    
     return NextResponse.json({
-      token,
-      user: { ...userData, role },
+      success: true,
+      message: 'Login successful',
+      user: {
+        username,
+        role: 'admin',
+        sessionExpires: expiresAt.toISOString(),
+      },
     });
+    
   } catch (error) {
     console.error('Login error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }

@@ -122,12 +122,11 @@ export function middleware(request: NextRequest) {
     return response;
   }
   
-  // DEMO MODE: Skip authentication for demo purposes
-  // All PHI/PII data is masked in demo mode for HIPAA compliance
-  const isDemoMode = process.env.DEMO_MODE === 'true' || true; // Force demo mode for Railway
+  // Check if authentication should be enforced
+  const enforceAuth = process.env.ENFORCE_AUTH === 'true' || true; // Enable authentication by default
   
-  // Protect admin API routes (unless in demo mode)
-  if (isApiRoute && !isPublicApiRoute && !isDemoMode) {
+  // Protect admin API routes (unless auth is disabled)
+  if (isApiRoute && !isPublicApiRoute && enforceAuth) {
     const sessionCookie = request.cookies.get('admin_session');
     
     if (!sessionCookie?.value) {
@@ -137,11 +136,11 @@ export function middleware(request: NextRequest) {
       );
     }
     
-    // Validate session format
+    // Validate session format (new auth system)
     const sessionId = sessionCookie.value;
-    if (!sessionId.startsWith('admin_') || sessionId.length < 30) {
+    if (!sessionId || !sessionId.startsWith('admin_') || sessionId.length < 30) {
       return NextResponse.json(
-        { error: 'Invalid session' },
+        { error: 'Invalid or expired session' },
         { status: 401 }
       );
     }
@@ -150,7 +149,7 @@ export function middleware(request: NextRequest) {
     response.headers.set('x-auth-verified', 'true');
   }
   
-  if (isProtectedPageRoute && !isDemoMode) {
+  if (isProtectedPageRoute && enforceAuth) {
     const sessionCookie = request.cookies.get('admin_session');
     
     if (!sessionCookie?.value) {
@@ -160,20 +159,20 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
     
-    // Validate session format with Railway-friendly validation
+    // Validate session format (new auth system)
     const sessionId = sessionCookie.value;
-    
-    // More lenient validation for Railway compatibility but still secure
-    if (!sessionId || sessionId.length < 20 || 
-        !(sessionId.startsWith('admin_') || sessionId.startsWith('sess_'))) {
+    if (!sessionId || !sessionId.startsWith('admin_') || sessionId.length < 30) {
+      // Invalid session - redirect to login
       const loginUrl = new URL('/admin-login', request.url);
       return NextResponse.redirect(loginUrl);
     }
   }
   
-  // Add demo mode header for client-side detection
-  if (isDemoMode) {
-    response.headers.set('X-Demo-Mode', 'true');
+  // Add auth status header for client-side detection
+  if (enforceAuth) {
+    const sessionCookie = request.cookies.get('admin_session');
+    response.headers.set('X-Auth-Required', 'true');
+    response.headers.set('X-Auth-Status', sessionCookie?.value ? 'authenticated' : 'unauthenticated');
   }
   
   return response;

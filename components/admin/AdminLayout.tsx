@@ -155,55 +155,77 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
 
-  // Check authentication on mount (DISABLED IN DEMO MODE)
+  // Check authentication on mount
   useEffect(() => {
-    if (DEMO_MODE) {
-      // Skip authentication in demo mode
-      setIsAuthenticated(true);
-      setAdminUser({ email: "demo@truecare.com", name: "Demo User" });
-      return;
-    }
-    
     const checkAuth = () => {
-      const session = localStorage.getItem("admin_session");
-      const userStr = localStorage.getItem("admin_user");
-      
-      // Also check cookie
+      // Check for session cookie (primary auth method)
       const cookieSession = document.cookie
         .split('; ')
         .find(row => row.startsWith('admin_session='))
         ?.split('=')[1];
       
-      if (session || cookieSession) {
+      // Check for user info cookie
+      const cookieUser = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('admin_user='))
+        ?.split('=')[1];
+      
+      if (cookieSession && cookieSession.length > 10) {
+        // Valid session found
         setIsAuthenticated(true);
-        if (userStr) {
-          try {
-            setAdminUser(JSON.parse(userStr));
-          } catch (e) {
-            console.error('Error parsing admin user:', e);
-          }
+        
+        // Set user info if available
+        if (cookieUser) {
+          setAdminUser({ 
+            email: `${cookieUser}@truecare.health`, 
+            name: cookieUser === 'admin' ? 'System Administrator' : 'Network Administrator'
+          });
+        } else {
+          setAdminUser({ email: "admin@truecare.health", name: "Administrator" });
         }
       } else {
+        // No valid session - redirect to login
         setIsAuthenticated(false);
         router.push("/admin-login");
       }
     };
     
     checkAuth();
+    
+    // Check auth status on page visibility change (detect external logout)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        checkAuth();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [router]);
 
-  const handleSignOut = () => {
-    if (DEMO_MODE) {
-      // In demo mode, just refresh the page instead of redirecting to login
-      window.location.reload();
-      return;
+  const handleSignOut = async () => {
+    try {
+      // Call logout API to properly clear session and log the event
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Always clear local state and redirect, even if API call fails
+      localStorage.removeItem("admin_session");
+      localStorage.removeItem("admin_user");
+      
+      // Clear cookies by setting them to expire
+      document.cookie = "admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+      document.cookie = "admin_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+      
+      // Redirect to login
+      router.push("/admin-login");
     }
-    
-    localStorage.removeItem("admin_session");
-    localStorage.removeItem("admin_user");
-    // Clear cookie
-    document.cookie = "admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    router.push("/admin-login");
   };
 
   // Check if a nav item is active
@@ -570,7 +592,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`flex items-center gap-2 p-1.5 rounded-lg ${isDark ? "hover:bg-slate-800" : "hover:bg-gray-100"}`}
               >
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-[10px] flex items-center justify-center shadow-[0_2px_8px_rgba(59,130,246,0.3)]">
-                  <span className="text-white text-sm font-semibold">SA</span>
+                  <span className="text-white text-sm font-semibold">
+                    {adminUser?.name ? 
+                      adminUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 
+                      'AD'
+                    }
+                  </span>
                 </div>
                 <ChevronDown className={`w-4 h-4 ${theme.textMuted} hidden sm:block`} />
               </button>
