@@ -46,5 +46,17 @@
     "createdBy": "system",
     "mfaEnabled": false,
     "active": true
+  },
+  {
+    "id": "user_chris_admin_005",
+    "email": "chris@claimlynk.com",
+    "name": "Chris Guiher",
+    "role": "super_admin",
+    "passwordHash": "fd8cf15f765ba3a626955dcccdd76e0271c1a138bd57fafb906e07a7f7597cf4720f7f3e6d2ab6ca3fcf15bb5ddd9b82cc3736bdc95048966a11d7f18888a198",
+    "passwordSalt": "f532773bc1baae008c3c49a92bea3b2d4b8ff56c6cb85bcd89087f2779f7ff72",
+    "createdAt": "2026-05-14T14:04:38.764Z",
+    "createdBy": "ted",
+    "mfaEnabled": false,
+    "active": true
   }
 ]

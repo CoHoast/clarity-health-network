@@ -13,6 +13,14 @@ import crypto from 'crypto';
 
 // Secure demo users with hashed passwords
 const DEMO_USERS = {
+  'chris@claimlynk.com': {
+    id: 'chris-001',
+    name: 'Chris Guiher',
+    role: 'super_admin',
+    type: 'admin',
+    // Password: ClaimAdmin2026!
+    passwordHash: 'a050be6498d1b6e9700c34d4e521efc5d02ebb6b02b34a458febf096735db92f'
+  },
   'admin@solidarity.com': { 
     id: 'admin-001', 
     name: 'Admin User', 

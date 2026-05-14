@@ -4,6 +4,11 @@
 
 ## Demo Users (via /login)
 
+**Chris's Admin Access:**
+- **Email**: `chris@claimlynk.com`
+- **Password**: `ClaimAdmin2026!`
+- **Role**: Super Admin (full system access)
+
 **Admin Access:**
 - **Email**: `admin@solidarity.com`
 - **Password**: `SolidAdmin2024!`
