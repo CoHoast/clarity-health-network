@@ -242,12 +242,31 @@ export async function POST(req: NextRequest) {
     
     response.cookies.set('admin_session', sessionId, {
       httpOnly: true, // Always secure
-      secure: isProduction, // HTTPS in production
-      sameSite: isRailway ? 'lax' : 'strict', // Railway needs 'lax'
+      secure: false, // Railway handles SSL termination, so this must be false
+      sameSite: 'lax', // Railway requires 'lax' for cookie persistence
       maxAge: 8 * 60 * 60, // 8 hours
       path: '/',
-      // Add explicit domain for Railway if needed
-      ...(isRailway && { domain: undefined }), // Let Railway handle domain
+      domain: undefined, // Let browser handle domain automatically
+    });
+    
+    // Also set a client-readable session ID for JavaScript validation
+    response.cookies.set('sessionId', sessionId, {
+      httpOnly: false, // Client-side readable
+      secure: false, // Railway SSL termination
+      sameSite: 'lax',
+      maxAge: 8 * 60 * 60, // Same as main session
+      path: '/',
+      domain: undefined,
+    });
+    
+    // Set user cookie for display purposes
+    response.cookies.set('user', authenticatedUser.name || authenticatedUser.email, {
+      httpOnly: false, // Client-side readable
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 8 * 60 * 60,
+      path: '/',
+      domain: undefined,
     });
 
     return response;
