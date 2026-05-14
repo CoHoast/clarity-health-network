@@ -138,7 +138,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <PageHeader
         title="Dashboard"
-        description="PPO Network Overview & Analytics"
+        subtitle="PPO Network Overview & Analytics"
       />
 
       {/* Stats Overview */}
