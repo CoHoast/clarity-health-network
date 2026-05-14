@@ -2,17 +2,67 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { logAuditEvent } from '@/lib/audit';
 
-// Shared login credentials (can be used by multiple people)
+// Secure shared login credentials with non-obvious usernames
 const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'TrueCare2026!',  // Strong password
+  username: 'tc-admin-2026',
+  password: 'Tr#eCare@Network$2026!',  // 23 chars, complex
 };
 
-// Alternative credentials for easier access
+// Alternative secure credentials 
 const ALT_CREDENTIALS = {
-  username: 'truecare',
-  password: 'network2026',   // Simpler password
+  username: 'ppo-manager',
+  password: 'PPO#Mgr@Secure$2026!',   // 19 chars, complex
 };
+
+// Rate limiting for failed attempts (in-memory for now)
+const failedAttempts = new Map<string, { count: number, lastAttempt: number, lockedUntil?: number }>();
+
+function checkRateLimit(ip: string): { allowed: boolean, remainingAttempts?: number, lockedUntil?: number } {
+  const now = Date.now();
+  const attempts = failedAttempts.get(ip) || { count: 0, lastAttempt: now };
+  
+  // Reset attempts after 15 minutes
+  if (now - attempts.lastAttempt > 15 * 60 * 1000) {
+    attempts.count = 0;
+  }
+  
+  // Check if locked out (5 failed attempts = 15 minute lockout)
+  if (attempts.lockedUntil && now < attempts.lockedUntil) {
+    return { 
+      allowed: false, 
+      lockedUntil: attempts.lockedUntil 
+    };
+  }
+  
+  // Allow if under limit
+  if (attempts.count < 5) {
+    return { 
+      allowed: true, 
+      remainingAttempts: 5 - attempts.count 
+    };
+  }
+  
+  // Lock out after 5 attempts
+  attempts.lockedUntil = now + 15 * 60 * 1000; // 15 minutes
+  failedAttempts.set(ip, attempts);
+  
+  return { 
+    allowed: false, 
+    lockedUntil: attempts.lockedUntil 
+  };
+}
+
+function recordFailedAttempt(ip: string) {
+  const now = Date.now();
+  const attempts = failedAttempts.get(ip) || { count: 0, lastAttempt: now };
+  attempts.count++;
+  attempts.lastAttempt = now;
+  failedAttempts.set(ip, attempts);
+}
+
+function clearFailedAttempts(ip: string) {
+  failedAttempts.delete(ip);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,33 +72,72 @@ export async function POST(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for') || 'unknown';
     const userAgent = request.headers.get('user-agent') || 'unknown';
     
-    // Validate credentials
-    const isValidAdmin = username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
-    const isValidAlt = username === ALT_CREDENTIALS.username && password === ALT_CREDENTIALS.password;
-    
-    if (!isValidAdmin && !isValidAlt) {
-      // Log failed login attempt
+    // Check rate limiting first
+    const rateLimitResult = checkRateLimit(ip);
+    if (!rateLimitResult.allowed) {
+      const lockoutMinutes = rateLimitResult.lockedUntil ? 
+        Math.ceil((rateLimitResult.lockedUntil - Date.now()) / (60 * 1000)) : 0;
+      
       await logAuditEvent({
         user: username || 'unknown',
         userId: username || 'unknown',
-        action: 'Login Attempt',
-        category: 'auth',
+        action: 'Login Blocked - Rate Limited',
+        category: 'security',
         resource: 'LOGIN',
         resourceType: 'Authentication',
-        details: `Failed login attempt from ${ip}`,
+        details: `Rate limit exceeded from ${ip}. Locked for ${lockoutMinutes} minutes.`,
         ip,
         userAgent,
-        sessionId: 'login-attempt',
+        sessionId: 'rate-limited',
         severity: 'warning',
         phiAccessed: false,
         success: false,
       });
       
       return NextResponse.json(
-        { error: 'Invalid username or password' },
+        { 
+          error: `Too many failed attempts. Account locked for ${lockoutMinutes} minutes.`,
+          lockedUntil: rateLimitResult.lockedUntil 
+        },
+        { status: 429 }
+      );
+    }
+    
+    // Validate credentials
+    const isValidAdmin = username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
+    const isValidAlt = username === ALT_CREDENTIALS.username && password === ALT_CREDENTIALS.password;
+    
+    if (!isValidAdmin && !isValidAlt) {
+      // Record failed attempt
+      recordFailedAttempt(ip);
+      // Log failed login attempt
+      await logAuditEvent({
+        user: username || 'unknown',
+        userId: username || 'unknown',
+        action: 'Login Failed',
+        category: 'security',
+        resource: 'LOGIN',
+        resourceType: 'Authentication',
+        details: `Failed login attempt from ${ip}. ${rateLimitResult.remainingAttempts || 0} attempts remaining.`,
+        ip,
+        userAgent,
+        sessionId: 'failed-login',
+        severity: 'warning',
+        phiAccessed: false,
+        success: false,
+      });
+      
+      return NextResponse.json(
+        { 
+          error: 'Invalid username or password',
+          remainingAttempts: rateLimitResult.remainingAttempts || 0
+        },
         { status: 401 }
       );
     }
+    
+    // Clear failed attempts on successful login
+    clearFailedAttempts(ip);
     
     // Generate session ID
     const sessionId = `admin_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
