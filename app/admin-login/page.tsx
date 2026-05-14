@@ -7,7 +7,7 @@ import { Eye, EyeOff, Shield, AlertCircle, CheckCircle2, Network } from "lucide-
 export default function AdminLoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +22,7 @@ export default function AdminLoginPage() {
     setSuccess('');
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/auth/admin-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -80,20 +80,20 @@ export default function AdminLoginPage() {
         {/* Login Form */}
         <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-xl">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Username Field */}
+            {/* Email Field */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-slate-300 mb-2">
-                Username
+              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                Email
               </label>
               <input
-                id="username"
-                name="username"
+                id="email"
+                name="email"
                 type="text"
                 required
-                value={formData.username}
+                value={formData.email}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-colors"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
               />
             </div>
 
