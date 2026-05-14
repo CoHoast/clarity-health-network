@@ -122,8 +122,12 @@ export function middleware(request: NextRequest) {
     return response;
   }
   
-  // Protect admin API routes
-  if (isApiRoute && !isPublicApiRoute) {
+  // DEMO MODE: Skip authentication for demo purposes
+  // All PHI/PII data is masked in demo mode for HIPAA compliance
+  const isDemoMode = process.env.DEMO_MODE === 'true' || true; // Force demo mode for Railway
+  
+  // Protect admin API routes (unless in demo mode)
+  if (isApiRoute && !isPublicApiRoute && !isDemoMode) {
     const sessionCookie = request.cookies.get('admin_session');
     
     if (!sessionCookie?.value) {
@@ -145,10 +149,6 @@ export function middleware(request: NextRequest) {
     // Add auth headers for downstream use
     response.headers.set('x-auth-verified', 'true');
   }
-  
-  // DEMO MODE: Skip authentication for demo purposes
-  // All PHI/PII data is masked in demo mode for HIPAA compliance
-  const isDemoMode = process.env.DEMO_MODE === 'true' || true; // Force demo mode for Railway
   
   if (isProtectedPageRoute && !isDemoMode) {
     const sessionCookie = request.cookies.get('admin_session');
