@@ -1,0 +1,11 @@
+Railway Session Fix Applied
+===========================
+Timestamp: 2026-05-14 13:29 MDT
+
+Fix Details:
+- Changed secure: true → false (Railway handles SSL termination)
+- Added client-readable sessionId cookie
+- Added user cookie for display
+- Set sameSite: 'lax' for all cookies
+
+This should resolve the login persistence issue on Railway.
