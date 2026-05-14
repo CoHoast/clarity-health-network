@@ -198,8 +198,8 @@ export async function POST(req: NextRequest) {
       }, { status: 401 });
     }
 
-    // Create session
-    const sessionId = `sess_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
+    // Create session (consistent with admin login)
+    const sessionId = `admin_${Date.now().toString(36)}_${crypto.randomBytes(16).toString('hex')}`;
     const user = demoUser;
 
     // Clear failed login attempts on success
@@ -222,7 +222,8 @@ export async function POST(req: NextRequest) {
       success: true,
     });
 
-    return NextResponse.json({
+    // Create response with session cookie
+    const response = NextResponse.json({
       success: true,
       token: sessionId,
       user: {
@@ -230,6 +231,17 @@ export async function POST(req: NextRequest) {
         email,
       },
     });
+
+    // Set HTTP-only cookie (same as admin login)
+    response.cookies.set('admin_session', sessionId, {
+      httpOnly: true,
+      secure: true, // Always use secure in production
+      sameSite: 'lax', // Better compatibility with Railway
+      maxAge: 8 * 60 * 60, // 8 hours
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

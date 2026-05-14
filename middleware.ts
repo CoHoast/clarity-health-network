@@ -151,6 +151,8 @@ export function middleware(request: NextRequest) {
     const sessionCookie = request.cookies.get('admin_session');
     
     if (!sessionCookie?.value) {
+      // Debug log for missing cookie
+      console.log(`[Middleware] No session cookie for ${pathname}`);
       // Redirect to login
       const loginUrl = new URL('/admin-login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
@@ -159,10 +161,15 @@ export function middleware(request: NextRequest) {
     
     // Validate session format
     const sessionId = sessionCookie.value;
+    console.log(`[Middleware] Session check: ${sessionId.substring(0, 20)}... (${sessionId.length} chars)`);
+    
     if (!sessionId.startsWith('admin_') || sessionId.length < 30) {
+      console.log(`[Middleware] Invalid session format for ${pathname}`);
       const loginUrl = new URL('/admin-login', request.url);
       return NextResponse.redirect(loginUrl);
     }
+    
+    console.log(`[Middleware] Session valid for ${pathname}`);
   }
   
   return response;

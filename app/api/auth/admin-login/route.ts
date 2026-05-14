@@ -239,8 +239,8 @@ export async function POST(req: NextRequest) {
     // Set HTTP-only cookie for added security
     response.cookies.set('admin_session', sessionId, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: true, // Always use secure in production
+      sameSite: 'lax', // Change from 'strict' to 'lax' for better compatibility  
       maxAge: 8 * 60 * 60, // 8 hours
       path: '/',
     });
