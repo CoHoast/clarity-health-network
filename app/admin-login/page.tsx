@@ -155,29 +155,6 @@ export default function AdminLoginPage() {
               )}
             </button>
           </form>
-
-          {/* Credentials Info */}
-          <div className="mt-8 pt-6 border-t border-slate-700/50">
-            <div className="bg-slate-700/30 rounded-lg p-4">
-              <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-cyan-400" />
-                Shared Login Credentials
-              </h3>
-              <div className="space-y-2 text-xs text-slate-400">
-                <div className="flex justify-between">
-                  <span>Primary:</span>
-                  <code className="text-cyan-400">admin / TrueCare2026!</code>
-                </div>
-                <div className="flex justify-between">
-                  <span>Alternative:</span>
-                  <code className="text-cyan-400">truecare / network2026</code>
-                </div>
-              </div>
-              <p className="text-xs text-slate-500 mt-3">
-                These credentials can be shared with team members who need access.
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
