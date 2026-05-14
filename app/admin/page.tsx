@@ -264,15 +264,15 @@ export default function AdminDashboard() {
           <div className="p-6 pt-0 space-y-4">
             <div className="flex items-center justify-between">
               <span className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Active Network</span>
-              <StatusBadge variant="success">Arizona Antidote</StatusBadge>
+              <Badge variant="success">Arizona Antidote</Badge>
             </div>
             <div className="flex items-center justify-between">
               <span className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Coverage</span>
-              <StatusBadge variant="success">Statewide</StatusBadge>
+              <Badge variant="success">Statewide</Badge>
             </div>
             <div className="flex items-center justify-between">
               <span className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Data Source</span>
-              <StatusBadge variant="warning">Import Complete</StatusBadge>
+              <Badge variant="warning">Import Complete</Badge>
             </div>
           </div>
         </Card>
