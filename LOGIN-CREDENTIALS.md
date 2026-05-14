@@ -1,8 +1,36 @@
-# 🔒 Secure Login Credentials - PPO Dashboard
+# 🎭 Demo Mode Access - PPO Dashboard (HIPAA Compliant)
 
-**Live URL**: https://clarity-health-network-production.up.railway.app
+**Live Demo URL**: https://truecare-health-network-production.up.railway.app/admin
 
-## Demo Users (via /login)
+## 🎯 **DIRECT ACCESS - NO LOGIN REQUIRED**
+
+The platform is now in **DEMO MODE** with:
+- ✅ **Direct access** to admin dashboard  
+- ✅ **All PHI/PII data masked** for HIPAA compliance
+- ✅ **No authentication required** for demo purposes
+- ✅ **Full functionality** with safe, masked data
+
+**Just go directly to**: https://truecare-health-network-production.up.railway.app/admin
+
+## 🛡️ **HIPAA Compliance Through Data Masking**
+
+All sensitive data is automatically masked:
+- **SSN**: `***-**-1234` (shows last 4 digits)
+- **Date of Birth**: `**/**/1985` (shows year only)  
+- **Tax ID/EIN**: `XX-XXX1234` (shows last 4 digits)
+- **Email**: `j***@*****.com` (masks domain and most of name)
+- **Phone**: `(XXX) XXX-1234` (shows last 4 digits)
+- **Addresses**: `XXX Main Street` (masks street numbers)
+
+## 🎭 **Demo Features Available**
+- ✅ **Provider Management** (3,600+ masked provider records)
+- ✅ **Contract Management** (all financial data masked)  
+- ✅ **Credentialing System** (PII/PHI masked)
+- ✅ **Rate & Discount Management** 
+- ✅ **Reports & Analytics** (demo data)
+- ✅ **Team & Permissions** (demo roles)
+
+## 📋 **Legacy Login Credentials (No Longer Needed)**
 
 **Chris's Admin Access:**
 - **Email**: `chris@claimlynk.com`
