@@ -146,35 +146,27 @@ export function middleware(request: NextRequest) {
     response.headers.set('x-auth-verified', 'true');
   }
   
-  // TEMPORARY: Disable session validation to debug Railway cookie issue
-  // For protected page routes, check session cookie
-  if (isProtectedPageRoute && false) { // DISABLED FOR DEBUGGING
+  // For protected page routes, check session cookie (SECURE - restored)
+  if (isProtectedPageRoute) {
     const sessionCookie = request.cookies.get('admin_session');
     
     if (!sessionCookie?.value) {
-      // Debug log for missing cookie
-      console.log(`[Middleware] No session cookie for ${pathname}`);
       // Redirect to login
       const loginUrl = new URL('/admin-login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(loginUrl);
     }
     
-    // Validate session format
+    // Validate session format with Railway-friendly validation
     const sessionId = sessionCookie.value;
-    console.log(`[Middleware] Session check: ${sessionId.substring(0, 20)}... (${sessionId.length} chars)`);
     
-    if (!sessionId.startsWith('admin_') || sessionId.length < 30) {
-      console.log(`[Middleware] Invalid session format for ${pathname}`);
+    // More lenient validation for Railway compatibility but still secure
+    if (!sessionId || sessionId.length < 20 || 
+        !(sessionId.startsWith('admin_') || sessionId.startsWith('sess_'))) {
       const loginUrl = new URL('/admin-login', request.url);
       return NextResponse.redirect(loginUrl);
     }
-    
-    console.log(`[Middleware] Session valid for ${pathname}`);
   }
-  
-  // TEMPORARY: Allow all admin access while debugging cookies
-  console.log(`[Middleware] BYPASS: Allowing access to ${pathname}`);
   
   return response;
 }

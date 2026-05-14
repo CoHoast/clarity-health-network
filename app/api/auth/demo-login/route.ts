@@ -232,21 +232,18 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Set HTTP-only cookie - SIMPLIFIED FOR RAILWAY DEBUGGING
+    // Railway-optimized secure cookie settings (same as admin login)
+    const isProduction = process.env.NODE_ENV === 'production';
+    const isRailway = process.env.RAILWAY_ENVIRONMENT_NAME || process.env.RAILWAY_PROJECT_NAME;
+    
     response.cookies.set('admin_session', sessionId, {
-      httpOnly: false, // TEMPORARY: Disable for debugging
-      secure: false, // TEMPORARY: Disable for debugging  
-      sameSite: 'none', // TEMPORARY: Most permissive for debugging
+      httpOnly: true, // Always secure
+      secure: isProduction, // HTTPS in production  
+      sameSite: isRailway ? 'lax' : 'strict', // Railway needs 'lax'
       maxAge: 8 * 60 * 60, // 8 hours
       path: '/',
-    });
-    
-    // ALSO set a simple cookie for debugging
-    response.cookies.set('debug_session', 'logged_in', {
-      httpOnly: false,
-      secure: false,
-      maxAge: 8 * 60 * 60,
-      path: '/',
+      // Add explicit domain for Railway if needed
+      ...(isRailway && { domain: undefined }), // Let Railway handle domain
     });
 
     return response;

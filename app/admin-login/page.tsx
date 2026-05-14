@@ -25,6 +25,7 @@ export default function AdminLoginPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: 'include', // Important for Railway
       });
 
       const data = await res.json();
@@ -39,15 +40,16 @@ export default function AdminLoginPage() {
         throw new Error(data.error || "Login failed");
       }
 
-      // Store session
+      // Store session in localStorage as backup for Railway
       localStorage.setItem("admin_session", data.token);
       localStorage.setItem("admin_user", JSON.stringify(data.user));
+      localStorage.setItem("session_expiry", String(Date.now() + 8 * 60 * 60 * 1000));
       
-      // Set session cookie for server-side checks
-      document.cookie = `admin_session=${data.token}; path=/; max-age=${60 * 60 * 8}; SameSite=Strict`;
+      // Railway cookie backup - try to manually set cookie
+      document.cookie = `admin_session=${data.token}; path=/; max-age=${60 * 60 * 8}; SameSite=Lax; ${window.location.protocol === 'https:' ? 'Secure;' : ''}`;
 
       // Redirect to admin dashboard
-      router.push("/admin");
+      window.location.href = "/admin"; // Force full page navigation for Railway
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
@@ -175,6 +177,11 @@ export default function AdminLoginPage() {
         <p className="text-center text-slate-500 text-sm mt-6">
           This is a secure system. Unauthorized access is prohibited and monitored.
         </p>
+        
+        {/* Railway Debug Info */}
+        <div className="text-center text-slate-600 text-xs mt-2">
+          Environment: {typeof window !== 'undefined' ? window.location.hostname : 'Loading...'}
+        </div>
       </motion.div>
     </div>
   );
