@@ -58,5 +58,17 @@
     "createdBy": "ted",
     "mfaEnabled": false,
     "active": true
+  },
+  {
+    "id": "user_mp5wcdyi_a3e3933d",
+    "email": "admin@truecare.com",
+    "name": "SHN Admin User",
+    "role": "super_admin",
+    "passwordHash": "be9867bd0b1c6eb79a1466a9fb280ac1c82f85ade4792ad1b3cdfdb9d2e46b869bb1aad1df346ade7be5fa05998e1dfff4d95aa55bb075cca84a96faa2387cb6",
+    "passwordSalt": "c3b0a6f0493cfd3ecbeea30ace2bf81036fc78bec81bf9ef1b865d3219580301",
+    "createdAt": "2026-05-14T19:43:45.066Z",
+    "createdBy": "script",
+    "mfaEnabled": false,
+    "active": true
   }
 ]
