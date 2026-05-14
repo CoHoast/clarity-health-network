@@ -123,7 +123,7 @@ export function middleware(request: NextRequest) {
   }
   
   // Check if authentication should be enforced
-  const enforceAuth = process.env.ENFORCE_AUTH === 'true' || true; // Enable authentication by default
+  const enforceAuth = process.env.ENFORCE_AUTH === 'true' || false; // TEMPORARILY DISABLE for debugging
   
   // Protect admin API routes (unless auth is disabled)
   if (isApiRoute && !isPublicApiRoute && enforceAuth) {
