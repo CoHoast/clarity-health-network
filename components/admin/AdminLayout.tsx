@@ -155,8 +155,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
 
-  // Check authentication on mount
+  // Check authentication on mount (DISABLED IN DEMO MODE)
   useEffect(() => {
+    if (DEMO_MODE) {
+      // Skip authentication in demo mode
+      setIsAuthenticated(true);
+      setAdminUser({ email: "demo@truecare.com", name: "Demo User" });
+      return;
+    }
+    
     const checkAuth = () => {
       const session = localStorage.getItem("admin_session");
       const userStr = localStorage.getItem("admin_user");
@@ -186,6 +193,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [router]);
 
   const handleSignOut = () => {
+    if (DEMO_MODE) {
+      // In demo mode, just refresh the page instead of redirecting to login
+      window.location.reload();
+      return;
+    }
+    
     localStorage.removeItem("admin_session");
     localStorage.removeItem("admin_user");
     // Clear cookie
@@ -271,8 +284,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     dropdownBorder: isDark ? "border-slate-700" : "border-gray-100",
   };
 
-  // Show loading while checking auth
-  if (isAuthenticated === null) {
+  // Show loading while checking auth (skip in demo mode)
+  if (!DEMO_MODE && isAuthenticated === null) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
@@ -283,8 +296,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  // Redirect if not authenticated (handled by useEffect, but safety check)
-  if (!isAuthenticated) {
+  // Skip authentication check in demo mode
+  if (!DEMO_MODE && !isAuthenticated) {
     return null;
   }
 

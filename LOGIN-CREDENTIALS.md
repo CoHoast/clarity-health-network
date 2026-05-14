@@ -1,16 +1,22 @@
 # 🎭 Demo Mode Access - PPO Dashboard (HIPAA Compliant)
 
-**Live Demo URL**: https://truecare-health-network-production.up.railway.app/admin
+## 🎯 **INSTANT ACCESS - NO LOGIN PAGE**
 
-## 🎯 **DIRECT ACCESS - NO LOGIN REQUIRED**
+**Any URL on the domain redirects directly to the admin dashboard:**
 
-The platform is now in **DEMO MODE** with:
-- ✅ **Direct access** to admin dashboard  
+- https://truecare-health-network-production.up.railway.app
+- https://truecare-health-network-production.up.railway.app/admin  
+- https://truecare-health-network-production.up.railway.app/login
+- https://truecare-health-network-production.up.railway.app/admin-login
+
+**All paths lead directly to the dashboard - no login pages to navigate!**
+
+## ✅ **Demo Features:**
+- ✅ **Direct access** to admin dashboard (homepage redirects automatically)
 - ✅ **All PHI/PII data masked** for HIPAA compliance
-- ✅ **No authentication required** for demo purposes
+- ✅ **No authentication required** for demo purposes  
 - ✅ **Full functionality** with safe, masked data
-
-**Just go directly to**: https://truecare-health-network-production.up.railway.app/admin
+- ✅ **No login pages** - everything redirects to dashboard
 
 ## 🛡️ **HIPAA Compliance Through Data Masking**
 
