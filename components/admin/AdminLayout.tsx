@@ -39,6 +39,8 @@ import { ToastProvider } from "@/components/admin/ui/Toast";
 import { CommandPalette } from "@/components/admin/ui/CommandPalette";
 import { SessionTimeoutWarning } from "@/components/admin/SessionTimeoutWarning";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import DemoBanner from "@/components/DemoBanner";
+import { DEMO_MODE } from "@/lib/demo-mode";
 
 interface NavItem {
   name: string;
@@ -607,6 +609,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </ThemeProvider>
         </main>
       </div>
+
+      {/* Demo Mode Banner */}
+      {DEMO_MODE && <DemoBanner />}
 
       {/* Session Timeout Warning */}
       <SessionTimeoutWarning />

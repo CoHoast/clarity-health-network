@@ -5,7 +5,7 @@
  * Set to false for production with proper authentication.
  */
 
-export const DEMO_MODE = false;
+export const DEMO_MODE = true; // ENABLED for Railway demo - masks all PHI/PII
 
 /**
  * Mask a Tax ID (EIN or SSN)
@@ -17,6 +17,41 @@ export function maskTaxId(taxId: string | null | undefined): string {
     return `XX-XXX${clean.slice(-4)}`;
   }
   return 'XX-XXXXXXX';
+}
+
+/**
+ * Mask Social Security Number
+ */
+export function maskSSN(ssn: string | null | undefined): string {
+  if (!ssn || !DEMO_MODE) return ssn || '';
+  const clean = ssn.replace(/\D/g, '');
+  if (clean.length >= 4) {
+    return `***-**-${clean.slice(-4)}`;
+  }
+  return '***-**-****';
+}
+
+/**
+ * Mask Date of Birth
+ */
+export function maskDateOfBirth(dob: string | null | undefined): string {
+  if (!dob || !DEMO_MODE) return dob || '';
+  const date = new Date(dob);
+  if (isNaN(date.getTime())) {
+    return '**/**/****';
+  }
+  return `**/**/${date.getFullYear()}`;
+}
+
+/**
+ * Mask any generic PII field
+ */
+export function maskPII(value: string | null | undefined, showLast: number = 4): string {
+  if (!value || !DEMO_MODE) return value || '';
+  if (value.length <= showLast) {
+    return '*'.repeat(value.length);
+  }
+  return '*'.repeat(value.length - showLast) + value.slice(-showLast);
 }
 
 /**

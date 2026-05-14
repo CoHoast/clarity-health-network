@@ -1,7 +1,12 @@
 import { redirect } from "next/navigation";
+import { DEMO_MODE } from "@/lib/demo-mode";
 
-// Redirect login to admin-login for now
-// Future: implement separate member/provider/employer portals
+// In demo mode, redirect directly to admin dashboard (no auth required)
+// In production mode, redirect to admin-login for authentication
 export default function LoginPage() {
-  redirect("/admin-login");
+  if (DEMO_MODE) {
+    redirect("/admin");
+  } else {
+    redirect("/admin-login");
+  }
 }

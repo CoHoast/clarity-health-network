@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { DEMO_MODE } from "@/lib/demo-mode";
 import { Lock, Mail, ArrowRight, Eye, EyeOff, Shield, Loader2, AlertTriangle } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -14,6 +15,26 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [locked, setLocked] = useState(false);
+
+  // Redirect to admin dashboard if in demo mode
+  useEffect(() => {
+    if (DEMO_MODE) {
+      router.push("/admin");
+    }
+  }, [router]);
+
+  // Don't render login form in demo mode
+  if (DEMO_MODE) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white mb-2">Demo Mode Active</p>
+          <p className="text-slate-400 text-sm">Redirecting to dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
