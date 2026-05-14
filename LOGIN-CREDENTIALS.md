@@ -9,14 +9,20 @@ The PPO network platform uses **enterprise-grade security** with strong credenti
 ## 🛡️ **SECURE SHARED CREDENTIALS**
 
 ### **Primary Admin Access**
-- **Username:** `SHNuser2026`
+- **Email:** `admin@truecare.com`
 - **Password:** `PPO#Net123!`
-- **Role:** Full administrative access
+- **Role:** Full administrative access (super_admin)
 
-### **Alternative Manager Access**  
-- **Username:** `ppo-manager`
-- **Password:** `PPO#Mgr@Secure$2026!`
-- **Role:** Network management access
+### **Your Personal Access**
+- **Email:** `chris@claimlynk.com`
+- **Password:** Contact Ted to set/reset
+- **Role:** Super Admin
+
+### **Alternative Admin Accounts**
+- **Email:** `superadmin@solidarity.com`
+- **Email:** `admin@solidarity.com`
+- **Email:** `manager@solidarity.com`
+- **Note:** Default passwords need to be obtained from environment config
 
 ---
 
