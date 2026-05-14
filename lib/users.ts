@@ -9,22 +9,7 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
-// In production, Next.js standalone builds change the working directory
-// Try multiple paths to find the users file
-const POSSIBLE_PATHS = [
-  path.join(process.cwd(), 'data', 'users.json'),
-  path.join(__dirname, '..', 'data', 'users.json'),
-  path.join(__dirname, '..', '..', 'data', 'users.json'),
-  './data/users.json',
-];
-
-const USERS_FILE = POSSIBLE_PATHS.find(p => {
-  try {
-    return fs.existsSync(p);
-  } catch {
-    return false;
-  }
-}) || path.join(process.cwd(), 'data', 'users.json');
+const USERS_FILE = path.join(process.cwd(), 'data', 'users.json');
 const HASH_ITERATIONS = 100000;
 const HASH_LENGTH = 64;
 const HASH_ALGORITHM = 'sha512';
