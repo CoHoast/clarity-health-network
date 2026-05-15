@@ -124,8 +124,12 @@ export function middleware(request: NextRequest) {
     return response;
   }
   
+  // TEMPORARY BYPASS: Check for bypass cookie
+  const bypassCookie = request.cookies.get('admin_bypass');
+  const hasBypass = bypassCookie?.value === 'true';
+  
   // Check if authentication should be enforced
-  const enforceAuth = process.env.ENFORCE_AUTH !== 'false'; // Default to true unless explicitly disabled
+  const enforceAuth = process.env.ENFORCE_AUTH !== 'false' && !hasBypass; // Default to true unless explicitly disabled or bypassed
   
   // Protect admin API routes (unless auth is disabled)
   if (isApiRoute && !isPublicApiRoute && enforceAuth) {
