@@ -166,7 +166,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       
       const cookieUser = document.cookie
         .split('; ')
-        .find(row => row.startsWith('admin_user='))
+        .find(row => row.startsWith('user='))
         ?.split('=')[1];
       
       console.log('Auth check - Session cookie:', cookieSession ? 'Found' : 'Not found');
@@ -179,12 +179,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         
         // Set user info
         if (cookieUser) {
+          // Decode URI component in case the name has spaces
+          const decodedUser = decodeURIComponent(cookieUser);
           setAdminUser({ 
-            email: `${cookieUser}@truecare.health`, 
-            name: cookieUser === 'SHNuser2026' ? 'SHN Administrator' : 'Network Administrator'
+            email: "admin@truecare.com", 
+            name: decodedUser || 'Network Administrator'
           });
         } else {
-          setAdminUser({ email: "admin@truecare.health", name: "Administrator" });
+          setAdminUser({ email: "admin@truecare.com", name: "Administrator" });
         }
       } else {
         console.log('No valid session, redirecting to login');
@@ -228,7 +230,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       
       // Clear cookies by setting them to expire
       document.cookie = "admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
-      document.cookie = "admin_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+      document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+      document.cookie = "sessionId=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
       
       // Redirect to login
       router.push("/admin-login");
