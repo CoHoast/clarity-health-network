@@ -19,6 +19,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   
+  // Allow old admin routes to pass through (they have their own auth)
+  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin-v2')) {
+    return NextResponse.next();
+  }
+  
   // Check if accessing admin-v2 routes
   if (pathname.startsWith('/admin-v2') || pathname.startsWith('/api/admin-v2')) {
     const sessionCookie = request.cookies.get('session');
