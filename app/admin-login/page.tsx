@@ -27,6 +27,7 @@ export default function AdminLoginPage() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Ensure cookies are included
         body: JSON.stringify(formData),
       });
 
@@ -35,11 +36,35 @@ export default function AdminLoginPage() {
       if (response.ok) {
         setSuccess('Login successful! Redirecting...');
         
-        // Wait a moment for cookies to be set, then redirect
-        setTimeout(() => {
-          console.log('Redirecting to admin dashboard...');
-          window.location.replace('/admin'); // Use replace to avoid back button issues
-        }, 1000); // Give more time for cookie to be set
+        // Verify cookies were set before redirecting
+        const verifyCookiesAndRedirect = async () => {
+          // Make a test request to verify session
+          try {
+            const verifyResponse = await fetch('/api/auth/check-session', {
+              method: 'GET',
+              credentials: 'include',
+            });
+            
+            const verifyData = await verifyResponse.json();
+            console.log('Session check:', verifyData);
+            
+            if (verifyData.authenticated) {
+              console.log('Session verified, redirecting to admin dashboard...');
+              window.location.href = '/admin'; // Use href for full page reload
+            } else {
+              console.error('Session not authenticated:', verifyData);
+              setError('Session setup failed. Please try again.');
+              setSuccess('');
+            }
+          } catch (err) {
+            console.error('Session verification error:', err);
+            // Try redirect anyway after a longer delay
+            setTimeout(() => window.location.href = '/admin', 1000);
+          }
+        };
+        
+        // Give cookies time to propagate, then verify and redirect
+        setTimeout(verifyCookiesAndRedirect, 500);
       } else {
         setError(data.error || 'Login failed');
       }
