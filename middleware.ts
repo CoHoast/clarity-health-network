@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Simple middleware for v2 auth
+function isValidAdminSession(value: string | undefined): boolean {
+  return !!value && value.startsWith('admin_');
+}
+
+// Simple middleware for admin auth
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
@@ -19,16 +23,23 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   
-  // Allow old admin routes to pass through (they have their own auth)
-  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin-v2')) {
-    return NextResponse.next();
+  // Protect the legacy admin app with the server-readable HttpOnly cookie.
+  // Client-side JavaScript cannot read this cookie, so validation must happen here.
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    const adminSession = request.cookies.get('admin_session');
+
+    if (!isValidAdminSession(adminSession?.value)) {
+      const loginUrl = new URL('/admin-login', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
   }
   
   // Check if accessing admin-v2 routes
   if (pathname.startsWith('/admin-v2') || pathname.startsWith('/api/admin-v2')) {
     const sessionCookie = request.cookies.get('session');
     
-    if (!sessionCookie?.value || !sessionCookie.value.startsWith('admin_')) {
+    if (!isValidAdminSession(sessionCookie?.value)) {
       // Redirect to login
       const loginUrl = new URL('/login-v2', request.url);
       loginUrl.searchParams.set('redirect', pathname);

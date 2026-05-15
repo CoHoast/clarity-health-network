@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
 import Link from "next/link";
 import {
   Building2,
@@ -40,7 +39,6 @@ const quickActions = [
 ];
 
 export default function AdminDashboard() {
-  const router = useRouter();
   const { isDark } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState({
@@ -52,23 +50,6 @@ export default function AdminDashboard() {
     topSpecialties: [] as { specialty: string; count: number; percentage: number }[],
     topCities: [] as { city: string; count: number }[],
   });
-
-  // Check if user is authenticated when landing directly on this page
-  useEffect(() => {
-    const sessionCookie = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('admin_session='))
-      ?.split('=')[1];
-    
-    // If no session cookie, redirect to login
-    if (!sessionCookie || !sessionCookie.startsWith('admin_')) {
-      console.log('No valid session found on dashboard, redirecting to login');
-      router.replace('/admin-login');
-      return;
-    }
-    
-    console.log('Valid session found, staying on dashboard');
-  }, [router]);
 
   useEffect(() => {
     async function loadDashboardData() {
