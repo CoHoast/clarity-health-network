@@ -157,54 +157,56 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   // Check authentication on mount
   useEffect(() => {
-    const checkAuth = () => {
-      // More permissive cookie checking to handle Railway hosting
-      const cookieSession = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('admin_session='))
-        ?.split('=')[1];
-      
-      const cookieUser = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('user='))
-        ?.split('=')[1];
-      
-      console.log('Auth check - Session cookie:', cookieSession ? 'Found' : 'Not found');
-      console.log('Auth check - User cookie:', cookieUser ? cookieUser : 'Not found');
-      
-      // More lenient validation - just check if session exists and starts with admin_
-      if (cookieSession && cookieSession.startsWith('admin_')) {
-        console.log('Valid session found, setting authenticated');
-        setIsAuthenticated(true);
+    const checkAuth = async () => {
+      try {
+        // Use API to verify session instead of client-side cookie checks
+        // Try the auth-check endpoint first (outside /api to avoid middleware)
+        const response = await fetch('/auth-check', {
+          method: 'GET',
+          credentials: 'include',
+        });
         
-        // Set user info
-        if (cookieUser) {
-          // Decode URI component in case the name has spaces
-          const decodedUser = decodeURIComponent(cookieUser);
+        if (!response.ok) {
+          throw new Error('Auth check failed');
+        }
+        
+        const data = await response.json();
+        console.log('Auth verification:', data);
+        
+        if (data.authenticated) {
+          console.log('Session verified via API');
+          setIsAuthenticated(true);
+          
+          // Set user info from API response
+          const userName = data.session.user || 'Administrator';
           setAdminUser({ 
             email: "admin@truecare.com", 
-            name: decodedUser || 'Network Administrator'
+            name: userName === 'missing' ? 'Administrator' : userName
           });
         } else {
-          setAdminUser({ email: "admin@truecare.com", name: "Administrator" });
+          console.log('Session not valid, redirecting to login');
+          setIsAuthenticated(false);
+          // Small delay to prevent redirect loops
+          setTimeout(() => {
+            router.push("/admin-login");
+          }, 100);
         }
-      } else {
-        console.log('No valid session, redirecting to login');
+      } catch (error) {
+        console.error('Auth check error:', error);
         setIsAuthenticated(false);
-        // Delay redirect slightly to prevent loops
         setTimeout(() => {
           router.push("/admin-login");
         }, 100);
       }
     };
     
-    // Add a small delay to ensure cookies are available
-    setTimeout(checkAuth, 100);
+    // Check immediately
+    checkAuth();
     
     // Check auth status on page visibility change (detect external logout)
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        setTimeout(checkAuth, 100);
+        checkAuth();
       }
     };
     

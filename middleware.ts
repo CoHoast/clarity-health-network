@@ -14,6 +14,7 @@ import type { NextRequest } from 'next/server';
 // Routes that require authentication
 const PROTECTED_ROUTES = ['/admin'];
 const PUBLIC_ROUTES = ['/admin-login', '/login', '/api/auth', '/upload', '/apply', '/find-provider'];
+const AUTH_API_ROUTES = ['/api/auth/verify', '/api/auth/check-session', '/api/auth/debug-session'];
 
 // Allowed origins for CORS (add your domains here)
 const ALLOWED_ORIGINS = [
@@ -110,7 +111,8 @@ export function middleware(request: NextRequest) {
     '/api/upload/',         // Upload portal (token-based auth)
     '/api/apply/',          // Provider application
     '/api/find-provider',   // Provider search
-  ].some(pattern => pathname.startsWith(pattern));
+  ].some(pattern => pathname.startsWith(pattern)) || 
+  AUTH_API_ROUTES.includes(pathname.replace(/\/$/, '')); // Remove trailing slash for exact match
   
   // Skip auth for static assets
   if (isStaticAsset) {
